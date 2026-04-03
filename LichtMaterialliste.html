@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Licht Materialliste V3</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg2: #141720;
+    --bg3: #1c2030;
+    --border: #2a3050;
+    --accent: #e8c84a;
+    --accent2: #4ae8a0;
+    --red: #e84a4a;
+    --green: #4ae8a0;
+    --muted: #5a6080;
+    --text: #c8d0e8;
+    --text2: #8a94b0;
+    --cat-colors: #e8c84a, #4ae8c8, #c84ae8, #e8804a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--bg2);
+    border-bottom: 2px solid var(--accent);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 16px;
+  }
+  .header-title {
+    display: flex;
+    flex-direction: column;
+  }
+  .header-title h1 {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .header-title span {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+  .header-status {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  .status-dot.ok { background: var(--green); }
+  .status-dot.warn { background: var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 6px 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0d0f14;
+    font-weight: 700;
+  }
+  .btn-primary:hover { background: #ffd84a; border-color: #ffd84a; color: #0d0f14; }
+
+  /* PROJECT NAME INPUT */
+  .project-bar {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .project-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .project-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--accent);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    padding: 2px 8px;
+    width: 280px;
+    outline: none;
+    letter-spacing: 1px;
+  }
+  .project-input:focus { border-bottom-color: var(--accent); }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 24px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all .15s;
+    position: relative;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab .tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px; height: 16px;
+    border-radius: 2px;
+    font-size: 9px;
+    font-family: 'Share Tech Mono', monospace;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .tab .tab-badge.ok { background: rgba(74,232,160,.15); color: var(--green); }
+  .tab .tab-badge.warn { background: rgba(232,74,74,.15); color: var(--red); }
+
+  /* CONTENT */
+  .content {
+    padding: 20px 24px;
+    max-width: 1400px;
+  }
+  .category-panel { display: none; }
+  .category-panel.active { display: block; }
+
+  /* SECTION */
+  .section-block {
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .section-header {
+    display: grid;
+    grid-template-columns: 1fr 70px 70px 80px 80px 80px 120px 1fr;
+    gap: 0;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-header:hover { background: #20253a; }
+  .section-title-cell {
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chevron { transition: transform .2s; font-size: 10px; color: var(--muted); }
+  .collapsed .chevron { transform: rotate(-90deg); }
+  .section-sum-cell {
+    padding: 8px 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .section-sum-cell.diff-pos { color: var(--green); }
+  .section-sum-cell.diff-neg { color: var(--red); }
+  .section-sum-cell.sum-total { color: var(--text2); }
+  .section-header-label {
+    padding: 8px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--border);
+  }
+
+  /* TABLE */
+  .section-body { overflow: hidden; }
+  .section-body.collapsed { display: none; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead tr {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  thead th {
+    padding: 6px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    border-right: 1px solid #1a1f30;
+  }
+  thead th.num { text-align: center; }
+  tbody tr {
+    border-bottom: 1px solid #1a1f30;
+    transition: background .1s;
+  }
+  tbody tr:hover { background: rgba(232,200,74,.04); }
+  tbody tr.has-data { background: rgba(74,232,160,.03); }
+  tbody tr.has-data:hover { background: rgba(74,232,160,.07); }
+  td {
+    padding: 5px 8px;
+    border-right: 1px solid #1a1f30;
+  }
+  .td-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 180px;
+  }
+  .td-name.sub { color: var(--text2); padding-left: 20px; font-weight: 400; }
+  .td-length {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    white-space: nowrap;
+    min-width: 70px;
+  }
+  /* Calculated columns */
+  .td-diff {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    min-width: 60px;
+  }
+  .td-diff.pos { color: var(--green); }
+  .td-diff.neg { color: var(--red); }
+  .td-diff.zero { color: var(--muted); }
+  .td-total {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    text-align: center;
+    color: var(--text2);
+    min-width: 60px;
+  }
+  /* Input cells */
+  .td-input { min-width: 70px; }
+  input[type="number"] {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    width: 60px;
+    padding: 3px 6px;
+    text-align: center;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color .15s;
+  }
+  input[type="number"]:hover { border-color: var(--border); }
+  input[type="number"]:focus { border-color: var(--accent); background: rgba(232,200,74,.05); }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { opacity: 1; }
+  .td-text-input { min-width: 100px; }
+  input[type="text"] {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text2);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    width: 100%;
+    padding: 3px 6px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color .15s;
+  }
+  input[type="text"]:hover { border-color: var(--border); }
+  input[type="text"]:focus { border-color: var(--accent2); background: rgba(74,232,160,.03); color: var(--text); }
+  .td-note {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    min-width: 140px;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 20px;
+    padding: 10px 24px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    letter-spacing: 1px;
+    align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* SUMMARY BAR */
+  .summary-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 16px 0;
+  }
+  .summary-card {
+    background: var(--bg2);
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .summary-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .summary-value {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .sv-ok { color: var(--green); }
+  .sv-warn { color: var(--red); }
+  .sv-neutral { color: var(--accent); }
+
+  /* SAVE indicator */
+  .save-indicator {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    transition: color .3s;
+  }
+  .save-indicator.saved { color: var(--green); }
+
+  /* Ghost rows for Lampen */
+  .lampe-name-input {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    width: 100%;
+    padding: 3px 6px;
+    outline: none;
+  }
+  .lampe-name-input:hover { border-color: var(--border); }
+  .lampe-name-input:focus { border-color: var(--accent); background: rgba(232,200,74,.05); }
+
+  @media (max-width: 900px) {
+    .section-header { grid-template-columns: 1fr 60px 60px 70px 70px 60px; }
+    header { flex-wrap: wrap; }
+    .summary-bar { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <h1>Licht Materialliste</h1>
+    <span>VERSION 3 &nbsp;·&nbsp; TOURING PRODUCTION</span>
+  </div>
+  <div class="header-status">
+    <div class="status-pill">
+      <div class="status-dot ok" id="globalDot"></div>
+      <span id="globalStatus">ALLES OK</span>
+    </div>
+    <span class="save-indicator" id="saveIndicator">●</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn" onclick="collapseAll()">ALLE ↑</button>
+    <button class="btn" onclick="expandAll()">ALLE ↓</button>
+    <button class="btn" onclick="resetAll()">RESET</button>
+    <button class="btn btn-primary" onclick="exportCSV()">EXPORT CSV</button>
+  </div>
+</header>
+
+<div class="project-bar">
+  <span class="project-label">Projekt //</span>
+  <input type="text" class="project-input" id="projectName" placeholder="Projektname eingeben..." oninput="saveData()">
+  <span class="project-label" style="margin-left:24px">Datum //</span>
+  <input type="text" class="project-input" id="projectDate" placeholder="Datum..." oninput="saveData()" style="width:140px">
+</div>
+
+<div class="legend">
+  <span style="color:var(--accent);font-weight:700;letter-spacing:2px;font-size:11px">LEGENDE:</span>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Differenz ≥ 0 → Grün / OK</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Differenz &lt; 0 → Rot / BUCHEN</div>
+  <div class="legend-item" style="margin-left:auto;font-family:'Share Tech Mono',monospace">
+    DIFF = (# + Spare) − Im Projekt &nbsp;|&nbsp; TOTAL = # + Spare
+  </div>
+</div>
+
+<div class="tabs" id="tabBar"></div>
+
+<div class="content" id="content"></div>
+
+<script>
+const RAW_DATA = [{"name":"Kabel Liste","sections":[{"type_name":"Kabeltyp DMX 5 pol","items":[{"name":"5-Pin DMX","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"7m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp DMX 3 Pin DMX","items":[{"name":"3 PIN DMX","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"9m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp DMX 4er Baum","items":[{"name":"4er baum 5 Pin DMX","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp DMX LK","items":[{"name":"LK37","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"70m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LK37 M --> 12x DMX F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LK37 F --> 12x DMX M","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp DMX Adpater","items":[{"name":"Cat auf 4x DMX M","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Cat auf 4x DMX F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"DMX 3 pol M auf DMX 5pol F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"DMX 3 pol F auf DMX 5pol M","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp Netzwerk LWL","items":[{"name":"LWL 4er MultiMode SC","length":"Patchkabel 1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"150m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"300m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"500m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LWL Verbinder SC auf SC","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LWL Adapter LC auf SC","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LWL Reinigungset","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp Netzwerk Cat","items":[{"name":"Cat 6/7 RJ45","length":"Patchkabel 1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Cat 6/7 RJ45 Verbinder","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp Netzwerk Ethercon","items":[{"name":"Ethercon Kabel Cat 6/7","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"90m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m Trommel","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Ethercon Verbinder","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp Han16","items":[{"name":"Han 16 2,5\"","length":"1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Han16 M auf 6x Schuko","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Han 16 M auf 6x Schuko u.Han F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"6x Schuko M auf Han F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Han 16 Y Verbinder","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Han 16 Verbinder","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp Han6 5kw","items":[{"name":"Han6 5 KW","length":"1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Han8 5KW auf 3x CEE 32 F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"3x CEE 32 M auf Han 8 5 KW","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp Socapex","items":[{"name":"Socapex 2,5\"","length":"1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Soca M auf 6x Schuko","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Soca 16 M auf 6x Schuko u.Soca F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"6x Schuko M auf Soca F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Soca M --> Varilite Smart Repeater","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Socapex M auf Harting F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Socapex F auf Harting M","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp Schuko","items":[{"name":"Schuko","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"3er Verteiler","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"6er Verteiler","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp VL5","items":[{"name":"VL5 Verbindungskabel","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp 16A CEE blau","items":[{"name":"CEE 16 blau","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"CEE 16 auf Schuko F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Schuko M auf CEE 16","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp 32A CEE blau","items":[{"name":"CEE 32 blau","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"CEE 16 auf CEE 32 blau","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Cee 32 blau auf 3x CEE 32 blau","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp 16A CEE Rot","items":[{"name":"CEE 16A Rot","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"25m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"CEE 16A Rot auf 3x Schuko F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"CEE 16A Rot auf 6x Schuko F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp 32A CEE Rot","items":[{"name":"CEE 32A Rot","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"VT 32A auf 32A, 2x 16A, 3x Schuko","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"32A auf 3x 32A CEE","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp 63A CEE Rot","items":[{"name":"CEE 63 Rot","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"VT 63A auf 63A, 2x 32A, 2x 16ACEE, 3x Schuko","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"32A --> 63A Adpater","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"VT 63A auf 2x 63A ","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp 125A CEE Rot","items":[{"name":"CEE 125 Rot","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"15m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"40m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"50m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"100m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"VT 125A auf 62x 3A, 2x 32A, 2x 16ACEE, 3x Schuko","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"63A --> 125A","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"VT 125A auf 2x 63A","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Kabeltyp Erdung","items":[{"name":"Erdungskabel mit Öse","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Erdungskabel Set groß","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Erdungskabel Connex","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"20m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"30m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Erdungskabel Set Connex","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]}]},{"name":"Zubehör Liste","sections":[{"type_name":"Zubehör Pipes und Drops","items":[{"name":"Alurohr schwarz","length":"1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"1.5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"2m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"4m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"6m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Gelenkschelle Alu schwarz","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Starre Aluschelle schwarz","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Halbschelle mit Ring schwarz","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Alurohr silber","length":"1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"1.5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"2m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"4m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"6m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Gelenkschelle Alu silber","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Starre Aluschelle silber","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Halbschelle mit Ring silber","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Drop Arm Moving Light schwarz","length":"1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"2m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Drop Arm TV Zapfen verlängerung","length":"45-65cm","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"0,5m-1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"1,2m-2m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"1,8m-3m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Zubehör Licht Stative","items":[{"name":"Stahlstativ","length":"U126","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Kurbelstativ","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Genie","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"FD31","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"FD31 Stahlplatte","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Truss FD 34 Schwarz","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Truss Husse Schwarz","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Stahlplatte 60x60cm mit Truss Aufnahme Mittig 80 kg","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Holzverblendung Stahlplatte 60x60cm","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Stahlgewichte 25kg","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Konus auf Halbschelle","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Konus auf mini TV Zapfen","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Truss Koffer","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Bodenstativ 3 Bein klein mit mini TV Zapfen","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Bodenstativ 3 Bein mittel mit mini TV Zapfen","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Bodenstativ 3 Bein groß mit TV Zapfen aufnahme","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Bodenstativ Holz mit Schraube","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Bodenstativ Holz mit mini TV Zapfen Aufnahme","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Zubehör Licht Stahlzeug","items":[{"name":"Stahlseil / Saftey","length":"30kg 1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"60kg 1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m Slider 125kg","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"10m Slider 500kg","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Rundschlinge","length":"1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"2m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Steelflex","length":"1m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"1,5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"","length":"2m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Omegaschäkel 1t","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Omegaschäkel 2t","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Omegaschäkel 3,25t","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Zurgurt klein ","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Zurgurt mittel","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Zurgurt groß","length":"5m","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Magic Arm","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"P5 Klemmen mit Bolzen","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Zubehör V Mat","items":[{"name":"PVC Schwarz","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"PVC Grau","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Gaffa schwarz","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Gaffa silber","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Gaffa weiss","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Kabelbinder schwarz Dick","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Kabelbinder schwarz normal","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Kabelbinder weiss Dick","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Kabelbinder weiss normal","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Absperrband Rot/Weiss","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Markierungstape Rot/Weiss","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Markierungstape gelb/schwarz","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Beschriftungstape orange","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Beschriftungstape gelb","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Beschriftungstape pink","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Beschriftungstape grün","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Dekomolton 1lfm","length":"3m breit","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Zubehör System","items":[{"name":"Notenpultlampen","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Handdimmer","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Baufluter 500W","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"mini At10","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Patchkabel ---> Schuko F","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Schuko M ---> Patchkabel","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Ersatzbrenner Kiste","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Nebelfluid Fog","length":"5l","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Nebelfluid Tour Haze","length":"5l","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Nebelfluid MDG","length":"5l","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"CO2 Flasche","length":"20kg","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Trichter","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Ventialtor","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Zubehör Büro","items":[{"name":"Podest 2x1m","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Podest Fuss 60cm","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Podest Fuss 20cm Rolle","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Drucker Brother A3","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Monitor 24 Zoll","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Erste Hilfe Case","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Feuerlöscher Case","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Cafe Maschinen Case","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Bürostuhl","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Farbfolien LEE","items":[{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"LEE","length":"Rolle/Geschnitten","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]}]},{"name":"Hardware Liste","sections":[{"type_name":"Hardware Dimmer / Feststrom VT","items":[{"name":"Handdimmer 2kw","length":"Schuko","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"6 Kanal Dimmer auf6xSchuko","length":"16A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"12 Kanal Dimmer MA auf 2x Han","length":"32A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"24 Kanal Dimmer MA auf Han","length":"63A / 125A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":"mit Hotpatch / 2x Han als Input"},{"name":"36 Kanal Dimmer MA auf Han","length":"125A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":"mit Hotpatch / 2x Han als Input"},{"name":"12 Kanal VT auf 2x Han","length":"32A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"12 Kanal VT auf 2x Han Y Single FI","length":"32A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"18 Kanal VT auf 3x Han","length":"63A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"36 Kanal VT auf Han","length":"63A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":"Hotpatch"},{"name":"48 Kanal VT auf Han","length":"125A CEE","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":"Hotpatch / 4x Han als Input"},{"name":"USV 1000W","length":"schuko","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"USV 1500W","length":"schuko","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]},{"type_name":"Hardware DMX","items":[{"name":"Grandma 2 Full","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Grandma 2 Light","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Grandma 2 ONPC Set","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Grandma 2 NPU","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":"mit USV und SG300"},{"name":"Grandma 2 4 Port Node","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Grandma 2 8 Port Node","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Cisco SG 300 Switch mit LWL SC Ports","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"DMX Switch Single","length":"Swisson","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"2x DMX Switch","length":"Swisson","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"4x DMX Switch","length":"Swisson","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Adapterkoffer Cat auf DMX für Swisson 4er Rack","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]}]},{"name":"Lampen Liste","sections":[{"type_name":"Hardware Lampen","items":[{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""},{"name":"Lampe","length":"","anzahl":0,"spare":0,"im_projekt":0,"kapitel":"","bemerkung":""}]}]}];
+
+// ── STATE ──────────────────────────────────────────────────────────
+let state = null;
+let saveTimer = null;
+const STORAGE_KEY = 'lichtmaterialliste_v3';
+
+function initState() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      state = JSON.parse(saved);
+      // patch: ensure all categories/sections exist from RAW
+      return;
+    } catch(e) {}
+  }
+  // Deep copy from RAW
+  state = JSON.parse(JSON.stringify(RAW_DATA));
+  state._project = '';
+  state._date = '';
+}
+
+function saveData() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    state._project = document.getElementById('projectName').value;
+    state._date = document.getElementById('projectDate').value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const ind = document.getElementById('saveIndicator');
+    ind.textContent = '✓ GESPEICHERT';
+    ind.className = 'save-indicator saved';
+    setTimeout(() => { ind.textContent = '●'; ind.className = 'save-indicator'; }, 2000);
+    updateAllCalc();
+  }, 300);
+}
+
+// ── CALCULATIONS ───────────────────────────────────────────────────
+function calcDiff(item) { return (item.anzahl + item.spare) - item.im_projekt; }
+function calcTotal(item) { return item.anzahl + item.spare; }
+
+// ── RENDER ──────────────────────────────────────────────────────────
+const CAT_COLORS = ['#e8c84a','#4ae8c8','#c84ae8','#e8804a'];
+
+function render() {
+  const tabBar = document.getElementById('tabBar');
+  const content = document.getElementById('content');
+  tabBar.innerHTML = '';
+  content.innerHTML = '';
+
+  state.forEach((cat, ci) => {
+    // TAB
+    const tab = document.createElement('div');
+    tab.className = 'tab' + (ci === 0 ? ' active' : '');
+    tab.dataset.ci = ci;
+    tab.style.setProperty('--tab-color', CAT_COLORS[ci % 4]);
+    tab.innerHTML = cat.name + '<span class="tab-badge ok" id="badge-'+ci+'">✓</span>';
+    tab.onclick = () => switchTab(ci);
+    tabBar.appendChild(tab);
+
+    // PANEL
+    const panel = document.createElement('div');
+    panel.className = 'category-panel' + (ci === 0 ? ' active' : '');
+    panel.id = 'cat-' + ci;
+
+    // Summary bar
+    const sumBar = document.createElement('div');
+    sumBar.className = 'summary-bar';
+    sumBar.id = 'sumbar-' + ci;
+    panel.appendChild(sumBar);
+
+    cat.sections.forEach((sec, si) => {
+      const block = document.createElement('div');
+      block.className = 'section-block';
+      block.id = `sec-${ci}-${si}`;
+
+      // Section header (clickable)
+      const secHdr = document.createElement('div');
+      secHdr.className = 'section-header';
+      secHdr.onclick = () => toggleSection(ci, si);
+      secHdr.innerHTML = `
+        <div class="section-title-cell">
+          <span class="chevron">▼</span>
+          ${sec.type_name}
+        </div>
+        <div class="section-header-label">DIFF</div>
+        <div class="section-header-label">TOTAL</div>
+        <div class="section-header-label"># Kabel</div>
+        <div class="section-header-label">Spare</div>
+        <div class="section-header-label">Im Proj.</div>
+        <div class="section-header-label">Kapitel</div>
+        <div class="section-header-label">Bemerkung</div>
+      `;
+      block.appendChild(secHdr);
+
+      // Body
+      const body = document.createElement('div');
+      body.className = 'section-body';
+      body.id = `body-${ci}-${si}`;
+
+      const table = document.createElement('table');
+      table.innerHTML = `<thead><tr>
+        <th>Bezeichnung</th><th>Länge/Typ</th>
+        <th class="num">DIFF</th><th class="num">TOTAL</th>
+        <th class="num"># Kabel</th><th class="num">Spare</th>
+        <th class="num">Im Projekt</th>
+        <th>Kapitel</th><th>Bemerkung</th>
+      </tr></thead>`;
+      const tbody = document.createElement('tbody');
+
+      sec.items.forEach((item, ii) => {
+        const tr = document.createElement('tr');
+        tr.id = `row-${ci}-${si}-${ii}`;
+        const isLampe = cat.name === 'Lampen Liste';
+        const isSubRow = !item.name && item.length;
+        const nameHtml = isLampe
+          ? `<input class="lampe-name-input" type="text" value="${esc(item.name)}" placeholder="Lampentyp..." onchange="updateField(${ci},${si},${ii},'name',this.value)" oninput="saveData()">`
+          : `<span class="${isSubRow ? 'sub' : ''}">${esc(item.name) || ''}</span>`;
+        tr.innerHTML = `
+          <td class="td-name">${nameHtml}</td>
+          <td class="td-length">${esc(item.length)}</td>
+          <td class="td-diff zero" id="diff-${ci}-${si}-${ii}">—</td>
+          <td class="td-total" id="total-${ci}-${si}-${ii}">—</td>
+          <td class="td-input"><input type="number" min="0" value="${item.anzahl}" onchange="updateNum(${ci},${si},${ii},'anzahl',this)" oninput="saveData()"></td>
+          <td class="td-input"><input type="number" min="0" value="${item.spare}" onchange="updateNum(${ci},${si},${ii},'spare',this)" oninput="saveData()"></td>
+          <td class="td-input"><input type="number" min="0" value="${item.im_projekt}" onchange="updateNum(${ci},${si},${ii},'im_projekt',this)" oninput="saveData()"></td>
+          <td class="td-text-input"><input type="text" value="${esc(item.kapitel)}" onchange="updateField(${ci},${si},${ii},'kapitel',this.value)" oninput="saveData()"></td>
+          <td class="td-note">${item.bemerkung ? `<span style="color:var(--muted)">${esc(item.bemerkung)}</span>` : `<input type="text" value="" placeholder="…" onchange="updateField(${ci},${si},${ii},'bemerkung',this.value)" oninput="saveData()" style="width:100%">`}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      body.appendChild(table);
+      block.appendChild(body);
+      panel.appendChild(block);
+    });
+    content.appendChild(panel);
+  });
+
+  // Load project info
+  document.getElementById('projectName').value = state._project || '';
+  document.getElementById('projectDate').value = state._date || '';
+
+  updateAllCalc();
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function updateNum(ci, si, ii, field, input) {
+  const val = parseInt(input.value) || 0;
+  input.value = val < 0 ? 0 : val;
+  state[ci].sections[si].items[ii][field] = parseInt(input.value) || 0;
+  saveData();
+}
+
+function updateField(ci, si, ii, field, val) {
+  state[ci].sections[si].items[ii][field] = val;
+  saveData();
+}
+
+function updateAllCalc() {
+  let globalWarn = false;
+
+  state.forEach((cat, ci) => {
+    let catTotalNeg = 0, catTotalItems = 0;
+
+    cat.sections.forEach((sec, si) => {
+      let secDiff = 0, secTotal = 0;
+
+      sec.items.forEach((item, ii) => {
+        const diff = calcDiff(item);
+        const total = calcTotal(item);
+        secDiff += diff;
+        secTotal += total;
+
+        const diffEl = document.getElementById(`diff-${ci}-${si}-${ii}`);
+        const totalEl = document.getElementById(`total-${ci}-${si}-${ii}`);
+        if (!diffEl) return;
+
+        if (item.anzahl === 0 && item.spare === 0 && item.im_projekt === 0) {
+          diffEl.textContent = '—'; diffEl.className = 'td-diff zero';
+          totalEl.textContent = '—';
+        } else {
+          diffEl.textContent = diff >= 0 ? '+'+diff : diff;
+          diffEl.className = 'td-diff ' + (diff > 0 ? 'pos' : diff < 0 ? 'neg' : 'zero');
+          totalEl.textContent = total;
+          const tr = document.getElementById(`row-${ci}-${si}-${ii}`);
+          if (tr) tr.className = (item.anzahl > 0 || item.spare > 0 || item.im_projekt > 0) ? 'has-data' : '';
+        }
+
+        if (diff < 0) catTotalNeg++;
+        catTotalItems++;
+      });
+
+      // Section header update
+      const secHdr = document.querySelector(`#sec-${ci}-${si} .section-header`);
+      if (secHdr) {
+        // Inject section sum cells
+        const cells = secHdr.querySelectorAll('.section-sum-cell');
+        if (cells.length === 0) {
+          // Already rendered with correct cols via innerHTML, update via re-query
+        }
+      }
+    });
+
+    // Category badge
+    const badge = document.getElementById(`badge-${ci}`);
+    if (badge) {
+      if (catTotalNeg > 0) {
+        badge.textContent = catTotalNeg;
+        badge.className = 'tab-badge warn';
+        globalWarn = true;
+      } else {
+        badge.textContent = '✓';
+        badge.className = 'tab-badge ok';
+      }
+    }
+
+    // Summary bar
+    const sumbar = document.getElementById(`sumbar-${ci}`);
+    if (sumbar) {
+      const allItems = cat.sections.flatMap(s => s.items);
+      const totalAn = allItems.reduce((a,b) => a + b.anzahl, 0);
+      const totalSp = allItems.reduce((a,b) => a + b.spare, 0);
+      const totalProj = allItems.reduce((a,b) => a + b.im_projekt, 0);
+      const totalDiff = (totalAn + totalSp) - totalProj;
+      const negCount = allItems.filter(i => calcDiff(i) < 0 && (i.anzahl||i.spare||i.im_projekt)).length;
+      sumbar.innerHTML = `
+        <div class="summary-card"><div class="summary-label">Gesamt # Kabel</div><div class="summary-value sv-neutral">${totalAn}</div></div>
+        <div class="summary-card"><div class="summary-label">Gesamt Spare</div><div class="summary-value sv-neutral">${totalSp}</div></div>
+        <div class="summary-card"><div class="summary-label">Im Projekt</div><div class="summary-value sv-neutral">${totalProj}</div></div>
+        <div class="summary-card"><div class="summary-label">Gesamtdifferenz / Positionen zu buchen</div>
+          <div class="summary-value ${totalDiff < 0 || negCount > 0 ? 'sv-warn' : 'sv-ok'}">${totalDiff < 0 ? totalDiff : '+'+totalDiff} / ${negCount}</div></div>
+      `;
+    }
+  });
+
+  // Global status
+  const dot = document.getElementById('globalDot');
+  const status = document.getElementById('globalStatus');
+  if (globalWarn) {
+    dot.className = 'status-dot warn';
+    status.textContent = '! ZU BUCHEN';
+  } else {
+    dot.className = 'status-dot ok';
+    status.textContent = 'ALLES OK';
+  }
+}
+
+function switchTab(ci) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === ci));
+  document.querySelectorAll('.category-panel').forEach((p,i) => p.classList.toggle('active', i === ci));
+}
+
+function toggleSection(ci, si) {
+  const body = document.getElementById(`body-${ci}-${si}`);
+  const block = document.getElementById(`sec-${ci}-${si}`);
+  body.classList.toggle('collapsed');
+  block.querySelector('.section-header').classList.toggle('collapsed');
+}
+
+function collapseAll() {
+  document.querySelectorAll('.section-body').forEach(b => b.classList.add('collapsed'));
+  document.querySelectorAll('.section-header').forEach(h => h.classList.add('collapsed'));
+}
+function expandAll() {
+  document.querySelectorAll('.section-body').forEach(b => b.classList.remove('collapsed'));
+  document.querySelectorAll('.section-header').forEach(h => h.classList.remove('collapsed'));
+}
+
+function resetAll() {
+  if (!confirm('Alle Eingaben zurücksetzen? (nicht rückgängig machbar)')) return;
+  state = JSON.parse(JSON.stringify(RAW_DATA));
+  state._project = '';
+  state._date = '';
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  render();
+}
+
+function exportCSV() {
+  let csv = 'Projekt;' + (state._project||'') + ';Datum;' + (state._date||'') + '\n\n';
+  csv += 'Kategorie;Sektion;Bezeichnung;Länge;# Kabel;Spare;Im Projekt;Differenz;Total;Kapitel;Bemerkung\n';
+  state.forEach(cat => {
+    cat.sections.forEach(sec => {
+      sec.items.forEach(item => {
+        const diff = calcDiff(item);
+        const total = calcTotal(item);
+        csv += [cat.name, sec.type_name, item.name, item.length,
+                item.anzahl, item.spare, item.im_projekt,
+                diff, total, item.kapitel, item.bemerkung]
+          .map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(';') + '\n';
+      });
+    });
+  });
+  const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'LichtMaterialliste_' + (state._project||'export').replace(/\s/g,'_') + '.csv';
+  a.click();
+}
+
+// ── INIT ────────────────────────────────────────────────────────────
+initState();
+render();
+</script>
+</body>
+</html>
