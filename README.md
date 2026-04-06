@@ -8,7 +8,7 @@
 
 ## 🚀 Direkt starten
 
-https://m4dm0nky.github.io/Materialliste-Licht/
+https://m4dm0nky.github.io/Materialliste-Licht/index.html
 
 ---
 
