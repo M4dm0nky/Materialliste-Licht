@@ -2,8 +2,7 @@
 
 **Touring Production · Material Management · Lichttechnik**
 
-> Web-App für die Verwaltung von Kabeln, Zubehör, Hardware und Lampen auf Tour.  
-> Konvertiert aus `LichtMaterialliste_V3.xltm` — läuft komplett im Browser, kein Server nötig.
+> Web-App für die Verwaltung von Kabeln, Zubehör, Hardware und Lampen auf Tour. 
 
 ---
 
