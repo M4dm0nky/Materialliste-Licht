@@ -9,7 +9,7 @@
 
 ## 🚀 Direkt starten
 
-**[→ materialliste-licht öffnen](https://m4dm0nky.github.io/materialliste-licht/)**
+**[→ materialliste-licht öffnen](https://m4dm0nky.github.io/Materialliste-Licht/)**
 
 ---
 
