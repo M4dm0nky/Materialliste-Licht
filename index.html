@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Materialliste Licht</title>
+<title>Material Planer</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d0f14;--bg2:#141720;--bg3:#1c2030;--border:#2a3050;--accent:#e8c84a;--accent2:#4ae8a0;--red:#e84a4a;--green:#4ae8a0;--muted:#5a6080;--text:#c8d0e8;--text2:#8a94b0;}
@@ -218,8 +218,8 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Materialliste Licht</h1>
-        <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
+        <h1>Material Planer</h1>
+        <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT &nbsp;◆&nbsp; <span style="color:var(--accent);opacity:.7;">v0.5</span></div>
         <div class="planname" id="activePlanName"></div>
       </div>
     </div>
@@ -802,7 +802,7 @@ function exportCSV(){
   })));
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));
-  a.download='materialliste-licht-'+(state._project||'export').replace(/\s/g,'_')+'.csv';
+  a.download='material-planer-'+(state._project||'export').replace(/\s/g,'_')+'.csv';
   a.click();
 }
 
@@ -1527,7 +1527,7 @@ function generatePDF(){
   const lbBooking = logos.booking ? `<img src="${logos.booking}" style="max-height:52px;max-width:160px;object-fit:contain;object-position:right center;">` : '';
   const lbBand    = logos.band    ? `<img src="${logos.band}"    style="max-height:48px;max-width:140px;object-fit:contain;">` : '';
   const posName = state.positions[activePosIdx].name;
-  const projectName = (state._project || 'Materialliste Licht') + (posName && posName!=='Standard' ? ' · '+posName : '');
+  const projectName = (state._project || 'Material Planer') + (posName && posName!=='Standard' ? ' · '+posName : '');
   const projectDate = state._date || new Date().toLocaleDateString('de-DE');
 
   let tableRows = '';
@@ -1586,7 +1586,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Materialliste Licht · Touring Production</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
