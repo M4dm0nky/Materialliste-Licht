@@ -262,7 +262,7 @@ tbody tr.row-dragging{opacity:.35;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.8.0</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.8.1</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -945,70 +945,128 @@ function showWiz(title){document.getElementById('mTitle').textContent=title;docu
 
 function step1(){
   wiz.step=1;
-  const ci=wiz.ci,catName=currentCats()[ci].name;
-  const entries=Object.entries(getActiveCatalogTypes()).filter(([_,v])=>v.cat===catName);
+  const ci=wiz.ci, catName=currentCats()[ci].name;
+  wiz._allEntries=Object.entries(getActiveCatalogTypes());
+  wiz._entries=wiz._allEntries.filter(([_,v])=>v.cat===catName);
+  wiz._gridEntries=[]; // wird von wizBuildGrid befüllt
   document.getElementById('mBody').innerHTML=`
     <div class="steps">
       <div class="step active">1 · TYP WÄHLEN</div>
       <div class="step">2 · MENGEN EINGEBEN</div>
       <div class="step">3 · FERTIG</div>
     </div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;letter-spacing:1px">
-      KATALOG: <b style="color:var(--accent2)">${esc(getActiveCatalog().name)}</b> &nbsp;·&nbsp; <b style="color:var(--text)">${esc(catName)}</b> — Wähle einen Kabeltyp:
+    <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      <input class="pinput" id="wizSearch" placeholder="🔍 Suchen (z.B. DMX, Han16, GrandMA...)"
+        style="flex:1;min-width:0" oninput="wizUpdateSearch(this.value)" autocomplete="off">
+      <span id="wizSearchInfo" style="font-size:10px;color:var(--muted);white-space:nowrap">
+        ${esc(getActiveCatalog().name)} · ${esc(catName)}
+      </span>
     </div>
-    <div class="catgrid">
-      ${(()=>{
-        if(!entries.length) return `<div style="color:var(--muted);font-size:13px;padding:24px;grid-column:1/-1;">
-          Dieser Katalog enthält noch keine Einträge für „${esc(catName)}".
-          <br><button class="btn btn-sm" style="margin-top:12px" onclick="closeWiz();openCatalogMgr()">→ Katalog bearbeiten</button>
-        </div>`;
-        const activeCat=getActiveCatalog();
-        const topGroups=catGetTopGroups(activeCat);
-        if(!topGroups.length){
-          // Kein Gruppen → flache Anzeige
-          return entries.map(([k,v],i)=>`<div class="catcard" id="cc-${i}" onclick="wizPickIdx(${i})">
-            <div class="catcard-t">${esc(k)}</div>
-            <div class="catcard-s">${v.items.length} Einträge</div>
-          </div>`).join('');
-        }
-        // Mit Hierarchie: Obergruppe → Untergruppe → Cards
-        const byGrp={};
-        (activeCat.groups||[]).forEach(g=>{ byGrp[g.id]=[]; });
-        byGrp['__none']=[];
-        entries.forEach(([k,v],i)=>{ const gid=v.group||'__none'; if(byGrp[gid]!==undefined) byGrp[gid].push({k,v,i}); else byGrp['__none'].push({k,v,i}); });
-        const renderCards=items=>items.map(({k,v,i})=>`<div class="catcard" id="cc-${i}" onclick="wizPickIdx(${i})">
-          <div class="catcard-t">${esc(k)}</div>
-          <div class="catcard-s">${v.items.length} Einträge</div>
-        </div>`).join('');
-        let wizHtml='';
-        topGroups.forEach(g=>{
-          const subGroups=catGetSubGroups(activeCat,g.id);
-          const directItems=byGrp[g.id]||[];
-          const hasContent=directItems.length||subGroups.some(sg=>(byGrp[sg.id]||[]).length);
-          if(!hasContent) return;
-          wizHtml+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--accent);margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)">▸ ${esc(g.name)}</div>`;
-          wizHtml+=renderCards(directItems);
-          subGroups.forEach(sg=>{
-            const sgItems=byGrp[sg.id]||[];
-            if(!sgItems.length) return;
-            wizHtml+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:1px;color:var(--accent2);margin:6px 0 3px;padding-left:12px">· ${esc(sg.name)}</div>`;
-            wizHtml+=renderCards(sgItems);
-          });
-        });
-        const noneItems=byGrp['__none']||[];
-        if(noneItems.length){
-          wizHtml+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--muted);margin:10px 0 4px">WEITERE</div>`;
-          wizHtml+=renderCards(noneItems);
-        }
-        return wizHtml;
-      })()}
-    </div>`;
-  wiz._entries=entries;
+    <div id="wizGrid" class="catgrid">${wizBuildGrid('')}</div>`;
   document.getElementById('mFooter').innerHTML=`<button class="btn" onclick="closeWiz()">Abbrechen</button>`;
+  // Suchfeld fokussieren
+  const si=document.getElementById('wizSearch'); if(si) setTimeout(()=>si.focus(),50);
+}
+
+function wizUpdateSearch(val){
+  const grid=document.getElementById('wizGrid'); if(!grid) return;
+  wiz._gridEntries=[];
+  grid.innerHTML=wizBuildGrid(val.trim());
+  const info=document.getElementById('wizSearchInfo');
+  if(info) info.textContent=val.trim()
+    ? (wiz._gridEntries.length+' Treffer')
+    : (esc(getActiveCatalog().name)+' · '+currentCats()[wiz.ci].name);
+}
+
+function wizBuildGrid(query){
+  const ci=wiz.ci, catName=currentCats()[ci].name;
+  const activeCat=getActiveCatalog();
+  const allEntries=wiz._allEntries||[];
+  if(!wiz._gridEntries) wiz._gridEntries=[];
+
+  const makeCard=(k,v,targetCi)=>{
+    const idx=wiz._gridEntries.length;
+    wiz._gridEntries.push({key:k,ci:targetCi});
+    return `<div class="catcard" onclick="wizPickGridIdx(${idx})">
+      <div class="catcard-t">${esc(k)}</div>
+      <div class="catcard-s">${v.items.length} Eintr.</div>
+    </div>`;
+  };
+
+  const buildHierarchy=(entries,targetCi)=>{
+    const topGroups=catGetTopGroups(activeCat);
+    if(!topGroups.length) return entries.map(([k,v])=>makeCard(k,v,targetCi)).join('');
+    const byGrp={};
+    (activeCat.groups||[]).forEach(g=>{ byGrp[g.id]=[]; });
+    byGrp['__none']=[];
+    entries.forEach(([k,v])=>{ const gid=v.group||'__none'; if(byGrp[gid]!==undefined) byGrp[gid].push([k,v]); else byGrp['__none'].push([k,v]); });
+    let h='';
+    topGroups.forEach(g=>{
+      const subGroups=catGetSubGroups(activeCat,g.id);
+      const direct=byGrp[g.id]||[];
+      const hasContent=direct.length||subGroups.some(sg=>(byGrp[sg.id]||[]).length);
+      if(!hasContent) return;
+      h+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--accent);margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)">▸ ${esc(g.name)}</div>`;
+      h+=direct.map(([k,v])=>makeCard(k,v,targetCi)).join('');
+      subGroups.forEach(sg=>{
+        const sgItems=byGrp[sg.id]||[];
+        if(!sgItems.length) return;
+        h+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:1px;color:var(--accent2);margin:6px 0 3px;padding-left:12px">· ${esc(sg.name)}</div>`;
+        h+=sgItems.map(([k,v])=>makeCard(k,v,targetCi)).join('');
+      });
+    });
+    const noneItems=byGrp['__none']||[];
+    if(noneItems.length){
+      h+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--muted);margin:10px 0 4px">WEITERE</div>`;
+      h+=noneItems.map(([k,v])=>makeCard(k,v,targetCi)).join('');
+    }
+    return h;
+  };
+
+  if(!query){
+    // Standard: nur aktuelle Kategorie
+    const entries=allEntries.filter(([_,v])=>v.cat===catName);
+    if(!entries.length) return `<div style="color:var(--muted);font-size:13px;padding:24px;grid-column:1/-1;">
+      Dieser Katalog enthält noch keine Einträge für „${esc(catName)}".
+      <br><button class="btn btn-sm" style="margin-top:12px" onclick="closeWiz();openCatalogMgr()">→ Katalog bearbeiten</button>
+    </div>`;
+    return buildHierarchy(entries, ci);
+  }
+
+  // Suche: alle Kategorien, case-insensitive
+  const q=query.toLowerCase();
+  const matches=allEntries.filter(([k,v])=>
+    k.toLowerCase().includes(q)||
+    (v.cat||'').toLowerCase().includes(q)||
+    (activeCat.groups||[]).some(g=>g.id===v.group&&g.name.toLowerCase().includes(q))
+  );
+  if(!matches.length) return `<div style="color:var(--muted);font-size:13px;padding:20px;grid-column:1/-1;">Keine Treffer für „${esc(query)}".</div>`;
+
+  // Gruppiert nach Kategorie anzeigen
+  const cats=currentCats();
+  let html='';
+  CAT_ORDER.forEach(catN=>{
+    const catEntries=matches.filter(([_,v])=>v.cat===catN);
+    if(!catEntries.length) return;
+    const targetCi=cats.findIndex(c=>c.name===catN);
+    const useCi=targetCi>=0?targetCi:ci;
+    const label=catN.replace(' Liste','').toUpperCase();
+    html+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--accent);margin:10px 0 4px;padding:3px 8px;background:rgba(232,200,74,.1);border-left:3px solid var(--accent)">◆ ${label}</div>`;
+    html+=buildHierarchy(catEntries, useCi);
+  });
+  return html||`<div style="color:var(--muted);grid-column:1/-1;padding:20px">Keine Treffer.</div>`;
+}
+
+function wizPickGridIdx(idx){
+  const e=wiz._gridEntries&&wiz._gridEntries[idx]; if(!e) return;
+  if(e.ci!==wiz.ci) wiz.targetSi=null; // Kategorienwechsel: Sektion-Target verwerfen
+  wiz.ci=e.ci; wiz.key=e.key; wiz.sel={}; step2();
 }
 
 function wizPickIdx(idx){
-  wiz.key=wiz._entries[idx][0];wiz.sel={};step2();
+  // Legacy: maps auf neues System
+  const e=wiz._entries&&wiz._entries[idx]; if(!e) return;
+  wiz.key=e[0]; wiz.sel={}; step2();
 }
 
 function step2(){
@@ -2090,7 +2148,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.8.0</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.8.1</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
