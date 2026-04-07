@@ -70,9 +70,9 @@ positions: [{
 3. `initPlans()` IIFE — Plans-Index laden, activePlanId/activeCatalogId setzen, render()
 
 ## Versions-Stellen
-- Header: Z.244 `◆ v0.6.1`
-- PDF-Template: Z.1765 `◆ v0.6.1`
-- Aktuelle Version: **v0.6.1**
+- Header: Z.261 `◆ v0.7.2`
+- PDF-Template: Z.1989 `◆ v0.7.2`
+- Aktuelle Version: **v0.7.2**
 
 ## Wichtige UI-Muster
 - Modal-Overlay: `#overlay` mit `showWiz(title)` / `closeWiz()`

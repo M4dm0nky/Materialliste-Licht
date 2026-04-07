@@ -258,7 +258,7 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.1</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.2</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -356,10 +356,12 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
 
 <!-- PDF EXPORT MODAL -->
 <div class="overlay" id="pdfModal">
-  <div class="modal" style="max-width:460px;">
+  <div class="modal" style="max-width:480px;">
     <div class="mhdr"><h2>🖨 PDF Export</h2><button class="mclose" onclick="closeModal('pdfModal')">✕</button></div>
     <div class="mbody">
       <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Strg+P / Cmd+P → Als PDF speichern · Querformat empfohlen</p>
+      <div style="font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Positionen</div>
+      <div id="pdfPosCbs" style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"></div>
       <div style="font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Kategorien</div>
       <div id="pdfCatCbs" style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"></div>
       <div style="font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Optionen</div>
@@ -1865,85 +1867,93 @@ function importProjectJSON(input){
 // PDF EXPORT
 // ══════════════════════════════════════════════════
 function openPDFExport(){
-  const cats = document.getElementById('pdfCatCbs');
-  cats.innerHTML = currentCats().map((cat,ci) =>
-    `<label class="pdf-cb-row"><input type="checkbox" class="pdfcatcb" data-ci="${ci}" checked> ${cat.name} (${cat.sections.reduce((a,s)=>a+s.items.length,0)} Einträge)</label>`
+  // Positionen
+  document.getElementById('pdfPosCbs').innerHTML = state.positions.map((pos,pi) =>
+    `<label class="pdf-cb-row"><input type="checkbox" class="pdfposcb" data-pi="${pi}" checked> ${esc(pos.name)}</label>`
+  ).join('');
+  // Kategorien (aus aktiver Position als Referenz)
+  document.getElementById('pdfCatCbs').innerHTML = currentCats().map((cat,ci) =>
+    `<label class="pdf-cb-row"><input type="checkbox" class="pdfcatcb" data-ci="${ci}" checked> ${esc(cat.name)}</label>`
   ).join('');
   document.getElementById('pdfModal').classList.add('open');
 }
 
 function generatePDF(){
+  const selPos  = [...document.querySelectorAll('.pdfposcb')].filter(c=>c.checked).map(c=>+c.dataset.pi);
   const selCats = [...document.querySelectorAll('.pdfcatcb')].filter(c=>c.checked).map(c=>+c.dataset.ci);
   const onlyFilled = document.getElementById('pdfOnlyFilled').checked;
   const showDiff   = document.getElementById('pdfShowDiff').checked;
   closeModal('pdfModal');
+  if(!selPos.length){ toast('Bitte mindestens eine Position wählen.',true); return; }
 
   const lbPlaner  = logos.planer  ? `<img src="${logos.planer}"  style="max-height:52px;max-width:160px;object-fit:contain;object-position:left center;">` : '';
   const lbBooking = logos.booking ? `<img src="${logos.booking}" style="max-height:52px;max-width:160px;object-fit:contain;object-position:right center;">` : '';
   const lbBand    = logos.band    ? `<img src="${logos.band}"    style="max-height:48px;max-width:140px;object-fit:contain;">` : '';
-  const posName = state.positions[activePosIdx].name;
-  const projectName = (state._project || 'Material Planer') + (posName && posName!=='Standard' ? ' · '+posName : '');
+  const projectName = state._project || 'Material Planer';
   const projectDate = state._date || new Date().toLocaleDateString('de-DE');
 
   // Oberkategorien aus dem aktiven Katalog laden
   const pdfCatTypes = getActiveCatalogTypes();
   const pdfGroups   = getActiveCatalog().groups || [];
-  const pdfGroupMap = {}; // id → name
-  pdfGroups.forEach(g => { pdfGroupMap[g.id] = g.name; });
   const cols = showDiff ? 7 : 6;
 
-  // Jede Sektion bekommt ein eigenes <tbody> mit page-break-inside:avoid
-  // Oberkategorie-Header kommen als einzelnes <tbody> davor
-  let tableBodies = '';
+  // Hilfsfunktion: Sektionen einer Position rendern
+  function renderPosSections(pos){
+    let bodies = '';
+    selCats.forEach(ci => {
+      const cat = pos.categories[ci];
+      if(!cat) return;
 
-  selCats.forEach(ci => {
-    const cat = currentCats()[ci];
+      const grouped = {};
+      pdfGroups.forEach(g => { grouped[g.id] = []; });
+      grouped['__none'] = [];
 
-    // Sektionen nach Obergruppe sortieren
-    const grouped = {}; // groupId | '__none' → [{sec, items}]
-    pdfGroups.forEach(g => { grouped[g.id] = []; });
-    grouped['__none'] = [];
+      cat.sections.forEach(sec => {
+        const items = onlyFilled
+          ? sec.items.filter(i => (i.anzahl||0)+(i.spare||0)+(i.im_projekt||0) > 0)
+          : sec.items;
+        if(!items.length) return;
+        const gid = pdfCatTypes[sec.type_name]?.group || '__none';
+        (grouped[gid] || grouped['__none']).push({sec, items});
+      });
 
-    cat.sections.forEach(sec => {
-      const items = onlyFilled
-        ? sec.items.filter(i => (i.anzahl||0)+(i.spare||0)+(i.im_projekt||0) > 0)
-        : sec.items;
-      if(!items.length) return;
-      const gid = pdfCatTypes[sec.type_name]?.group || '__none';
-      (grouped[gid] || grouped['__none']).push({sec, items});
-    });
-
-    const groupOrder = [...pdfGroups.map(g=>({id:g.id,name:g.name})), {id:'__none',name:null}];
-
-    groupOrder.forEach(({id:gid, name:gname}) => {
-      const secs = grouped[gid] || [];
-      if(!secs.length) return;
-
-      // Oberkategorie-Header (falls benannte Gruppe)
-      if(gname){
-        tableBodies += `<tbody><tr class="grp-hdr"><td colspan="${cols}">${gname}</td></tr></tbody>`;
-      }
-
-      // Jede Sektion in eigenem tbody — page-break-inside:avoid verhindert Trennung
-      secs.forEach(({sec, items}) => {
-        let rows = `<tr class="sec-hdr"><td colspan="${cols}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
-        items.forEach(item => {
-          const d = (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0);
-          const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
-          const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
-          rows += `<tr${hasData?' class="filled"':''}>
-            <td class="ntd">${item.name||''}</td>
-            <td class="ltd">${item.length||''}</td>
-            <td class="ntd2">${item.anzahl||0}</td>
-            <td class="ntd2">${item.spare||0}</td>
-            <td class="ntd2">${item.im_projekt||0}</td>
-            ${showDiff?`<td class="ntd2" style="color:${diffColor};font-weight:700;">${hasData?(d>=0?'+'+d:d):'—'}</td>`:''}
-            <td class="ktd">${item.kapitel||''}</td>
-          </tr>`;
+      const groupOrder = [...pdfGroups.map(g=>({id:g.id,name:g.name})), {id:'__none',name:null}];
+      groupOrder.forEach(({id:gid, name:gname}) => {
+        const secs = grouped[gid] || [];
+        if(!secs.length) return;
+        if(gname) bodies += `<tbody><tr class="grp-hdr"><td colspan="${cols}">${gname}</td></tr></tbody>`;
+        secs.forEach(({sec, items}) => {
+          let rows = `<tr class="sec-hdr"><td colspan="${cols}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
+          items.forEach(item => {
+            const d = (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0);
+            const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
+            const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
+            rows += `<tr${hasData?' class="filled"':''}>
+              <td class="ntd">${item.name||''}</td>
+              <td class="ltd">${item.length||''}</td>
+              <td class="ntd2">${item.anzahl||0}</td>
+              <td class="ntd2">${item.spare||0}</td>
+              <td class="ntd2">${item.im_projekt||0}</td>
+              ${showDiff?`<td class="ntd2" style="color:${diffColor};font-weight:700;">${hasData?(d>=0?'+'+d:d):'—'}</td>`:''}
+              <td class="ktd">${item.kapitel||''}</td>
+            </tr>`;
+          });
+          bodies += `<tbody class="sec-group">${rows}</tbody>`;
         });
-        tableBodies += `<tbody class="sec-group">${rows}</tbody>`;
       });
     });
+    return bodies;
+  }
+
+  // Alle gewählten Positionen nacheinander — ab Position 2 Seitenumbruch
+  let tableBodies = '';
+  selPos.forEach((pi, idx) => {
+    const pos = state.positions[pi];
+    if(!pos) return;
+    const pageBreak = idx > 0 ? 'style="page-break-before:always"' : '';
+    // Positions-Header als eigener tbody
+    tableBodies += `<tbody ${pageBreak}><tr class="pos-hdr"><td colspan="${cols}">${pos.name}</td></tr></tbody>`;
+    tableBodies += renderPosSections(pos);
   });
 
   const diffHeader = showDiff ? '<th>DIFF</th>' : '';
@@ -1964,6 +1974,7 @@ thead th{background:#0d0f14;color:#e8c84a;padding:5px 7px;text-align:left;font-s
 thead th:nth-child(n+3){text-align:center;}
 .grp-hdr td{background:#e8c84a;color:#0d0f14;font-family:'Bebas Neue',sans-serif;font-size:11pt;letter-spacing:3px;padding:5px 10px;border-top:2px solid #c9a800;}
 .sec-hdr td{background:#1c2030;color:#e8c84a;font-family:'Bebas Neue',sans-serif;font-size:10pt;letter-spacing:2px;padding:5px 8px;border-top:1px solid #2a3050;border-bottom:1px solid #2a3050;}
+.pos-hdr td{background:#0d0f14;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:14pt;letter-spacing:4px;padding:8px 10px;border-top:3px solid #e8c84a;}
 tbody.sec-group{page-break-inside:avoid;}
 tbody tr{border-bottom:1px solid #e8e8e8;}
 tbody tr.filled{background:#f8fdf9;}
@@ -1976,7 +1987,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.1</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.2</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
