@@ -262,7 +262,7 @@ tbody tr.row-dragging{opacity:.35;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.5</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.8.0</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -962,25 +962,45 @@ function step1(){
           Dieser Katalog enthält noch keine Einträge für „${esc(catName)}".
           <br><button class="btn btn-sm" style="margin-top:12px" onclick="closeWiz();openCatalogMgr()">→ Katalog bearbeiten</button>
         </div>`;
-        const groups=getActiveCatalog().groups||[];
-        if(!groups.length) return entries.map(([k,v],i)=>`<div class="catcard" id="cc-${i}" onclick="wizPickIdx(${i})">
+        const activeCat=getActiveCatalog();
+        const topGroups=catGetTopGroups(activeCat);
+        if(!topGroups.length){
+          // Kein Gruppen → flache Anzeige
+          return entries.map(([k,v],i)=>`<div class="catcard" id="cc-${i}" onclick="wizPickIdx(${i})">
+            <div class="catcard-t">${esc(k)}</div>
+            <div class="catcard-s">${v.items.length} Einträge</div>
+          </div>`).join('');
+        }
+        // Mit Hierarchie: Obergruppe → Untergruppe → Cards
+        const byGrp={};
+        (activeCat.groups||[]).forEach(g=>{ byGrp[g.id]=[]; });
+        byGrp['__none']=[];
+        entries.forEach(([k,v],i)=>{ const gid=v.group||'__none'; if(byGrp[gid]!==undefined) byGrp[gid].push({k,v,i}); else byGrp['__none'].push({k,v,i}); });
+        const renderCards=items=>items.map(({k,v,i})=>`<div class="catcard" id="cc-${i}" onclick="wizPickIdx(${i})">
           <div class="catcard-t">${esc(k)}</div>
           <div class="catcard-s">${v.items.length} Einträge</div>
         </div>`).join('');
-        // Mit Gruppen: Überschriften + Cards
-        const byGrp={};
-        groups.forEach(g=>{ byGrp[g.id]=[]; });
-        byGrp['__none']=[];
-        entries.forEach(([k,v],i)=>{ const gid=v.group||'__none'; (byGrp[gid]||(byGrp['__none'])).push({k,v,i}); });
-        return [...groups.map(g=>({id:g.id,name:g.name})),{id:'__none',name:'Weitere'}].map(g=>{
-          const items=byGrp[g.id]||[];
-          if(!items.length) return '';
-          return `<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--accent2);margin:8px 0 4px">${esc(g.name)}</div>`
-            +items.map(({k,v,i})=>`<div class="catcard" id="cc-${i}" onclick="wizPickIdx(${i})">
-              <div class="catcard-t">${esc(k)}</div>
-              <div class="catcard-s">${v.items.length} Einträge</div>
-            </div>`).join('');
-        }).join('');
+        let wizHtml='';
+        topGroups.forEach(g=>{
+          const subGroups=catGetSubGroups(activeCat,g.id);
+          const directItems=byGrp[g.id]||[];
+          const hasContent=directItems.length||subGroups.some(sg=>(byGrp[sg.id]||[]).length);
+          if(!hasContent) return;
+          wizHtml+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--accent);margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)">▸ ${esc(g.name)}</div>`;
+          wizHtml+=renderCards(directItems);
+          subGroups.forEach(sg=>{
+            const sgItems=byGrp[sg.id]||[];
+            if(!sgItems.length) return;
+            wizHtml+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:1px;color:var(--accent2);margin:6px 0 3px;padding-left:12px">· ${esc(sg.name)}</div>`;
+            wizHtml+=renderCards(sgItems);
+          });
+        });
+        const noneItems=byGrp['__none']||[];
+        if(noneItems.length){
+          wizHtml+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--muted);margin:10px 0 4px">WEITERE</div>`;
+          wizHtml+=renderCards(noneItems);
+        }
+        return wizHtml;
       })()}
     </div>`;
   wiz._entries=entries;
@@ -1253,18 +1273,19 @@ function _renderCatMgrTab2(){
   const cat = cats.find(c=>c.id===_catEditorId)||cats[0];
   if(!cat){ document.getElementById('catMgrContent').innerHTML='<div style="color:var(--muted)">Kein Katalog gefunden.</div>'; return; }
   const types = cat.types||{};
-  const groups = cat.groups||[];
-  // Typen nach Obergruppe + innerhalb nach CAT_ORDER sortieren
-  const byGroup = {}; // groupId → [{key,val}]
-  groups.forEach(g=>{ byGroup[g.id]=[]; });
+  const topGroups = catGetTopGroups(cat);
+  const safeId = s => s.replace(/'/g,"&#39;");
+
+  // Typen nach Gruppe sortieren
+  const byGroup = {};
+  (cat.groups||[]).forEach(g=>{ byGroup[g.id]=[]; });
   byGroup['__none']=[];
   Object.entries(types).forEach(([key,val])=>{
-    const gid = val.group||'__none';
-    if(!byGroup[gid]) byGroup['__none'].push({key,val});
-    else byGroup[gid].push({key,val});
+    const gid=val.group||'__none';
+    if(byGroup[gid]!==undefined) byGroup[gid].push({key,val});
+    else byGroup['__none'].push({key,val});
   });
-  const safeId = s => s.replace(/'/g,"&#39;");
-  const groupOptions = `<option value="">— Ohne Gruppe —</option>`+groups.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join('');
+
   const renderTypeRow = (key,val) => `
     <div class="type-block">
       <div class="type-block-header">
@@ -1279,6 +1300,50 @@ function _renderCatMgrTab2(){
         </div>
       </div>
     </div>`;
+
+  // Hierarchische Typ-Liste bauen
+  const renderHierarchy = () => {
+    let html='';
+    topGroups.forEach(g=>{
+      const subGroups=catGetSubGroups(cat,g.id);
+      const directTypes=byGroup[g.id]||[];
+      const totalTypes=directTypes.length+subGroups.reduce((s,sg)=>s+(byGroup[sg.id]||[]).length,0);
+      html+=`<div style="margin-bottom:14px">
+        <div class="group-header" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>▸ ${esc(g.name)} <span style="color:var(--muted);font-weight:400">(${totalTypes})</span></span>
+          <div style="display:flex;gap:4px;flex-shrink:0">
+            <button class="btn btn-sm" onclick="catEditorAddSubGroup('${cat.id}','${g.id}')">＋ UNTERGRUPPE</button>
+            <button class="btn btn-sm" style="padding:2px 7px" onclick="catEditorRenameGroup('${cat.id}','${g.id}')" title="Umbenennen">✏</button>
+            <button class="btn btn-sm btn-red" style="padding:2px 7px" onclick="catEditorDeleteGroup('${cat.id}','${g.id}')" title="Löschen">✕</button>
+          </div>
+        </div>
+        ${directTypes.map(({key,val})=>renderTypeRow(key,val)).join('')}
+        ${subGroups.map(sg=>{
+          const sgTypes=byGroup[sg.id]||[];
+          return `<div style="margin-left:18px;margin-top:4px">
+            <div class="group-header" style="background:var(--bg2);border-left:3px solid var(--accent2);color:var(--accent2);display:flex;justify-content:space-between;align-items:center;">
+              <span>· ${esc(sg.name)} <span style="color:var(--muted);font-weight:400">(${sgTypes.length})</span></span>
+              <div style="display:flex;gap:4px;flex-shrink:0">
+                <button class="btn btn-sm" style="padding:2px 7px" onclick="catEditorRenameGroup('${cat.id}','${sg.id}')" title="Umbenennen">✏</button>
+                <button class="btn btn-sm btn-red" style="padding:2px 7px" onclick="catEditorDeleteGroup('${cat.id}','${sg.id}')" title="Löschen">✕</button>
+              </div>
+            </div>
+            ${sgTypes.map(({key,val})=>renderTypeRow(key,val)).join('')}
+          </div>`;
+        }).join('')}
+      </div>`;
+    });
+    const noneTypes=byGroup['__none']||[];
+    if(noneTypes.length){
+      html+=`<div style="margin-bottom:10px">
+        <div class="group-header" style="color:var(--muted)">Ohne Gruppe <span style="font-weight:400">(${noneTypes.length})</span></div>
+        ${noneTypes.map(({key,val})=>renderTypeRow(key,val)).join('')}
+      </div>`;
+    }
+    if(!html) html=`<div style="color:var(--muted);font-size:13px;padding:12px">Noch keine Typen im Katalog.</div>`;
+    return html;
+  };
+
   document.getElementById('catMgrContent').innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
       <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">KATALOG:</div>
@@ -1288,30 +1353,23 @@ function _renderCatMgrTab2(){
       <button class="btn btn-sm btn-green" onclick="catEditorExport('${cat.id}')">↓ EXPORTIEREN</button>
     </div>
     <div class="group-mgr-bar">
-      <span style="font-size:10px;letter-spacing:2px;color:var(--muted);white-space:nowrap">GRUPPEN:</span>
-      ${groups.map(g=>`<span class="group-pill">
+      <span style="font-size:10px;letter-spacing:2px;color:var(--muted);white-space:nowrap">OBERGRUPPEN:</span>
+      ${topGroups.map(g=>`<span class="group-pill">
         <span>${esc(g.name)}</span>
         <button onclick="catEditorRenameGroup('${cat.id}','${g.id}')" title="Umbenennen">✏</button>
         <button onclick="catEditorDeleteGroup('${cat.id}','${g.id}')" title="Löschen">✕</button>
       </span>`).join('')}
-      <button class="btn btn-sm" onclick="catEditorAddGroup('${cat.id}')">+ NEUE GRUPPE</button>
+      <button class="btn btn-sm" onclick="catEditorAddGroup('${cat.id}')">+ NEUE OBERGRUPPE</button>
     </div>
     <div style="background:var(--bg3);border:1px solid var(--border);padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
       <span style="font-size:10px;letter-spacing:2px;color:var(--muted)">+ NEUER TYP:</span>
       <input class="pinput" id="newTypeName" placeholder="z.B. DMX 7-Pin" style="width:180px">
       <select class="pinput" id="newTypeCat" style="width:auto">${CAT_ORDER.map(cn=>`<option>${cn}</option>`).join('')}</select>
-      <select class="pinput" id="newTypeGroup" style="width:auto">${groupOptions}</select>
+      <select class="pinput" id="newTypeGroup" style="width:auto">${catBuildGroupOptions(cat,'')}</select>
       <button class="btn btn-sm btn-green" onclick="catEditorAddType('${cat.id}')">HINZUFÜGEN</button>
     </div>
-    <div style="max-height:360px;overflow-y:auto;">
-      ${[...groups.map(g=>({id:g.id,name:g.name})),{id:'__none',name:'Ohne Gruppe'}].map(g=>{
-        const entries=byGroup[g.id]||[];
-        if(!entries.length) return '';
-        return `<div style="margin-bottom:10px">
-          <div class="group-header">${esc(g.name)} <span style="color:var(--muted);font-weight:400">(${entries.length})</span></div>
-          ${entries.map(({key,val})=>renderTypeRow(key,val)).join('')}
-        </div>`;
-      }).join('')}
+    <div style="max-height:420px;overflow-y:auto;">
+      ${renderHierarchy()}
     </div>`;
 }
 
@@ -1341,8 +1399,7 @@ function catEditorOpenTypeDetail(catalogId, typeKey){
       <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;">
         <span style="font-size:10px;letter-spacing:2px;color:var(--muted)">GRUPPE:</span>
         <select class="pinput" style="width:auto" onchange="catEditorSetTypeGroup('${safeId(catalogId)}','${safeId(esc(typeKey))}',this.value)">
-          <option value="">— Ohne Gruppe —</option>
-          ${groups.map(g=>`<option value="${g.id}"${typeVal.group===g.id?' selected':''}>${esc(g.name)}</option>`).join('')}
+          ${catBuildGroupOptions(cat,typeVal.group||'')}
         </select>
         <button class="btn btn-sm" style="color:var(--accent2);border-color:var(--accent2);"
           onclick="catEditorRenameType('${safeId(catalogId)}','${safeId(esc(typeKey))}');catEditorOpenTypeDetail('${safeId(catalogId)}','${safeId(esc(typeKey))}')">✏ TYP UMBENENNEN</button>
@@ -1414,12 +1471,42 @@ function catEditorDetailDeleteItem(catalogId, typeKey, idx){
 // ── GRUPPEN CRUD ────────────────────────────────────────────────────
 function _genGroupId(){ return 'grp-'+Date.now().toString(36); }
 
+// Gibt alle Obergruppen (ohne parentId) zurück
+function catGetTopGroups(cat){ return (cat.groups||[]).filter(g=>!g.parentId); }
+// Gibt alle Untergruppen einer Obergruppe zurück
+function catGetSubGroups(cat, parentId){ return (cat.groups||[]).filter(g=>g.parentId===parentId); }
+// Baut hierarchische <option>-Liste für Gruppen-Dropdowns
+function catBuildGroupOptions(cat, selectedGid){
+  const topGroups=catGetTopGroups(cat);
+  let opts=`<option value=""${!selectedGid?' selected':''}>— Ohne Gruppe —</option>`;
+  topGroups.forEach(g=>{
+    opts+=`<option value="${g.id}"${selectedGid===g.id?' selected':''}>${esc(g.name)}</option>`;
+    catGetSubGroups(cat,g.id).forEach(sg=>{
+      opts+=`<option value="${sg.id}"${selectedGid===sg.id?' selected':''}>  · ${esc(sg.name)}</option>`;
+    });
+  });
+  // Verwaiste Untergruppen (parentId zeigt auf nicht mehr existierende Gruppe)
+  (cat.groups||[]).filter(g=>g.parentId&&!(cat.groups||[]).find(x=>x.id===g.parentId)).forEach(g=>{
+    opts+=`<option value="${g.id}"${selectedGid===g.id?' selected':''}>${esc(g.name)}</option>`;
+  });
+  return opts;
+}
+
 function catEditorAddGroup(catalogId){
   const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  const name=prompt('Name der neuen Gruppe (z.B. Datenkabel, Stromkabel):');
+  const name=prompt('Name der neuen Obergruppe (z.B. Datenkabel, Stromkabel):');
   if(!name||!name.trim()) return;
   cat.groups.push({id:_genGroupId(),name:name.trim()});
-  saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Gruppe „'+name.trim()+'" angelegt');
+  saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Obergruppe „'+name.trim()+'" angelegt');
+}
+
+function catEditorAddSubGroup(catalogId, parentGroupId){
+  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  const parent=cat.groups.find(g=>g.id===parentGroupId); if(!parent) return;
+  const name=prompt('Name der Untergruppe (z.B. DMX Kabel, Netzwerk):');
+  if(!name||!name.trim()) return;
+  cat.groups.push({id:_genGroupId(),name:name.trim(),parentId:parentGroupId});
+  saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Untergruppe „'+name.trim()+'" angelegt');
 }
 
 function catEditorRenameGroup(catalogId, groupId){
@@ -1432,10 +1519,14 @@ function catEditorRenameGroup(catalogId, groupId){
 function catEditorDeleteGroup(catalogId, groupId){
   const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
   const g=cat.groups.find(x=>x.id===groupId); if(!g) return;
-  if(!confirm(`Gruppe „${g.name}" löschen? Zugeordnete Typen werden zu „Ohne Gruppe".`)) return;
-  // Gruppenzuordnung bei betroffenen Typen entfernen
-  Object.values(cat.types).forEach(t=>{ if(t.group===groupId) delete t.group; });
-  cat.groups=cat.groups.filter(x=>x.id!==groupId);
+  const childGroups=catGetSubGroups(cat,groupId);
+  const msg=childGroups.length
+    ? `Gruppe „${g.name}" und ${childGroups.length} Untergruppe(n) löschen?\nZugeordnete Typen werden zu „Ohne Gruppe".`
+    : `Gruppe „${g.name}" löschen? Zugeordnete Typen werden zu „Ohne Gruppe".`;
+  if(!confirm(msg)) return;
+  const allIds=[groupId,...childGroups.map(x=>x.id)];
+  Object.values(cat.types).forEach(t=>{ if(allIds.includes(t.group)) delete t.group; });
+  cat.groups=cat.groups.filter(x=>!allIds.includes(x.id));
   saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Gruppe gelöscht');
 }
 
@@ -1497,12 +1588,14 @@ function catMgrImportJSON(input){
       const catName = (data.name&&typeof data.name==='string') ? data.name : (file.name.replace(/\.json$/i,'')||'Importierter Katalog');
       const types={};
       Object.entries(rawTypes).forEach(([key,val])=>{
-        if(typeof val==='object'&&val.items) types[key]={cat:val.cat||'Kabel Liste',items:val.items};
+        if(typeof val==='object'&&val.items) types[key]={cat:val.cat||'Kabel Liste',items:val.items,...(val.group?{group:val.group}:{})};
       });
       if(!Object.keys(types).length){ toast('Keine gültigen Katalog-Typen gefunden.',true); return; }
+      // Gruppen-Hierarchie wiederherstellen (parentId bleibt erhalten)
+      const groups=(Array.isArray(data.groups)?data.groups:[]).filter(g=>g.id&&g.name);
       const id=genCatalogId();
       catalogsStore.catalogs.push({id,name:catName,isBuiltin:false,
-        created:new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}),groups:[],types});
+        created:new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}),groups,types});
       saveCatalogsStore(); _renderCatMgrTab1();
       toast('✓ Katalog „'+catName+'" importiert');
     }catch(err){ toast('Import fehlgeschlagen: '+err.message,true); }
@@ -1514,7 +1607,7 @@ function catEditorSwitch(catalogId){ _catEditorId=catalogId; _renderCatMgrTab2()
 
 function catEditorExport(catalogId){
   const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  const out={name:cat.name,types:cat.types};
+  const out={name:cat.name,groups:cat.groups||[],types:cat.types};
   downloadJSON(out,(cat.name||'katalog').replace(/[^a-zA-Z0-9äöüÄÖÜß]/g,'_').toLowerCase()+'.json');
   toast('✓ Katalog exportiert');
 }
@@ -1551,7 +1644,7 @@ function catEditorDeleteType(catalogId,typeKey){
 }
 
 function downloadJSON(data, filename){
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
   a.download=filename;
@@ -1843,7 +1936,7 @@ async function saveProjectJSON(){
     }catch(e){ if(e.name==='AbortError') return; }
   }
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));
+  a.href=URL.createObjectURL(new Blob([json],{type:'application/json;charset=utf-8'}));
   a.download=safeName+'.json'; a.click();
   toast('✓ JSON exportiert');
 }
@@ -1997,7 +2090,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.5</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.8.0</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
