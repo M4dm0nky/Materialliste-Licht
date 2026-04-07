@@ -96,9 +96,13 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
 .type-block-name{font-weight:700;font-size:12px;color:var(--text);letter-spacing:.5px;}
 .type-items{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;}
 .item-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--bg3);border:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text2);}
-.item-chip button{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0 1px;line-height:1;transition:color .15s;}
-.item-chip button:hover{color:var(--red);}
-.item-chip button[title="Bearbeiten"]:hover{color:var(--accent2);}
+.item-chip-label{flex:1;}
+.item-chip-edit,.item-chip-del{background:transparent;border:none;cursor:pointer;font-size:11px;padding:0 2px;line-height:1;transition:color .15s;opacity:0;}
+.item-chip:hover .item-chip-edit,.item-chip:hover .item-chip-del{opacity:1;}
+.item-chip-edit{color:var(--accent2);}
+.item-chip-edit:hover{color:#fff;}
+.item-chip-del{color:var(--muted);}
+.item-chip-del:hover{color:var(--red);}
 .item-chip-add{border-style:dashed;color:var(--muted);background:transparent;}
 .btn-red{background:rgba(232,74,74,.15);color:var(--red);border-color:rgba(232,74,74,.3);}
 .btn-red:hover{background:rgba(232,74,74,.25);}
@@ -241,7 +245,7 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.6.1</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.6.2</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -1207,16 +1211,16 @@ function _renderCatMgrTab2(){
               <div class="type-block-header">
                 <span class="type-block-name">${esc(key)}</span>
                 <div style="display:flex;gap:6px">
-                  <button class="btn btn-sm" onclick="catEditorRenameType('${cat.id}','${esc(key).replace(/'/g,'&#39;')}')">UMBENENNEN</button>
+                  <button class="btn btn-sm" style="color:var(--accent2);border-color:var(--accent2);" onclick="catEditorRenameType('${cat.id}','${esc(key).replace(/'/g,'&#39;')}')">✏ UMBENENNEN</button>
                   ${!cat.isBuiltin?`<button class="btn btn-sm btn-red" onclick="catEditorDeleteType('${cat.id}','${esc(key).replace(/'/g,'&#39;')}')">TYP LÖSCHEN</button>`:''}
                 </div>
               </div>
               <div class="type-items">
                 ${val.items.map((it,idx)=>`
                   <span class="item-chip">
-                    ${esc(it.l||it.n||'—')}
-                    <button onclick="catEditorEditItem('${cat.id}','${esc(key).replace(/'/g,'&#39;')}',${idx})" title="Bearbeiten" style="color:var(--muted);font-size:11px">✏</button>
-                    <button onclick="catEditorDeleteItem('${cat.id}','${esc(key).replace(/'/g,'&#39;')}',${idx})" title="Löschen">✕</button>
+                    <span class="item-chip-label">${esc(it.l||it.n||'—')}</span>
+                    <button class="item-chip-edit" onclick="catEditorEditItem('${cat.id}','${esc(key).replace(/'/g,'&#39;')}',${idx})" title="Umbenennen">✏</button>
+                    <button class="item-chip-del" onclick="catEditorDeleteItem('${cat.id}','${esc(key).replace(/'/g,'&#39;')}',${idx})" title="Löschen">✕</button>
                   </span>`).join('')}
                 <span class="item-chip item-chip-add">
                   <input type="text" id="newitem-${cat.id}-${esc(key).replace(/[^a-zA-Z0-9]/g,'_')}" placeholder="z.B. 15m" style="width:70px;background:transparent;border:none;color:var(--text);font-family:inherit;font-size:12px;outline:none"
@@ -1762,7 +1766,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.6.1</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.6.2</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
