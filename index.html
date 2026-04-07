@@ -88,6 +88,20 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
 .save-ind{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--muted);letter-spacing:1px;transition:color .3s;}
 .save-ind.saved{color:var(--green);}
 
+/* ── POSITION BAR ────────────────────────────────────── */
+.posbar{display:flex;align-items:center;gap:6px;padding:8px 31px;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;}
+.posbar-label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;white-space:nowrap;text-transform:uppercase;flex-shrink:0;}
+.pos-pill{display:flex;align-items:center;gap:4px;padding:5px 14px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s;user-select:none;}
+.pos-pill:hover{border-color:var(--accent);color:var(--accent);}
+.pos-pill.active{background:rgba(232,200,74,.12);border-color:var(--accent);color:var(--accent);}
+.pos-pill-actions{display:none;gap:2px;align-items:center;}
+.pos-pill:hover .pos-pill-actions{display:flex;}
+.pos-pill-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:1px 3px;line-height:1;transition:color .15s;}
+.pos-pill-btn.ren:hover{color:var(--accent);}
+.pos-pill-btn.del:hover{color:var(--red);}
+.pos-add{padding:4px 10px;font-size:18px;background:transparent;border:1px dashed var(--border);color:var(--muted);cursor:pointer;transition:all .15s;line-height:1.4;flex-shrink:0;}
+.pos-add:hover{border-color:var(--accent);color:var(--accent);}
+
 /* OVERLAY */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
 .overlay.open{display:flex;}
@@ -257,6 +271,8 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
   <span class="plabel">Datum //</span>
   <input class="pinput" id="pDate" placeholder="TT.MM.JJJJ" style="width:120px" oninput="save()">
 </div>
+
+<div class="posbar" id="posbar"></div>
 
 <div class="legend">
   <span style="color:var(--accent);font-weight:700;font-size:11px;letter-spacing:2px">LEGENDE:</span>
@@ -543,8 +559,16 @@ function initState(){
     }
   }catch(e){}
   // Load project state
-  try{const s=localStorage.getItem(STORAGE_KEY);if(s){state=JSON.parse(s);return;}}catch(e){}
-  state={_project:'',_date:'',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))};
+  try{
+    const s=localStorage.getItem(STORAGE_KEY);
+    if(s){
+      state=migrateState(JSON.parse(s));
+      activePosIdx=Math.min(state._activePosIdx||0, state.positions.length-1);
+      return;
+    }
+  }catch(e){}
+  state={_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+  activePosIdx=0;
 }
 
 function save(){
@@ -566,7 +590,7 @@ function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/<
 
 // ── RENDER ─────────────────────────────────────────────────────────
 function render(){
-  renderTabs();renderContent();
+  renderPosBar();renderTabs();renderContent();
   document.getElementById('pName').value=state._project||'';
   document.getElementById('pDate').value=state._date||'';
   recalcAll();
@@ -574,7 +598,7 @@ function render(){
 
 function renderTabs(){
   const bar=document.getElementById('tabBar');bar.innerHTML='';
-  state.categories.forEach((cat,ci)=>{
+  currentCats().forEach((cat,ci)=>{
     const t=document.createElement('div');
     t.className='tab'+(ci===0?' active':'');
     t.innerHTML=cat.name+`<span class="tbadge ok" id="badge-${ci}">✓</span>`;
@@ -584,7 +608,7 @@ function renderTabs(){
 
 function renderContent(){
   const el=document.getElementById('content');el.innerHTML='';
-  state.categories.forEach((cat,ci)=>{
+  currentCats().forEach((cat,ci)=>{
     const panel=document.createElement('div');
     panel.className='catpanel'+(ci===0?' active':'');panel.id=`cat-${ci}`;
     el.appendChild(panel);
@@ -601,7 +625,7 @@ function rerenderCat(ci){
 }
 
 function rerenderCatInto(ci,panel){
-  const cat=state.categories[ci];
+  const cat=currentCats()[ci];
   cat.sections.forEach(sec=>sec.items.sort((a,b)=>parseFloat(a.length||'0')-parseFloat(b.length||'0')));
   // sumbar removed
   if(cat.sections.length===0){
@@ -621,7 +645,7 @@ function rerenderCatInto(ci,panel){
 }
 
 function buildSecEl(ci,si){
-  const sec=state.categories[ci].sections[si];
+  const sec=currentCats()[ci].sections[si];
   const block=document.createElement('div');
   block.className='secblock';block.id=`sec-${ci}-${si}`;
   block.innerHTML=`
@@ -658,7 +682,7 @@ function buildSecEl(ci,si){
   // Fill tbody directly — element not yet in DOM so querySelector on block itself
   const tbody = block.querySelector(`#tbody-${ci}-${si}`);
   if(tbody){
-    state.categories[ci].sections[si].items.forEach((_,ii)=>tbody.appendChild(buildRow(ci,si,ii)));
+    currentCats()[ci].sections[si].items.forEach((_,ii)=>tbody.appendChild(buildRow(ci,si,ii)));
   }
   return block;
 }
@@ -666,12 +690,12 @@ function buildSecEl(ci,si){
 function renderRows(ci,si){
   const tbody=document.getElementById(`tbody-${ci}-${si}`);if(!tbody)return;
   tbody.innerHTML='';
-  state.categories[ci].sections[si].items.forEach((_,ii)=>tbody.appendChild(buildRow(ci,si,ii)));
+  currentCats()[ci].sections[si].items.forEach((_,ii)=>tbody.appendChild(buildRow(ci,si,ii)));
   recalcAll();
 }
 
 function buildRow(ci,si,ii){
-  const item=state.categories[ci].sections[si].items[ii];
+  const item=currentCats()[ci].sections[si].items[ii];
   const tr=document.createElement('tr');
   tr.id=`row-${ci}-${si}-${ii}`;
   if((item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0) tr.className='has-data';
@@ -707,12 +731,12 @@ function buildRow(ci,si,ii){
 // ── UPDATE ─────────────────────────────────────────────────────────
 function upn(ci,si,ii,field,input){
   const v=Math.max(0,parseInt(input.value)||0);input.value=v;
-  state.categories[ci].sections[si].items[ii][field]=v;lc(ci,si,ii);save();
+  currentCats()[ci].sections[si].items[ii][field]=v;lc(ci,si,ii);save();
 }
-function upf(ci,si,ii,field,val){state.categories[ci].sections[si].items[ii][field]=val;save();}
+function upf(ci,si,ii,field,val){currentCats()[ci].sections[si].items[ii][field]=val;save();}
 
 function lc(ci,si,ii){
-  const item=state.categories[ci].sections[si].items[ii];
+  const item=currentCats()[ci].sections[si].items[ii];
   const d=xdiff(item),t=xtotal(item);
   const dEl=document.getElementById(`diff-${ci}-${si}-${ii}`);
   const tEl=document.getElementById(`total-${ci}-${si}-${ii}`);
@@ -725,28 +749,28 @@ function lc(ci,si,ii){
 }
 
 function recalcAll(){
-  state.categories.forEach((_,ci)=>state.categories[ci].sections.forEach((_,si)=>state.categories[ci].sections[si].items.forEach((_,ii)=>lc(ci,si,ii))));
+  currentCats().forEach((_,ci)=>currentCats()[ci].sections.forEach((_,si)=>currentCats()[ci].sections[si].items.forEach((_,ii)=>lc(ci,si,ii))));
 }
 
 function recalcBadge(ci){
-  const cat=state.categories[ci];
+  const cat=currentCats()[ci];
   const all=cat.sections.flatMap(s=>s.items);
   const neg=all.filter(i=>xdiff(i)<0&&((i.anzahl||0)+(i.spare||0)+(i.im_projekt||0)>0)).length;
   const b=document.getElementById(`badge-${ci}`);
   if(b){b.textContent=neg>0?neg:'✓';b.className='tbadge '+(neg>0?'warn':'ok');}
   // sumbar removed
-  const anyWarn=state.categories.some(cat=>cat.sections.flatMap(s=>s.items).some(i=>xdiff(i)<0&&((i.anzahl||0)+(i.spare||0)+(i.im_projekt||0)>0)));
+  const anyWarn=currentCats().some(cat=>cat.sections.flatMap(s=>s.items).some(i=>xdiff(i)<0&&((i.anzahl||0)+(i.spare||0)+(i.im_projekt||0)>0)));
   document.getElementById('gDot').className='sdot '+(anyWarn?'warn':'ok');
   document.getElementById('gStatus').textContent=anyWarn?'! ZU BUCHEN':'ALLES OK';
 }
 
 // ── DELETE ─────────────────────────────────────────────────────────
 function delRow(ci,si,ii){
-  state.categories[ci].sections[si].items.splice(ii,1);save();renderRows(ci,si);recalcAll();
+  currentCats()[ci].sections[si].items.splice(ii,1);save();renderRows(ci,si);recalcAll();
 }
 function delSec(ci,si){
-  if(!confirm(`Sektion "${state.categories[ci].sections[si].type_name}" wirklich löschen?`))return;
-  state.categories[ci].sections.splice(si,1);save();rerenderCat(ci);
+  if(!confirm(`Sektion "${currentCats()[ci].sections[si].type_name}" wirklich löschen?`))return;
+  currentCats()[ci].sections.splice(si,1);save();rerenderCat(ci);
 }
 
 // ── UI ─────────────────────────────────────────────────────────────
@@ -763,12 +787,14 @@ function expandAll(){document.querySelectorAll('.secbody').forEach(b=>b.classLis
 function resetAll(){
   if(!confirm('Alle Daten löschen?'))return;
   localStorage.removeItem(STORAGE_KEY);
-  state={_project:'',_date:'',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))};render();
+  state={_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+  activePosIdx=0;render();
 }
 function exportCSV(){
-  let csv='Projekt;'+(state._project||'')+';Datum;'+(state._date||'')+'\n\n';
+  const posName=state.positions[activePosIdx].name;
+  let csv='Projekt;'+(state._project||'')+';Datum;'+(state._date||'')+'\nPosition;'+posName+'\n\n';
   csv+='Kategorie;Sektion;Bezeichnung;Länge;# Stk.;Spare;Im Projekt;Differenz;Total;Kapitel;Bemerkung\n';
-  state.categories.forEach(cat=>cat.sections.forEach(sec=>sec.items.forEach(item=>{
+  currentCats().forEach(cat=>cat.sections.forEach(sec=>sec.items.forEach(item=>{
     const d=xdiff(item),t=xtotal(item);
     csv+=[cat.name,sec.type_name,item.name||'',item.length||'',item.anzahl||0,item.spare||0,
       item.im_projekt||0,d,t,item.kapitel||'',item.bemerkung||'']
@@ -790,7 +816,7 @@ function showWiz(title){document.getElementById('mTitle').textContent=title;docu
 
 function step1(){
   wiz.step=1;
-  const ci=wiz.ci,catName=state.categories[ci].name;
+  const ci=wiz.ci,catName=currentCats()[ci].name;
   const entries=Object.entries(CATALOG).filter(([_,v])=>v.cat===catName);
   document.getElementById('mBody').innerHTML=`
     <div class="steps">
@@ -933,7 +959,7 @@ function wizDone(){
       return{name:displayName,length:displayLen,anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:ci2.b||''};
     });
   if(!selected.length){alert('Bitte mindestens eine Menge > 0 eingeben.');return;}
-  const ci=wiz.ci;const cat=state.categories[ci];
+  const ci=wiz.ci;const cat=currentCats()[ci];
   const sortByLen=items=>{items.sort((a,b)=>parseFloat(a.length||'0')-parseFloat(b.length||'0'));return items;};
   if(wiz.targetSi!==null){
     cat.sections[wiz.targetSi].items.push(...selected);
@@ -957,7 +983,7 @@ function wizFinish(){
 // ── CUSTOM ENTRY ───────────────────────────────────────────────────
 function openCustom(ci,si){
   const hasSec=si!==undefined;
-  const secName=hasSec?state.categories[ci].sections[si].type_name:'';
+  const secName=hasSec?currentCats()[ci].sections[si].type_name:'';
   wiz={ci,si};
   showWiz('Eigener Eintrag');
   document.getElementById('mBody').innerHTML=`
@@ -1003,7 +1029,7 @@ function saveCustom(){
   const spr=Math.max(0,parseInt(document.getElementById('cSpr').value)||0);
   const bem=document.getElementById('cBem').value.trim();
   if(!sec||!name){alert('Sektionsname und Bezeichnung sind Pflichtfelder.');return;}
-  const ci=wiz.ci;const cat=state.categories[ci];
+  const ci=wiz.ci;const cat=currentCats()[ci];
   const newItem={name,length:len,anzahl:anz,spare:spr,im_projekt:0,kapitel:'',bemerkung:bem};
   const ex=cat.sections.findIndex(s=>s.type_name===sec);
   if(ex>=0) cat.sections[ex].items.push(newItem);
@@ -1014,7 +1040,7 @@ function saveCustom(){
 function addLen(ci,si,input){
   const len=input.value.trim();
   if(!len){input.focus();return;}
-  const sec=state.categories[ci].sections[si];
+  const sec=currentCats()[ci].sections[si];
   sec.items.push({name:sec.type_name,length:len,anzahl:0,spare:0,im_projekt:0,kapitel:'',bemerkung:''});
   save();renderRows(ci,si);recalcAll();
   input.value='';input.focus();
@@ -1275,6 +1301,17 @@ function toggleSidebar(){
 const PLANS_KEY = 'materialliste-plans';
 const PLAN_PFX  = 'materialliste-plan-';
 let activePlanId = null;
+let activePosIdx = 0;
+
+function migrateState(s){
+  if(!s) return {_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+  if(s.positions) return s;
+  return {_project:s._project||'',_date:s._date||'',_activePosIdx:0,positions:[{name:'Standard',categories:s.categories||CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+}
+
+function currentCats(){
+  return state.positions[activePosIdx].categories;
+}
 
 function getPlansIndex(){ try{ const r=localStorage.getItem(PLANS_KEY); return r?JSON.parse(r):[]; }catch(e){return[];} }
 function savePlansIndex(list){ try{ localStorage.setItem(PLANS_KEY,JSON.stringify(list)); }catch(e){} }
@@ -1296,10 +1333,57 @@ function renderPlanList(){
   if(nameEl){ const active=plans.find(p=>p.id===activePlanId); nameEl.textContent=active?active.name:''; }
 }
 
+// ── POSITIONS ──────────────────────────────────────────────────────
+function renderPosBar(){
+  const el=document.getElementById('posbar'); if(!el) return;
+  el.innerHTML=
+    '<span class="posbar-label">Position //</span>'+
+    state.positions.map((p,i)=>
+      `<div class="pos-pill${i===activePosIdx?' active':''}" onclick="switchPos(${i})">
+        ${esc(p.name)}
+        <span class="pos-pill-actions">
+          <button class="pos-pill-btn ren" onclick="event.stopPropagation();renamePos(${i})" title="Umbenennen">✏</button>
+          ${state.positions.length>1?`<button class="pos-pill-btn del" onclick="event.stopPropagation();deletePos(${i})" title="Löschen">✕</button>`:''}
+        </span>
+      </div>`).join('')+
+    '<button class="pos-add" onclick="addPosition()" title="Neue Position">+</button>';
+}
+
+function switchPos(idx){
+  if(idx===activePosIdx) return;
+  activePosIdx=idx; state._activePosIdx=idx;
+  renderPosBar(); render();
+}
+
+function addPosition(){
+  const name=prompt('Name der neuen Position (z.B. Halle 25, FOH):');
+  if(!name||!name.trim()) return;
+  state.positions.push({name:name.trim(),categories:CAT_ORDER.map(n=>({name:n,sections:[]}))});
+  activePosIdx=state.positions.length-1; state._activePosIdx=activePosIdx;
+  save(); renderPosBar(); render();
+  toast('Position „'+name.trim()+'" erstellt ✓');
+}
+
+function renamePos(idx){
+  const name=prompt('Neuer Name:',state.positions[idx].name);
+  if(!name||!name.trim()) return;
+  state.positions[idx].name=name.trim();
+  save(); renderPosBar();
+}
+
+function deletePos(idx){
+  if(state.positions.length<=1){toast('Mindestens eine Position erforderlich',true);return;}
+  if(!confirm('Position „'+state.positions[idx].name+'" löschen?')) return;
+  state.positions.splice(idx,1);
+  activePosIdx=Math.min(activePosIdx,state.positions.length-1);
+  state._activePosIdx=activePosIdx;
+  save(); renderPosBar(); render();
+}
+
 function savePlanToLS(id){
   if(!id) return;
   try{
-    const data = { version:1, project: state._project, date: state._date, categories: state.categories };
+    const data = { version:2, project: state._project, date: state._date, _activePosIdx: activePosIdx, positions: state.positions };
     localStorage.setItem(PLAN_PFX+id, JSON.stringify(data));
     const plans=getPlansIndex(); const p=plans.find(x=>x.id===id);
     if(p){ p.modified=todayStr(); savePlansIndex(plans); }
@@ -1311,8 +1395,8 @@ function loadPlanFromLS(id){
   try{
     const raw = localStorage.getItem(PLAN_PFX+id); if(!raw) return false;
     const data = JSON.parse(raw);
-    state._project = data.project||''; state._date = data.date||'';
-    state.categories = data.categories;
+    state = migrateState(data);
+    activePosIdx = Math.min(state._activePosIdx||0, state.positions.length-1);
     document.getElementById('pName').value = state._project;
     document.getElementById('pDate').value  = state._date;
     recalcAll(); rerenderAllCats();
@@ -1321,8 +1405,9 @@ function loadPlanFromLS(id){
 }
 
 function rerenderAllCats(){
-  state.categories.forEach((_,ci) => rerenderCat(ci));
+  currentCats().forEach((_,ci) => rerenderCat(ci));
   renderTabs();
+  renderPosBar();
 }
 
 function switchPlan(id){
@@ -1356,10 +1441,12 @@ function renamePlan(id){
 
 function openNewPlan(){
   const name=prompt('Plan-Name (z.B. Tour 2027 – DE):'); if(!name||!name.trim()) return;
+  const posName=prompt('Erste Position (z.B. Bühne, FOH, Halle 25):'); if(!posName||!posName.trim()) return;
   savePlanToLS(activePlanId);
   const id=genPlanId();
   activePlanId=id;
-  state={_project:name.trim(),_date:'',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))};
+  activePosIdx=0;
+  state={_project:name.trim(),_date:'',_activePosIdx:0,positions:[{name:posName.trim(),categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
   document.getElementById('pName').value=state._project;
   document.getElementById('pDate').value='';
   const plans=getPlansIndex();
@@ -1379,7 +1466,7 @@ async function saveProjectJSON(){
   savePlanToLS(activePlanId);
   renderPlanList();
   // Export as JSON file
-  const data = { version:1, project:state._project, date:state._date, categories:state.categories, logos };
+  const data = { version:2, project:state._project, date:state._date, positions:state.positions, logos };
   const safeName=(state._project||'materialliste').replace(/[^a-zA-Z0-9äöüÄÖÜß\-_ ]/g,'_');
   const json = JSON.stringify(data, null, 2);
   if(window.showSaveFilePicker){
@@ -1401,10 +1488,11 @@ function importProjectJSON(input){
   r.onload=e=>{
     try{
       const data=JSON.parse(e.target.result);
-      if(!data.categories) throw new Error('Kein gültiges Materialliste-Format');
+      if(!data.categories && !data.positions) throw new Error('Kein gültiges Materialliste-Format');
       savePlanToLS(activePlanId);
       const id=genPlanId(); activePlanId=id;
-      state={_project:data.project||file.name.replace(/\.json$/i,''), _date:data.date||'', categories:data.categories};
+      state=migrateState({...data, _project:data.project||file.name.replace(/\.json$/i,''), _date:data.date||''});
+      activePosIdx=0; state._activePosIdx=0;
       if(data.logos){ logos.planer=data.logos.planer||''; logos.band=data.logos.band||''; logos.booking=data.logos.booking||''; applyAllLogos(); saveLogosGlobal(); }
       document.getElementById('pName').value=state._project;
       document.getElementById('pDate').value=state._date;
@@ -1423,7 +1511,7 @@ function importProjectJSON(input){
 // ══════════════════════════════════════════════════
 function openPDFExport(){
   const cats = document.getElementById('pdfCatCbs');
-  cats.innerHTML = state.categories.map((cat,ci) =>
+  cats.innerHTML = currentCats().map((cat,ci) =>
     `<label class="pdf-cb-row"><input type="checkbox" class="pdfcatcb" data-ci="${ci}" checked> ${cat.name} (${cat.sections.reduce((a,s)=>a+s.items.length,0)} Einträge)</label>`
   ).join('');
   document.getElementById('pdfModal').classList.add('open');
@@ -1438,12 +1526,13 @@ function generatePDF(){
   const lbPlaner  = logos.planer  ? `<img src="${logos.planer}"  style="max-height:52px;max-width:160px;object-fit:contain;object-position:left center;">` : '';
   const lbBooking = logos.booking ? `<img src="${logos.booking}" style="max-height:52px;max-width:160px;object-fit:contain;object-position:right center;">` : '';
   const lbBand    = logos.band    ? `<img src="${logos.band}"    style="max-height:48px;max-width:140px;object-fit:contain;">` : '';
-  const projectName = state._project || 'Materialliste Licht';
+  const posName = state.positions[activePosIdx].name;
+  const projectName = (state._project || 'Materialliste Licht') + (posName && posName!=='Standard' ? ' · '+posName : '');
   const projectDate = state._date || new Date().toLocaleDateString('de-DE');
 
   let tableRows = '';
   selCats.forEach(ci => {
-    const cat = state.categories[ci];
+    const cat = currentCats()[ci];
     cat.sections.forEach(sec => {
       const items = onlyFilled
         ? sec.items.filter(i => (i.anzahl||0)+(i.spare||0)+(i.im_projekt||0) > 0)
@@ -1537,7 +1626,9 @@ initState();
       render(); renderPlanList();
     }
   } else {
-    // Create first plan
+    // Create first plan — migrate existing state if needed
+    state = migrateState(state);
+    activePosIdx = 0;
     const id = genPlanId();
     activePlanId = id;
     const planName = state._project || 'Neues Projekt';
