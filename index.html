@@ -837,14 +837,10 @@ function step2(){
           <input class="qin" type="number" min="0" value="0" id="qs-${i}" oninput="wizQ(${i})">
         </div>`).join('')}
       <div class="addlength-row">
-        <span class="addlength-label">+ EIGENE LÄNGE:</span>
-        <input type="text" id="customLenName" placeholder="Bezeichnung (opt.)">
-        <input type="text" id="customLenVal" placeholder="z.B. 35m">
-        <span class="qlbl">#&nbsp;Stk.:</span>
-        <input class="qin" type="number" min="0" value="0" id="customLenAnz">
-        <span class="qlbl">Spare:</span>
-        <input class="qin" type="number" min="0" value="0" id="customLenSpr">
-        <button class="addlength-btn" onclick="wizAddCustomLen()">IN KATALOG + LISTE</button>
+        <span class="addlength-label">+ NEUE LÄNGE:</span>
+        <input type="text" id="customLenVal" placeholder="z.B. 35m"
+          onkeydown="if(event.key==='Enter')wizAddCustomLen()">
+        <button class="addlength-btn" onclick="wizAddCustomLen()">HINZUFÜGEN</button>
       </div>
     </div>
     <div id="wizSum" style="display:none" class="selsum">
@@ -880,29 +876,21 @@ function wizQ(i){
 }
 
 function wizAddCustomLen(){
-  const nameInput = document.getElementById('customLenName');
-  const lenInput  = document.getElementById('customLenVal');
-  const anzInput  = document.getElementById('customLenAnz');
-  const sprInput  = document.getElementById('customLenSpr');
-  const lenVal  = lenInput.value.trim();
-  const nameVal = nameInput.value.trim();
-  const anz = Math.max(0, parseInt(anzInput.value)||0);
-  const spr = Math.max(0, parseInt(sprInput.value)||0);
-  if(!lenVal && !nameVal){ alert('Bitte mindestens eine Länge oder Bezeichnung eingeben.'); return; }
-  // Add to CATALOG in memory
+  const lenInput = document.getElementById('customLenVal');
+  const lenVal   = lenInput.value.trim();
+  if(!lenVal){ lenInput.focus(); return; }
+  // Name automatically from the selected catalog type
   const catalog = CATALOG[wiz.key];
-  const newEntry = { n: nameVal || '', l: lenVal };
+  const newEntry = { n: wiz.key, l: lenVal };
   catalog.items.push(newEntry);
   const newIdx = catalog.items.length - 1;
   // Persist custom entry to localStorage (separate from project state)
   saveCatalogCustom(wiz.key, newEntry);
-  // Track in wiz.sel if qty > 0
-  if(anz + spr > 0){ wiz.sel[newIdx] = {a: anz, s: spr}; }
-  // Reset inputs
-  nameInput.value=''; lenInput.value=''; anzInput.value=0; sprInput.value=0;
+  // Mark as selected with qty 0 so it appears highlighted after re-render
+  wiz.sel[newIdx] = {a: 0, s: 0};
   // Re-render step2 to show new entry in the list
   step2();
-  toast('✓ "' + (nameVal||lenVal) + '" dauerhaft im Katalog gespeichert');
+  toast('✓ "' + lenVal + '" zum Katalog hinzugefügt');
 }
 
 function saveCatalogCustom(key, entry){
