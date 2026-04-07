@@ -639,8 +639,7 @@ function rerenderCatInto(ci,panel){
     cat.sections.forEach((_,si)=>panel.appendChild(buildSecEl(ci,si)));
   }
   const ar=document.createElement('div');ar.className='add-row';
-  ar.innerHTML=`<button class="btn btn-green" onclick="openWiz(${ci})">+ AUS KATALOG</button>
-    <button class="btn btn-sm" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>`;
+  ar.innerHTML=`<button class="btn btn-green" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>`;
   panel.appendChild(ar);
 }
 
@@ -673,10 +672,7 @@ function buildSecEl(ci,si){
         <th>Kapitel</th><th>Bemerkung</th><th></th>
       </tr></thead><tbody id="tbody-${ci}-${si}"></tbody></table>
       <div class="addlength-row">
-        <span class="addlength-label">+ NEUE LÄNGE:</span>
-        <input type="text" id="newlen-${ci}-${si}" placeholder="z.B. 20m"
-          onkeydown="if(event.key==='Enter')addLen(${ci},${si},this)">
-        <button class="addlength-btn" onclick="addLen(${ci},${si},document.getElementById('newlen-${ci}-${si}'))">HINZUFÜGEN</button>
+        <button class="btn btn-sm" onclick="openWiz(${ci})">+ NEUE LÄNGE / MATERIAL</button>
       </div>
     </div>`;
   // Fill tbody directly — element not yet in DOM so querySelector on block itself
