@@ -258,7 +258,7 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.0</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.1</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -1885,30 +1885,63 @@ function generatePDF(){
   const projectName = (state._project || 'Material Planer') + (posName && posName!=='Standard' ? ' · '+posName : '');
   const projectDate = state._date || new Date().toLocaleDateString('de-DE');
 
-  let tableRows = '';
+  // Oberkategorien aus dem aktiven Katalog laden
+  const pdfCatTypes = getActiveCatalogTypes();
+  const pdfGroups   = getActiveCatalog().groups || [];
+  const pdfGroupMap = {}; // id → name
+  pdfGroups.forEach(g => { pdfGroupMap[g.id] = g.name; });
+  const cols = showDiff ? 7 : 6;
+
+  // Jede Sektion bekommt ein eigenes <tbody> mit page-break-inside:avoid
+  // Oberkategorie-Header kommen als einzelnes <tbody> davor
+  let tableBodies = '';
+
   selCats.forEach(ci => {
     const cat = currentCats()[ci];
+
+    // Sektionen nach Obergruppe sortieren
+    const grouped = {}; // groupId | '__none' → [{sec, items}]
+    pdfGroups.forEach(g => { grouped[g.id] = []; });
+    grouped['__none'] = [];
+
     cat.sections.forEach(sec => {
       const items = onlyFilled
         ? sec.items.filter(i => (i.anzahl||0)+(i.spare||0)+(i.im_projekt||0) > 0)
         : sec.items;
       if(!items.length) return;
-      // Section header row
-      tableRows += `<tr class="sec-hdr"><td colspan="${showDiff?7:6}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
-      items.forEach(item => {
-        const d = (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0);
-        const t = (item.anzahl||0)+(item.spare||0);
-        const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
-        const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
-        tableRows += `<tr${hasData?' class="filled"':''}>
-          <td class="ntd">${item.name||''}</td>
-          <td class="ltd">${item.length||''}</td>
-          <td class="ntd2">${item.anzahl||0}</td>
-          <td class="ntd2">${item.spare||0}</td>
-          <td class="ntd2">${item.im_projekt||0}</td>
-          ${showDiff?`<td class="ntd2" style="color:${diffColor};font-weight:700;">${hasData?(d>=0?'+'+d:d):'—'}</td>`:''}
-          <td class="ktd">${item.kapitel||''}</td>
-        </tr>`;
+      const gid = pdfCatTypes[sec.type_name]?.group || '__none';
+      (grouped[gid] || grouped['__none']).push({sec, items});
+    });
+
+    const groupOrder = [...pdfGroups.map(g=>({id:g.id,name:g.name})), {id:'__none',name:null}];
+
+    groupOrder.forEach(({id:gid, name:gname}) => {
+      const secs = grouped[gid] || [];
+      if(!secs.length) return;
+
+      // Oberkategorie-Header (falls benannte Gruppe)
+      if(gname){
+        tableBodies += `<tbody><tr class="grp-hdr"><td colspan="${cols}">${gname}</td></tr></tbody>`;
+      }
+
+      // Jede Sektion in eigenem tbody — page-break-inside:avoid verhindert Trennung
+      secs.forEach(({sec, items}) => {
+        let rows = `<tr class="sec-hdr"><td colspan="${cols}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
+        items.forEach(item => {
+          const d = (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0);
+          const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
+          const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
+          rows += `<tr${hasData?' class="filled"':''}>
+            <td class="ntd">${item.name||''}</td>
+            <td class="ltd">${item.length||''}</td>
+            <td class="ntd2">${item.anzahl||0}</td>
+            <td class="ntd2">${item.spare||0}</td>
+            <td class="ntd2">${item.im_projekt||0}</td>
+            ${showDiff?`<td class="ntd2" style="color:${diffColor};font-weight:700;">${hasData?(d>=0?'+'+d:d):'—'}</td>`:''}
+            <td class="ktd">${item.kapitel||''}</td>
+          </tr>`;
+        });
+        tableBodies += `<tbody class="sec-group">${rows}</tbody>`;
       });
     });
   });
@@ -1929,7 +1962,9 @@ body{font-family:'IBM Plex Mono',monospace;font-size:8.5pt;color:#111;padding:14
 table{width:100%;border-collapse:collapse;margin-top:2px;}
 thead th{background:#0d0f14;color:#e8c84a;padding:5px 7px;text-align:left;font-size:7pt;text-transform:uppercase;letter-spacing:.08em;border:1px solid #2a3050;}
 thead th:nth-child(n+3){text-align:center;}
-.sec-hdr td{background:#1c2030;color:#e8c84a;font-family:'Bebas Neue',sans-serif;font-size:10pt;letter-spacing:2px;padding:5px 8px;border-top:2px solid #e8c84a;border-bottom:1px solid #2a3050;}
+.grp-hdr td{background:#e8c84a;color:#0d0f14;font-family:'Bebas Neue',sans-serif;font-size:11pt;letter-spacing:3px;padding:5px 10px;border-top:2px solid #c9a800;}
+.sec-hdr td{background:#1c2030;color:#e8c84a;font-family:'Bebas Neue',sans-serif;font-size:10pt;letter-spacing:2px;padding:5px 8px;border-top:1px solid #2a3050;border-bottom:1px solid #2a3050;}
+tbody.sec-group{page-break-inside:avoid;}
 tbody tr{border-bottom:1px solid #e8e8e8;}
 tbody tr.filled{background:#f8fdf9;}
 .ntd{padding:4px 7px;font-size:8pt;}
@@ -1941,12 +1976,12 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.0</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.1</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
   <thead><tr><th>Bezeichnung</th><th>Länge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>
-  <tbody>${tableRows}</tbody>
+  ${tableBodies}
 </table>
 <div class="np"><strong>Cmd+P</strong> / <strong>Strg+P</strong> → "Als PDF speichern" → Querformat empfohlen</div>
 <script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script>
