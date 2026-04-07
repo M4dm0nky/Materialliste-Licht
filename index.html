@@ -636,6 +636,7 @@ function buildSecEl(ci,si){
       <div class="sechdr-col">Kapitel</div>
       <div class="sechdr-actions">
         <button class="btn btn-sm btn-green" title="Aus Katalog hinzufügen" onclick="openWizToSec(${ci},${si})">+</button>
+        <button class="btn btn-sm" title="Eigenen Eintrag hinzufügen" onclick="openCustom(${ci},${si})">✎</button>
         <button class="btn btn-sm btn-red" title="Sektion löschen" onclick="delSec(${ci},${si})">✕</button>
       </div>
     </div>
@@ -942,17 +943,21 @@ function wizDone(){
 }
 
 // ── CUSTOM ENTRY ───────────────────────────────────────────────────
-function openCustom(ci){
-  wiz={ci};
+function openCustom(ci,si){
+  const hasSec=si!==undefined;
+  const secName=hasSec?state.categories[ci].sections[si].type_name:'';
+  wiz={ci,si};
   showWiz('Eigener Eintrag');
   document.getElementById('mBody').innerHTML=`
     <div class="formrow">
       <div class="formlbl">SEKTIONSNAME (Typ / Kabeltyp)</div>
-      <input class="sec-name-input" id="cSec" placeholder="z.B. MEIN KABELTYP">
+      <input class="sec-name-input" id="cSec" placeholder="z.B. MEIN KABELTYP"
+        value="${esc(secName)}"${hasSec?' readonly style="opacity:0.5;cursor:not-allowed"':''}>
     </div>
     <div class="formrow">
       <div class="formlbl">BEZEICHNUNG *</div>
-      <input class="selin" id="cName" placeholder="Bezeichnung des Eintrags" style="margin:0">
+      <input class="selin" id="cName" placeholder="Bezeichnung des Eintrags"
+        value="${esc(secName)}" style="margin:0">
     </div>
     <div class="formrow">
       <div class="formlbl">LÄNGE / TYP</div>
@@ -975,6 +980,7 @@ function openCustom(ci){
   document.getElementById('mFooter').innerHTML=`
     <button class="btn" onclick="closeWiz()">Abbrechen</button>
     <button class="btn btn-accent" onclick="saveCustom()">HINZUFÜGEN</button>`;
+  if(hasSec) document.getElementById('cLen').focus();
 }
 
 function saveCustom(){
