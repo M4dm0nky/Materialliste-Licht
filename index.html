@@ -262,7 +262,7 @@ tbody tr.row-dragging{opacity:.35;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.4</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.5</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -1233,6 +1233,7 @@ function _renderCatMgrTab1(){
               ? '<span style="color:var(--green);font-family:\'Share Tech Mono\',monospace;font-size:11px;letter-spacing:1px">✓ AKTIV</span>'
               : `<button class="btn btn-sm btn-green" onclick="catMgrAssign('${c.id}')">VERWENDEN</button>`}
             <button class="btn btn-sm" onclick="catMgrEdit('${c.id}')">BEARBEITEN</button>
+            <button class="btn btn-sm" onclick="catEditorExport('${c.id}')">↓ EXPORTIEREN</button>
             ${!c.isBuiltin?`<button class="btn btn-sm" onclick="catMgrRename('${c.id}')">UMBENENNEN</button>
             <button class="btn btn-sm btn-red" onclick="catMgrDelete('${c.id}')">LÖSCHEN</button>`:''}
           </div>
@@ -1996,7 +1997,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.4</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.5</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>

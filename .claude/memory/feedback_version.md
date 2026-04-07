@@ -8,7 +8,7 @@ Nach jeder Änderung die Versionsnummer erhöhen — beide Stellen in `index.htm
 - Header `<h1>` — suche nach `◆ v` (aktuell Z.244)
 - PDF-Export String — zweite Fundstelle von `◆ v` (aktuell Z.1765)
 
-Aktuelle Version: **v0.7.4**
+Aktuelle Version: **v0.7.5**
 
 Versionsschema:
 - Patches / kleine Fixes: x.x.Y (0.6.0 → 0.6.1)
