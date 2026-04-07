@@ -218,7 +218,7 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.5</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.6</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -626,7 +626,7 @@ function rerenderCat(ci){
 
 function rerenderCatInto(ci,panel){
   const cat=currentCats()[ci];
-  cat.sections.forEach(sec=>sec.items.sort((a,b)=>parseFloat(a.length||'0')-parseFloat(b.length||'0')));
+  cat.sections.forEach(sec=>sec.items.sort((a,b)=>parseFloat((a.length||'0').replace(',','.'))-parseFloat((b.length||'0').replace(',','.'))));
   // sumbar removed
   if(cat.sections.length===0){
     const es=document.createElement('div');es.className='empty-state';
@@ -640,7 +640,7 @@ function rerenderCatInto(ci,panel){
   }
   const ar=document.createElement('div');ar.className='add-row';
   ar.innerHTML=`<button class="btn btn-green" onclick="openWiz(${ci})">+ AUS KATALOG</button>
-    <button class="btn btn-sm" onclick="openCustom(${ci})">+ EIGENER EINTRAG</button>`;
+    <button class="btn btn-sm" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>`;
   panel.appendChild(ar);
 }
 
@@ -960,7 +960,7 @@ function wizDone(){
     });
   if(!selected.length){alert('Bitte mindestens eine Menge > 0 eingeben.');return;}
   const ci=wiz.ci;const cat=currentCats()[ci];
-  const sortByLen=items=>{items.sort((a,b)=>parseFloat(a.length||'0')-parseFloat(b.length||'0'));return items;};
+  const sortByLen=items=>{items.sort((a,b)=>parseFloat((a.length||'0').replace(',','.'))-parseFloat((b.length||'0').replace(',','.')));return items;};
   if(wiz.targetSi!==null){
     cat.sections[wiz.targetSi].items.push(...selected);
     sortByLen(cat.sections[wiz.targetSi].items);
@@ -1586,7 +1586,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.6</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
