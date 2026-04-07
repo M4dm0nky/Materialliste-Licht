@@ -602,6 +602,7 @@ function rerenderCat(ci){
 
 function rerenderCatInto(ci,panel){
   const cat=state.categories[ci];
+  cat.sections.forEach(sec=>sec.items.sort((a,b)=>parseFloat(a.length||'0')-parseFloat(b.length||'0')));
   // sumbar removed
   if(cat.sections.length===0){
     const es=document.createElement('div');es.className='empty-state';
@@ -933,12 +934,14 @@ function wizDone(){
     });
   if(!selected.length){alert('Bitte mindestens eine Menge > 0 eingeben.');return;}
   const ci=wiz.ci;const cat=state.categories[ci];
+  const sortByLen=items=>{items.sort((a,b)=>parseFloat(a.length||'0')-parseFloat(b.length||'0'));return items;};
   if(wiz.targetSi!==null){
     cat.sections[wiz.targetSi].items.push(...selected);
+    sortByLen(cat.sections[wiz.targetSi].items);
   } else {
     const ex=cat.sections.findIndex(s=>s.type_name===wiz.key);
-    if(ex>=0) cat.sections[ex].items.push(...selected);
-    else cat.sections.push({type_name:wiz.key,items:selected});
+    if(ex>=0){ cat.sections[ex].items.push(...selected); sortByLen(cat.sections[ex].items); }
+    else cat.sections.push({type_name:wiz.key,items:sortByLen(selected)});
   }
   save();rerenderCat(ci);recalcAll();
   // Stay open — reset selection and re-render step2 for next additions
