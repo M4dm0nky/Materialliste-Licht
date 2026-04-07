@@ -838,8 +838,8 @@ function step2(){
         </div>`).join('')}
       <div class="addlength-row">
         <span class="addlength-label">+ NEUE LÄNGE:</span>
-        <input type="text" id="customLenVal" placeholder="z.B. 35m"
-          onkeydown="if(event.key==='Enter')wizAddCustomLen()">
+        <input type="number" id="customLenVal" placeholder="z.B. 35" min="0.1" step="0.5"
+          onkeydown="if(event.key==='Enter')wizAddCustomLen()" style="width:90px">
         <button class="addlength-btn" onclick="wizAddCustomLen()">HINZUFÜGEN</button>
       </div>
     </div>
@@ -878,16 +878,23 @@ function wizQ(i){
 
 function wizAddCustomLen(){
   const lenInput = document.getElementById('customLenVal');
-  const lenVal   = lenInput.value.trim();
-  if(!lenVal){ lenInput.focus(); return; }
+  const numVal   = parseFloat(lenInput.value);
+  if(!numVal || numVal <= 0){ lenInput.focus(); return; }
+  const lenVal   = numVal + 'm';
   // Name automatically from the selected catalog type
   const catalog = CATALOG[wiz.key];
   const newEntry = { n: wiz.key, l: lenVal };
   catalog.items.push(newEntry);
-  const newIdx = catalog.items.length - 1;
+  // Sort items by numeric length value
+  catalog.items.sort((a,b)=>{
+    const na=parseFloat((a.l||a.n||'0'));
+    const nb=parseFloat((b.l||b.n||'0'));
+    return na-nb;
+  });
+  const newIdx = catalog.items.findIndex(it=>it===newEntry);
   // Persist custom entry to localStorage (separate from project state)
   saveCatalogCustom(wiz.key, newEntry);
-  // Mark as selected with qty 0 so it appears highlighted after re-render
+  // Mark as selected with qty 0
   wiz.sel[newIdx] = {a: 0, s: 0};
   // Re-render step2 to show new entry in the list
   step2();
