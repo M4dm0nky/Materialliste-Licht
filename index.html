@@ -636,7 +636,6 @@ function buildSecEl(ci,si){
       <div class="sechdr-col">Kapitel</div>
       <div class="sechdr-actions">
         <button class="btn btn-sm btn-green" title="Aus Katalog hinzufügen" onclick="openWizToSec(${ci},${si})">+</button>
-        <button class="btn btn-sm" title="Eigenen Eintrag hinzufügen" onclick="openCustom(${ci},${si})">✎</button>
         <button class="btn btn-sm btn-red" title="Sektion löschen" onclick="delSec(${ci},${si})">✕</button>
       </div>
     </div>
@@ -648,6 +647,12 @@ function buildSecEl(ci,si){
         <th class="num">Im Projekt</th>
         <th>Kapitel</th><th>Bemerkung</th><th></th>
       </tr></thead><tbody id="tbody-${ci}-${si}"></tbody></table>
+      <div class="addlength-row">
+        <span class="addlength-label">+ NEUE LÄNGE:</span>
+        <input type="text" id="newlen-${ci}-${si}" placeholder="z.B. 20m"
+          onkeydown="if(event.key==='Enter')addLen(${ci},${si},this)">
+        <button class="addlength-btn" onclick="addLen(${ci},${si},document.getElementById('newlen-${ci}-${si}'))">HINZUFÜGEN</button>
+      </div>
     </div>`;
   // Fill tbody directly — element not yet in DOM so querySelector on block itself
   const tbody = block.querySelector(`#tbody-${ci}-${si}`);
@@ -997,6 +1002,15 @@ function saveCustom(){
   if(ex>=0) cat.sections[ex].items.push(newItem);
   else cat.sections.push({type_name:sec,items:[newItem]});
   save();closeWiz();rerenderCat(ci);recalcAll();
+}
+
+function addLen(ci,si,input){
+  const len=input.value.trim();
+  if(!len){input.focus();return;}
+  const sec=state.categories[ci].sections[si];
+  sec.items.push({name:sec.type_name,length:len,anzahl:0,spare:0,im_projekt:0,kapitel:'',bemerkung:''});
+  save();renderRows(ci,si);recalcAll();
+  input.value='';input.focus();
 }
 
 // ── CATALOG MANAGER ────────────────────────────────────────────────
