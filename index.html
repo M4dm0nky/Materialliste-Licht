@@ -262,7 +262,7 @@ tbody tr.row-dragging{opacity:.35;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.8.1</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.8.2</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -847,9 +847,6 @@ function dropOnSec(tci,tsi,e){
   const cats=currentCats();
   const srcTypeName=cats[sci].sections[ssi].type_name;
   const item=cats[sci].sections[ssi].items.splice(sii,1)[0];
-  // Bezeichnung anpassen wenn sie dem Quell-Sektionsnamen entspricht
-  if(!item.name || item.name===srcTypeName)
-    item.name=cats[tci].sections[tsi].type_name;
   cats[tci].sections[tsi].items.push(item);
   save();
   renderRows(sci,ssi);
@@ -1172,8 +1169,8 @@ function wizDone(){
     .map(([i,v])=>{
       const ci2=catalog.items[+i];
       // For sub-rows (name=""), use length as the display name
-      const displayName = wiz.key;
-      const displayLen  = ci2.l || (ci2.n !== wiz.key ? ci2.n : '') || '';
+      const displayName = ci2.n || ci2.l || '';
+      const displayLen  = ci2.n ? (ci2.l||'') : '';
       return{name:displayName,length:displayLen,anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:ci2.b||''};
     });
   if(!selected.length){alert('Bitte mindestens eine Menge > 0 eingeben.');return;}
@@ -1817,8 +1814,21 @@ let activePosIdx = 0;
 
 function migrateState(s){
   if(!s) return {_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
-  if(s.positions) return s;
-  return {_project:s._project||'',_date:s._date||'',_activePosIdx:0,positions:[{name:'Standard',categories:s.categories||CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+  const st = s.positions ? s : {_project:s._project||'',_date:s._date||'',_activePosIdx:0,positions:[{name:'Standard',categories:s.categories||CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+  // Migration: Bezeichnung/Länge-Tausch rückgängig machen (Fehler commit 4df44e7)
+  st.positions.forEach(pos=>{
+    pos.categories.forEach(cat=>{
+      cat.sections.forEach(sec=>{
+        sec.items.forEach(item=>{
+          if(item.name===sec.type_name){
+            item.name=item.length||'';
+            item.length='';
+          }
+        });
+      });
+    });
+  });
+  return st;
 }
 
 function currentCats(){
@@ -2148,7 +2158,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.8.1</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.8.2</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
