@@ -79,6 +79,10 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
 .tdlen input[type=text]:focus{border-color:var(--accent2);}
 .delbtn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:17px;padding:2px 6px;border-radius:2px;transition:all .15s;line-height:1;}
 .delbtn:hover{background:rgba(232,74,74,.15);color:var(--red);}
+.td-actions{text-align:center;width:32px;}
+tbody tr[draggable]{cursor:grab;}
+tbody tr.row-dragging{opacity:.35;}
+.sechdr.drop-target{background:rgba(232,200,74,.18);outline:2px dashed var(--gold);}
 /* Catalog Manager */
 .cat-mgr-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);}
 .cat-mgr-tab{padding:9px 18px;font-size:10px;letter-spacing:2px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
@@ -258,7 +262,7 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.2</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.4</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -589,7 +593,7 @@ const STORAGE_KEY='materialliste-licht-v1';
 const CATALOG_KEY='materialliste-licht-catalog-v1';
 const CATALOGS_KEY='materialliste-licht-catalogs-v1';
 let catalogsStore=null,activeCatalogId=null;
-let state=null,saveTimer=null,wiz={};
+let state=null,saveTimer=null,wiz={},dragSrc=null;
 
 // ── CATALOG STORE ──────────────────────────────────────────────────
 function genCatalogId(){ return 'cat-'+Date.now().toString(36); }
@@ -743,7 +747,10 @@ function buildSecEl(ci,si){
   const block=document.createElement('div');
   block.className='secblock';block.id=`sec-${ci}-${si}`;
   block.innerHTML=`
-    <div class="sechdr" id="sechdr-${ci}-${si}">
+    <div class="sechdr" id="sechdr-${ci}-${si}"
+      ondragover="event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('drop-target')"
+      ondragleave="this.classList.remove('drop-target')"
+      ondrop="dropOnSec(${ci},${si},event)">
       <div class="sechdr-title" onclick="toggleSec(${ci},${si})">
         <span class="chevron">▼</span>${esc(sec.type_name)}
       </div>
@@ -798,6 +805,17 @@ function buildRow(ci,si,ii){
   const impVal = item.im_projekt||0;
   const kapVal = esc(item.kapitel||'');
   const bemVal = esc(item.bemerkung||'');
+  tr.draggable=true;
+  tr.addEventListener('dragstart',e=>{
+    dragSrc={ci,si,ii};
+    tr.classList.add('row-dragging');
+    e.dataTransfer.effectAllowed='move';
+    e.dataTransfer.setData('text/plain',`${ci}-${si}-${ii}`);
+  });
+  tr.addEventListener('dragend',()=>{
+    tr.classList.remove('row-dragging');
+    document.querySelectorAll('.sechdr.drop-target').forEach(el=>el.classList.remove('drop-target'));
+  });
   tr.innerHTML=`
     <td class="tdname"><input type="text" value="${nameVal}" placeholder="${namePlaceholder}"
       onchange="upf(${ci},${si},${ii},'name',this.value)" oninput="save()"></td>
@@ -815,8 +833,28 @@ function buildRow(ci,si,ii){
       onchange="upf(${ci},${si},${ii},'kapitel',this.value)" oninput="save()"></td>
     <td class="tdtext"><input type="text" value="${bemVal}" placeholder="Notiz…"
       onchange="upf(${ci},${si},${ii},'bemerkung',this.value)" oninput="save()"></td>
-    <td style="text-align:center;width:32px"><button class="delbtn" onclick="delRow(${ci},${si},${ii})" title="Zeile löschen">✕</button></td>`;
+    <td class="td-actions"><button class="delbtn" onclick="delRow(${ci},${si},${ii})" title="Zeile löschen">✕</button></td>`;
   return tr;
+}
+
+function dropOnSec(tci,tsi,e){
+  e.preventDefault();
+  document.querySelectorAll('.sechdr.drop-target').forEach(el=>el.classList.remove('drop-target'));
+  if(!dragSrc) return;
+  const {ci:sci,si:ssi,ii:sii}=dragSrc;
+  dragSrc=null;
+  if(sci===tci && ssi===tsi) return; // gleiche Section — kein Move
+  const cats=currentCats();
+  const srcTypeName=cats[sci].sections[ssi].type_name;
+  const item=cats[sci].sections[ssi].items.splice(sii,1)[0];
+  // Bezeichnung anpassen wenn sie dem Quell-Sektionsnamen entspricht
+  if(!item.name || item.name===srcTypeName)
+    item.name=cats[tci].sections[tsi].type_name;
+  cats[tci].sections[tsi].items.push(item);
+  save();
+  renderRows(sci,ssi);
+  renderRows(tci,tsi);
+  toast(`→ verschoben nach „${cats[tci].sections[tsi].type_name}"`);
 }
 
 // ── UPDATE ─────────────────────────────────────────────────────────
@@ -1511,36 +1549,6 @@ function catEditorDeleteType(catalogId,typeKey){
   delete cat.types[typeKey]; saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Typ gelöscht');
 }
 
-function catEditorEditItem(catalogId,typeKey,idx){
-  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  const items=cat.types[typeKey]?.items; if(!items||!items[idx]) return;
-  const current=items[idx].l||items[idx].n||'';
-  const val=prompt('Eintrag bearbeiten:',current); if(val===null||!val.trim()) return;
-  const lVal=val.trim().match(/^\d+([.,]\d+)?$/) ? val.trim()+'m' : val.trim();
-  items[idx]={n:typeKey,l:lVal};
-  items.sort((a,b)=>parseFloat((a.l||a.n||'0').replace(',','.'))-parseFloat((b.l||b.n||'0').replace(',','.')));
-  saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Eintrag aktualisiert');
-}
-
-function catEditorAddItem(catalogId,typeKey){
-  const inputId='newitem-'+catalogId+'-'+typeKey.replace(/[^a-zA-Z0-9]/g,'_');
-  const input=document.getElementById(inputId); if(!input) return;
-  const val=input.value.trim(); if(!val) return;
-  const lVal=val.match(/\d/)&&!val.match(/[a-zA-Z]/) ? val+'m' : val;
-  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  if(!cat.types[typeKey]) return;
-  cat.types[typeKey].items.push({n:typeKey,l:lVal});
-  cat.types[typeKey].items.sort((a,b)=>parseFloat((a.l||a.n||'0').replace(',','.'))-parseFloat((b.l||b.n||'0').replace(',','.')));
-  saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ „'+lVal+'" hinzugefügt');
-}
-
-function catEditorDeleteItem(catalogId,typeKey,idx){
-  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  if(!cat.types[typeKey]) return;
-  cat.types[typeKey].items.splice(idx,1);
-  saveCatalogsStore(); _renderCatMgrTab2();
-}
-
 function downloadJSON(data, filename){
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a=document.createElement('a');
@@ -1952,7 +1960,7 @@ function generatePDF(){
     if(!pos) return;
     const pageBreak = idx > 0 ? 'style="page-break-before:always"' : '';
     // Positions-Header als eigener tbody
-    tableBodies += `<tbody ${pageBreak}><tr class="pos-hdr"><td colspan="${cols}">${pos.name}</td></tr></tbody>`;
+    tableBodies += `<tbody ${pageBreak}><tr class="pos-hdr"><td colspan="${cols}"><span>${esc(pos.name)}</span></td></tr></tbody>`;
     tableBodies += renderPosSections(pos);
   });
 
@@ -1974,7 +1982,8 @@ thead th{background:#0d0f14;color:#e8c84a;padding:5px 7px;text-align:left;font-s
 thead th:nth-child(n+3){text-align:center;}
 .grp-hdr td{background:#e8c84a;color:#0d0f14;font-family:'Bebas Neue',sans-serif;font-size:11pt;letter-spacing:3px;padding:5px 10px;border-top:2px solid #c9a800;}
 .sec-hdr td{background:#1c2030;color:#e8c84a;font-family:'Bebas Neue',sans-serif;font-size:10pt;letter-spacing:2px;padding:5px 8px;border-top:1px solid #2a3050;border-bottom:1px solid #2a3050;}
-.pos-hdr td{background:#0d0f14;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:14pt;letter-spacing:4px;padding:8px 10px;border-top:3px solid #e8c84a;}
+.pos-hdr td{background:#000;color:#000;font-family:'Bebas Neue',sans-serif;font-size:18pt;letter-spacing:5px;padding:14px 10px;text-align:center;border:3px solid #000;box-shadow:inset 0 0 0 4px #e8c84a;}
+.pos-hdr td span{background:#e8c84a;color:#000;padding:6px 28px;display:inline-block;}
 tbody.sec-group{page-break-inside:avoid;}
 tbody tr{border-bottom:1px solid #e8e8e8;}
 tbody tr.filled{background:#f8fdf9;}
@@ -1987,7 +1996,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.2</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.4</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
