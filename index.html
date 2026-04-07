@@ -79,6 +79,28 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
 .tdlen input[type=text]:focus{border-color:var(--accent2);}
 .delbtn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:17px;padding:2px 6px;border-radius:2px;transition:all .15s;line-height:1;}
 .delbtn:hover{background:rgba(232,74,74,.15);color:var(--red);}
+/* Catalog Manager */
+.cat-mgr-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);}
+.cat-mgr-tab{padding:9px 18px;font-size:10px;letter-spacing:2px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
+.cat-mgr-tab:hover{color:var(--text);}
+.cat-mgr-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.catalog-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border:1px solid var(--border);background:var(--bg2);flex-wrap:wrap;}
+.catalog-row.active-cat{border-color:var(--green);background:rgba(74,232,160,.05);}
+.catalog-row-info{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.catalog-row-name{font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;}
+.catalog-row-tag{font-size:10px;letter-spacing:1px;color:var(--muted);background:var(--bg3);padding:2px 6px;border-radius:2px;}
+.catalog-row-meta{font-size:11px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
+.catalog-row-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.type-block{border:1px solid var(--border);margin-bottom:6px;background:var(--bg2);}
+.type-block-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg3);gap:10px;}
+.type-block-name{font-weight:700;font-size:12px;color:var(--text);letter-spacing:.5px;}
+.type-items{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;}
+.item-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--bg3);border:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text2);}
+.item-chip button{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0;line-height:1;transition:color .15s;}
+.item-chip button:hover{color:var(--red);}
+.item-chip-add{border-style:dashed;color:var(--muted);background:transparent;}
+.btn-red{background:rgba(232,74,74,.15);color:var(--red);border-color:rgba(232,74,74,.3);}
+.btn-red:hover{background:rgba(232,74,74,.25);}
 .sumbar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:21px;}
 .sumcard{background:var(--bg2);padding:13px 18px;}
 .sumlbl{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
@@ -218,7 +240,7 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.5.2</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.6.0</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -270,6 +292,8 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
   <input class="pinput" id="pName" placeholder="Projektname..." style="width:240px" oninput="save()">
   <span class="plabel">Datum //</span>
   <input class="pinput" id="pDate" placeholder="TT.MM.JJJJ" style="width:120px" oninput="save()">
+  <span class="plabel">Katalog //</span>
+  <span id="activeCatalogBadge" onclick="openCatalogMgr()" title="Klicken zum Verwalten" style="font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--accent2);letter-spacing:1px;cursor:pointer;border-bottom:1px dashed var(--accent2);white-space:nowrap;">Standard-Katalog</span>
 </div>
 
 <div class="posbar" id="posbar"></div>
@@ -543,21 +567,66 @@ const CATALOG = {
 const CAT_ORDER=["Kabel Liste","Zubehör Liste","Hardware Liste","Lampen Liste"];
 const STORAGE_KEY='materialliste-licht-v1';
 const CATALOG_KEY='materialliste-licht-catalog-v1';
+const CATALOGS_KEY='materialliste-licht-catalogs-v1';
+let catalogsStore=null,activeCatalogId=null;
 let state=null,saveTimer=null,wiz={};
 
-function initState(){
-  // Load custom catalog additions first
+// ── CATALOG STORE ──────────────────────────────────────────────────
+function genCatalogId(){ return 'cat-'+Date.now().toString(36); }
+function saveCatalogsStore(){ try{localStorage.setItem(CATALOGS_KEY,JSON.stringify(catalogsStore));}catch(e){} }
+function getActiveCatalog(){
+  if(!catalogsStore) return {id:'fallback',name:'Standard-Katalog',isBuiltin:true,types:CATALOG};
+  return catalogsStore.catalogs.find(c=>c.id===activeCatalogId)||catalogsStore.catalogs[0];
+}
+function getActiveCatalogTypes(){ return getActiveCatalog().types; }
+function renderActiveCatalogBadge(){
+  const el=document.getElementById('activeCatalogBadge');
+  if(el) el.textContent=getActiveCatalog().name;
+}
+function setActivePlanCatalog(planId,catalogId){
+  const plans=getPlansIndex();
+  const plan=plans.find(p=>p.id===planId);
+  if(plan){ plan.catalogId=catalogId; savePlansIndex(plans); }
+  activeCatalogId=catalogId||'cat-default';
+  renderActiveCatalogBadge();
+}
+
+function initCatalogs(){
+  try{
+    const raw=localStorage.getItem(CATALOGS_KEY);
+    if(raw){
+      catalogsStore=JSON.parse(raw);
+      activeCatalogId='cat-default';
+      return;
+    }
+  }catch(e){}
+  // Erster Start: Standard-Katalog aus CATALOG-Konstante + alten Custom-Entries aufbauen
+  const types={};
+  Object.entries(CATALOG).forEach(([key,val])=>{
+    types[key]={cat:val.cat,items:val.items.map(it=>({...it}))};
+  });
   try{
     const cc=localStorage.getItem(CATALOG_KEY);
     if(cc){
-      const custom=JSON.parse(cc); // {key: [{n,l}, ...], ...}
+      const custom=JSON.parse(cc);
       Object.entries(custom).forEach(([key,items])=>{
-        if(CATALOG[key]) CATALOG[key].items.push(...items);
-        // If it's a totally new catalog type saved from custom entry
-        else CATALOG[key]=items;
+        if(types[key]) types[key].items.push(...items.map(it=>({...it})));
+        else types[key]={cat:'Kabel Liste',items:items.map(it=>({...it}))};
       });
     }
   }catch(e){}
+  catalogsStore={version:1,catalogs:[{
+    id:'cat-default',
+    name:'Standard-Katalog',
+    isBuiltin:true,
+    created:new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}),
+    types
+  }]};
+  saveCatalogsStore();
+  activeCatalogId='cat-default';
+}
+
+function initState(){
   // Load project state
   try{
     const s=localStorage.getItem(STORAGE_KEY);
@@ -593,6 +662,7 @@ function render(){
   renderPosBar();renderTabs();renderContent();
   document.getElementById('pName').value=state._project||'';
   document.getElementById('pDate').value=state._date||'';
+  renderActiveCatalogBadge();
   recalcAll();
 }
 
@@ -813,7 +883,7 @@ function showWiz(title){document.getElementById('mTitle').textContent=title;docu
 function step1(){
   wiz.step=1;
   const ci=wiz.ci,catName=currentCats()[ci].name;
-  const entries=Object.entries(CATALOG).filter(([_,v])=>v.cat===catName);
+  const entries=Object.entries(getActiveCatalogTypes()).filter(([_,v])=>v.cat===catName);
   document.getElementById('mBody').innerHTML=`
     <div class="steps">
       <div class="step active">1 · TYP WÄHLEN</div>
@@ -821,13 +891,16 @@ function step1(){
       <div class="step">3 · FERTIG</div>
     </div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:12px;letter-spacing:1px">
-      KATALOG: <b style="color:var(--text)">${esc(catName)}</b> — Wähle einen Kabeltyp:
+      KATALOG: <b style="color:var(--accent2)">${esc(getActiveCatalog().name)}</b> &nbsp;·&nbsp; <b style="color:var(--text)">${esc(catName)}</b> — Wähle einen Kabeltyp:
     </div>
     <div class="catgrid">
-      ${entries.map(([k,v],i)=>`<div class="catcard" id="cc-${i}" onclick="wizPickIdx(${i})">
+      ${entries.length ? entries.map(([k,v],i)=>`<div class="catcard" id="cc-${i}" onclick="wizPickIdx(${i})">
         <div class="catcard-t">${esc(k)}</div>
         <div class="catcard-s">${v.items.length} Einträge im Katalog</div>
-      </div>`).join('')}
+      </div>`).join('') : `<div style="color:var(--muted);font-size:13px;padding:24px;grid-column:1/-1;">
+        Dieser Katalog enthält noch keine Einträge für „${esc(catName)}".
+        <br><button class="btn btn-sm" style="margin-top:12px" onclick="closeWiz();openCatalogMgr()">→ Katalog bearbeiten</button>
+      </div>`}
     </div>`;
   wiz._entries=entries;
   document.getElementById('mFooter').innerHTML=`<button class="btn" onclick="closeWiz()">Abbrechen</button>`;
@@ -839,7 +912,7 @@ function wizPickIdx(idx){
 
 function step2(){
   wiz.step=2;
-  const catalog=CATALOG[wiz.key];
+  const catalog=getActiveCatalogTypes()[wiz.key];
   document.getElementById('mBody').innerHTML=`
     <div class="steps">
       <div class="step done" onclick="step1()" style="cursor:pointer">1 · TYP ✓</div>
@@ -890,7 +963,7 @@ function wizQ(i){
   if(!sumEl||!sumItems)return;
   if(!active.length){sumEl.style.display='none';return;}
   sumEl.style.display='block';
-  const cat=CATALOG[wiz.key];
+  const cat=getActiveCatalogTypes()[wiz.key];
   sumItems.innerHTML=active.map(([idx,v])=>{
     const item=cat.items[+idx];
     const lbl=((item.n||'↳')+' '+(item.l||'')).trim();
@@ -905,18 +978,18 @@ function wizAddCustomLen(){
   if(!numVal || numVal <= 0){ lenInput.focus(); return; }
   const lenVal   = numVal + 'm';
   // Name automatically from the selected catalog type
-  const catalog = CATALOG[wiz.key];
+  const catalog = getActiveCatalogTypes()[wiz.key];
   const newEntry = { n: wiz.key, l: lenVal };
   catalog.items.push(newEntry);
   // Sort items by numeric length value
   catalog.items.sort((a,b)=>{
-    const na=parseFloat((a.l||a.n||'0'));
-    const nb=parseFloat((b.l||b.n||'0'));
+    const na=parseFloat(((a.l||a.n||'0')).replace(',','.'));
+    const nb=parseFloat(((b.l||b.n||'0')).replace(',','.'));
     return na-nb;
   });
   const newIdx = catalog.items.findIndex(it=>it===newEntry);
-  // Persist custom entry to localStorage (separate from project state)
-  saveCatalogCustom(wiz.key, newEntry);
+  // Persist to active catalog store
+  saveCatalogsStore();
   // Mark as selected with qty 0
   wiz.sel[newIdx] = {a: 0, s: 0};
   // Re-render step2 to show new entry in the list
@@ -924,16 +997,6 @@ function wizAddCustomLen(){
   toast('✓ "' + lenVal + '" zum Katalog hinzugefügt');
 }
 
-function saveCatalogCustom(key, entry){
-  try{
-    let custom={};
-    const existing=localStorage.getItem(CATALOG_KEY);
-    if(existing) custom=JSON.parse(existing);
-    if(!custom[key]) custom[key]=[];
-    custom[key].push(entry);
-    localStorage.setItem(CATALOG_KEY, JSON.stringify(custom));
-  }catch(e){ console.error('Katalog speichern fehlgeschlagen:', e); }
-}
 
 function toast(msg, isErr=false){
   const el=document.createElement('div');
@@ -944,7 +1007,7 @@ function toast(msg, isErr=false){
 }
 
 function wizDone(){
-  const catalog=CATALOG[wiz.key];
+  const catalog=getActiveCatalogTypes()[wiz.key];
   const selected=Object.entries(wiz.sel)
     .filter(([_,v])=>v.a+v.s>0)
     .map(([i,v])=>{
@@ -1043,146 +1106,232 @@ function addLen(ci,si,input){
 }
 
 // ── CATALOG MANAGER ────────────────────────────────────────────────
-function openCatalogMgr(){
-  document.getElementById('mTitle').textContent = 'Katalog verwalten';
-  const custom = getCatalogCustom();
-  const totalCustom = Object.values(custom).reduce((a,b)=>a+b.length,0);
-  document.getElementById('mBody').innerHTML=`
-    <div style="display:flex;flex-direction:column;gap:20px;">
-      <div style="background:var(--bg3);border:1px solid var(--border);padding:14px 16px;">
-        <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px">KATALOG STATUS</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text)">
-          ${Object.keys(CATALOG).length} Katalog-Typen &nbsp;·&nbsp;
-          ${Object.values(CATALOG).reduce((a,b)=>a+b.items.length,0)} Einträge gesamt &nbsp;·&nbsp;
-          <span style="color:var(--accent)">${totalCustom} eigene Ergänzungen</span>
-        </div>
-      </div>
+let _catMgrTab = 1; // 1 = Übersicht, 2 = Bearbeiten
+let _catEditorId = null; // welcher Katalog wird gerade bearbeitet
 
-      <div>
-        <div style="font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:8px">EXPORT</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-green" onclick="exportCatalogJSON()">↓ VOLLSTÄNDIGER KATALOG (JSON)</button>
-          <button class="btn" onclick="exportCustomJSON()">↓ NUR EIGENE ERGÄNZUNGEN (JSON)</button>
-        </div>
-        <div style="font-size:11px;color:var(--muted);margin-top:6px;">JSON-Datei kann direkt wieder importiert und bearbeitet werden.</div>
-      </div>
-
-      <div>
-        <div style="font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:8px">IMPORT</div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <label style="cursor:pointer;">
-            <input type="file" accept=".json" style="display:none" onchange="importCatalogJSON(this)">
-            <span class="btn btn-green" style="display:inline-block">↑ JSON IMPORTIEREN</span>
-          </label>
-          <span style="font-size:11px;color:var(--muted)">Eigene Ergänzungen-JSON oder vollständiger Katalog</span>
-        </div>
-      </div>
-
-      ${totalCustom > 0 ? `
-      <div>
-        <div style="font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:8px">EIGENE ERGÄNZUNGEN</div>
-        <div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);">
-          ${Object.entries(custom).map(([key,items])=>
-            items.map((item,i)=>`
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;border-bottom:1px solid #1a1f30;">
-                <div>
-                  <span style="font-size:12px;color:var(--text2)">${esc(key)}</span>
-                  <span style="color:var(--muted);margin:0 6px">·</span>
-                  <span style="font-size:13px;font-weight:600;color:var(--text)">${esc(item.n||item.l||'—')}</span>
-                  ${item.l&&item.n?`<span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent2);margin-left:8px">${esc(item.l)}</span>`:''}
-                </div>
-                <button class="delbtn" onclick="deleteCustomEntry('${esc(key)}',${i})" title="Löschen">✕</button>
-              </div>`).join('')
-          ).join('')}
-        </div>
-      </div>` : ''}
-
-      <div style="border-top:1px solid var(--border);padding-top:14px;">
-        <button class="btn btn-red btn-sm" onclick="if(confirm('Alle eigenen Ergänzungen löschen?')){resetCustomCatalog()}">EIGENE ERGÄNZUNGEN ZURÜCKSETZEN</button>
-      </div>
-    </div>`;
-  document.getElementById('mFooter').innerHTML=`<button class="btn btn-accent" onclick="closeWiz()">SCHLIESSEN</button>`;
+function openCatalogMgr(tab){
+  _catMgrTab = tab||1;
+  if(!_catEditorId) _catEditorId = activeCatalogId||'cat-default';
+  document.getElementById('mTitle').textContent = 'Katalog-Verwaltung';
   document.getElementById('overlay').classList.add('open');
+  _renderCatMgr();
 }
 
-function getCatalogCustom(){
-  try{const c=localStorage.getItem(CATALOG_KEY);return c?JSON.parse(c):{}}catch(e){return {};}
+function _renderCatMgr(){
+  document.getElementById('mBody').innerHTML =
+    `<div class="cat-mgr-tabs">
+       <div class="cat-mgr-tab${_catMgrTab===1?' active':''}" onclick="_catMgrSwitchTab(1)">KATALOGE VERWALTEN</div>
+       <div class="cat-mgr-tab${_catMgrTab===2?' active':''}" onclick="_catMgrSwitchTab(2)">KATALOG BEARBEITEN</div>
+     </div>
+     <div id="catMgrContent" style="margin-top:16px"></div>`;
+  if(_catMgrTab===1) _renderCatMgrTab1();
+  else _renderCatMgrTab2();
+  document.getElementById('mFooter').innerHTML=`<button class="btn btn-accent" onclick="closeWiz()">SCHLIESSEN</button>`;
 }
 
-function exportCatalogJSON(){
-  // Export full catalog including custom additions
-  const out = {};
-  Object.entries(CATALOG).forEach(([key,val])=>{
-    out[key]={cat:val.cat, items:val.items};
+function _catMgrSwitchTab(t){ _catMgrTab=t; _renderCatMgr(); }
+
+function _renderCatMgrTab1(){
+  const plans = getPlansIndex();
+  const activePlan = plans.find(p=>p.id===activePlanId);
+  const currentCatId = activePlan?.catalogId||'cat-default';
+  const cats = catalogsStore?.catalogs||[];
+  const el = document.getElementById('catMgrContent');
+  el.innerHTML = `
+    <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:10px">AKTIVER KATALOG FÜR DIESEN PLAN</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+      ${cats.map(c=>`
+        <div class="catalog-row${c.id===currentCatId?' active-cat':''}">
+          <div class="catalog-row-info">
+            <span class="catalog-row-name">${esc(c.name)}</span>
+            ${c.isBuiltin?'<span class="catalog-row-tag">Standard</span>':''}
+            <span class="catalog-row-meta">${Object.keys(c.types||{}).length} Typen · ${Object.values(c.types||{}).reduce((a,b)=>a+b.items.length,0)} Einträge</span>
+          </div>
+          <div class="catalog-row-actions">
+            ${c.id===currentCatId
+              ? '<span style="color:var(--green);font-family:\'Share Tech Mono\',monospace;font-size:11px;letter-spacing:1px">✓ AKTIV</span>'
+              : `<button class="btn btn-sm btn-green" onclick="catMgrAssign('${c.id}')">VERWENDEN</button>`}
+            <button class="btn btn-sm" onclick="catMgrEdit('${c.id}')">BEARBEITEN</button>
+            ${!c.isBuiltin?`<button class="btn btn-sm" onclick="catMgrRename('${c.id}')">UMBENENNEN</button>
+            <button class="btn btn-sm btn-red" onclick="catMgrDelete('${c.id}')">LÖSCHEN</button>`:''}
+          </div>
+        </div>`).join('')}
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:14px;">
+      <button class="btn btn-green" onclick="catMgrCreateNew()">+ NEUER KATALOG</button>
+      <label style="cursor:pointer">
+        <input type="file" accept=".json" style="display:none" onchange="catMgrImportJSON(this)">
+        <span class="btn" style="display:inline-block">↑ KATALOG IMPORTIEREN (JSON)</span>
+      </label>
+    </div>`;
+}
+
+function _renderCatMgrTab2(){
+  const cats = catalogsStore?.catalogs||[];
+  const cat = cats.find(c=>c.id===_catEditorId)||cats[0];
+  if(!cat){ document.getElementById('catMgrContent').innerHTML='<div style="color:var(--muted)">Kein Katalog gefunden.</div>'; return; }
+  const types = cat.types||{};
+  // Gruppe nach Kategorie
+  const grouped = {};
+  CAT_ORDER.forEach(cn=>{ grouped[cn]=[]; });
+  Object.entries(types).forEach(([key,val])=>{
+    const cn = val.cat||'Kabel Liste';
+    if(!grouped[cn]) grouped[cn]=[];
+    grouped[cn].push({key,val});
   });
-  downloadJSON(out, 'katalog-licht-vollstaendig.json');
-  toast('✓ Vollständiger Katalog exportiert');
+  document.getElementById('catMgrContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+      <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">KATALOG:</div>
+      <select class="pinput" onchange="catEditorSwitch(this.value)" style="width:auto;min-width:200px">
+        ${cats.map(c=>`<option value="${c.id}"${c.id===cat.id?' selected':''}>${esc(c.name)}</option>`).join('')}
+      </select>
+      <button class="btn btn-sm btn-green" onclick="catEditorExport('${cat.id}')">↓ EXPORTIEREN</button>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:10px;letter-spacing:2px;color:var(--muted)">+ NEUER TYP:</span>
+      <input class="pinput" id="newTypeName" placeholder="Typ-Name (z.B. DMX 7-Pin)" style="width:200px">
+      <select class="pinput" id="newTypeCat" style="width:auto">
+        ${CAT_ORDER.map(cn=>`<option>${cn}</option>`).join('')}
+      </select>
+      <button class="btn btn-sm btn-green" onclick="catEditorAddType('${cat.id}')">HINZUFÜGEN</button>
+    </div>
+    <div style="max-height:380px;overflow-y:auto;">
+      ${CAT_ORDER.map(cn=>{
+        const entries=grouped[cn]||[];
+        if(!entries.length) return '';
+        return `<div style="margin-bottom:12px">
+          <div style="font-size:10px;letter-spacing:2px;color:var(--accent2);margin-bottom:6px">${esc(cn)}</div>
+          ${entries.map(({key,val})=>`
+            <div class="type-block">
+              <div class="type-block-header">
+                <span class="type-block-name">${esc(key)}</span>
+                <div style="display:flex;gap:6px">
+                  ${!cat.isBuiltin?`<button class="btn btn-sm btn-red" onclick="catEditorDeleteType('${cat.id}','${esc(key).replace(/'/g,'&#39;')}')">TYP LÖSCHEN</button>`:''}
+                </div>
+              </div>
+              <div class="type-items">
+                ${val.items.map((it,idx)=>`
+                  <span class="item-chip">
+                    ${esc(it.l||it.n||'—')}
+                    <button onclick="catEditorDeleteItem('${cat.id}','${esc(key).replace(/'/g,'&#39;')}',${idx})" title="Löschen">✕</button>
+                  </span>`).join('')}
+                <span class="item-chip item-chip-add">
+                  <input type="text" id="newitem-${cat.id}-${esc(key).replace(/[^a-zA-Z0-9]/g,'_')}" placeholder="z.B. 15m" style="width:70px;background:transparent;border:none;color:var(--text);font-family:inherit;font-size:12px;outline:none"
+                    onkeydown="if(event.key==='Enter')catEditorAddItem('${cat.id}','${esc(key).replace(/'/g,'&#39;')}')">
+                  <button onclick="catEditorAddItem('${cat.id}','${esc(key).replace(/'/g,'&#39;')}')" style="background:transparent;border:none;color:var(--green);cursor:pointer;font-size:14px;padding:0 2px" title="Hinzufügen">+</button>
+                </span>
+              </div>
+            </div>`).join('')}
+        </div>`;
+      }).join('')}
+    </div>`;
 }
 
-function exportCustomJSON(){
-  const custom = getCatalogCustom();
-  if(!Object.keys(custom).length){ toast('Keine eigenen Ergänzungen vorhanden.', true); return; }
-  downloadJSON(custom, 'katalog-licht-ergaenzungen.json');
-  toast('✓ Eigene Ergänzungen exportiert');
+function catMgrAssign(catalogId){
+  setActivePlanCatalog(activePlanId, catalogId);
+  _renderCatMgrTab1();
+  toast('✓ Katalog „'+getActiveCatalog().name+'" diesem Plan zugewiesen');
 }
 
-function importCatalogJSON(input){
+function catMgrEdit(catalogId){
+  _catEditorId=catalogId; _catMgrSwitchTab(2);
+}
+
+function catMgrRename(catalogId){
+  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  const name=prompt('Neuer Katalog-Name:',cat.name); if(!name||!name.trim()) return;
+  cat.name=name.trim(); saveCatalogsStore(); _renderCatMgrTab1();
+  renderActiveCatalogBadge(); toast('✓ Umbenannt');
+}
+
+function catMgrDelete(catalogId){
+  const plans=getPlansIndex();
+  const using=plans.filter(p=>(p.catalogId||'cat-default')===catalogId);
+  if(using.length){ toast(`Katalog wird von ${using.length} Plan(en) verwendet — erst einen anderen Katalog zuweisen.`,true); return; }
+  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  if(!confirm(`Katalog „${cat.name}" wirklich löschen? Alle Einträge gehen verloren.`)) return;
+  catalogsStore.catalogs=catalogsStore.catalogs.filter(c=>c.id!==catalogId);
+  saveCatalogsStore(); _renderCatMgrTab1(); toast('Katalog gelöscht');
+}
+
+function catMgrCreateNew(){
+  const name=prompt('Name des neuen Katalogs (z.B. Firma ABC):'); if(!name||!name.trim()) return;
+  const copy=confirm('Kopie vom Standard-Katalog erstellen?\n(Nein = leerer Katalog)');
+  const stdCat=catalogsStore.catalogs.find(c=>c.id==='cat-default');
+  const types=copy&&stdCat ? JSON.parse(JSON.stringify(stdCat.types)) : {};
+  const id=genCatalogId();
+  catalogsStore.catalogs.push({id,name:name.trim(),isBuiltin:false,
+    created:new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}),types});
+  saveCatalogsStore(); _catEditorId=id; _renderCatMgrTab1();
+  toast('✓ Katalog „'+name.trim()+'" erstellt');
+}
+
+function catMgrImportJSON(input){
   const file=input.files[0]; if(!file) return;
   const reader=new FileReader();
   reader.onload=e=>{
     try{
       const data=JSON.parse(e.target.result);
-      let imported=0;
-      // Detect format: full catalog {key:{cat,items}} or custom {key:[{n,l}]}
-      Object.entries(data).forEach(([key,val])=>{
-        const items = Array.isArray(val) ? val : (val.items||[]);
-        const catName = Array.isArray(val) ? null : val.cat;
-        if(!items.length) return;
-        // Add to CATALOG in memory
-        if(CATALOG[key]){
-          // Only add entries not already present (by n+l combo)
-          items.forEach(item=>{
-            const exists=CATALOG[key].items.some(e=>e.n===item.n&&e.l===item.l);
-            if(!exists){ CATALOG[key].items.push(item); saveCatalogCustom(key,item); imported++; }
-          });
-        } else {
-          // New catalog type
-          CATALOG[key]={cat:catName||'Kabel Liste',items};
-          items.forEach(item=>saveCatalogCustom(key,item));
-          imported+=items.length;
-        }
+      // Format: {name?, types:{key:{cat,items}}} oder direkt {key:{cat,items}}
+      const rawTypes = data.types||data;
+      const catName = (data.name&&typeof data.name==='string') ? data.name : (file.name.replace(/\.json$/i,'')||'Importierter Katalog');
+      const types={};
+      Object.entries(rawTypes).forEach(([key,val])=>{
+        if(typeof val==='object'&&val.items) types[key]={cat:val.cat||'Kabel Liste',items:val.items};
       });
-      closeWiz();
-      toast(`✓ ${imported} Einträge importiert`);
-    }catch(err){
-      toast('Import fehlgeschlagen: Ungültiges JSON-Format', true);
-    }
+      if(!Object.keys(types).length){ toast('Keine gültigen Katalog-Typen gefunden.',true); return; }
+      const id=genCatalogId();
+      catalogsStore.catalogs.push({id,name:catName,isBuiltin:false,
+        created:new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}),types});
+      saveCatalogsStore(); _renderCatMgrTab1();
+      toast('✓ Katalog „'+catName+'" importiert');
+    }catch(err){ toast('Import fehlgeschlagen: '+err.message,true); }
   };
-  reader.readAsText(file);
+  reader.readAsText(file); input.value='';
 }
 
-function deleteCustomEntry(key, idx){
-  try{
-    const custom=getCatalogCustom();
-    if(!custom[key]) return;
-    const deleted=custom[key].splice(idx,1)[0];
-    if(!custom[key].length) delete custom[key];
-    localStorage.setItem(CATALOG_KEY,JSON.stringify(custom));
-    // Remove from CATALOG in memory (find by matching n+l)
-    if(CATALOG[key] && deleted){
-      const mi=CATALOG[key].items.findIndex(e=>e.n===deleted.n&&e.l===deleted.l);
-      if(mi>=0) CATALOG[key].items.splice(mi,1);
-    }
-    openCatalogMgr(); // re-open to refresh list
-    toast('✓ Eintrag gelöscht');
-  }catch(e){}
+function catEditorSwitch(catalogId){ _catEditorId=catalogId; _renderCatMgrTab2(); }
+
+function catEditorExport(catalogId){
+  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  const out={name:cat.name,types:cat.types};
+  downloadJSON(out,(cat.name||'katalog').replace(/[^a-zA-Z0-9äöüÄÖÜß]/g,'_').toLowerCase()+'.json');
+  toast('✓ Katalog exportiert');
 }
 
-function resetCustomCatalog(){
-  localStorage.removeItem(CATALOG_KEY);
-  closeWiz();
-  // Reload page so CATALOG resets to defaults
-  location.reload();
+function catEditorAddType(catalogId){
+  const name=document.getElementById('newTypeName').value.trim();
+  const catName=document.getElementById('newTypeCat').value;
+  if(!name){ toast('Bitte einen Typ-Namen eingeben.',true); return; }
+  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  if(cat.types[name]){ toast('Dieser Typ existiert bereits.',true); return; }
+  cat.types[name]={cat:catName,items:[]};
+  saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Typ „'+name+'" hinzugefügt');
+}
+
+function catEditorDeleteType(catalogId,typeKey){
+  if(!confirm(`Typ „${typeKey}" aus dem Katalog löschen?\nBereits hinzugefügte Projektpositionen bleiben erhalten.`)) return;
+  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  delete cat.types[typeKey]; saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Typ gelöscht');
+}
+
+function catEditorAddItem(catalogId,typeKey){
+  const inputId='newitem-'+catalogId+'-'+typeKey.replace(/[^a-zA-Z0-9]/g,'_');
+  const input=document.getElementById(inputId); if(!input) return;
+  const val=input.value.trim(); if(!val) return;
+  const lVal=val.match(/\d/)&&!val.match(/[a-zA-Z]/) ? val+'m' : val;
+  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  if(!cat.types[typeKey]) return;
+  cat.types[typeKey].items.push({n:typeKey,l:lVal});
+  cat.types[typeKey].items.sort((a,b)=>parseFloat((a.l||a.n||'0').replace(',','.'))-parseFloat((b.l||b.n||'0').replace(',','.')));
+  saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ „'+lVal+'" hinzugefügt');
+}
+
+function catEditorDeleteItem(catalogId,typeKey,idx){
+  const cat=catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  if(!cat.types[typeKey]) return;
+  cat.types[typeKey].items.splice(idx,1);
+  saveCatalogsStore(); _renderCatMgrTab2();
 }
 
 function downloadJSON(data, filename){
@@ -1411,6 +1560,11 @@ function switchPlan(id){
   savePlanToLS(activePlanId);
   activePlanId = id;
   loadPlanFromLS(id);
+  // Katalog des Plans setzen
+  const plans=getPlansIndex();
+  const plan=plans.find(p=>p.id===id);
+  activeCatalogId=(plan&&plan.catalogId)||'cat-default';
+  renderActiveCatalogBadge();
   renderPlanList();
   toast('Plan geladen ✓');
 }
@@ -1446,7 +1600,7 @@ function openNewPlan(){
   document.getElementById('pName').value=state._project;
   document.getElementById('pDate').value='';
   const plans=getPlansIndex();
-  plans.push({id,name:name.trim(),created:todayStr(),modified:todayStr()});
+  plans.push({id,name:name.trim(),created:todayStr(),modified:todayStr(),catalogId:activeCatalogId||'cat-default'});
   savePlansIndex(plans);
   savePlanToLS(id);
   render();
@@ -1493,7 +1647,7 @@ function importProjectJSON(input){
       document.getElementById('pName').value=state._project;
       document.getElementById('pDate').value=state._date;
       const plans=getPlansIndex();
-      plans.push({id,name:state._project,created:todayStr(),modified:todayStr()});
+      plans.push({id,name:state._project,created:todayStr(),modified:todayStr(),catalogId:'cat-default'});
       savePlansIndex(plans); savePlanToLS(id);
       render(); renderPlanList();
       toast('✓ „'+state._project+'" importiert');
@@ -1582,7 +1736,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5.2</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.6.0</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
@@ -1608,14 +1762,21 @@ save = function(){
 };
 
 // ── INIT ───────────────────────────────────────────────────────────
+initCatalogs();
 initState();
 
 // Init multi-plan system
 (function initPlans(){
   loadLogosGlobal();
   const plans = getPlansIndex();
+  // Migration: fehlende catalogId bei bestehenden Plänen ergänzen
+  let migrated=false;
+  plans.forEach(p=>{ if(!p.catalogId){ p.catalogId='cat-default'; migrated=true; } });
+  if(migrated) savePlansIndex(plans);
+
   if(plans.length > 0){
     activePlanId = plans[0].id;
+    activeCatalogId = plans[0].catalogId || 'cat-default';
     if(loadPlanFromLS(activePlanId)){
       renderPlanList();
     } else {
@@ -1627,13 +1788,15 @@ initState();
     activePosIdx = 0;
     const id = genPlanId();
     activePlanId = id;
+    activeCatalogId = 'cat-default';
     const planName = state._project || 'Neues Projekt';
-    const plans2 = [{id, name:planName, created:todayStr(), modified:todayStr()}];
+    const plans2 = [{id, name:planName, created:todayStr(), modified:todayStr(), catalogId:'cat-default'}];
     savePlansIndex(plans2);
     savePlanToLS(id);
     render();
     renderPlanList();
   }
+  renderActiveCatalogBadge();
 })();
 </script>
 </body>
