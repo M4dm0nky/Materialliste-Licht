@@ -27,7 +27,7 @@ Die gesamte UI ist auf **Deutsch**.
 
 ```
 Materialliste-Licht/
-├── index.html                 ← AKTIVE HAUPTDATEI (1758 Zeilen)
+├── index.html                 ← AKTIVE HAUPTDATEI (~1553 Zeilen)
 ├── materialliste-licht.html   ← ältere Version, nicht bearbeiten
 ├── LichtMaterialliste.html    ← noch ältere Version (v3), nicht bearbeiten
 └── README.md                  ← Benutzeranleitung & TODO-Liste
@@ -53,15 +53,28 @@ Kein `npm install`, kein `npm run build`, kein Compiler.
 - Beim Start: `loadState()` aus localStorage oder leerer Initialzustand
 
 ### CATALOG-Konstante
-- Großes Objekt (~1000+ Zeilen) mit allen vordefinierten Kabeltypen, Zubehör, Hardware
-- Kategorien: `cables`, `accessories`, `hardware`, `lamps`
-- Benutzer-Ergänzungen werden zur Laufzeit eingemischt
+- Großes Objekt mit allen vordefinierten Kabeltypen, Zubehör, Hardware
+- Schlüssel = Typ-Name (z.B. `"DMX 5-Pin"`), Wert = `{cat: "Kabel Liste", items: [{n, l}]}`
+- Benutzer-Ergänzungen (`CATALOG_KEY` im localStorage) werden beim Start eingemischt
 
 ### UI-System
-- Modal-Overlays für Wizards und Dialoge
+- Modal-Overlays für Wizards und Dialoge (Breite: 960px)
 - 4 Kategorie-Tabs: Kabel, Zubehör, Hardware, Lampen
 - Sektionen/Gruppen innerhalb jeder Kategorie (ein-/ausklappbar)
 - CSS Grid für Header, Sidebar und Tabellen
+
+### Wizard-Flow (Material hinzufügen)
+- Schritt 1: Katalogtyp wählen (z.B. "DMX 5-Pin")
+- Schritt 2: Mengen eingeben — Popup bleibt nach „+ HINZUFÜGEN" offen, schließt erst bei „✓ FERTIG"
+- Neue Längen im Wizard: nur Zahl eingeben, `m` wird automatisch ergänzt, Eintrag wird numerisch einsortiert
+- Alle Items einer Sektion erhalten immer den Sektionsnamen als Bezeichnung (konsistent)
+- Sortierung: beim Rendern (`rerenderCatInto`) und nach jedem Hinzufügen (`wizDone`) wird nach numerischer Länge sortiert
+
+### Katalog
+- `CATALOG` Konstante: Schlüssel = Typ-Name (z.B. `"DMX 5-Pin"`), Wert = `{cat, items: [{n, l, b?}]}`
+- `n` = Bezeichnung, `l` = Länge/Typ, `b` = Bemerkung (optional)
+- Benutzer-Ergänzungen: `localStorage` Key `materialliste-licht-catalog-v1`, werden beim Start eingemischt
+- Neue Längen per `wizAddCustomLen()`: nur Zahleingabe → `"20m"` Format, gespeichert in `saveCatalogCustom()`
 
 ### Berechnungslogik
 - `DIFF = (Qty + Spare) - InProject` → grün wenn ≥ 0, rot wenn < 0

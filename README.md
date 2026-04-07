@@ -17,9 +17,12 @@ https://m4dm0nky.github.io/Materialliste-Licht/index.html
 ### Material verwalten
 - Leere Tabelle beim Start — Material wird über einen **Wizard aus dem Katalog** hinzugefügt
 - Kabeltyp auswählen (z.B. DMX 5-Pin, CEE 63A Rot, Socapex) → Längen und Mengen eingeben → fertig
+- **Wizard bleibt offen** nach „Hinzufügen" — mehrere Längen nacheinander hinzufügen, erst „Fertig" schließt das Popup
+- **Neue Länge direkt im Wizard** — Zahl eingeben, `m` wird automatisch ergänzt, Eintrag sortiert sich automatisch ein
 - Alle Felder nachträglich editierbar: Bezeichnung, Länge, # Stk., Spare, Im Projekt, Kapitel, Notiz
 - Zeilen und Sektionen einzeln löschbar
 - Eigene Längen die im Katalog fehlen direkt im Wizard ergänzen — werden dauerhaft gespeichert
+- **Automatische Sortierung** — Längen werden beim Öffnen und nach jedem Hinzufügen numerisch sortiert
 
 ### Excel-Logiken (1:1 aus XLTM übernommen)
 - **DIFF = (# Stk. + Spare) − Im Projekt** → Grün ≥ 0 · Rot < 0 (zu buchen)
@@ -61,13 +64,22 @@ https://m4dm0nky.github.io/Materialliste-Licht/index.html
 ## Bedienung
 
 ```
-1. Tab wählen          Kabel / Zubehör / Hardware / Lampen
-2. "+ AUS KATALOG"     Wizard öffnet sich
-3. Kabeltyp wählen     z.B. "DMX 5-Pin"
-4. Mengen eingeben     10x 5m, 5x 10m, 2x Spare ...
-5. "Hinzufügen"        Einträge erscheinen in der Tabelle
-6. Werte anpassen      Alle Felder direkt editierbar
-7. Speichern           Sidebar → Speichern (JSON) oder auto. im Browser
+1. Tab wählen           Kabel / Zubehör / Hardware / Lampen
+2. "+ AUS KATALOG"      Wizard öffnet sich
+3. Kabeltyp wählen      z.B. "DMX 5-Pin"
+4. Mengen eingeben      10x 5m, 5x 10m, 2x Spare ...
+5. "+ HINZUFÜGEN"       Einträge werden gespeichert, Wizard bleibt offen
+6. Weitere Längen       Nächste Länge wählen und wieder hinzufügen
+7. "✓ FERTIG"           Wizard schließt, Tabelle wird mit sortierten Einträgen angezeigt
+8. Werte anpassen       Alle Felder direkt editierbar
+9. Speichern            Sidebar → Speichern (JSON) oder auto. im Browser
+```
+
+**Neue Länge fehlt im Katalog?**
+```
+Im Wizard unter der Liste: Zahl eingeben (z.B. 35) → HINZUFÜGEN
+→ "35m" wird automatisch ergänzt und in der richtigen Reihenfolge einsortiert
+→ Länge wird dauerhaft im Katalog gespeichert
 ```
 
 ---
@@ -137,4 +149,4 @@ materialliste-licht/
 
 ---
 
-*Entwickelt mit Claude (Anthropic) · Single-File HTML App · Touring Production Lichttechnik*
+*Entwickelt mit Claude Code (Anthropic) · Single-File HTML App · Touring Production Lichttechnik*
