@@ -829,8 +829,8 @@ function step2(){
     <div class="cablelist">
       ${catalog.items.map((item,i)=>`
         <div class="cablerow" id="cr-${i}">
-          <div class="cable-t">${item.n ? esc(item.n) : '<span style="color:var(--muted);font-size:12px">↳</span>'}</div>
-          <div class="cable-s">${item.l ? esc(item.l) : '<span style="color:var(--border)">—</span>'}</div>
+          <div class="cable-t">${esc(wiz.key)}</div>
+          <div class="cable-s">${esc(item.l || item.n || '')}</div>
           <span class="qlbl">#&nbsp;Stk.:</span>
           <input class="qin" type="number" min="0" value="0" id="qa-${i}" oninput="wizQ(${i})">
           <span class="qlbl">Spare:</span>
@@ -927,8 +927,8 @@ function wizDone(){
     .map(([i,v])=>{
       const ci2=catalog.items[+i];
       // For sub-rows (name=""), use length as the display name
-      const displayName = ci2.n || ci2.l || '';
-      const displayLen  = ci2.n ? (ci2.l||'') : '';
+      const displayName = wiz.key;
+      const displayLen  = ci2.l || (ci2.n !== wiz.key ? ci2.n : '') || '';
       return{name:displayName,length:displayLen,anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:ci2.b||''};
     });
   if(!selected.length){alert('Bitte mindestens eine Menge > 0 eingeben.');return;}
