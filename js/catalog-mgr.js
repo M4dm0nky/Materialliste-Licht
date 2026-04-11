@@ -185,9 +185,12 @@ function catEditorOpenTypeDetail(catalogId, typeKey){
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
         <button class="btn btn-sm" onclick="_renderCatMgrTab2()">← ZURÜCK</button>
         <span style="font-weight:700;font-size:15px;color:var(--text)">${esc(typeKey)}</span>
-        <span style="font-size:11px;color:var(--muted)">${esc(typeVal.cat||'')}</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;">
+        <span style="font-size:10px;letter-spacing:2px;color:var(--muted)">WELT:</span>
+        <select class="pinput" style="width:auto" onchange="catEditorSetCat('${safeId(catalogId)}','${safeId(esc(typeKey))}',this.value)">
+          ${CAT_ORDER.map(cn=>`<option value="${cn}"${cn===typeVal.cat?' selected':''}>${cn}</option>`).join('')}
+        </select>
         <span style="font-size:10px;letter-spacing:2px;color:var(--muted)">GRUPPE:</span>
         <select class="pinput" style="width:auto" onchange="catEditorSetTypeGroup('${safeId(catalogId)}','${safeId(esc(typeKey))}',this.value)">
           ${catBuildGroupOptions(cat,typeVal.group||'')}
@@ -236,6 +239,14 @@ function catEditorSetSubgroup(catalogId, typeKey, val){
   const trimmed = val.trim();
   if(trimmed) cat.types[typeKey].subgroup = trimmed;
   else delete cat.types[typeKey].subgroup;
+  saveCatalogsStore();
+  rerenderAllCats();
+}
+
+function catEditorSetCat(catalogId, typeKey, catName){
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  if(!cat.types[typeKey]) return;
+  cat.types[typeKey].cat = catName;
   saveCatalogsStore();
   rerenderAllCats();
 }
