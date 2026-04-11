@@ -54,17 +54,26 @@ Materialliste-Licht/
 **Ladereihenfolge der JS-Dateien ist kritisch** (globaler Scope, kein Modulsystem):
 `catalog` → `state` → `calc` → `render` → `wizard` → `catalog-mgr` → `logos` → `plans` → `positions` → `export` → `pdf` → `init`
 
+## Version & Live-URL
+
+- Aktuelle Version: **v0.9.0**
+- Live: https://m4dm0nky.github.io/Materialliste-Licht/
+
 ## Entwicklungs-Workflow
 
 Kein Build-Schritt erforderlich:
 
-1. Lokalen HTTP-Server starten (z.B. `python3 -m http.server 8080`) oder VS Code Live Server
-2. `http://localhost:8080` im Browser öffnen
-3. Gewünschte Datei in `css/` oder `js/` bearbeiten → Browser-Tab neu laden
-4. Für GitHub Pages: Änderungen committen und pushen → automatisch live
+```bash
+python3 -m http.server 8080   # lokalen Server starten
+# dann http://localhost:8080 im Browser öffnen
+```
 
-**Wichtig:** Bei `file://`-Protokoll blockieren manche Browser das Laden externer JS/CSS-Dateien.
-Immer über einen lokalen HTTP-Server testen.
+Alternativ: VS Code Live Server Extension.
+
+Datei in `css/` oder `js/` bearbeiten → Browser-Tab neu laden → fertig.
+Für GitHub Pages: committen und pushen → automatisch live.
+
+**Wichtig:** Bei `file://`-Protokoll blockieren manche Browser das Laden externer JS/CSS-Dateien — immer über HTTP testen. GitHub Pages funktioniert problemlos.
 
 Kein `npm install`, kein `npm run build`, kein Compiler.
 
@@ -124,3 +133,8 @@ Kein Test-Framework vorhanden. Tests erfolgen manuell im Browser:
 - Verschiedene Browser prüfen (Chrome, Firefox, Safari)
 - PDF-Export über Ctrl+P / Cmd+P testen
 - Import/Export-Roundtrip mit JSON-Dateien prüfen
+
+## Tipps
+
+- **`#` in Claude Code** — während einer Session drücken um Learnings direkt in diese CLAUDE.md zu schreiben
+- **`.claude.local.md`** — für persönliche Einstellungen die nicht ins Git sollen (in `.gitignore` aufnehmen)
