@@ -1,0 +1,91 @@
+/* ── BUTTONS ──────────────────────────────────────────────────────── */
+.btn{background:transparent;border:1px solid var(--border);color:var(--text2);padding:8px 18px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+.btn:hover{border-color:var(--accent);color:var(--accent);}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#0d0f14;font-weight:700;}
+.btn-accent:hover{background:#ffd84a;}
+.btn-green{background:rgba(74,232,160,.12);border-color:var(--green);color:var(--green);}
+.btn-green:hover{background:rgba(74,232,160,.25);}
+.btn-red{border-color:var(--red);color:var(--red);}
+.btn-red:hover{background:rgba(232,74,74,.15);}
+.btn-sm{padding:4px 12px;font-size:14px;}
+
+/* ── STATUS ───────────────────────────────────────────────────────── */
+.status-pill{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);padding:5px 16px;font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:1px;}
+
+/* ── TABS ─────────────────────────────────────────────────────────── */
+.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab{padding:13px 26px;font-size:17px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:var(--muted);border-bottom:4px solid transparent;white-space:nowrap;transition:all .15s;}
+.tab:hover{color:var(--text);}.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tbadge{display:inline-flex;align-items:center;justify-content:center;min-width:21px;height:21px;border-radius:2px;font-size:12px;font-family:'Share Tech Mono',monospace;margin-left:8px;padding:0 4px;}
+.tbadge.ok{background:rgba(74,232,160,.15);color:var(--green);}.tbadge.warn{background:rgba(232,74,74,.15);color:var(--red);}
+
+/* ── CONTENT PANELS ───────────────────────────────────────────────── */
+.content{padding:26px 31px;max-width:1500px;}
+.catpanel{display:none;}.catpanel.active{display:block;}
+.empty-state{border:2px dashed var(--border);padding:62px;text-align:center;margin:31px 0;display:flex;flex-direction:column;align-items:center;gap:21px;}
+.empty-icon{font-size:52px;opacity:.3;}
+.empty-title{font-size:23px;font-weight:700;letter-spacing:2px;color:var(--muted);}
+.empty-sub{font-size:16px;color:var(--muted);max-width:520px;line-height:1.6;}
+
+/* ── SEKTIONEN ────────────────────────────────────────────────────── */
+.secblock{margin-bottom:21px;border:1px solid var(--border);background:var(--bg2);}
+.sechdr{display:grid;grid-template-columns:1fr 73px 73px 88px 88px 88px 117px auto auto;gap:0;background:var(--bg3);border-bottom:1px solid var(--border);align-items:center;}
+.sechdr-title{padding:10px 16px;font-size:17px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;}
+.chevron{transition:transform .2s;font-size:13px;color:var(--muted);}
+.sechdr.collapsed .chevron{transform:rotate(-90deg);}
+.sechdr-col{padding:8px 8px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;border-left:1px solid var(--border);white-space:nowrap;}
+.sechdr-actions{padding:8px 10px;border-left:1px solid var(--border);display:flex;gap:5px;align-items:center;}
+.secbody{overflow:hidden;}.secbody.collapsed{display:none;}
+
+/* ── TABELLEN ─────────────────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--bg);border-bottom:1px solid var(--border);}
+thead th{padding:6px 10px;font-size:13px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);text-align:left;border-right:1px solid #1a1f30;}
+thead th.num{text-align:center;}
+tbody tr{border-bottom:1px solid #1a1f30;transition:background .1s;}
+tbody tr:hover{background:rgba(232,200,74,.04);}
+tbody tr.has-data{background:rgba(74,232,160,.03);}
+tbody tr.has-data:hover{background:rgba(74,232,160,.08);}
+td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
+.td-diff{font-family:'Share Tech Mono',monospace;font-size:17px;font-weight:700;text-align:center;}
+.td-diff.pos{color:var(--green);}.td-diff.neg{color:var(--red);}.td-diff.zero{color:var(--muted);}
+.td-total{font-family:'Share Tech Mono',monospace;font-size:16px;text-align:center;color:var(--text2);}
+
+/* ── TABELLEN-INPUTS ──────────────────────────────────────────────── */
+.tdinput input[type=number]{background:transparent;border:1px solid transparent;color:var(--text);font-family:'Share Tech Mono',monospace;font-size:20px;font-weight:700;width:83px;padding:5px 6px;text-align:center;outline:none;border-radius:2px;transition:border-color .15s;}
+.tdinput input[type=number]:hover{border-color:var(--border);}
+.tdinput input[type=number]:focus{border-color:var(--accent);background:rgba(232,200,74,.05);}
+.tdtext input[type=text]{background:transparent;border:1px solid transparent;color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-size:16px;width:100%;min-width:104px;padding:4px 6px;outline:none;border-radius:2px;}
+.tdtext input[type=text]:hover{border-color:var(--border);}
+.tdtext input[type=text]:focus{border-color:var(--accent2);background:rgba(74,232,160,.03);color:var(--text);}
+.tdname input[type=text]{background:transparent;border:1px solid transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:600;width:100%;min-width:195px;padding:4px 6px;outline:none;}
+.tdname input[type=text]:hover{border-color:var(--border);}
+.tdname input[type=text]:focus{border-color:var(--accent);background:rgba(232,200,74,.04);}
+.tdlen input[type=text]{background:transparent;border:1px solid transparent;color:var(--text2);font-family:'Share Tech Mono',monospace;font-size:14px;width:117px;padding:4px 6px;outline:none;}
+.tdlen input[type=text]:hover{border-color:var(--border);}
+.tdlen input[type=text]:focus{border-color:var(--accent2);}
+
+/* ── AKTIONS-BUTTONS IN TABELLE ───────────────────────────────────── */
+.delbtn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:17px;padding:2px 6px;border-radius:2px;transition:all .15s;line-height:1;}
+.delbtn:hover{background:rgba(232,74,74,.15);color:var(--red);}
+.td-actions{text-align:center;width:32px;}
+tbody tr[draggable]{cursor:grab;}
+tbody tr.row-dragging{opacity:.35;}
+.sechdr.drop-target{background:rgba(232,200,74,.18);outline:2px dashed var(--gold);}
+
+/* ── SUMMEN-BAR & ADD-ROW ─────────────────────────────────────────── */
+.sumbar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:21px;}
+.sumcard{background:var(--bg2);padding:13px 18px;}
+.sumlbl{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.sumval{font-family:'Share Tech Mono',monospace;font-size:29px;font-weight:700;line-height:1.1;}
+.sv-ok{color:var(--green);}.sv-warn{color:var(--red);}.sv-n{color:var(--accent);}
+.add-row{padding:16px;border-top:1px dashed var(--border);display:flex;gap:10px;align-items:center;}
+.save-ind{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--muted);letter-spacing:1px;transition:color .3s;}
+.save-ind.saved{color:var(--green);}
+
+/* ── FORMULAR-ELEMENTE ────────────────────────────────────────────── */
+.sec-name-input{background:var(--bg);border:1px solid var(--border);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:2px;padding:9px 16px;width:100%;outline:none;margin-bottom:21px;text-transform:uppercase;}
+.sec-name-input:focus{border-color:var(--accent);}
+.formlbl{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.formrow{margin-bottom:16px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}

@@ -17,7 +17,7 @@ Die gesamte UI ist auf **Deutsch**.
 ## Tech-Stack
 
 - **Vanilla JavaScript** — kein Framework, keine Bibliotheken
-- **HTML5 + CSS3** — alles in einer einzigen Datei
+- **HTML5 + CSS3** — separate Dateien, kein Build-Schritt
 - **localStorage** — persistente Datenspeicherung im Browser
 - **Google Fonts** — Bebas Neue, Barlow Condensed, Share Tech Mono, IBM Plex Mono
 - **GitHub Pages** — statisches Hosting, kein Backend
@@ -27,21 +27,44 @@ Die gesamte UI ist auf **Deutsch**.
 
 ```
 Materialliste-Licht/
-├── index.html                 ← AKTIVE HAUPTDATEI (~1553 Zeilen)
+├── index.html                 ← Einstiegspunkt: HTML-Gerüst + <link>/<script> Tags
+├── css/
+│   ├── variables.css          ← :root Custom Properties, Farben, Animationen
+│   ├── layout.css             ← Header, Sidebar, App-Layout, Posbar
+│   ├── components.css         ← Buttons, Tabs, Tabellen, Inputs, Sektionen
+│   └── modals.css             ← Overlays, Wizard, Katalog-Manager, Logo/PDF-Modal
+├── js/
+│   ├── catalog.js             ← CATALOG-Konstante + catalogsStore-Verwaltung
+│   ├── state.js               ← state-Objekt, save(), initState(), esc()
+│   ├── calc.js                ← xdiff(), xtotal(), lc(), recalcAll(), recalcBadge()
+│   ├── render.js              ← render(), buildSecEl(), buildRow(), upn(), upf(), UI-Steuerung
+│   ├── wizard.js              ← Wizard-Flow (step1/2, wizDone, toast, eigener Eintrag)
+│   ├── catalog-mgr.js         ← Katalog-Manager UI (CRUD für Typen, Gruppen, Kataloge)
+│   ├── logos.js               ← Logo-Upload, Header-Anzeige, Sidebar-Toggle
+│   ├── plans.js               ← Multi-Plan-System (switchPlan, savePlanToLS, migrateState)
+│   ├── positions.js           ← Positions-Bar (renderPosBar, switchPos, addPosition)
+│   ├── export.js              ← saveProjectJSON(), importProjectJSON(), exportCSV()
+│   ├── pdf.js                 ← openPDFExport(), generatePDF()
+│   └── init.js                ← App-Start (initCatalogs, initState, initPlans)
 ├── materialliste-licht.html   ← ältere Version, nicht bearbeiten
 ├── LichtMaterialliste.html    ← noch ältere Version (v3), nicht bearbeiten
 └── README.md                  ← Benutzeranleitung & TODO-Liste
 ```
 
-Alle Änderungen gehören in `index.html`. Die anderen HTML-Dateien sind Entwicklungshistorie.
+**Ladereihenfolge der JS-Dateien ist kritisch** (globaler Scope, kein Modulsystem):
+`catalog` → `state` → `calc` → `render` → `wizard` → `catalog-mgr` → `logos` → `plans` → `positions` → `export` → `pdf` → `init`
 
 ## Entwicklungs-Workflow
 
 Kein Build-Schritt erforderlich:
 
-1. `index.html` direkt im Browser öffnen (`file://` oder lokaler HTTP-Server)
-2. Änderungen speichern → Browser-Tab neu laden
-3. Für GitHub Pages: Datei committen und pushen → automatisch live
+1. Lokalen HTTP-Server starten (z.B. `python3 -m http.server 8080`) oder VS Code Live Server
+2. `http://localhost:8080` im Browser öffnen
+3. Gewünschte Datei in `css/` oder `js/` bearbeiten → Browser-Tab neu laden
+4. Für GitHub Pages: Änderungen committen und pushen → automatisch live
+
+**Wichtig:** Bei `file://`-Protokoll blockieren manche Browser das Laden externer JS/CSS-Dateien.
+Immer über einen lokalen HTTP-Server testen.
 
 Kein `npm install`, kein `npm run build`, kein Compiler.
 
@@ -91,7 +114,8 @@ Kein `npm install`, kein `npm run build`, kein Compiler.
   - Rot: `#e84a4a` (negativer DIFF / fehlende Items)
   - Dark Background: `#1a1a2e` / `#16213e`
 - **Keine externen Abhängigkeiten einführen** — die App soll offline und ohne CDN funktionieren
-- **Single-File-Prinzip beibehalten** — alles in `index.html`
+- **Dateistruktur beibehalten** — CSS in `css/`, JS in `js/`, HTML-Gerüst in `index.html`
+- **Kein Modulsystem** — alle JS-Dateien teilen den globalen Scope, Ladereihenfolge beachten
 
 ## Tests
 

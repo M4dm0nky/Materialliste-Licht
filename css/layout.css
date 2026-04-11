@@ -1,0 +1,63 @@
+/* ── HEADER (alt) ──────────────────────────────────────────────────── */
+header{background:var(--bg2);border-bottom:2px solid var(--accent);padding:18px 31px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;gap:21px;flex-wrap:wrap;}
+.htitle h1{font-size:29px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--accent);line-height:1;}
+.htitle span{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--muted);letter-spacing:2px;}
+.hactions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+
+/* ── PROJEKT-BAR & LEGENDE ─────────────────────────────────────────── */
+.pbar{background:var(--bg3);border-bottom:1px solid var(--border);padding:10px 31px;display:flex;align-items:center;gap:21px;flex-wrap:wrap;}
+.plabel{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--muted);letter-spacing:2px;white-space:nowrap;}
+.pinput{background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:17px;padding:2px 8px;outline:none;letter-spacing:1px;}
+.pinput:focus{border-bottom-color:var(--accent);}
+.legend{display:flex;gap:26px;padding:10px 31px;background:var(--bg2);border-bottom:1px solid var(--border);font-size:14px;align-items:center;flex-wrap:wrap;}
+.li{display:flex;align-items:center;gap:6px;color:var(--muted);}
+.ldot{width:10px;height:10px;border-radius:2px;}
+.lf{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--muted);}
+
+/* ── POSITION BAR ─────────────────────────────────────────────────── */
+.posbar{display:flex;align-items:center;gap:6px;padding:8px 31px;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;}
+.posbar-label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;white-space:nowrap;text-transform:uppercase;flex-shrink:0;}
+.pos-pill{display:flex;align-items:center;gap:4px;padding:5px 14px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s;user-select:none;}
+.pos-pill:hover{border-color:var(--accent);color:var(--accent);}
+.pos-pill.active{background:rgba(232,200,74,.12);border-color:var(--accent);color:var(--accent);}
+.pos-pill-actions{display:none;gap:2px;align-items:center;}
+.pos-pill:hover .pos-pill-actions{display:flex;}
+.pos-pill-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:1px 3px;line-height:1;transition:color .15s;}
+.pos-pill-btn.ren:hover{color:var(--accent);}
+.pos-pill-btn.del:hover{color:var(--red);}
+.pos-add{padding:4px 10px;font-size:18px;background:transparent;border:1px dashed var(--border);color:var(--muted);cursor:pointer;transition:all .15s;line-height:1.4;flex-shrink:0;}
+.pos-add:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── LOGO HEADER ──────────────────────────────────────────────────── */
+.app-header{background:linear-gradient(135deg,#0a0c14 0%,#12182e 50%,#0a0c14 100%);border-bottom:2px solid var(--accent);padding:10px 20px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:0;position:sticky;top:0;z-index:200;}
+.hdr-left{display:flex;align-items:center;justify-content:flex-start;}
+.hdr-center{display:flex;align-items:center;justify-content:center;gap:14px;text-align:center;}
+.hdr-right{display:flex;align-items:center;justify-content:flex-end;gap:10px;}
+.logo-planer{max-height:58px;max-width:180px;object-fit:contain;object-position:left center;display:block;}
+.logo-booking{max-height:58px;max-width:180px;object-fit:contain;object-position:right center;display:block;}
+.logo-band{max-height:52px;max-width:150px;object-fit:contain;display:block;}
+.hdr-title h1{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:4px;color:#fff;line-height:1;}
+.hdr-title .subtitle{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;}
+.hdr-title .planname{font-size:10px;color:var(--accent);letter-spacing:1px;opacity:.8;}
+
+/* ── LAYOUT MIT SIDEBAR ───────────────────────────────────────────── */
+.app-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 78px);}
+.app-sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:14px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;}
+.sb-section h3{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.sb-btn{width:100%;text-align:left;padding:8px 10px;font-size:13px;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s;margin-bottom:5px;}
+.sb-btn:hover{border-color:var(--accent);color:var(--accent);}
+.sb-btn.primary{background:var(--accent);border-color:var(--accent);color:#0d0f14;font-weight:700;}
+.sb-btn.primary:hover{background:#ffd84a;}
+.sb-btn.green{background:rgba(74,232,160,.12);border-color:var(--green);color:var(--green);}
+.sb-btn.green:hover{background:rgba(74,232,160,.25);}
+.sb-divider{height:1px;background:var(--border);margin:4px 0;}
+.sb-plan-item{display:flex;align-items:center;gap:5px;padding:6px 8px;background:var(--bg3);border:1px solid var(--border);font-size:12px;margin-bottom:4px;cursor:pointer;transition:border-color .15s;}
+.sb-plan-item:hover{border-color:var(--accent);}
+.sb-plan-item.active{border-color:var(--accent);background:rgba(232,200,74,.08);}
+.sb-plan-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);}
+.sb-plan-date{font-size:10px;color:var(--muted);white-space:nowrap;}
+.app-main{overflow:hidden;}
+
+/* ── FAB SIDEBAR ──────────────────────────────────────────────────── */
+.fab-sidebar{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:300;padding:10px 7px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;writing-mode:vertical-rl;text-orientation:mixed;border-radius:0 5px 5px 0;background:var(--bg2);border:1px solid var(--accent);border-left:none;color:var(--accent);cursor:pointer;display:none;}
+.fab-sidebar:hover{background:var(--accent);color:#0d0f14;}
