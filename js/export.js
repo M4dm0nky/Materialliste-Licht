@@ -45,8 +45,28 @@ function importProjectJSON(input){
       if(!data.categories && !data.positions) throw new Error('Kein gültiges Materialliste-Format');
       savePlanToLS(activePlanId);
       const id = genPlanId(); activePlanId=id;
+      activeCatalogId = 'cat-default';
       state = migrateState({...data, _project:data.project||file.name.replace(/\.json$/i,''), _date:data.date||''});
       activePosIdx=0; state._activePosIdx=0;
+      // Auto-Registrierung: Sektionstypen, die nicht im Katalog vorhanden sind, eintragen
+      const activeCat = getActiveCatalog();
+      let needsCatSave = false;
+      state.positions.forEach(pos=>{
+        pos.categories.forEach(cat=>{
+          cat.sections.forEach(sec=>{
+            if(!activeCat.types[sec.type_name]){
+              const hasLengths = sec.items.some(i=>i.length);
+              const ut = hasLengths ? 'lengths' : 'qty';
+              const items = hasLengths
+                ? [...new Map(sec.items.map(i=>[i.length,{n:i.name||sec.type_name,l:i.length}])).values()].filter(i=>i.l)
+                : [];
+              activeCat.types[sec.type_name] = {cat:cat.name, items, unit_type:ut};
+              needsCatSave = true;
+            }
+          });
+        });
+      });
+      if(needsCatSave) saveCatalogsStore();
       if(data.logos){ logos.planer=data.logos.planer||''; logos.band=data.logos.band||''; logos.booking=data.logos.booking||''; applyAllLogos(); saveLogosGlobal(); }
       document.getElementById('pName').value = state._project;
       document.getElementById('pDate').value = state._date;

@@ -11,12 +11,17 @@ function render(){
   recalcAll();
 }
 
+const _weltIcons = {
+  "Datenwelt":"🔌","Stromwelt":"⚡","Lichtwelt":"💡","Riggingwelt":"🔩","Verbrauchswelt":"📦"
+};
+
 function renderTabs(){
   const bar = document.getElementById('tabBar'); bar.innerHTML='';
   currentCats().forEach((cat,ci)=>{
     const t = document.createElement('div');
     t.className = 'tab'+(ci===0?' active':'');
-    t.innerHTML = cat.name+`<span class="tbadge ok" id="badge-${ci}">✓</span>`;
+    const icon = _weltIcons[cat.name]||'';
+    t.innerHTML = (icon?icon+' ':'')+cat.name+`<span class="tbadge ok" id="badge-${ci}">✓</span>`;
     t.onclick = ()=>switchTab(ci); bar.appendChild(t);
   });
 }
@@ -39,19 +44,136 @@ function rerenderCat(ci){
   recalcAll();
 }
 
+function buildGroupHeader(groupName, ci){
+  const el = document.createElement('div');
+  el.className = 'grp-section-hdr';
+  el.innerHTML = `<span class="grp-chevron">▼</span><span>${esc(groupName)}</span>`;
+  return el;
+}
+
+function buildQtyRow(ci, si){
+  const sec  = currentCats()[ci].sections[si];
+  const item = sec.items[0] || {};
+  const d    = (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0);
+  const tr   = document.createElement('tr');
+  tr.id = `qrow-${ci}-${si}`;
+  if((item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0) tr.className='has-data';
+  const diffCls = d<0?'neg':d>0?'pos':'zero';
+  const diffTxt = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0 ? (d>=0?'+'+d:d) : '—';
+  tr.innerHTML=`
+    <td class="tdname"><input type="text" value="${esc(item.name||sec.type_name||'')}"
+      onchange="upf(${ci},${si},0,'name',this.value)" oninput="save()"></td>
+    <td class="tdinput"><input type="number" min="0" value="${item.anzahl||0}"
+      onchange="upn(${ci},${si},0,'anzahl',this)" oninput="lc(${ci},${si},0)"></td>
+    <td class="tdinput"><input type="number" min="0" value="${item.spare||0}"
+      onchange="upn(${ci},${si},0,'spare',this)" oninput="lc(${ci},${si},0)"></td>
+    <td class="tdinput"><input type="number" min="0" value="${item.im_projekt||0}"
+      onchange="upn(${ci},${si},0,'im_projekt',this)" oninput="lc(${ci},${si},0)"></td>
+    <td class="td-diff ${diffCls}" id="diff-${ci}-${si}-0">${diffTxt}</td>
+    <td class="tdtext"><input type="text" value="${esc(item.kapitel||'')}" placeholder="Kap…"
+      onchange="upf(${ci},${si},0,'kapitel',this.value)" oninput="save()"></td>
+    <td class="td-actions"><button class="delbtn" onclick="delRow(${ci},${si},0)" title="Zeile löschen">✕</button></td>`;
+  return tr;
+}
+
 function rerenderCatInto(ci,panel){
-  const cat = currentCats()[ci];
+  const cat       = currentCats()[ci];
+  const weltName  = cat.name;
+  const weltDepth = _getWeltDepth(weltName);
+  const types     = getActiveCatalogTypes();
+  const allGroups = getActiveCatalog().groups || [];
+
+  // Längen-sortierung
   cat.sections.forEach(sec=>sec.items.sort((a,b)=>parseLen(a.length)-parseLen(b.length)));
-  if(cat.sections.length===0){
+
+  // Sektionen in lengths vs qty aufteilen
+  const lengthsSecs = [], qtySecs = [];
+  cat.sections.forEach((sec, si) => {
+    const t = types[sec.type_name];
+    if(!t || t.unit_type !== 'qty') lengthsSecs.push({sec, si, t});
+    else qtySecs.push({sec, si, t});
+  });
+
+  if(lengthsSecs.length === 0 && qtySecs.length === 0){
     const es = document.createElement('div'); es.className='empty-state';
-    es.innerHTML=`<div class="empty-icon">📦</div>
+    es.innerHTML=`<div class="empty-icon">${_weltIcons[weltName]||'📦'}</div>
       <div class="empty-title">NOCH LEER</div>
       <div class="empty-sub">Klicke auf "Material hinzufügen" und wähle aus dem Katalog — oder füge einen eigenen Eintrag hinzu.</div>
       <button class="btn btn-green" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>`;
     panel.appendChild(es);
-  } else {
-    cat.sections.forEach((_,si)=>panel.appendChild(buildSecEl(ci,si)));
+    const ar = document.createElement('div'); ar.className='add-row';
+    ar.innerHTML=`<button class="btn btn-green" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>`;
+    panel.appendChild(ar);
+    return;
   }
+
+  // A) lengths-Sektionen: wie bisher (buildSecEl), mit optionalen Gruppen-Headern
+  if(lengthsSecs.length){
+    const grouped = {};
+    allGroups.forEach(g=>{ grouped[g.id]=[]; });
+    grouped['__none']=[];
+    lengthsSecs.forEach(({si, t})=>{
+      const gid = t?.group||'__none';
+      (grouped[gid]||grouped['__none']).push(si);
+    });
+    allGroups.filter(g=>!g.parentId).forEach(g=>{
+      const secs = grouped[g.id]||[];
+      if(secs.length){ panel.appendChild(buildGroupHeader(g.name, ci)); secs.forEach(si=>panel.appendChild(buildSecEl(ci,si))); }
+    });
+    (grouped['__none']||[]).forEach(si=>panel.appendChild(buildSecEl(ci,si)));
+  }
+
+  // B) qty-Sektionen: gruppiert darstellen
+  if(qtySecs.length){
+    const topGroups = allGroups.filter(g=>!g.parentId);
+    const qGrouped  = {};
+    qtySecs.forEach(s=>{
+      const gid = s.t?.group||'__none';
+      (qGrouped[gid]=qGrouped[gid]||[]).push(s);
+    });
+
+    const groupOrder = [...topGroups.map(g=>g.id), '__none'];
+    groupOrder.forEach(gid=>{
+      const secs = qGrouped[gid]||[];
+      if(!secs.length) return;
+      const gName = topGroups.find(g=>g.id===gid)?.name||'Sonstiges';
+
+      const block = document.createElement('div');
+      block.className = 'qty-group-block';
+      block.appendChild(buildGroupHeader(gName, ci));
+
+      const table = document.createElement('table');
+      table.className = 'qty-table';
+
+      // Tabellenkopf
+      table.innerHTML = `<thead><tr>
+        <th>Bezeichnung</th><th class="num">Stk.</th><th class="num">Spare</th>
+        <th class="num">Im&nbsp;Proj.</th><th class="num">Diff</th><th>Kapitel</th><th></th>
+      </tr></thead>`;
+      const tbody = document.createElement('tbody');
+
+      if(weltDepth === 3){
+        // Untergruppen aus subgroup-Feld der Typen
+        const subgroups = [...new Set(secs.map(s=>s.t?.subgroup||'').filter(Boolean))];
+        const noSub = secs.filter(s=>!s.t?.subgroup);
+        subgroups.forEach(sg=>{
+          const sgTr = document.createElement('tr');
+          sgTr.className = 'subgrp-row';
+          sgTr.innerHTML = `<td colspan="7">${esc(sg)}</td>`;
+          tbody.appendChild(sgTr);
+          secs.filter(s=>s.t?.subgroup===sg).forEach(s=>tbody.appendChild(buildQtyRow(ci,s.si)));
+        });
+        noSub.forEach(s=>tbody.appendChild(buildQtyRow(ci,s.si)));
+      } else {
+        secs.forEach(s=>tbody.appendChild(buildQtyRow(ci,s.si)));
+      }
+
+      table.appendChild(tbody);
+      block.appendChild(table);
+      panel.appendChild(block);
+    });
+  }
+
   const ar = document.createElement('div'); ar.className='add-row';
   ar.innerHTML=`<button class="btn btn-green" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>`;
   panel.appendChild(ar);

@@ -2,60 +2,60 @@
 // KATALOG — vollständige Datenbank
 // ══════════════════════════════════════════════════
 const CATALOG = {
-  "DMX 5-Pin":{cat:"Kabel Liste",items:[
+  "DMX 5-Pin":{cat:"Datenwelt",items:[
     {n:"5-Pin DMX",l:"1,5m"},{n:"",l:"3m"},{n:"",l:"5m"},{n:"",l:"7m"},
     {n:"",l:"10m"},{n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},
     {n:"",l:"30m"},{n:"",l:"40m"},{n:"",l:"50m Trommel"},{n:"",l:"100m Trommel"}
   ]},
-  "DMX 3-Pin":{cat:"Kabel Liste",items:[
+  "DMX 3-Pin":{cat:"Datenwelt",items:[
     {n:"3-Pin DMX",l:"1,5m"},{n:"",l:"3m"},{n:"",l:"5m"},{n:"",l:"9m"},
     {n:"",l:"10m"},{n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},
     {n:"",l:"30m"},{n:"",l:"40m"},{n:"",l:"50m Trommel"},{n:"",l:"100m Trommel"}
   ]},
-  "DMX 4er Baum 5-Pin":{cat:"Kabel Liste",items:[
+  "DMX 4er Baum 5-Pin":{cat:"Datenwelt",items:[
     {n:"4er Baum 5-Pin",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},{n:"",l:"15m"},
     {n:"",l:"20m"},{n:"",l:"25m"},{n:"",l:"30m"},{n:"",l:"40m"},
     {n:"",l:"50m"},{n:"",l:"100m"}
   ]},
-  "DMX LK37":{cat:"Kabel Liste",items:[
+  "DMX LK37":{cat:"Datenwelt",items:[
     {n:"LK37",l:"5m"},{n:"",l:"10m"},{n:"",l:"15m"},{n:"",l:"20m"},
     {n:"",l:"30m"},{n:"",l:"40m"},{n:"",l:"50m"},{n:"",l:"70m"},{n:"",l:"100m"},
     {n:"LK37 M → 12x DMX F",l:""},{n:"LK37 F → 12x DMX M",l:""}
   ]},
-  "DMX Adapter":{cat:"Kabel Liste",items:[
+  "DMX Adapter":{cat:"Datenwelt",items:[
     {n:"Cat → 4x DMX M",l:""},{n:"Cat → 4x DMX F",l:""},
     {n:"DMX 3pol M → DMX 5pol F",l:""},{n:"DMX 3pol F → DMX 5pol M",l:""}
   ]},
-  "Netzwerk LWL Glasfaser":{cat:"Kabel Liste",items:[
+  "Netzwerk LWL Glasfaser":{cat:"Datenwelt",items:[
     {n:"LWL 4er MultiMode SC",l:"Patchkabel 1m"},{n:"",l:"3m"},{n:"",l:"5m"},
     {n:"",l:"10m"},{n:"",l:"20m"},{n:"",l:"50m"},{n:"",l:"100m"},
     {n:"",l:"150m"},{n:"",l:"300m"},{n:"",l:"500m"},
     {n:"LWL Verbinder SC–SC",l:""},{n:"LWL Adapter LC→SC",l:""},{n:"LWL Reinigungset",l:""}
   ]},
-  "Netzwerk Cat 6/7 RJ45":{cat:"Kabel Liste",items:[
+  "Netzwerk Cat 6/7 RJ45":{cat:"Datenwelt",items:[
     {n:"Cat 6/7 RJ45",l:"Patchkabel 1m"},{n:"",l:"3m"},{n:"",l:"5m"},
     {n:"",l:"10m"},{n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},
     {n:"",l:"50m Trommel"},{n:"",l:"100m Trommel"},{n:"Cat 6/7 RJ45 Verbinder",l:""}
   ]},
-  "Netzwerk Ethercon":{cat:"Kabel Liste",items:[
+  "Netzwerk Ethercon":{cat:"Datenwelt",items:[
     {n:"Ethercon Cat 6/7",l:"5m"},{n:"",l:"10m"},{n:"",l:"20m"},{n:"",l:"30m"},
     {n:"",l:"50m Trommel"},{n:"",l:"90m Trommel"},{n:"",l:"100m Trommel"},
     {n:"Ethercon Verbinder",l:""}
   ]},
-  "Stromkabel Han16":{cat:"Kabel Liste",items:[
+  "Stromkabel Han16":{cat:"Stromwelt",items:[
     {n:'Han16 2,5"',l:"1m"},{n:"",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},
     {n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},{n:"",l:"30m"},
     {n:"",l:"40m"},{n:"",l:"50m"},
     {n:"Han16 M → 6x Schuko",l:""},{n:"Han16 M → 6x Schuko + Han F",l:""},
     {n:"6x Schuko M → Han F",l:""},{n:"Han16 Y-Verbinder",l:""},{n:"Han16 Verbinder",l:""}
   ]},
-  "Stromkabel Han6 5kW":{cat:"Kabel Liste",items:[
+  "Stromkabel Han6 5kW":{cat:"Stromwelt",items:[
     {n:"Han6 5KW",l:"1m"},{n:"",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},
     {n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},{n:"",l:"30m"},
     {n:"",l:"40m"},{n:"",l:"50m"},
     {n:"Han8 5KW → 3x CEE32 F",l:""},{n:"3x CEE32 M → Han8 5KW",l:""}
   ]},
-  "Stromkabel Socapex":{cat:"Kabel Liste",items:[
+  "Stromkabel Socapex":{cat:"Stromwelt",items:[
     {n:'Socapex 2,5"',l:"1m"},{n:"",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},
     {n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},{n:"",l:"30m"},
     {n:"",l:"40m"},{n:"",l:"50m"},
@@ -63,54 +63,54 @@ const CATALOG = {
     {n:"6x Schuko M → Soca F",l:""},{n:"Soca M → Varilite Smart Repeater",l:""},
     {n:"Socapex M → Harting F",l:""},{n:"Socapex F → Harting M",l:""}
   ]},
-  "Stromkabel Schuko":{cat:"Kabel Liste",items:[
+  "Stromkabel Schuko":{cat:"Stromwelt",items:[
     {n:"Schuko",l:"1,5m"},{n:"",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},
     {n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},
     {n:"3er Verteiler",l:""},{n:"6er Verteiler",l:""}
   ]},
-  "Stromkabel VL5":{cat:"Kabel Liste",items:[
+  "Stromkabel VL5":{cat:"Stromwelt",items:[
     {n:"VL5 Verbindungskabel",l:"1,5m"},{n:"",l:"3m"},{n:"",l:"5m"},
     {n:"",l:"10m"},{n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"}
   ]},
-  "CEE 16A Blau":{cat:"Kabel Liste",items:[
+  "CEE 16A Blau":{cat:"Stromwelt",items:[
     {n:"CEE 16A Blau",l:"1,5m"},{n:"",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},
     {n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},{n:"",l:"50m"},
     {n:"CEE16 → Schuko F",l:""},{n:"Schuko M → CEE16",l:""}
   ]},
-  "CEE 32A Blau":{cat:"Kabel Liste",items:[
+  "CEE 32A Blau":{cat:"Stromwelt",items:[
     {n:"CEE 32A Blau",l:"1,5m"},{n:"",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},
     {n:"",l:"15m"},{n:"",l:"20m"},{n:"",l:"25m"},{n:"",l:"50m"},
     {n:"CEE16 → CEE32 Blau",l:""},{n:"CEE32 Blau → 3x CEE32 Blau",l:""}
   ]},
-  "CEE 16A Rot":{cat:"Kabel Liste",items:[
+  "CEE 16A Rot":{cat:"Stromwelt",items:[
     {n:"CEE 16A Rot",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},{n:"",l:"15m"},
     {n:"",l:"20m"},{n:"",l:"25m"},{n:"",l:"50m"},
     {n:"CEE16A Rot → 3x Schuko F",l:""},{n:"CEE16A Rot → 6x Schuko F",l:""}
   ]},
-  "CEE 32A Rot":{cat:"Kabel Liste",items:[
+  "CEE 32A Rot":{cat:"Stromwelt",items:[
     {n:"CEE 32A Rot",l:"5m"},{n:"",l:"10m"},{n:"",l:"15m"},{n:"",l:"20m"},
     {n:"",l:"40m"},{n:"",l:"50m"},{n:"",l:"100m"},
     {n:"VT 32A → 32A+2x16A+3x Schuko",l:""},{n:"32A → 3x 32A CEE",l:""}
   ]},
-  "CEE 63A Rot":{cat:"Kabel Liste",items:[
+  "CEE 63A Rot":{cat:"Stromwelt",items:[
     {n:"CEE 63A Rot",l:"5m"},{n:"",l:"10m"},{n:"",l:"15m"},{n:"",l:"20m"},
     {n:"",l:"40m"},{n:"",l:"50m"},{n:"",l:"100m"},
     {n:"VT 63A → 63A+2x32A+2x16A+3xSchuko",l:""},{n:"32A → 63A Adapter",l:""},
     {n:"VT 63A → 2x 63A",l:""}
   ]},
-  "CEE 125A Rot":{cat:"Kabel Liste",items:[
+  "CEE 125A Rot":{cat:"Stromwelt",items:[
     {n:"CEE 125A Rot",l:"5m"},{n:"",l:"10m"},{n:"",l:"15m"},{n:"",l:"20m"},
     {n:"",l:"40m"},{n:"",l:"50m"},{n:"",l:"100m"},
     {n:"VT 125A → 2x63A+2x32A+2x16A+3xSchuko",l:""},{n:"63A → 125A Adapter",l:""},
     {n:"VT 125A → 2x 63A",l:""}
   ]},
-  "Erdungskabel":{cat:"Kabel Liste",items:[
+  "Erdungskabel":{cat:"Stromwelt",items:[
     {n:"Erdungskabel mit Öse",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},
     {n:"",l:"20m"},{n:"",l:"30m"},{n:"Erdungskabel Set groß",l:""},
     {n:"Erdungskabel Connex",l:"3m"},{n:"",l:"5m"},{n:"",l:"10m"},
     {n:"",l:"20m"},{n:"",l:"30m"},{n:"Erdungskabel Set Connex",l:""}
   ]},
-  "Alurohr & Schellen":{cat:"Zubehör Liste",items:[
+  "Alurohr & Schellen":{cat:"Riggingwelt",items:[
     {n:"Alurohr schwarz",l:"1m"},{n:"",l:"1,5m"},{n:"",l:"2m"},{n:"",l:"3m"},
     {n:"",l:"4m"},{n:"",l:"5m"},{n:"",l:"6m"},
     {n:"Gelenkschelle schwarz",l:""},{n:"Starre Schelle schwarz",l:""},
@@ -120,12 +120,12 @@ const CATALOG = {
     {n:"Gelenkschelle silber",l:""},{n:"Starre Schelle silber",l:""},
     {n:"Halbschelle + Ring silber",l:""}
   ]},
-  "Drop Arms & Verlängerungen":{cat:"Zubehör Liste",items:[
+  "Drop Arms & Verlängerungen":{cat:"Riggingwelt",items:[
     {n:"Drop Arm Moving Light schwarz",l:"1m"},{n:"",l:"1,5m"},{n:"",l:"2m"},{n:"",l:"3m"},
     {n:"Drop Arm TV-Zapfen Verlängerung",l:"45–65cm"},{n:"",l:"0,5–1m"},
     {n:"",l:"1,2–2m"},{n:"",l:"1,8–3m"}
   ]},
-  "Licht Stative":{cat:"Zubehör Liste",items:[
+  "Licht Stative":{cat:"Riggingwelt",items:[
     {n:"Stahlstativ U126",l:""},{n:"Kurbelstativ",l:""},{n:"Genie",l:""},
     {n:"FD31",l:""},{n:"FD31 Stahlplatte",l:""},{n:"Truss FD34 Schwarz",l:""},
     {n:"Truss Husse Schwarz",l:""},{n:"Stahlplatte 60×60cm Truss 80kg",l:""},
@@ -135,7 +135,7 @@ const CATALOG = {
     {n:"Bodenstativ 3-Bein mittel",l:""},{n:"Bodenstativ 3-Bein groß",l:""},
     {n:"Bodenstativ Holz + Schraube",l:""},{n:"Bodenstativ Holz + mini TV-Zapfen",l:""}
   ]},
-  "Stahlzeug & Sicherung":{cat:"Zubehör Liste",items:[
+  "Stahlzeug & Sicherung":{cat:"Riggingwelt",items:[
     {n:"Stahlseil / Safety",l:"30kg 1m"},{n:"",l:"60kg 1m"},
     {n:"",l:"10m Slider 125kg"},{n:"",l:"10m Slider 500kg"},
     {n:"Rundschlinge",l:"1m"},{n:"",l:"1,5m"},{n:"",l:"2m"},
@@ -144,7 +144,7 @@ const CATALOG = {
     {n:"Zurgurt klein",l:"5m"},{n:"Zurgurt mittel",l:"5m"},{n:"Zurgurt groß",l:"5m"},
     {n:"Magic Arm",l:""},{n:"P5 Klemmen mit Bolzen",l:""}
   ]},
-  "Verbrauchsmaterial":{cat:"Zubehör Liste",items:[
+  "Verbrauchsmaterial":{cat:"Verbrauchswelt",items:[
     {n:"PVC Schwarz",l:""},{n:"PVC Grau",l:""},{n:"Gaffa schwarz",l:""},
     {n:"Gaffa silber",l:""},{n:"Gaffa weiss",l:""},
     {n:"Kabelbinder schwarz dick",l:""},{n:"Kabelbinder schwarz normal",l:""},
@@ -154,23 +154,23 @@ const CATALOG = {
     {n:"Beschriftungstape gelb",l:""},{n:"Beschriftungstape pink",l:""},
     {n:"Beschriftungstape grün",l:""},{n:"Dekomolton 1lfm",l:"3m breit"}
   ]},
-  "System & Sonderzubehör":{cat:"Zubehör Liste",items:[
+  "System & Sonderzubehör":{cat:"Verbrauchswelt",items:[
     {n:"Notenpultlampen",l:""},{n:"Handdimmer",l:""},{n:"Baufluter 500W",l:""},
     {n:"mini At10",l:""},{n:"Patchkabel → Schuko F",l:""},{n:"Schuko M → Patchkabel",l:""},
     {n:"Ersatzbrenner Kiste",l:""},{n:"Nebelfluid Fog",l:"5l"},
     {n:"Nebelfluid Tour Haze",l:"5l"},{n:"Nebelfluid MDG",l:"5l"},
     {n:"CO2 Flasche",l:"20kg"},{n:"Trichter",l:""},{n:"Ventilator",l:""}
   ]},
-  "Büro & Office":{cat:"Zubehör Liste",items:[
+  "Büro & Office":{cat:"Verbrauchswelt",items:[
     {n:"Podest 2×1m",l:""},{n:"Podest Fuß 60cm",l:""},{n:"Podest Fuß 20cm Rolle",l:""},
     {n:"Drucker Brother A3",l:""},{n:"Monitor 24 Zoll",l:""},
     {n:"Erste-Hilfe Case",l:""},{n:"Feuerlöscher Case",l:""},
     {n:"Kaffeemaschinen Case",l:""},{n:"Bürostuhl",l:""}
   ]},
-  "Farbfolien LEE":{cat:"Zubehör Liste",items:
+  "Farbfolien LEE":{cat:"Verbrauchswelt",items:
     Array.from({length:17},()=>({n:"LEE",l:"Rolle/Geschnitten"}))
   },
-  "Dimmer & Feststrom VT":{cat:"Hardware Liste",items:[
+  "Dimmer & Feststrom VT":{cat:"Stromwelt",items:[
     {n:"Handdimmer 2kW",l:"Schuko"},
     {n:"6-Kanal Dimmer → 6x Schuko",l:"16A CEE"},
     {n:"12-Kanal Dimmer MA → 2x Han",l:"32A CEE"},
@@ -183,7 +183,7 @@ const CATALOG = {
     {n:"48-Kanal VT → Han",l:"125A CEE",b:"Hotpatch / 4x Han Input"},
     {n:"USV 1000W",l:"Schuko"},{n:"USV 1500W",l:"Schuko"}
   ]},
-  "DMX Steuerung & Netzwerk":{cat:"Hardware Liste",items:[
+  "DMX Steuerung & Netzwerk":{cat:"Datenwelt",items:[
     {n:"GrandMA2 Full",l:""},{n:"GrandMA2 Light",l:""},{n:"GrandMA2 ONPC Set",l:""},
     {n:"GrandMA2 NPU",l:"",b:"mit USV und SG300"},
     {n:"GrandMA2 4-Port Node",l:""},{n:"GrandMA2 8-Port Node",l:""},
@@ -194,7 +194,7 @@ const CATALOG = {
   ]}
 };
 
-const CAT_ORDER = ["Kabel Liste","Zubehör Liste","Hardware Liste","Lampen Liste"];
+const CAT_ORDER = ["Datenwelt","Stromwelt","Lichtwelt","Riggingwelt","Verbrauchswelt"];
 const STORAGE_KEY  = 'materialliste-licht-v1';
 const CATALOG_KEY  = 'materialliste-licht-catalog-v1';
 const CATALOGS_KEY = 'materialliste-licht-catalogs-v1';
@@ -246,6 +246,20 @@ function initCatalogs(){
         });
       });
       if(utMigrated) saveCatalogsStore();
+      // Migration: alte cat-Werte → neue Welten-Namen
+      const oldCatNames = new Set(["Kabel Liste","Zubehör Liste","Hardware Liste","Lampen Liste"]);
+      const typeToWelt = {}; Object.entries(CATALOG).forEach(([k,v])=>{ typeToWelt[k]=v.cat; });
+      const fallbackWelt = {"Kabel Liste":"Datenwelt","Zubehör Liste":"Riggingwelt","Hardware Liste":"Datenwelt","Lampen Liste":"Lichtwelt"};
+      let catMigrated = false;
+      catalogsStore.catalogs.forEach(c=>{
+        Object.entries(c.types||{}).forEach(([typeName,t])=>{
+          if(oldCatNames.has(t.cat)){
+            t.cat = typeToWelt[typeName] || fallbackWelt[t.cat] || 'Datenwelt';
+            catMigrated = true;
+          }
+        });
+      });
+      if(catMigrated) saveCatalogsStore();
       activeCatalogId = 'cat-default';
       return;
     }
@@ -261,7 +275,7 @@ function initCatalogs(){
       const custom = JSON.parse(cc);
       Object.entries(custom).forEach(([key,items])=>{
         if(types[key]) types[key].items.push(...items.map(it=>({...it})));
-        else types[key] = {cat:'Kabel Liste',items:items.map(it=>({...it})),unit_type:_detectUnitType({items})};
+        else types[key] = {cat:'Datenwelt',items:items.map(it=>({...it})),unit_type:_detectUnitType({items})};
       });
     }
   }catch(e){}
@@ -281,6 +295,11 @@ function initCatalogs(){
 function _detectUnitType(t){
   if(!t||!t.items||t.items.length===0) return 'qty';
   return t.items.some(i=>i.l&&i.l.trim()!=='') ? 'lengths' : 'qty';
+}
+
+/** Anzeigetiefe einer Welt: 3 = mit Untergruppen, 2 = direkt */
+function _getWeltDepth(weltName){
+  return (weltName==='Lichtwelt'||weltName==='Datenwelt') ? 3 : 2;
 }
 
 // ── GRUPPEN-HELPERS ────────────────────────────────────────────────

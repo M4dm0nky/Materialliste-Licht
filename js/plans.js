@@ -24,6 +24,28 @@ function migrateState(s){
       });
     });
   });
+  // Migration v0.11 → v0.12: 4 Kategorien → 5 Welten
+  const OLD_CAT_NAMES = new Set(["Kabel Liste","Zubehör Liste","Hardware Liste","Lampen Liste"]);
+  const needsWeltMigration = st.positions && st.positions.length > 0 &&
+    st.positions[0].categories && st.positions[0].categories.some(c => OLD_CAT_NAMES.has(c.name));
+  if(needsWeltMigration){
+    const types    = getActiveCatalogTypes();
+    const weltOrder = CAT_ORDER; // ["Datenwelt","Stromwelt","Lichtwelt","Riggingwelt","Verbrauchswelt"]
+    const fallback  = {"Kabel Liste":"Datenwelt","Zubehör Liste":"Riggingwelt","Hardware Liste":"Datenwelt","Lampen Liste":"Lichtwelt"};
+    st.positions.forEach(pos=>{
+      const newCats = weltOrder.map(w=>({name:w,sections:[]}));
+      pos.categories.forEach(oldCat=>{
+        oldCat.sections.forEach(sec=>{
+          const t = types[sec.type_name];
+          const weltName = t ? t.cat : (fallback[oldCat.name]||'Datenwelt');
+          const wi = weltOrder.indexOf(weltName);
+          if(wi>=0) newCats[wi].sections.push(sec);
+          else newCats[0].sections.push(sec);
+        });
+      });
+      pos.categories = newCats;
+    });
+  }
   return st;
 }
 

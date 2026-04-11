@@ -13,12 +13,12 @@ function lc(ci,si,ii){
   if(!dEl) return;
   const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
   if(!hasData){
-    dEl.textContent='—'; dEl.className='td-diff zero'; tEl.textContent='—';
+    dEl.textContent='—'; dEl.className='td-diff zero'; if(tEl) tEl.textContent='—';
     if(tr) tr.className='';
   } else {
     dEl.textContent = d>=0 ? '+'+d : d;
     dEl.className   = 'td-diff '+(d>0?'pos':d<0?'neg':'zero');
-    tEl.textContent = t;
+    if(tEl) tEl.textContent = t;
     if(tr) tr.className='has-data';
   }
   recalcBadge(ci);

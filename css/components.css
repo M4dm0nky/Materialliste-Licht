@@ -88,6 +88,49 @@ tbody tr.row-dragging{opacity:.35;}
 .secblock.no-length .tdlen       { display: none; }
 .secblock.no-length .sec-hdr-len { display: none; }
 
+/* ── WELTEN: GRUPPEN-HEADER ──────────────────────────────────────── */
+.grp-section-hdr{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 14px;
+  background:var(--bg3);border-left:3px solid var(--accent2);
+  font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:3px;
+  color:var(--accent2);border-bottom:1px solid var(--border);margin-top:2px;
+}
+.grp-section-hdr .grp-chevron{font-size:11px;color:var(--muted);}
+
+/* ── WELTEN: QTY-GRUPPEN-BLOCK ───────────────────────────────────── */
+.qty-group-block{margin-bottom:14px;border:1px solid var(--border);background:var(--bg2);}
+.qty-table{width:100%;border-collapse:collapse;}
+.qty-table thead th{padding:5px 10px;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-align:left;border-right:1px solid #1a1f30;background:var(--bg);}
+.qty-table thead th.num{text-align:center;}
+.qty-table tbody tr{border-bottom:1px solid #1a1f30;transition:background .1s;}
+.qty-table tbody tr:hover{background:rgba(232,200,74,.04);}
+.qty-table tbody tr.has-data{background:rgba(74,232,160,.03);}
+.qty-table tbody tr.has-data:hover{background:rgba(74,232,160,.08);}
+.qty-table .tdname{padding:5px 10px;}
+.qty-table .tdname input[type=text]{background:transparent;border:1px solid transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;width:100%;min-width:180px;padding:3px 5px;outline:none;}
+.qty-table .tdname input[type=text]:hover{border-color:var(--border);}
+.qty-table .tdname input[type=text]:focus{border-color:var(--accent);background:rgba(232,200,74,.04);}
+.qty-table .tdinput{padding:3px 6px;}
+.qty-table .tdinput input[type=number]{background:transparent;border:1px solid transparent;color:var(--text);font-family:'Share Tech Mono',monospace;font-size:18px;font-weight:700;width:72px;padding:4px 5px;text-align:center;outline:none;border-radius:2px;}
+.qty-table .tdinput input[type=number]:hover{border-color:var(--border);}
+.qty-table .tdinput input[type=number]:focus{border-color:var(--accent);background:rgba(232,200,74,.05);}
+.qty-table .tdtext{padding:3px 8px;}
+.qty-table .tdtext input[type=text]{background:transparent;border:1px solid transparent;color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-size:15px;width:100%;min-width:90px;padding:3px 5px;outline:none;}
+.qty-table .tdtext input[type=text]:hover{border-color:var(--border);}
+.qty-table .tdtext input[type=text]:focus{border-color:var(--accent2);}
+.qty-table .td-diff{font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:700;text-align:center;padding:3px 8px;}
+.qty-table .td-actions{text-align:center;width:32px;padding:2px;}
+
+/* ── WELTEN: UNTERGRUPPEN-ZEILE ──────────────────────────────────── */
+.subgrp-row td{
+  background:rgba(123,156,232,.05);color:var(--text2);
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 14px 3px 22px;border-top:1px dashed rgba(42,48,80,.6);
+  font-family:'Share Tech Mono',monospace;
+}
+.subgrp-row td::before{content:'· ';}
+
 /* ── FORMULAR-ELEMENTE ────────────────────────────────────────────── */
 .sec-name-input{background:var(--bg);border:1px solid var(--border);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:2px;padding:9px 16px;width:100%;outline:none;margin-bottom:21px;text-transform:uppercase;}
 .sec-name-input:focus{border-color:var(--accent);}

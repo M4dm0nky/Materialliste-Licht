@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katalog Konzept</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="../../../../../../../.claude/plugins/superpowers/skills/brainstorming/scripts/helper.js"></script>
+<style>
+  :root {
+    --bg:#0d0f14; --bg2:#141720; --bg3:#1c2030; --border:#2a3050;
+    --accent:#e8c84a; --green:#4ae8a0; --red:#e84a4a;
+    --muted:#5a6080; --text:#c8d0e8; --text2:#8a94b0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px; padding: 24px;
+  }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 4px; color: var(--accent); margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; letter-spacing: 1px; margin-bottom: 28px; font-family: 'Share Tech Mono', monospace; }
+
+  /* PROBLEM BOX */
+  .problem-box {
+    background: rgba(232,74,74,.07); border: 1px solid rgba(232,74,74,.3);
+    padding: 14px 18px; margin-bottom: 28px; border-radius: 2px;
+  }
+  .problem-box .label { font-size: 10px; letter-spacing: 2px; color: var(--red); font-family: 'Share Tech Mono', monospace; margin-bottom: 8px; }
+  .problem-box p { color: var(--text2); font-size: 13px; line-height: 1.5; }
+
+  /* MINI APP MOCKUP */
+  .mockup-wrap { border: 1px solid var(--border); background: var(--bg2); margin-bottom: 6px; }
+  .mockup-label { font-size: 10px; letter-spacing: 2px; color: var(--muted); font-family: 'Share Tech Mono', monospace; padding: 8px 12px; border-bottom: 1px solid var(--border); background: var(--bg3); }
+
+  /* Fake section header — wie in der echten App */
+  .fake-sechdr {
+    display: grid;
+    grid-template-columns: 1fr 60px 60px 75px 75px 75px auto;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+  }
+  .fake-sechdr-title {
+    padding: 11px 14px;
+    font-size: 16px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .fake-sechdr-title .chevron { color: var(--muted); font-size: 11px; }
+  .fake-sechdr-col {
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--muted);
+    text-align: center; padding: 11px 4px; border-left: 1px solid var(--border);
+  }
+  .fake-sechdr-actions { padding: 7px 10px; display: flex; gap: 4px; align-items: center; border-left: 1px solid var(--border); }
+  .fake-btn { font-size: 11px; padding: 3px 7px; border: 1px solid; border-radius: 2px; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; }
+  .fake-btn-green { border-color: var(--green); color: var(--green); background: transparent; }
+  .fake-btn-red { border-color: var(--red); color: var(--red); background: transparent; }
+
+  /* Fake table rows */
+  .fake-table { width: 100%; border-collapse: collapse; }
+  .fake-thead th {
+    background: var(--bg2); font-size: 11px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+    padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left;
+  }
+  .fake-thead th.num { text-align: center; }
+  .fake-tbody td {
+    padding: 7px 10px; border-bottom: 1px solid rgba(42,48,80,.5);
+    color: var(--text); font-size: 14px;
+  }
+  .fake-tbody td.num { text-align: center; }
+  .fake-input {
+    background: transparent; border: none; border-bottom: 1px solid var(--border);
+    color: var(--accent); font-family: 'Share Tech Mono', monospace;
+    font-size: 13px; width: 50px; text-align: center; outline: none;
+  }
+
+  /* ── OPTIONS ── */
+  .options-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; margin-top: 28px;
+  }
+  .opt {
+    border: 2px solid var(--border); background: var(--bg2);
+    cursor: pointer; transition: border-color .15s, background .15s;
+    position: relative;
+  }
+  .opt:hover { border-color: var(--accent); }
+  .opt.selected { border-color: var(--accent); background: rgba(232,200,74,.06); }
+  .opt.selected::after {
+    content: '✓ GEWÄHLT'; position: absolute; top: 8px; right: 8px;
+    font-size: 10px; letter-spacing: 1.5px; color: var(--accent);
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .opt-header {
+    padding: 12px 14px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .opt-letter {
+    font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+    color: var(--accent); line-height: 1;
+  }
+  .opt-title { font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .opt-desc { font-size: 12px; color: var(--text2); padding: 8px 14px 10px; line-height: 1.5; }
+  .opt-preview { padding: 0 0 0 0; }
+
+  /* OPTION A — Gruppe als Section, Geräte als Zeilen */
+  .opa-sechdr {
+    background: var(--bg3); border-bottom: 1px solid var(--border);
+    padding: 9px 14px; font-size: 14px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .opa-group-label {
+    font-size: 10px; letter-spacing: 2px; color: var(--muted);
+    font-family: 'Share Tech Mono', monospace; margin-right: auto;
+    background: rgba(232,200,74,.08); padding: 2px 7px; border: 1px solid rgba(232,200,74,.2);
+  }
+  .opa-row {
+    display: grid; grid-template-columns: 1fr 55px 55px 70px;
+    padding: 8px 14px; border-bottom: 1px solid rgba(42,48,80,.4);
+    align-items: center; gap: 8px;
+  }
+  .opa-name { font-size: 14px; color: var(--text); }
+  .opa-num { text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--muted); }
+
+  /* OPTION B — Kompakte device card, kein Table-Body */
+  .opb-card {
+    border-bottom: 1px solid var(--border); background: var(--bg2);
+  }
+  .opb-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px; background: var(--bg3); border-bottom: 1px solid var(--border);
+  }
+  .opb-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .opb-name { font-size: 15px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text); flex: 1; }
+  .opb-tag {
+    font-size: 10px; letter-spacing: 1.5px; color: var(--muted);
+    font-family: 'Share Tech Mono', monospace; background: var(--bg);
+    border: 1px solid var(--border); padding: 2px 7px;
+  }
+  .opb-qty-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 8px 14px 10px;
+  }
+  .opb-qty-label { font-size: 11px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
+  .opb-qty-val { font-family: 'Share Tech Mono', monospace; font-size: 16px; color: var(--accent); }
+
+  /* OPTION C — Kompakter Typ-Indikator Badge */
+  .opc-sechdr {
+    display: grid; grid-template-columns: auto 1fr 55px 55px 70px auto;
+    background: var(--bg3); border-bottom: 1px solid var(--border);
+    align-items: center; gap: 0;
+  }
+  .opc-badge {
+    padding: 10px 12px; font-size: 10px; letter-spacing: 1.5px;
+    font-family: 'Share Tech Mono', monospace; font-weight: 700;
+    border-right: 1px solid var(--border); text-align: center;
+    min-width: 60px;
+  }
+  .opc-badge.kabel { background: rgba(74,232,160,.1); color: var(--green); }
+  .opc-badge.geraet { background: rgba(232,200,74,.1); color: var(--accent); }
+  .opc-name { padding: 10px 14px; font-size: 15px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  .opc-name.kabel { color: var(--green); }
+  .opc-name.geraet { color: var(--text); }
+  .opc-col { font-size: 11px; font-family: 'Share Tech Mono', monospace; color: var(--muted); text-align: center; padding: 10px 4px; border-left: 1px solid var(--border); }
+  .opc-actions { padding: 7px 10px; border-left: 1px solid var(--border); }
+
+  .opc-geraet-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 14px; border-bottom: 1px solid rgba(42,48,80,.4); background: rgba(232,200,74,.02);
+  }
+  .opc-geraet-qty { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--muted); }
+  .opc-geraet-input { background: transparent; border: 1px solid var(--border); color: var(--accent); font-family: 'Share Tech Mono', monospace; font-size: 14px; width: 50px; text-align: center; padding: 4px; }
+  .opc-kabel-row {
+    display: grid; grid-template-columns: 1fr 60px 60px 60px 60px 60px;
+    padding: 7px 14px; border-bottom: 1px solid rgba(42,48,80,.4);
+    font-size: 13px; align-items: center; gap: 4px;
+  }
+  .opc-len { color: var(--text2); }
+  .opc-num-cell { text-align: center; font-family: 'Share Tech Mono', monospace; color: var(--muted); }
+  .diff-pos { color: var(--green); }
+
+  .section-gap { margin-bottom: 2px; }
+
+  .sel-indicator {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--bg3); border-top: 2px solid var(--accent);
+    padding: 10px 24px; font-family: 'Share Tech Mono', monospace;
+    font-size: 12px; color: var(--muted); display: none;
+    align-items: center; gap: 16px; z-index: 100;
+  }
+  .sel-indicator.visible { display: flex; }
+  .sel-indicator span { color: var(--accent); }
+
+  .q-label {
+    font-size: 11px; letter-spacing: 2px; color: var(--muted);
+    font-family: 'Share Tech Mono', monospace; text-transform: uppercase;
+    margin-bottom: 20px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<h1>Katalog — Artikel-Konzept</h1>
+<p class="subtitle">Frage 1 von 3 · Wie sollen Geräte/Stückzahl-Artikel aussehen?</p>
+
+<div class="problem-box">
+  <div class="label">◆ AKTUELLES PROBLEM</div>
+  <p>Aktuell haben "DMX 5-Pin" (Kabel mit Längen) und "MARTIN MAC Viper XIP" (Gerät, Stückzahl) identisches Layout — beides sieht aus wie eine Kategorie-Überschrift, nicht wie ein Artikel.</p>
+</div>
+
+<!-- Current state mockup -->
+<div class="mockup-wrap">
+  <div class="mockup-label">AKTUELLER ZUSTAND — beide Section-Typen sehen gleich aus</div>
+  <div class="section-gap">
+    <div class="fake-sechdr">
+      <div class="fake-sechdr-title"><span class="chevron">▼</span> DMX 5-Pin</div>
+      <div class="fake-sechdr-col">DIFF</div><div class="fake-sechdr-col">TOTAL</div>
+      <div class="fake-sechdr-col"># Stk.</div><div class="fake-sechdr-col">Spare</div>
+      <div class="fake-sechdr-col">Im Proj.</div>
+      <div class="fake-sechdr-actions"><button class="fake-btn fake-btn-green">+</button><button class="fake-btn fake-btn-red">✕</button></div>
+    </div>
+    <table class="fake-table"><thead class="fake-thead"><tr>
+      <th>Bezeichnung</th><th>Länge/Typ</th><th class="num">DIFF</th><th class="num">TOTAL</th><th class="num"># Stk.</th><th class="num">Spare</th><th class="num">Im Proj.</th>
+    </tr></thead><tbody class="fake-tbody">
+      <tr><td>5-Pin DMX</td><td>1,5m</td><td class="num">—</td><td class="num">—</td><td class="num"><input class="fake-input" value="0"></td><td class="num"><input class="fake-input" value="0"></td><td class="num"><input class="fake-input" value="0"></td></tr>
+      <tr><td></td><td>5m</td><td class="num">—</td><td class="num">—</td><td class="num"><input class="fake-input" value="0"></td><td class="num"><input class="fake-input" value="0"></td><td class="num"><input class="fake-input" value="0"></td></tr>
+    </tbody></table>
+  </div>
+  <div class="section-gap">
+    <div class="fake-sechdr" style="opacity:.5">
+      <div class="fake-sechdr-title"><span class="chevron">▼</span> MARTIN MAC Viper XIP</div>
+      <div class="fake-sechdr-col">DIFF</div><div class="fake-sechdr-col">TOTAL</div>
+      <div class="fake-sechdr-col"># Stk.</div><div class="fake-sechdr-col">Spare</div>
+      <div class="fake-sechdr-col">Im Proj.</div>
+      <div class="fake-sechdr-actions"><button class="fake-btn fake-btn-green">+</button><button class="fake-btn fake-btn-red">✕</button></div>
+    </div>
+    <table class="fake-table" style="opacity:.5"><thead class="fake-thead"><tr>
+      <th>Bezeichnung</th><th>Länge/Typ</th><th class="num">DIFF</th><th class="num">TOTAL</th><th class="num"># Stk.</th><th class="num">Spare</th><th class="num">Im Proj.</th>
+    </tr></thead><tbody class="fake-tbody">
+      <tr><td>MARTIN MAC Viper XIP</td><td>1m</td><td class="num">—</td><td class="num">—</td><td class="num"><input class="fake-input" value="0"></td><td class="num"><input class="fake-input" value="0"></td><td class="num"><input class="fake-input" value="0"></td></tr>
+    </tbody></table>
+  </div>
+  <div style="padding:8px 14px;font-size:11px;color:var(--red);font-family:'Share Tech Mono',monospace;">
+    ↑ "MARTIN MAC Viper XIP" sieht wie eine Kategorie aus — nicht wie ein Gerät
+  </div>
+</div>
+
+<p class="q-label">◆ Welches Konzept gefällt dir?</p>
+
+<div class="options-grid">
+
+  <!-- OPTION A -->
+  <div class="opt" data-choice="a" onclick="toggleSelect(this)">
+    <div class="opt-header">
+      <div class="opt-letter">A</div>
+      <div>
+        <div class="opt-title">Gruppen-Sektionen</div>
+      </div>
+    </div>
+    <div class="opt-desc">Geräte einer Katalog-Gruppe werden gemeinsam in einer Section gezeigt. "Moving Lights" ist die Überschrift, darunter jedes Gerät als eigene Zeile.</div>
+    <div class="opt-preview">
+      <div class="opa-sechdr">
+        <span class="chevron" style="color:#5a6080;font-size:11px">▼</span>
+        Moving Lights
+        <span style="margin-left:auto;font-size:10px;letter-spacing:1.5px;color:#5a6080;font-family:'Share Tech Mono',monospace;background:rgba(74,232,160,.08);padding:2px 7px;border:1px solid rgba(74,232,160,.2)">LAMPEN · 2 TYPEN</span>
+      </div>
+      <div class="opa-row" style="grid-template-columns:1fr 50px 50px 60px;border-top:1px solid rgba(42,48,80,.6)">
+        <span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#c8d0e8">Martin MAC Viper XIP</span>
+        <span class="opa-num">+2</span><span class="opa-num">4</span><span class="opa-num" style="color:#e8c84a">4</span>
+      </div>
+      <div class="opa-row" style="grid-template-columns:1fr 50px 50px 60px">
+        <span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#c8d0e8">Roxx NEO FX Washlight IP65</span>
+        <span class="opa-num">—</span><span class="opa-num">—</span><span class="opa-num" style="color:#e8c84a">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION B -->
+  <div class="opt" data-choice="b" onclick="toggleSelect(this)">
+    <div class="opt-header">
+      <div class="opt-letter">B</div>
+      <div>
+        <div class="opt-title">Kompakte Device-Cards</div>
+      </div>
+    </div>
+    <div class="opt-desc">Jedes Gerät bleibt in eigener Section, aber ohne Länge-Spalte und in einem kompakten Card-Format — klar als einzelnes Produkt erkennbar.</div>
+    <div class="opt-preview">
+      <!-- Cable section (unchanged) -->
+      <div style="opacity:.5;border-bottom:1px solid #2a3050">
+        <div class="fake-sechdr" style="font-size:13px">
+          <div class="fake-sechdr-title" style="font-size:13px;padding:8px 12px"><span class="chevron">▼</span> DMX 5-Pin <span style="font-size:9px;color:#5a6080;margin-left:6px;font-family:'Share Tech Mono',monospace;letter-spacing:1px">KABEL</span></div>
+          <div class="fake-sechdr-col" style="font-size:10px">DIFF</div><div class="fake-sechdr-col" style="font-size:10px">TOTAL</div>
+          <div class="fake-sechdr-col" style="font-size:10px"># Stk.</div><div class="fake-sechdr-col" style="font-size:10px">Spare</div>
+          <div class="fake-sechdr-col" style="font-size:10px">Im Proj.</div>
+          <div class="fake-sechdr-actions"><button class="fake-btn fake-btn-green" style="font-size:9px;padding:2px 5px">+</button></div>
+        </div>
+      </div>
+      <!-- Device card -->
+      <div class="opb-card">
+        <div class="opb-header">
+          <div class="opb-dot"></div>
+          <div class="opb-name">Martin MAC Viper XIP</div>
+          <div class="opb-tag">MOVING LIGHT</div>
+        </div>
+        <div class="opb-qty-row">
+          <div>
+            <div class="opb-qty-label">Anzahl</div>
+            <div class="opb-qty-val">4</div>
+          </div>
+          <div style="width:1px;background:#2a3050;height:30px;margin:0 8px"></div>
+          <div>
+            <div class="opb-qty-label">Spare</div>
+            <div class="opb-qty-val">1</div>
+          </div>
+          <div style="width:1px;background:#2a3050;height:30px;margin:0 8px"></div>
+          <div>
+            <div class="opb-qty-label">Im Projekt</div>
+            <div class="opb-qty-val" style="color:#4ae8a0">4</div>
+          </div>
+          <div style="width:1px;background:#2a3050;height:30px;margin:0 8px"></div>
+          <div>
+            <div class="opb-qty-label">DIFF</div>
+            <div class="opb-qty-val" style="color:#4ae8a0">+1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION C -->
+  <div class="opt" data-choice="c" onclick="toggleSelect(this)">
+    <div class="opt-header">
+      <div class="opt-letter">C</div>
+      <div>
+        <div class="opt-title">Typ-Badge im Header</div>
+      </div>
+    </div>
+    <div class="opt-desc">Section-Header bekommt einen farbigen Badge: "KABEL" (grün) oder "GERÄT" (gold). Gleiches Layout, sofort lesbar was was ist.</div>
+    <div class="opt-preview">
+      <!-- Cable -->
+      <div class="opc-sechdr">
+        <div class="opc-badge kabel">KABEL</div>
+        <div class="opc-name kabel">DMX 5-Pin</div>
+        <div class="opc-col">DIFF</div><div class="opc-col">TOTAL</div>
+        <div class="opc-col"># Stk.</div>
+        <div class="opc-actions"><button class="fake-btn fake-btn-green" style="font-size:9px;padding:2px 5px">+</button></div>
+      </div>
+      <div class="opc-kabel-row"><span>5-Pin DMX</span><span class="opc-len">1,5m</span><span class="opc-num-cell diff-pos">+6</span><span class="opc-num-cell">6</span><span class="opc-num-cell">6</span></div>
+      <div class="opc-kabel-row"><span></span><span class="opc-len">5m</span><span class="opc-num-cell diff-pos">+4</span><span class="opc-num-cell">4</span><span class="opc-num-cell">4</span></div>
+      <!-- Device -->
+      <div class="opc-sechdr" style="margin-top:2px">
+        <div class="opc-badge geraet">GERÄT</div>
+        <div class="opc-name geraet">Martin MAC Viper XIP</div>
+        <div class="opc-col">DIFF</div><div class="opc-col">TOTAL</div>
+        <div class="opc-col"># Stk.</div>
+        <div class="opc-actions"><button class="fake-btn fake-btn-red" style="font-size:9px;padding:2px 5px">✕</button></div>
+      </div>
+      <div class="opc-geraet-row">
+        <span style="flex:1;font-size:12px;color:#8a94b0;font-family:'Share Tech Mono',monospace;letter-spacing:1px">ANZAHL</span>
+        <input class="opc-geraet-input" value="4">
+        <span style="font-size:12px;color:#8a94b0;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-left:12px">SPARE</span>
+        <input class="opc-geraet-input" value="1">
+        <span style="font-size:12px;color:#8a94b0;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-left:12px">IM PROJ.</span>
+        <input class="opc-geraet-input" value="4">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="sel-indicator" id="selIndicator">
+  <span id="selText">—</span>
+  ausgewählt · Antwort im Terminal bestätigen
+</div>
+
+<script>
+  function toggleSelect(el) {
+    const parent = el.closest('.options-grid');
+    parent.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    el.classList.toggle('selected');
+    const choice = el.dataset.choice;
+    const title = el.querySelector('.opt-title').textContent;
+    document.getElementById('selText').textContent = 'Option ' + choice.toUpperCase() + ' — ' + title;
+    document.getElementById('selIndicator').classList.add('visible');
+    if (window.recordChoice) recordChoice(choice, el.querySelector('.opt-title').textContent);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katalog Hierarchie</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="../../../../../../../.claude/plugins/superpowers/skills/brainstorming/scripts/helper.js"></script>
+<style>
+  :root {
+    --bg:#0d0f14;--bg2:#141720;--bg3:#1c2030;--border:#2a3050;
+    --accent:#e8c84a;--green:#4ae8a0;--red:#e84a4a;
+    --muted:#5a6080;--text:#c8d0e8;--text2:#8a94b0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;padding:20px;}
+  h1{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:4px;color:var(--accent);margin-bottom:4px;}
+  .subtitle{color:var(--muted);font-size:12px;letter-spacing:1px;margin-bottom:24px;font-family:'Share Tech Mono',monospace;}
+
+  .options-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .opt{border:2px solid var(--border);background:var(--bg2);cursor:pointer;transition:border-color .15s;position:relative;}
+  .opt:hover{border-color:var(--accent);}
+  .opt.selected{border-color:var(--accent);background:rgba(232,200,74,.05);}
+  .opt.selected::after{content:'✓ GEWÄHLT';position:absolute;top:8px;right:8px;font-size:9px;letter-spacing:1.5px;color:var(--accent);font-family:'Share Tech Mono',monospace;}
+
+  .opt-head{padding:12px 14px;border-bottom:1px solid var(--border);background:var(--bg3);}
+  .opt-letter{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--accent);line-height:1;}
+  .opt-name{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+  .opt-sub{font-size:11px;color:var(--text2);margin-top:3px;}
+
+  /* Tree */
+  .tree{padding:10px 12px 12px;overflow:hidden;}
+  .tab{margin-bottom:6px;}
+  .tab-head{
+    display:flex;align-items:center;gap:7px;padding:6px 10px;
+    font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+    border-left:3px solid;margin-bottom:2px;
+  }
+  .tab-icon{font-size:14px;line-height:1;flex-shrink:0;}
+  .group{
+    padding:3px 10px 3px 24px;font-size:11px;color:var(--text2);
+    border-left:1px dashed var(--border);margin-left:6px;
+    line-height:1.6;
+  }
+  .group::before{content:'›  ';}
+  .subgroup{
+    padding:2px 8px 2px 36px;font-size:10px;color:var(--muted);
+    font-family:'Share Tech Mono',monospace;letter-spacing:.5px;
+  }
+  .subgroup::before{content:'·  ';}
+  .badge{
+    font-size:9px;font-family:'Share Tech Mono',monospace;letter-spacing:1px;
+    padding:1px 5px;border-radius:1px;margin-left:auto;flex-shrink:0;
+  }
+
+  /* Tab colors per option */
+  .c1{border-color:#e8c84a;background:rgba(232,200,74,.06);}  .c1 .tab-icon,.c1 .opt-letter-tab{color:#e8c84a;}
+  .c2{border-color:#4ae8a0;background:rgba(74,232,160,.06);}
+  .c3{border-color:#7b9ce8;background:rgba(123,156,232,.06);}
+  .c4{border-color:#e87b4a;background:rgba(232,123,74,.06);}
+  .c5{border-color:#c84ae8;background:rgba(200,74,232,.06);}
+  .c1n{color:#e8c84a;}.c2n{color:#4ae8a0;}.c3n{color:#7b9ce8;}.c4n{color:#e87b4a;}.c5n{color:#c84ae8;}
+
+  .badge1{background:rgba(232,200,74,.15);color:#e8c84a;}
+  .badge2{background:rgba(74,232,160,.15);color:#4ae8a0;}
+  .badge3{background:rgba(123,156,232,.15);color:#7b9ce8;}
+  .badge4{background:rgba(232,123,74,.15);color:#e87b4a;}
+  .badge5{background:rgba(200,74,232,.15);color:#c84ae8;}
+
+  .move-tag{
+    font-size:9px;font-family:'Share Tech Mono',monospace;
+    color:#e87b4a;letter-spacing:.5px;margin-left:4px;
+  }
+  .del-tag{text-decoration:line-through;color:var(--muted);font-size:9px;}
+
+  .info-box{
+    background:rgba(74,232,160,.05);border:1px solid rgba(74,232,160,.2);
+    padding:8px 12px;margin-top:6px;font-size:11px;color:var(--text2);line-height:1.5;
+  }
+  .info-box .em{color:var(--green);}
+
+  .sel-bar{
+    position:fixed;bottom:0;left:0;right:0;background:var(--bg3);
+    border-top:2px solid var(--accent);padding:9px 20px;
+    font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);
+    display:none;align-items:center;gap:12px;z-index:100;
+  }
+  .sel-bar.vis{display:flex;}
+  .sel-bar span{color:var(--accent);}
+</style>
+</head>
+<body>
+
+<h1>Katalog Hierarchie</h1>
+<p class="subtitle">Frage 2 von 3 · Welche Oberkategorien (Tabs) sind sinnvoll?</p>
+
+<div class="options-row">
+
+  <!-- OPTION A: 4 Tabs, umbenannt & aufgeräumt -->
+  <div class="opt" data-choice="a" onclick="pick(this)">
+    <div class="opt-head">
+      <div class="opt-letter">A</div>
+      <div class="opt-name">4 Tabs — aufgeräumt</div>
+      <div class="opt-sub">Aktuelle Struktur bereinigt. "Zubehör" wird zu "Rigging", Hazer/Nebel kommen zu Fixtures.</div>
+    </div>
+    <div class="tree">
+      <div class="tab">
+        <div class="tab-head c1"><span class="tab-icon">🔌</span><span class="c1n">Kabel &amp; Adapter</span><span class="badge badge1">unveränd.</span></div>
+        <div class="group">DMX (5-Pin, 3-Pin, LK24, 4er Baum, Adapter)</div>
+        <div class="group">Netzwerk (LWL, Cat, Ethercon)</div>
+        <div class="group">Strom (Schuko, Han16, True1, CEE, Erdung)</div>
+        <div class="group">Multicore (Laka, Auflösungen)</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c2"><span class="tab-icon">⚙️</span><span class="c2n">Hardware &amp; Geräte</span><span class="badge badge2">unveränd.</span></div>
+        <div class="group">Steuerung (Pulte, Nodes, Splitter)</div>
+        <div class="group">Netzwerk HW (Switche, LUMINEX)</div>
+        <div class="group">Strom (Dimmer, VT, USV)</div>
+        <div class="group">Dollys &amp; Racks</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c3"><span class="tab-icon">💡</span><span class="c3n">Fixtures &amp; Effekte</span><span class="badge badge3">neu</span></div>
+        <div class="group">Moving Lights <span class="move-tag">← aus Lampen</span></div>
+        <div class="group">LED (Wash, Spot, Strip)</div>
+        <div class="group">Konventionell</div>
+        <div class="group">Nebel &amp; Hazer <span class="move-tag">← aus Hardware</span></div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c4"><span class="tab-icon">🔧</span><span class="c4n">Rigging &amp; Verbrauch</span><span class="badge badge4">umbenennung</span></div>
+        <div class="group">Mechanik (Alurohr, Drop Arms, Stative)</div>
+        <div class="group">Sicherung (Steelflex, Stahlseil, Schäkel)</div>
+        <div class="group">Verbrauchsmaterial (Gaffa, Tape)</div>
+        <div class="group">Büro &amp; Office</div>
+      </div>
+      <div class="info-box"><span class="em">Minimal-Umbau.</span> Nur 3 Typen wandern, Rest bleibt. Bestehende Daten bleiben intakt.</div>
+    </div>
+  </div>
+
+  <!-- OPTION B: 5 Tabs funktional -->
+  <div class="opt" data-choice="b" onclick="pick(this)">
+    <div class="opt-head">
+      <div class="opt-letter">B</div>
+      <div class="opt-name">5 Tabs — funktional</div>
+      <div class="opt-sub">Getrennte Tabs für Strom- und Datenwelt. Wie ein LD über sein Rig nachdenkt.</div>
+    </div>
+    <div class="tree">
+      <div class="tab">
+        <div class="tab-head c1"><span class="tab-icon">📡</span><span class="c1n">Datenwelt</span></div>
+        <div class="group">DMX Kabel (5-Pin, 3-Pin, LK24, Adapter)</div>
+        <div class="group">Netzwerk Kabel (LWL, Cat, Ethercon)</div>
+        <div class="group">Multicore (Daten-Stränge, Auflösungen)</div>
+        <div class="group">Steuerung (Pulte, Nodes, Splitter, Switche)</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c2"><span class="tab-icon">⚡</span><span class="c2n">Stromwelt</span></div>
+        <div class="group">Kabel (Schuko, Han16, True1, CEE, Erdung)</div>
+        <div class="group">Multicore (Strom-Stränge, HAN16-Auflösungen)</div>
+        <div class="group">Verteiler &amp; Dimmer (Dimmer, VT, USV)</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c3"><span class="tab-icon">💡</span><span class="c3n">Fixtures &amp; Effekte</span></div>
+        <div class="group">Moving Lights</div>
+        <div class="group">LED (Wash, Spot, Strip, IP)</div>
+        <div class="group">Konventionell</div>
+        <div class="group">Nebel, Hazer, CO₂</div>
+        <div class="group">Ventilatoren</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c4"><span class="tab-icon">🔩</span><span class="c4n">Rigging</span></div>
+        <div class="group">Alurohr &amp; Schellen</div>
+        <div class="group">Drop Arms &amp; Verlängerungen</div>
+        <div class="group">Stative &amp; Traversen</div>
+        <div class="group">Sicherung (Stahlseil, Schäkel, Steelflex)</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c5"><span class="tab-icon">🗃️</span><span class="c5n">Verbrauch &amp; Office</span></div>
+        <div class="group">Verbrauchsmaterial (Gaffa, Tape, Kabelbinder)</div>
+        <div class="group">Fluid (Hazerfluid, Fog, MDG)</div>
+        <div class="group">Büro &amp; Office</div>
+      </div>
+      <div class="info-box"><span class="em">Klare Trennung Daten/Strom.</span> Multicore aufgeteilt. 5 Tabs = etwas mehr Navigation, aber sehr logisch.</div>
+    </div>
+  </div>
+
+  <!-- OPTION C: 5 Tabs, nah an bestehendem JSON -->
+  <div class="opt" data-choice="c" onclick="pick(this)">
+    <div class="opt-head">
+      <div class="opt-letter">C</div>
+      <div class="opt-name">5 Tabs — nah am JSON</div>
+      <div class="opt-sub">Wie Option A, aber Rigging &amp; Verbrauch werden getrennt. Entspricht am meisten deiner bestehenden Datenstruktur.</div>
+    </div>
+    <div class="tree">
+      <div class="tab">
+        <div class="tab-head c1"><span class="tab-icon">🔌</span><span class="c1n">Kabel &amp; Adapter</span></div>
+        <div class="group">Datenkabel (DMX, Netzwerk, LK24, Adapter)</div>
+        <div class="group">Stromkabel (Schuko, Han16, True1, CEE)</div>
+        <div class="group">Multicore (komplett mit Auflösungen)</div>
+        <div class="subgroup">→ Strom HAN16 · Daten Ethercon · Daten DMX · LK24</div>
+        <div class="subgroup">→ Auflösungen HAN16 / Ethercon / LK24</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c2"><span class="tab-icon">⚙️</span><span class="c2n">Hardware &amp; Steuerung</span></div>
+        <div class="group">Pulte (MA2, MA3)</div>
+        <div class="group">Datenhardware (Nodes, Splitter, Switche)</div>
+        <div class="group">Stromversorgung (Dimmer, VT, USV, Distro)</div>
+        <div class="group">Dollys &amp; Racks</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c3"><span class="tab-icon">💡</span><span class="c3n">Fixtures &amp; Effekte</span></div>
+        <div class="group">Moving Lights</div>
+        <div class="group">LED-Scheinwerfer</div>
+        <div class="group">Konventionell</div>
+        <div class="group">Nebel &amp; Hazer + Fluid</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c4"><span class="tab-icon">🔩</span><span class="c4n">Rigging &amp; Mechanik</span></div>
+        <div class="group">Alurohr &amp; Schellen</div>
+        <div class="group">Drop Arms &amp; Verlängerungen</div>
+        <div class="group">Stative &amp; Traversen</div>
+        <div class="group">Sicherung</div>
+      </div>
+      <div class="tab">
+        <div class="tab-head c5"><span class="tab-icon">📦</span><span class="c5n">Verbrauch &amp; Office</span></div>
+        <div class="group">Verbrauchsmaterial</div>
+        <div class="group">Farbfolien</div>
+        <div class="group">System &amp; Sonstiges</div>
+        <div class="group">Büro &amp; Office</div>
+      </div>
+      <div class="info-box"><span class="em">Minimale Migration.</span> Deine JSON-Gruppen passen fast 1:1 rein. Klar getrennte Tabs, keine Daten-Umbauten nötig.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="sel-bar" id="selBar">
+  <span id="selTxt">—</span>
+  ausgewählt · Antwort im Terminal bestätigen
+</div>
+
+<script>
+  function pick(el){
+    document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    const ch = el.dataset.choice;
+    const n = el.querySelector('.opt-name').textContent;
+    document.getElementById('selTxt').textContent = 'Option '+ch.toUpperCase()+' — '+n;
+    document.getElementById('selBar').classList.add('vis');
+    if(window.recordChoice) recordChoice(ch, n);
+  }
+</script>
+</body>
+</html>

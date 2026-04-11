@@ -192,6 +192,10 @@ function catEditorOpenTypeDetail(catalogId, typeKey){
         <select class="pinput" style="width:auto" onchange="catEditorSetTypeGroup('${safeId(catalogId)}','${safeId(esc(typeKey))}',this.value)">
           ${catBuildGroupOptions(cat,typeVal.group||'')}
         </select>
+        <span style="font-size:10px;letter-spacing:2px;color:var(--muted)">UNTERGRUPPE:</span>
+        <input class="pinput" style="width:140px" placeholder="z.B. MARTIN"
+          value="${esc(typeVal.subgroup||'')}"
+          oninput="catEditorSetSubgroup('${safeId(catalogId)}','${safeId(esc(typeKey))}',this.value)">
         <button class="btn btn-sm" style="color:var(--accent2);border-color:var(--accent2);"
           onclick="catEditorRenameType('${safeId(catalogId)}','${safeId(esc(typeKey))}');catEditorOpenTypeDetail('${safeId(catalogId)}','${safeId(esc(typeKey))}')">✏ TYP UMBENENNEN</button>
       </div>
@@ -224,6 +228,16 @@ function catEditorSetUnitType(catalogId, typeKey, unitType){
   saveCatalogsStore();
   rerenderAllCats();
   catEditorOpenTypeDetail(catalogId, typeKey);
+}
+
+function catEditorSetSubgroup(catalogId, typeKey, val){
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  if(!cat.types[typeKey]) return;
+  const trimmed = val.trim();
+  if(trimmed) cat.types[typeKey].subgroup = trimmed;
+  else delete cat.types[typeKey].subgroup;
+  saveCatalogsStore();
+  rerenderAllCats();
 }
 
 function catEditorDetailAddItem(catalogId, typeKey){
@@ -370,7 +384,12 @@ function catMgrImportJSON(input){
       const catName  = (data.name&&typeof data.name==='string') ? data.name : (file.name.replace(/\.json$/i,'')||'Importierter Katalog');
       const types    = {};
       Object.entries(rawTypes).forEach(([key,val])=>{
-        if(typeof val==='object'&&val.items) types[key]={cat:val.cat||'Kabel Liste',items:val.items,...(val.group?{group:val.group}:{})};
+        if(typeof val==='object'&&val.items){
+          const entry={cat:val.cat||'Datenwelt',items:val.items,unit_type:val.unit_type||_detectUnitType(val)};
+          if(val.group) entry.group=val.group;
+          if(val.subgroup) entry.subgroup=val.subgroup;
+          types[key]=entry;
+        }
       });
       if(!Object.keys(types).length){ toast('Keine gültigen Katalog-Typen gefunden.',true); return; }
       const groups = (Array.isArray(data.groups)?data.groups:[]).filter(g=>g.id&&g.name);

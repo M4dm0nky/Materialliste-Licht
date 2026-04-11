@@ -56,7 +56,7 @@ Materialliste-Licht/
 
 ## Version & Live-URL
 
-- Aktuelle Version: **v0.11.0**
+- Aktuelle Version: **v0.12.0**
 - Live: https://m4dm0nky.github.io/Materialliste-Licht/
 
 ## Entwicklungs-Workflow
@@ -91,7 +91,9 @@ Kein `npm install`, kein `npm run build`, kein Compiler.
 
 ### UI-System
 - Modal-Overlays für Wizards und Dialoge (Breite: 960px)
-- 4 Kategorie-Tabs: Kabel, Zubehör, Hardware, Lampen
+- 5 Welten-Tabs: Datenwelt / Stromwelt / Lichtwelt / Riggingwelt / Verbrauchswelt
+- Geräte (qty-Typen): Gruppe = Sektionskopf, jedes Gerät = eine Tabellenzeile; 3-Ebenen in Licht-/Datenwelt (Gruppe → Untergruppe → Artikel)
+- Kabel (lengths-Typen): Typ = Sektionskopf, Längen als Zeilen (wie bisher)
 - Sektionen/Gruppen innerhalb jeder Kategorie (ein-/ausklappbar)
 - CSS Grid für Header, Sidebar und Tabellen
 
