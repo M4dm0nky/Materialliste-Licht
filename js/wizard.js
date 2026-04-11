@@ -5,7 +5,14 @@ let wiz = {};
 
 function openWiz(ci){ wiz={ci,targetSi:null,step:1,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
 function openWizToSec(ci,si){ wiz={ci,targetSi:si,step:1,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
-function closeWiz(){ document.getElementById('overlay').classList.remove('open'); wiz={}; }
+function _wizHasDirtyData(){
+  return Object.values(wiz.sel||{}).some(v=>(v.a||0)+(v.s||0)>0);
+}
+function closeWiz(){
+  if(_wizHasDirtyData() && !confirm('Eingaben verwerfen und schließen?')) return;
+  document.getElementById('overlay').classList.remove('open');
+  wiz={};
+}
 function showWiz(title){ document.getElementById('mTitle').textContent=title; document.getElementById('overlay').classList.add('open'); }
 
 function step1(){
@@ -256,13 +263,11 @@ function wizAddCustomLen(){
   if(!numVal || numVal <= 0){ lenInput.focus(); return; }
   const lenVal   = numVal + 'm';
   const catalog  = getActiveCatalogTypes()[wiz.key];
+  const exists = (catalog.items||[]).some(it=>parseLen(it.l||it.n) === numVal);
+  if(exists){ toast(`„${lenVal}" existiert bereits in diesem Typ.`, true); lenInput.select(); return; }
   const newEntry = { n: wiz.key, l: lenVal };
   catalog.items.push(newEntry);
-  catalog.items.sort((a,b)=>{
-    const na = parseFloat(((a.l||a.n||'0')).replace(',','.'));
-    const nb = parseFloat(((b.l||b.n||'0')).replace(',','.'));
-    return na-nb;
-  });
+  catalog.items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
   const newIdx = catalog.items.findIndex(it=>it===newEntry);
   saveCatalogsStore();
   wiz.sel[newIdx] = {a:0,s:0};
@@ -294,7 +299,7 @@ function wizDone(){
     });
   if(!selected.length){ alert('Bitte mindestens eine Menge > 0 eingeben.'); return; }
   const ci = wiz.ci; const cat = currentCats()[ci];
-  const sortByLen = items=>{ items.sort((a,b)=>parseFloat((a.length||'0').replace(',','.'))-parseFloat((b.length||'0').replace(',','.'))); return items; };
+  const sortByLen = items=>{ items.sort((a,b)=>parseLen(a.length)-parseLen(b.length)); return items; };
   if(wiz.targetSi!==null){
     cat.sections[wiz.targetSi].items.push(...selected);
     sortByLen(cat.sections[wiz.targetSi].items);

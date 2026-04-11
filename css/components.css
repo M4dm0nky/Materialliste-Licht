@@ -82,6 +82,7 @@ tbody tr.row-dragging{opacity:.35;}
 .add-row{padding:16px;border-top:1px dashed var(--border);display:flex;gap:10px;align-items:center;}
 .save-ind{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--muted);letter-spacing:1px;transition:color .3s;}
 .save-ind.saved{color:var(--green);}
+.save-ind.error{color:var(--red);}
 
 /* ── STÜCKZAHL-SEKTIONEN: Länge/Typ-Spalte ausblenden ────────────── */
 .secblock.no-length .tdlen       { display: none; }

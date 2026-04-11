@@ -41,9 +41,7 @@ function rerenderCat(ci){
 
 function rerenderCatInto(ci,panel){
   const cat = currentCats()[ci];
-  cat.sections.forEach(sec=>sec.items.sort((a,b)=>
-    parseFloat((a.length||'0').replace(',','.'))-parseFloat((b.length||'0').replace(',','.'))
-  ));
+  cat.sections.forEach(sec=>sec.items.sort((a,b)=>parseLen(a.length)-parseLen(b.length)));
   if(cat.sections.length===0){
     const es = document.createElement('div'); es.className='empty-state';
     es.innerHTML=`<div class="empty-icon">📦</div>
@@ -185,7 +183,11 @@ function upf(ci,si,ii,field,val){ currentCats()[ci].sections[si].items[ii][field
 
 // ── DELETE ─────────────────────────────────────────────────────────
 function delRow(ci,si,ii){
-  currentCats()[ci].sections[si].items.splice(ii,1); save(); renderRows(ci,si); recalcAll();
+  const item = currentCats()[ci].sections[si].items[ii];
+  const label = item.name || item.length || 'diese Zeile';
+  if(!confirm(`„${label}" wirklich löschen?`)) return;
+  currentCats()[ci].sections[si].items.splice(ii,1);
+  save(); renderRows(ci,si); recalcAll();
 }
 function delSec(ci,si){
   if(!confirm(`Sektion "${currentCats()[ci].sections[si].type_name}" wirklich löschen?`)) return;

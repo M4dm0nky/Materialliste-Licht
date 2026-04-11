@@ -233,7 +233,7 @@ function catEditorDetailAddItem(catalogId, typeKey){
   const lVal  = val.match(/^\d+([.,]\d+)?$/) ? val+'m' : val;
   if(!cat.types[typeKey]) return;
   cat.types[typeKey].items.push({n:typeKey,l:lVal});
-  cat.types[typeKey].items.sort((a,b)=>parseFloat((a.l||a.n||'0').replace(',','.'))-parseFloat((b.l||b.n||'0').replace(',','.')));
+  cat.types[typeKey].items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
   saveCatalogsStore();
   input.value=''; input.focus();
   const safeId = s => s.replace(/'/g,"&#39;");
@@ -260,7 +260,7 @@ function catEditorDetailEditItem(catalogId, typeKey, idx){
   const val = prompt('Eintrag bearbeiten:',current); if(val===null||!val.trim()) return;
   const lVal = val.trim().match(/^\d+([.,]\d+)?$/) ? val.trim()+'m' : val.trim();
   items[idx] = {n:typeKey,l:lVal};
-  items.sort((a,b)=>parseFloat((a.l||a.n||'0').replace(',','.'))-parseFloat((b.l||b.n||'0').replace(',','.')));
+  items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
   saveCatalogsStore();
   catEditorOpenTypeDetail(catalogId, typeKey);
   toast('✓ Eintrag aktualisiert');

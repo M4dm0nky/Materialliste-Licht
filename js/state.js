@@ -22,10 +22,16 @@ function save(){
   saveTimer = setTimeout(()=>{
     state._project = document.getElementById('pName').value;
     state._date    = document.getElementById('pDate').value;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     const el = document.getElementById('saveInd');
-    el.textContent='✓ GESPEICHERT'; el.className='save-ind saved';
-    setTimeout(()=>{ el.textContent='●'; el.className='save-ind'; }, 2000);
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      el.textContent='✓ GESPEICHERT'; el.className='save-ind saved';
+      setTimeout(()=>{ el.textContent='●'; el.className='save-ind'; }, 2000);
+    }catch(e){
+      el.textContent='⚠ SPEICHERN FEHLGESCHLAGEN'; el.className='save-ind error';
+      setTimeout(()=>{ el.textContent='●'; el.className='save-ind'; }, 5000);
+      console.error('save() localStorage error:', e);
+    }
     recalcAll();
   }, 350);
 }

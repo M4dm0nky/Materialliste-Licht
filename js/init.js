@@ -46,4 +46,16 @@ initState();
     renderPlanList();
   }
   renderActiveCatalogBadge();
+
+  // ESC schließt Modal
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape' && document.getElementById('overlay').classList.contains('open')){
+      closeWiz();
+    }
+  });
+
+  // Backdrop-Klick schließt Modal (Klick auf Overlay-Fläche, nicht auf das Modal selbst)
+  document.getElementById('overlay').addEventListener('click', e=>{
+    if(e.target === document.getElementById('overlay')) closeWiz();
+  });
 })();
