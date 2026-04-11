@@ -83,6 +83,10 @@ tbody tr.row-dragging{opacity:.35;}
 .save-ind{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--muted);letter-spacing:1px;transition:color .3s;}
 .save-ind.saved{color:var(--green);}
 
+/* ── STÜCKZAHL-SEKTIONEN: Länge/Typ-Spalte ausblenden ────────────── */
+.secblock.no-length .tdlen       { display: none; }
+.secblock.no-length .sec-hdr-len { display: none; }
+
 /* ── FORMULAR-ELEMENTE ────────────────────────────────────────────── */
 .sec-name-input{background:var(--bg);border:1px solid var(--border);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:2px;padding:9px 16px;width:100%;outline:none;margin-bottom:21px;text-transform:uppercase;}
 .sec-name-input:focus{border-color:var(--accent);}

@@ -238,6 +238,14 @@ function initCatalogs(){
       let migrated = false;
       catalogsStore.catalogs.forEach(c=>{ if(!c.groups){ c.groups=[]; migrated=true; } });
       if(migrated) saveCatalogsStore();
+      // Migration: unit_type für alle Typen setzen falls noch nicht vorhanden
+      let utMigrated = false;
+      catalogsStore.catalogs.forEach(c=>{
+        Object.values(c.types||{}).forEach(t=>{
+          if(t.unit_type===undefined){ t.unit_type=_detectUnitType(t); utMigrated=true; }
+        });
+      });
+      if(utMigrated) saveCatalogsStore();
       activeCatalogId = 'cat-default';
       return;
     }
@@ -245,7 +253,7 @@ function initCatalogs(){
   // Erster Start: Standard-Katalog aus CATALOG-Konstante + alten Custom-Entries aufbauen
   const types = {};
   Object.entries(CATALOG).forEach(([key,val])=>{
-    types[key] = {cat:val.cat,items:val.items.map(it=>({...it}))};
+    types[key] = {cat:val.cat,items:val.items.map(it=>({...it})),unit_type:_detectUnitType(val)};
   });
   try{
     const cc = localStorage.getItem(CATALOG_KEY);
@@ -253,7 +261,7 @@ function initCatalogs(){
       const custom = JSON.parse(cc);
       Object.entries(custom).forEach(([key,items])=>{
         if(types[key]) types[key].items.push(...items.map(it=>({...it})));
-        else types[key] = {cat:'Kabel Liste',items:items.map(it=>({...it}))};
+        else types[key] = {cat:'Kabel Liste',items:items.map(it=>({...it})),unit_type:_detectUnitType({items})};
       });
     }
   }catch(e){}
@@ -267,6 +275,12 @@ function initCatalogs(){
   }]};
   saveCatalogsStore();
   activeCatalogId = 'cat-default';
+}
+
+// ── UNIT-TYPE HELPER ───────────────────────────────────────────────
+function _detectUnitType(t){
+  if(!t||!t.items||t.items.length===0) return 'qty';
+  return t.items.some(i=>i.l&&i.l.trim()!=='') ? 'lengths' : 'qty';
 }
 
 // ── GRUPPEN-HELPERS ────────────────────────────────────────────────

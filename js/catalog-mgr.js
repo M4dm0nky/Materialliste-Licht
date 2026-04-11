@@ -195,8 +195,15 @@ function catEditorOpenTypeDetail(catalogId, typeKey){
         <button class="btn btn-sm" style="color:var(--accent2);border-color:var(--accent2);"
           onclick="catEditorRenameType('${safeId(catalogId)}','${safeId(esc(typeKey))}');catEditorOpenTypeDetail('${safeId(catalogId)}','${safeId(esc(typeKey))}')">✏ TYP UMBENENNEN</button>
       </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px;background:var(--bg2);border-radius:4px;">
+        <span style="font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Artikel-Typ:</span>
+        <button class="btn btn-sm${(typeVal.unit_type||'lengths')==='qty'?' btn-accent':''}"
+          onclick="catEditorSetUnitType('${safeId(catalogId)}','${safeId(esc(typeKey))}','qty')">Stückzahl</button>
+        <button class="btn btn-sm${(typeVal.unit_type||'lengths')==='lengths'?' btn-accent':''}"
+          onclick="catEditorSetUnitType('${safeId(catalogId)}','${safeId(esc(typeKey))}','lengths')">Mit Längen</button>
+      </div>
     </div>
-    <div class="type-detail-addform">
+    <div class="type-detail-addform"${(typeVal.unit_type||'lengths')==='qty'?' style="display:none"':''}>
       <span style="font-size:10px;letter-spacing:2px;color:var(--muted)">NEUER EINTRAG:</span>
       <input class="pinput" id="detailNewItem" placeholder="z.B. 15m oder 0.5m"
         style="width:160px" onkeydown="if(event.key==='Enter')catEditorDetailAddItem('${safeId(catalogId)}','${safeId(esc(typeKey))}')">
@@ -204,9 +211,19 @@ function catEditorOpenTypeDetail(catalogId, typeKey){
         onclick="catEditorDetailAddItem('${safeId(catalogId)}','${safeId(esc(typeKey))}')">+ HINZUFÜGEN</button>
       <span style="font-size:11px;color:var(--muted)">${(typeVal.items||[]).length} Einträge</span>
     </div>
+    ${(typeVal.unit_type||'lengths')==='qty'?`<p style="font-size:11px;color:var(--muted);padding:8px 0">Stückzahl-Artikel haben keine Längen-Einträge.</p>`:''}
     <div id="detailEntryList" style="max-height:340px;overflow-y:auto;border:1px solid var(--border);">
       ${renderRows()}
     </div>`;
+}
+
+function catEditorSetUnitType(catalogId, typeKey, unitType){
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  if(!cat.types[typeKey]) return;
+  cat.types[typeKey].unit_type = unitType;
+  saveCatalogsStore();
+  rerenderAllCats();
+  catEditorOpenTypeDetail(catalogId, typeKey);
 }
 
 function catEditorDetailAddItem(catalogId, typeKey){
@@ -383,7 +400,7 @@ function catEditorAddType(catalogId){
   if(!name){ toast('Bitte einen Typ-Namen eingeben.',true); return; }
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
   if(cat.types[name]){ toast('Dieser Typ existiert bereits.',true); return; }
-  const entry = {cat:catName,items:[]};
+  const entry = {cat:catName,items:[],unit_type:'qty'};
   if(groupId) entry.group=groupId;
   cat.types[name] = entry;
   saveCatalogsStore(); _renderCatMgrTab2(); toast('✓ Typ „'+name+'" hinzugefügt');

@@ -3,8 +3,8 @@
 // ══════════════════════════════════════════════════
 let wiz = {};
 
-function openWiz(ci){ wiz={ci,targetSi:null,step:1,key:null,sel:{}}; showWiz('Material hinzufügen'); step1(); }
-function openWizToSec(ci,si){ wiz={ci,targetSi:si,step:1,key:null,sel:{}}; showWiz('Material hinzufügen'); step1(); }
+function openWiz(ci){ wiz={ci,targetSi:null,step:1,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
+function openWizToSec(ci,si){ wiz={ci,targetSi:si,step:1,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
 function closeWiz(){ document.getElementById('overlay').classList.remove('open'); wiz={}; }
 function showWiz(title){ document.getElementById('mTitle').textContent=title; document.getElementById('overlay').classList.add('open'); }
 
@@ -132,26 +132,74 @@ function wizPickIdx(idx){
 
 function step2(){
   wiz.step = 2;
-  const catalog = getActiveCatalogTypes()[wiz.key];
+  wiz.sel = {}; wiz.selLengths = {};
+  const t = getActiveCatalogTypes()[wiz.key];
+  if(!t) return;
+  if(t.unit_type === 'qty') _step2Qty(t);
+  else _step2Lengths(t);
+}
+
+function _wizStepsHeader(){
+  return `<div class="steps">
+    <div class="step done" onclick="step1()" style="cursor:pointer">1 · TYP ✓</div>
+    <div class="step active">2 · MENGEN EINGEBEN</div>
+    <div class="step">3 · FERTIG</div>
+  </div>`;
+}
+
+function _wizFooter(){
+  document.getElementById('mFooter').innerHTML=`
+    <button class="btn" onclick="step1()">← ZURÜCK</button>
+    <button class="btn" onclick="closeWiz()">Abbrechen</button>
+    <button class="btn btn-accent" onclick="wizDone()">+ HINZUFÜGEN</button>
+    <button class="btn btn-green" onclick="wizFinish()">✓ FERTIG</button>`;
+}
+
+function _step2Qty(t){
   document.getElementById('mBody').innerHTML=`
-    <div class="steps">
-      <div class="step done" onclick="step1()" style="cursor:pointer">1 · TYP ✓</div>
-      <div class="step active">2 · MENGEN EINGEBEN</div>
-      <div class="step">3 · FERTIG</div>
-    </div>
+    ${_wizStepsHeader()}
     <div style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:1px">
-      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Mengen eingeben (leer / 0 = nicht hinzufügen):
+      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Anzahl eingeben:
     </div>
     <div class="cablelist">
-      ${catalog.items.map((item,i)=>`
-        <div class="cablerow" id="cr-${i}">
-          <div class="cable-t">${esc(wiz.key)}</div>
-          <div class="cable-s">${esc(item.l || item.n || '')}</div>
-          <span class="qlbl">#&nbsp;Stk.:</span>
-          <input class="qin" type="number" min="0" value="0" id="qa-${i}" oninput="wizQ(${i})">
-          <span class="qlbl">Spare:</span>
-          <input class="qin" type="number" min="0" value="0" id="qs-${i}" oninput="wizQ(${i})">
-        </div>`).join('')}
+      <div class="cablerow" id="cr-0">
+        <span class="qlbl" style="flex:1;font-weight:600">${esc(wiz.key)}</span>
+        <span class="qlbl">#&nbsp;Stk.:</span>
+        <input class="qin" type="number" id="qa-0" min="0" value="0" oninput="wizQ(0)">
+        <span class="qlbl">Spare:</span>
+        <input class="qin" type="number" id="qs-0" min="0" value="0" oninput="wizQ(0)">
+      </div>
+    </div>
+    <div id="wizSum" style="display:none" class="selsum">
+      <div class="selsum-t">AUSGEWÄHLT:</div>
+      <div id="wizSumItems"></div>
+    </div>`;
+  _wizFooter();
+}
+
+function _step2Lengths(t){
+  const rows = t.items.map((item,i)=>{
+    const label = item.l || item.n || '—';
+    return `<div class="cablerow" id="cr-${i}">
+      <label style="display:flex;align-items:center;gap:8px;flex:1;cursor:pointer">
+        <input type="checkbox" id="lc-${i}" onchange="wizToggleLen(${i})" style="width:16px;height:16px;cursor:pointer">
+        <span class="cable-s" style="min-width:60px">${esc(label)}</span>
+      </label>
+      <span class="qlbl">#&nbsp;Stk.:</span>
+      <input class="qin" type="number" id="qa-${i}" min="0" value="0"
+        oninput="wizQ(${i})" disabled style="opacity:0.4">
+      <span class="qlbl">Spare:</span>
+      <input class="qin" type="number" id="qs-${i}" min="0" value="0"
+        oninput="wizQ(${i})" disabled style="opacity:0.4">
+    </div>`;
+  }).join('');
+  document.getElementById('mBody').innerHTML=`
+    ${_wizStepsHeader()}
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:1px">
+      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Längen ankreuzen und Anzahl eingeben:
+    </div>
+    <div class="cablelist">
+      ${rows}
       <div class="addlength-row">
         <span class="addlength-label">+ NEUE LÄNGE:</span>
         <input type="number" id="customLenVal" placeholder="z.B. 35" min="0.1" step="0.5"
@@ -163,11 +211,20 @@ function step2(){
       <div class="selsum-t">AUSGEWÄHLT:</div>
       <div id="wizSumItems"></div>
     </div>`;
-  document.getElementById('mFooter').innerHTML=`
-    <button class="btn" onclick="step1()">← ZURÜCK</button>
-    <button class="btn" onclick="closeWiz()">Abbrechen</button>
-    <button class="btn btn-accent" onclick="wizDone()">+ HINZUFÜGEN</button>
-    <button class="btn btn-green" onclick="wizFinish()">✓ FERTIG</button>`;
+  _wizFooter();
+}
+
+function wizToggleLen(i){
+  const checked = document.getElementById(`lc-${i}`).checked;
+  const qa = document.getElementById(`qa-${i}`);
+  const qs = document.getElementById(`qs-${i}`);
+  qa.disabled = !checked;
+  qs.disabled = !checked;
+  qa.style.opacity = checked ? '1' : '0.4';
+  qs.style.opacity = checked ? '1' : '0.4';
+  if(!checked){ qa.value='0'; qs.value='0'; }
+  wiz.selLengths[i] = checked;
+  wizQ(i);
 }
 
 function wizQ(i){
@@ -183,9 +240,11 @@ function wizQ(i){
   if(!active.length){ sumEl.style.display='none'; return; }
   sumEl.style.display='block';
   const cat = getActiveCatalogTypes()[wiz.key];
+  const isQty = cat && cat.unit_type === 'qty';
   sumItems.innerHTML = active.map(([idx,v])=>{
-    const item = cat.items[+idx];
-    const lbl  = ((item.n||'↳')+' '+(item.l||'')).trim();
+    let lbl;
+    if(isQty){ lbl = wiz.key; }
+    else { const item = cat.items[+idx]; lbl = ((item.n||'↳')+' '+(item.l||'')).trim(); }
     return `<div class="selrow"><span class="selrow-n">${esc(lbl)}</span>
       <span class="selrow-q">${v.a} Stk. + ${v.s} Spare</span></div>`;
   }).join('');
@@ -221,10 +280,14 @@ function toast(msg, isErr=false){
 
 function wizDone(){
   const catalog  = getActiveCatalogTypes()[wiz.key];
+  const isQty    = catalog && catalog.unit_type === 'qty';
   const selected = Object.entries(wiz.sel)
     .filter(([_,v])=>v.a+v.s>0)
     .map(([i,v])=>{
-      const ci2        = catalog.items[+i];
+      if(isQty){
+        return {name:wiz.key,length:'',anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:''};
+      }
+      const ci2         = catalog.items[+i];
       const displayName = ci2.n || ci2.l || '';
       const displayLen  = ci2.n ? (ci2.l||'') : '';
       return {name:displayName,length:displayLen,anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:ci2.b||''};

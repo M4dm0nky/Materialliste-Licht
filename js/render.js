@@ -59,10 +59,17 @@ function rerenderCatInto(ci,panel){
   panel.appendChild(ar);
 }
 
+function _secHasLengths(ci,si){
+  const sec = currentCats()[ci].sections[si];
+  const t   = getActiveCatalogTypes()[sec.type_name];
+  return t ? t.unit_type !== 'qty' : true;
+}
+
 function buildSecEl(ci,si){
   const sec   = currentCats()[ci].sections[si];
+  const noLen = !_secHasLengths(ci,si);
   const block = document.createElement('div');
-  block.className='secblock'; block.id=`sec-${ci}-${si}`;
+  block.className='secblock'+(noLen?' no-length':''); block.id=`sec-${ci}-${si}`;
   block.innerHTML=`
     <div class="sechdr" id="sechdr-${ci}-${si}"
       ondragover="event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('drop-target')"
@@ -84,7 +91,7 @@ function buildSecEl(ci,si){
     </div>
     <div class="secbody" id="body-${ci}-${si}">
       <table><thead><tr>
-        <th>Bezeichnung</th><th>Länge/Typ</th>
+        <th>Bezeichnung</th><th class="sec-hdr-len">Länge/Typ</th>
         <th class="num">DIFF</th><th class="num">TOTAL</th>
         <th class="num"># Stk.</th><th class="num">Spare</th>
         <th class="num">Im Projekt</th>
