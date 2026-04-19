@@ -2,13 +2,8 @@
 
 **Touring Production · Material Management · Lichttechnik**
 
-> Web-App für die Verwaltung von Kabeln, Zubehör, Hardware und Lampen auf Tour. 
-
----
-
-## 🚀 Direkt starten
-
-https://m4dm0nky.github.io/Materialliste-Licht/index.html
+> Web-App für die Verwaltung von Kabeln, Zubehör, Hardware und Lampen auf Tour.  
+> Version **v0.1.6.1** · [Live öffnen](https://m4dm0nky.github.io/Materialliste-Licht/index.html)
 
 ---
 
@@ -16,78 +11,68 @@ https://m4dm0nky.github.io/Materialliste-Licht/index.html
 
 ### Material verwalten
 - Leere Tabelle beim Start — Material wird über einen **Wizard aus dem Katalog** hinzugefügt
-- Kabeltyp auswählen (z.B. DMX 5-Pin, CEE 63A Rot, Socapex) → Längen und Mengen eingeben → fertig
-- **Wizard bleibt offen** nach „Hinzufügen" — mehrere Längen nacheinander hinzufügen, erst „Fertig" schließt das Popup
-- **Neue Länge direkt im Wizard** — Zahl eingeben, `m` wird automatisch ergänzt, Eintrag sortiert sich automatisch ein
+- **Mehrfachauswahl im Wizard** — mehrere Artikel gleichzeitig wählen, Mengen nacheinander eingeben
+- **Suchfeld** — Artikel live durchsuchen, Ergebnis mit Pfad (Welt › Gruppe › Artikel)
+- **Zuletzt verwendet** — die letzten 5 Artikel direkt zugänglich
 - Alle Felder nachträglich editierbar: Bezeichnung, Länge, # Stk., Spare, Im Projekt, Kapitel, Notiz
 - Zeilen und Sektionen einzeln löschbar
-- Eigene Längen die im Katalog fehlen direkt im Wizard ergänzen — werden dauerhaft gespeichert
-- **Automatische Sortierung** — Längen werden beim Öffnen und nach jedem Hinzufügen numerisch sortiert
 
-### Excel-Logiken (1:1 aus XLTM übernommen)
+### Excel-Logik
 - **DIFF = (# Stk. + Spare) − Im Projekt** → Grün ≥ 0 · Rot < 0 (zu buchen)
 - **TOTAL = # Stk. + Spare**
 - Warn-Badges pro Kategorie zeigen Anzahl roter Positionen
 - Globaler Status-Indikator oben rechts
 
-### 4 Kategorien mit vollständigem Katalog
+### 5 Welten
 
-| Kategorie | Inhalt |
+| Welt | Inhalt |
 |---|---|
-| Kabel Liste | DMX 5/3-Pin, LK37, Ethercon, LWL, Cat, Han16/6, Socapex, Schuko, VL5, CEE 16A–125A, Erdung |
-| Zubehör Liste | Alurohre, Drop Arms, Stative, Stahlzeug, Verbrauchsmaterial, System, Büro, Farbfolien |
-| Hardware Liste | Dimmer, Feststrom VT, GrandMA2, Swisson, Cisco |
-| Lampen Liste | Freie Slots für beliebige Lampentypen |
-
-### Logos
-- 3 Logo-Slots im Header: **Planer/Company** (links) · **Band/Produktion** (mitte) · **Booking/Agentur** (rechts)
-- Logos werden mit dem Projekt gespeichert und erscheinen im PDF
-
-### Speichern & Laden
-- **JSON-Export/Import** — vollständige Projektdaten inkl. Logos als eine Datei
-- **Mehrere Pläne** — verschiedene Projekte anlegen, benennen, wechseln
-- **Automatische Sicherung** im Browser (localStorage)
-- **CSV Export** — Excel-kompatibel mit BOM-Header
-
-### PDF Export
-- Druckansicht mit Header, Logos und Tabelle
-- Filter: welche Kategorien · nur befüllte Zeilen · Differenz-Spalte an/aus
-- A4 Querformat optimiert · Cmd+P / Strg+P → Als PDF speichern
+| Datenwelt | DMX-Kabel, Netzwerk, Ethercon, LWL, DMX-Steuerung |
+| Stromwelt | Schuko, CEE 16A–125A, Socapex, Dimmer, Feststrom |
+| Lichtwelt | Geräte (frei definierbar — Moving Lights, LED Wash, Konventionell, …) |
+| Riggingwelt | Alurohre, Drop Arms, Stative, Stahlzeug |
+| Verbrauchswelt | Verbrauchsmaterial, Büro, Farbfolien |
 
 ### Katalog-Verwaltung
-- Eigene Ergänzungen als JSON exportieren, extern bearbeiten, wieder importieren
-- Einzelne Ergänzungen in der Übersicht löschbar
-- Vollständiger Katalog jederzeit als JSON exportierbar
+- **Vollbild-Baum** mit Inline-Editing — kein prompt()-Dialog, kein Panel-Wechsel
+- Eigene Kataloge anlegen, kopieren, umbenennen, löschen
+- **Hierarchie:** Welt → Gruppe → Untergruppe → Artikel (4 Ebenen)
+- Artikel: Typ wählen (Stückzahl oder Mit Längen), Längen als klickbare Tags inline bearbeiten
+- Alle Bestätigungs- und Eingabe-Dialoge sind eigene In-App-Modals (kein Browser-Popup)
+
+### Pläne
+- Mehrere Pläne (z.B. verschiedene Tours) anlegen, benennen, wechseln
+- Jeder Plan hat eigene Positionen (z.B. Bühne, FOH, Halle)
+- Jeder Plan kann einen eigenen Katalog verwenden
+
+### Logos & Export
+- 3 Logo-Slots im Header: **Planer/Company** (links) · **Band/Produktion** (mitte) · **Booking/Agentur** (rechts)
+- **JSON-Export/Import** — vollständige Projektdaten inkl. Logos
+- **CSV Export** — Excel-kompatibel mit BOM-Header
+- **PDF Export** — Querformat, Filter für Kategorien / nur befüllte Zeilen / Differenz-Spalte
 
 ---
 
 ## Bedienung
 
 ```
-1. Tab wählen           Kabel / Zubehör / Hardware / Lampen
+1. Welt-Tab wählen      Datenwelt / Stromwelt / Lichtwelt / Riggingwelt / Verbrauchswelt
 2. "+ AUS KATALOG"      Wizard öffnet sich
-3. Kabeltyp wählen      z.B. "DMX 5-Pin"
-4. Mengen eingeben      10x 5m, 5x 10m, 2x Spare ...
-5. "+ HINZUFÜGEN"       Einträge werden gespeichert, Wizard bleibt offen
-6. Weitere Längen       Nächste Länge wählen und wieder hinzufügen
-7. "✓ FERTIG"           Wizard schließt, Tabelle wird mit sortierten Einträgen angezeigt
-8. Werte anpassen       Alle Felder direkt editierbar
+3. Suchen oder wählen   Suchfeld oder Kategorie-Browse
+4. Mehrfachauswahl      Mehrere Artikel anklicken, dann "WEITER →"
+5. Mengen eingeben      Für jeden Artikel Stückzahl und Spare
+6. "+ HINZUFÜGEN"       Nächster Artikel in der Queue
+7. "✓ FERTIG"           Alle Artikel werden gespeichert
+8. Werte anpassen       Alle Felder direkt in der Tabelle editierbar
 9. Speichern            Sidebar → Speichern (JSON) oder auto. im Browser
-```
-
-**Neue Länge fehlt im Katalog?**
-```
-Im Wizard unter der Liste: Zahl eingeben (z.B. 35) → HINZUFÜGEN
-→ "35m" wird automatisch ergänzt und in der richtigen Reihenfolge einsortiert
-→ Länge wird dauerhaft im Katalog gespeichert
 ```
 
 ---
 
 ## Technisches
 
-- **Single-File HTML** — alles in `index.html`, keine Dependencies
-- **Kein Server** — direkt im Browser öffnen oder via GitHub Pages
+- **Vanilla JavaScript** — kein Framework, keine Dependencies
+- **Aufgeteilte Dateien** — `css/` + `js/` + `index.html` (kein Build-Schritt)
 - **Fonts** — Bebas Neue · Barlow Condensed · Share Tech Mono · IBM Plex Mono (Google Fonts)
 - **Persistenz** — localStorage, kein Account nötig
 - **Kompatibel** — Chrome, Firefox, Safari, Edge (aktuell)
@@ -97,49 +82,52 @@ Im Wizard unter der Liste: Zahl eingeben (z.B. 35) → HINZUFÜGEN
 ## Dateistruktur
 
 ```
-materialliste-licht/
-├── index.html     ← Komplette App (HTML + CSS + JS, Single-File)
-├── CLAUDE.md      ← Technische Dokumentation für Claude
-├── README.md      ← Diese Datei
-└── .gitignore
+Materialliste-Licht/
+├── index.html          ← HTML-Gerüst + Script-/Style-Tags
+├── css/
+│   ├── variables.css   ← Farben, Custom Properties
+│   ├── layout.css      ← Header, Sidebar, App-Layout
+│   ├── components.css  ← Buttons, Tabs, Tabellen
+│   └── modals.css      ← Wizard, Katalog-Editor, Dialoge
+├── js/
+│   ├── utils.js        ← Hilfsfunktionen, In-App-Dialoge
+│   ├── catalog.js      ← Katalog-Konstante + Store
+│   ├── state.js        ← Globaler State, save()
+│   ├── calc.js         ← DIFF/TOTAL Berechnungen
+│   ├── render.js       ← Tabellen-Rendering
+│   ├── wizard.js       ← Wizard-Flow (Suche, Multi-Select)
+│   ├── catalog-mgr.js  ← Katalog-Editor (Baum, Inline-Edit)
+│   ├── logos.js        ← Logo-Upload
+│   ├── plans.js        ← Multi-Plan-System
+│   ├── positions.js    ← Positions-Bar
+│   ├── export.js       ← JSON/CSV Import & Export
+│   ├── pdf.js          ← PDF-Druckansicht
+│   └── init.js         ← App-Start
+├── CLAUDE.md           ← Technische Dokumentation für Claude
+└── README.md           ← Diese Datei
 ```
 
 ---
 
 ## TODOs & geplante Features
 
-### Nächste Session
-- [ ] **Drag & Drop** — Sektionen und Zeilen per Drag umsortieren
-- [ ] **Import zusammenführen** — beim JSON-Import Daten mergen statt ersetzen
-- [ ] **PDF Seitenumbrüche** — sauberere Trennung zwischen Kategorien
-- [ ] **Lampen-Katalog** — eigene Datenbank für Lampentypen (wie Kabel-Katalog)
-
 ### Benutzerfreundlichkeit
-- [ ] **Suche / Filter** — Freitextsuche über alle Einträge
-- [ ] **Massenbearbeitung** — mehrere Zeilen gleichzeitig auswählen und bearbeiten
+- [ ] **Drag & Drop** — Sektionen und Zeilen per Drag umsortieren
+- [ ] **Standardgruppen Lichtwelt** — Moving Lights, LED Wash, Konventionell im Built-in-Katalog
 - [ ] **Undo / Redo** — letzte Änderungen rückgängig machen
 - [ ] **Zeile duplizieren** — Eintrag kopieren und anpassen
-- [ ] **Farbmarkierungen** — Zeilen manuell kennzeichnen (z.B. für Priorität oder Status)
-- [ ] **Notizen-Feld** — ausklappbares Textfeld für längere Anmerkungen
+- [ ] **Massenbearbeitung** — mehrere Zeilen gleichzeitig bearbeiten
 
 ### Import & Export
-- [ ] **Excel-Export** — direkt als .xlsx exportieren (nicht nur CSV)
-- [ ] **Differenzliste als PDF** — nur Positionen mit DIFF < 0 drucken
-- [ ] **QR-Code** — Projekt als QR teilen
-- [ ] **Druck Hochformat** — kompakte Listenansicht für A4 Hochformat
+- [ ] **Import zusammenführen** — beim JSON-Import Daten mergen statt ersetzen
+- [ ] **Excel-Export** — direkt als .xlsx
+- [ ] **Differenzliste als PDF** — nur Positionen mit DIFF < 0
+- [ ] **PDF Seitenumbrüche** — sauberere Trennung zwischen Kategorien
 
-### Erweiterte Funktionen
-- [ ] **Tourplan-Verknüpfung** — Showdaten und Venues aus dem Personalplan übernehmen
-- [ ] **Kategorien anpassen** — eigene Tabs anlegen und umbenennen
-- [ ] **Verfügbarkeits-Tracking** — Material als ausgeliehen / zurück / verloren markieren
-- [ ] **Änderungsprotokoll** — wer hat wann was geändert
-- [ ] **Kommentare pro Zeile** — Diskussion / Rückfragen direkt am Eintrag
-
-### Technisch
-- [ ] **Offline-Modus (PWA)** — App ohne Internet nutzbar machen
+### Erweitert
+- [ ] **Offline-Modus (PWA)** — App ohne Internet nutzbar
 - [ ] **Mobile Optimierung** — bessere Bedienbarkeit auf Tablet
-- [ ] **Tastaturnavigation** — zwischen Feldern mit Tab/Enter navigieren
-- [ ] **Backup-Verlauf** — mehrere automatische Sicherungspunkte im Browser
+- [ ] **Backup-Verlauf** — mehrere automatische Sicherungspunkte
 
 ---
 
@@ -149,4 +137,4 @@ materialliste-licht/
 
 ---
 
-*Entwickelt mit Claude Code (Anthropic) · Single-File HTML App · Touring Production Lichttechnik*
+*Entwickelt mit Claude Code (Anthropic) · Touring Production Lichttechnik*
