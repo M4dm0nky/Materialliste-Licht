@@ -76,7 +76,7 @@ function _renderCatMgrTab2(){
     return;
   }
   if(!_catEditorWelt) _catEditorWelt = CAT_ORDER[0];
-  const s = JSON.stringify;
+  const s = v => JSON.stringify(v).replace(/"/g,'&quot;');
 
   document.getElementById('catMgrContent').innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
@@ -109,7 +109,7 @@ function catTreeSwitchWelt(weltName){
 function _renderCatTree(cat, weltName){
   const types     = cat.types||{};
   const topGroups = catGetTopGroups(cat);
-  const s         = JSON.stringify;
+  const s         = v => JSON.stringify(v).replace(/"/g,'&quot;');
 
   // Typen dieser Welt nach Gruppe aufteilen
   const byGroup = {};
