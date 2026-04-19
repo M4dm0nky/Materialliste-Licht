@@ -307,13 +307,16 @@ function upf(ci,si,ii,field,val){ currentCats()[ci].sections[si].items[ii][field
 function delRow(ci,si,ii){
   const item = currentCats()[ci].sections[si].items[ii];
   const label = item.name || item.length || 'diese Zeile';
-  if(!confirm(`„${label}" wirklich löschen?`)) return;
-  currentCats()[ci].sections[si].items.splice(ii,1);
-  save(); renderRows(ci,si); recalcAll();
+  showConfirm(`„${label}" wirklich löschen?`, ()=>{
+    currentCats()[ci].sections[si].items.splice(ii,1);
+    save(); renderRows(ci,si); recalcAll();
+  });
 }
 function delSec(ci,si){
-  if(!confirm(`Sektion "${currentCats()[ci].sections[si].type_name}" wirklich löschen?`)) return;
-  currentCats()[ci].sections.splice(si,1); save(); rerenderCat(ci);
+  const typeName = currentCats()[ci].sections[si].type_name;
+  showConfirm(`Sektion „${typeName}" wirklich löschen?`, ()=>{
+    currentCats()[ci].sections.splice(si,1); save(); rerenderCat(ci);
+  });
 }
 
 // ── UI-STEUERUNG ───────────────────────────────────────────────────
@@ -334,8 +337,9 @@ function expandAll(){
   document.querySelectorAll('.sechdr').forEach(h=>h.classList.remove('collapsed'));
 }
 function resetAll(){
-  if(!confirm('Alle Daten löschen?')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  state = {_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
-  activePosIdx=0; render();
+  showConfirm('Alle Daten löschen? Dies kann nicht rückgängig gemacht werden.', ()=>{
+    localStorage.removeItem(STORAGE_KEY);
+    state = {_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+    activePosIdx=0; render();
+  }, 'Reset');
 }

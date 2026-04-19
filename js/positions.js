@@ -23,26 +23,27 @@ function switchPos(idx){
 }
 
 function addPosition(){
-  const name = prompt('Name der neuen Position (z.B. Halle 25, FOH):');
-  if(!name||!name.trim()) return;
-  state.positions.push({name:name.trim(),categories:CAT_ORDER.map(n=>({name:n,sections:[]}))});
-  activePosIdx = state.positions.length-1; state._activePosIdx=activePosIdx;
-  save(); renderPosBar(); render();
-  toast('Position „'+name.trim()+'" erstellt ✓');
+  showPrompt('Name der neuen Position (z.B. Halle 25, FOH):', '', name=>{
+    state.positions.push({name,categories:CAT_ORDER.map(n=>({name:n,sections:[]}))});
+    activePosIdx = state.positions.length-1; state._activePosIdx=activePosIdx;
+    save(); renderPosBar(); render();
+    toast('Position „'+name+'" erstellt ✓');
+  }, 'Neue Position');
 }
 
 function renamePos(idx){
-  const name = prompt('Neuer Name:',state.positions[idx].name);
-  if(!name||!name.trim()) return;
-  state.positions[idx].name = name.trim();
-  save(); renderPosBar();
+  showPrompt('Neuer Name:', state.positions[idx].name, name=>{
+    state.positions[idx].name = name;
+    save(); renderPosBar();
+  }, 'Position umbenennen');
 }
 
 function deletePos(idx){
   if(state.positions.length<=1){ toast('Mindestens eine Position erforderlich',true); return; }
-  if(!confirm('Position „'+state.positions[idx].name+'" löschen?')) return;
-  state.positions.splice(idx,1);
-  activePosIdx = Math.min(activePosIdx, state.positions.length-1);
-  state._activePosIdx = activePosIdx;
-  save(); renderPosBar(); render();
+  showConfirm('Position „'+state.positions[idx].name+'" löschen?', ()=>{
+    state.positions.splice(idx,1);
+    activePosIdx = Math.min(activePosIdx, state.positions.length-1);
+    state._activePosIdx = activePosIdx;
+    save(); renderPosBar(); render();
+  });
 }

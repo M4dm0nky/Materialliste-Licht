@@ -118,39 +118,43 @@ function switchPlan(id){
 
 function deletePlan(id){
   const plans = getPlansIndex(); const plan=plans.find(p=>p.id===id); if(!plan) return;
-  if(!confirm(`Plan „${plan.name}" wirklich löschen?`)) return;
-  localStorage.removeItem(PLAN_PFX+id);
-  const newList = plans.filter(p=>p.id!==id);
-  savePlansIndex(newList);
-  if(id===activePlanId){
-    if(newList.length>0){ activePlanId=newList[0].id; loadPlanFromLS(activePlanId); }
-    else{ activePlanId=null; }
-  }
-  renderPlanList();
-  toast('Plan gelöscht');
+  showConfirm(`Plan „${plan.name}" wirklich löschen?`, ()=>{
+    localStorage.removeItem(PLAN_PFX+id);
+    const newList = plans.filter(p=>p.id!==id);
+    savePlansIndex(newList);
+    if(id===activePlanId){
+      if(newList.length>0){ activePlanId=newList[0].id; loadPlanFromLS(activePlanId); }
+      else{ activePlanId=null; }
+    }
+    renderPlanList();
+    toast('Plan gelöscht');
+  });
 }
 
 function renamePlan(id){
   const plans = getPlansIndex(); const plan=plans.find(p=>p.id===id); if(!plan) return;
-  const name  = prompt('Neuer Name:', plan.name); if(!name||!name.trim()) return;
-  plan.name   = name.trim(); savePlansIndex(plans); renderPlanList(); toast('Umbenannt ✓');
+  showPrompt('Neuer Name:', plan.name, name=>{
+    plan.name = name; savePlansIndex(plans); renderPlanList(); toast('Umbenannt ✓');
+  }, 'Plan umbenennen');
 }
 
 function openNewPlan(){
-  const name    = prompt('Plan-Name (z.B. Tour 2027 – DE):'); if(!name||!name.trim()) return;
-  const posName = prompt('Erste Position (z.B. Bühne, FOH, Halle 25):'); if(!posName||!posName.trim()) return;
-  savePlanToLS(activePlanId);
-  const id = genPlanId();
-  activePlanId = id;
-  activePosIdx = 0;
-  state = {_project:name.trim(),_date:'',_activePosIdx:0,positions:[{name:posName.trim(),categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
-  document.getElementById('pName').value = state._project;
-  document.getElementById('pDate').value = '';
-  const plans = getPlansIndex();
-  plans.push({id,name:name.trim(),created:todayStr(),modified:todayStr(),catalogId:activeCatalogId||'cat-default'});
-  savePlansIndex(plans);
-  savePlanToLS(id);
-  render();
-  renderPlanList();
-  toast('Plan „'+name.trim()+'" erstellt ✓');
+  showPrompt('Plan-Name (z.B. Tour 2027 – DE):', '', planName=>{
+    showPrompt('Erste Position (z.B. Bühne, FOH, Halle 25):', '', posName=>{
+      savePlanToLS(activePlanId);
+      const id = genPlanId();
+      activePlanId = id;
+      activePosIdx = 0;
+      state = {_project:planName,_date:'',_activePosIdx:0,positions:[{name:posName,categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+      document.getElementById('pName').value = state._project;
+      document.getElementById('pDate').value = '';
+      const plans = getPlansIndex();
+      plans.push({id,name:planName,created:todayStr(),modified:todayStr(),catalogId:activeCatalogId||'cat-default'});
+      savePlansIndex(plans);
+      savePlanToLS(id);
+      render();
+      renderPlanList();
+      toast('Plan „'+planName+'" erstellt ✓');
+    }, 'Erste Position');
+  }, 'Neuer Plan');
 }

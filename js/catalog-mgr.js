@@ -408,10 +408,11 @@ function catTreeDeleteLen(catalogId, typeKey, idx){
   const cat   = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
   const entry = cat.types[typeKey]; if(!entry||!entry.items?.[idx]) return;
   const label = entry.items[idx].l||entry.items[idx].n||'?';
-  if(!confirm(`Länge „${label}" löschen?`)) return;
-  entry.items.splice(idx,1);
-  saveCatalogsStore();
-  _renderCatMgrTab2();
+  showConfirm(`Länge „${label}" löschen?`, ()=>{
+    entry.items.splice(idx,1);
+    saveCatalogsStore();
+    _renderCatMgrTab2();
+  });
 }
 
 // ── UNIT TYPE TOGGLE ───────────────────────────────────────────────
@@ -446,14 +447,15 @@ function catEditorDeleteGroup(catalogId, groupId){
   const msg = childGroups.length
     ? `Gruppe „${g.name}" und ${childGroups.length} Untergruppe(n) löschen?\nZugeordnete Artikel werden zu „Ohne Gruppe".`
     : `Gruppe „${g.name}" löschen? Zugeordnete Artikel werden zu „Ohne Gruppe".`;
-  if(!confirm(msg)) return;
-  const allIds = [groupId,...childGroups.map(x=>x.id)];
-  Object.values(cat.types).forEach(t=>{ if(allIds.includes(t.group)) delete t.group; });
-  cat.groups = cat.groups.filter(x=>!allIds.includes(x.id));
-  saveCatalogsStore();
-  _catTreeInlineState = null;
-  _renderCatMgrTab2();
-  toast('✓ Gruppe gelöscht');
+  showConfirm(msg, ()=>{
+    const allIds = [groupId,...childGroups.map(x=>x.id)];
+    Object.values(cat.types).forEach(t=>{ if(allIds.includes(t.group)) delete t.group; });
+    cat.groups = cat.groups.filter(x=>!allIds.includes(x.id));
+    saveCatalogsStore();
+    _catTreeInlineState = null;
+    _renderCatMgrTab2();
+    toast('✓ Gruppe gelöscht');
+  });
 }
 
 function catEditorSetTypeGroup(catalogId, typeKey, groupId){
@@ -474,13 +476,14 @@ function catEditorRenameType(catalogId, typeKey){
 }
 
 function catEditorDeleteType(catalogId, typeKey){
-  if(!confirm(`Artikel „${typeKey}" aus dem Katalog löschen?\nBereits hinzugefügte Projektpositionen bleiben erhalten.`)) return;
-  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  delete cat.types[typeKey];
-  saveCatalogsStore();
-  _catTreeInlineState = null;
-  _renderCatMgrTab2();
-  toast('✓ Artikel gelöscht');
+  showConfirm(`Artikel „${typeKey}" aus dem Katalog löschen?\nBereits hinzugefügte Projektpositionen bleiben erhalten.`, ()=>{
+    const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+    delete cat.types[typeKey];
+    saveCatalogsStore();
+    _catTreeInlineState = null;
+    _renderCatMgrTab2();
+    toast('✓ Artikel gelöscht');
+  });
 }
 
 function catEditorSetUnitType(catalogId, typeKey, unitType){
@@ -516,13 +519,14 @@ function catEditorDetailEditItem(catalogId, typeKey, idx){
   const cat   = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
   const items = cat.types[typeKey]?.items; if(!items||!items[idx]) return;
   const current = items[idx].l||items[idx].n||'';
-  const val = prompt('Eintrag bearbeiten:',current); if(val===null||!val.trim()) return;
-  const lVal = val.trim().match(/^\d+([.,]\d+)?$/) ? val.trim()+'m' : val.trim();
-  items[idx] = {n:typeKey,l:lVal};
-  items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
-  saveCatalogsStore();
-  _renderCatMgrTab2();
-  toast('✓ Eintrag aktualisiert');
+  showPrompt('Eintrag bearbeiten:', current, val=>{
+    const lVal = val.match(/^\d+([.,]\d+)?$/) ? val+'m' : val;
+    items[idx] = {n:typeKey,l:lVal};
+    items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
+    saveCatalogsStore();
+    _renderCatMgrTab2();
+    toast('✓ Eintrag aktualisiert');
+  }, 'Eintrag bearbeiten');
 }
 
 function catEditorDetailDeleteItem(catalogId, typeKey, idx){
@@ -573,9 +577,10 @@ function catMgrDelete(catalogId){
     return;
   }
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  if(!confirm(`Katalog „${cat.name}" wirklich löschen? Alle Einträge gehen verloren.`)) return;
-  catalogsStore.catalogs = catalogsStore.catalogs.filter(c=>c.id!==catalogId);
-  saveCatalogsStore(); _renderCatMgrTab1(); toast('Katalog gelöscht');
+  showConfirm(`Katalog „${cat.name}" wirklich löschen? Alle Einträge gehen verloren.`, ()=>{
+    catalogsStore.catalogs = catalogsStore.catalogs.filter(c=>c.id!==catalogId);
+    saveCatalogsStore(); _renderCatMgrTab1(); toast('Katalog gelöscht');
+  });
 }
 
 function catMgrCreateNew(){
