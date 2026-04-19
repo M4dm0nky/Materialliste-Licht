@@ -205,8 +205,22 @@ let activeCatalogId = null;
 // ── CATALOG STORE ──────────────────────────────────────────────────
 function genCatalogId(){ return 'cat-'+Date.now().toString(36); }
 
+function _showStorageError(msg){
+  let el = document.getElementById('storage-error-banner');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'storage-error-banner';
+    el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#e84a4a;color:#fff;padding:8px 16px;z-index:9999;font-family:inherit;font-size:0.9em';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>el.remove(), 6000);
+}
+
 function saveCatalogsStore(){
-  try{ localStorage.setItem(CATALOGS_KEY, JSON.stringify(catalogsStore)); }catch(e){}
+  try{ localStorage.setItem(CATALOGS_KEY, JSON.stringify(catalogsStore)); }
+  catch(e){ _showStorageError('⚠ Katalog konnte nicht gespeichert werden: '+e.message); }
 }
 
 function getActiveCatalog(){
