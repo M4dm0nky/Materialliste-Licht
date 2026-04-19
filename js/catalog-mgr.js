@@ -36,7 +36,7 @@ function _renderCatMgrTab1(){
   const activePlan   = plans.find(p=>p.id===activePlanId);
   const currentCatId = activePlan?.catalogId||'cat-default';
   const cats         = catalogsStore?.catalogs||[];
-  const s            = JSON.stringify;
+  const s            = v => JSON.stringify(v).replace(/"/g,'&quot;');
   document.getElementById('catMgrContent').innerHTML = `
     <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:10px">AKTIVER KATALOG FÜR DIESEN PLAN</div>
     <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
@@ -543,9 +543,25 @@ function catMgrAssign(catalogId){
 function catMgrEdit(catalogId){ _catEditorId=catalogId; _catMgrSwitchTab(2); }
 
 function catMgrRename(catalogId){
-  const cat  = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  const name = prompt('Neuer Katalog-Name:',cat.name); if(!name||!name.trim()) return;
-  cat.name = name.trim(); saveCatalogsStore(); _renderCatMgrTab1();
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  document.getElementById('catMgrContent').innerHTML = `
+    <div style="max-width:440px">
+      <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:12px">KATALOG UMBENENNEN</div>
+      <input class="pinput" id="renameCatInput" value="${esc(cat.name)}"
+        placeholder="Katalog-Name" style="width:100%;margin-bottom:0"
+        onkeydown="if(event.key==='Enter')_catMgrSaveRename(&quot;${catalogId}&quot;);else if(event.key==='Escape')_renderCatMgrTab1()">
+    </div>`;
+  document.getElementById('mFooter').innerHTML = `
+    <button class="btn" onclick="_renderCatMgrTab1()">Abbrechen</button>
+    <button class="btn btn-accent" onclick="_catMgrSaveRename(&quot;${catalogId}&quot;)">SPEICHERN</button>`;
+  setTimeout(()=>{ const i=document.getElementById('renameCatInput'); if(i){i.focus();i.select();} },50);
+}
+
+function _catMgrSaveRename(catalogId){
+  const val = document.getElementById('renameCatInput')?.value.trim();
+  if(!val){ toast('Bitte einen Namen eingeben.',true); return; }
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  cat.name = val; saveCatalogsStore(); _renderCatMgr();
   renderActiveCatalogBadge(); toast('✓ Umbenannt');
 }
 
@@ -563,16 +579,54 @@ function catMgrDelete(catalogId){
 }
 
 function catMgrCreateNew(){
-  const name = prompt('Name des neuen Katalogs (z.B. Firma ABC):'); if(!name||!name.trim()) return;
-  const copy = confirm('Kopie vom Standard-Katalog erstellen?\n(Nein = leerer Katalog)');
-  const stdCat = catalogsStore.catalogs.find(c=>c.id==='cat-default');
-  const types  = copy&&stdCat ? JSON.parse(JSON.stringify(stdCat.types)) : {};
-  const id     = genCatalogId();
-  catalogsStore.catalogs.push({id,name:name.trim(),isBuiltin:false,
+  document.getElementById('catMgrContent').innerHTML = `
+    <div style="max-width:520px">
+      <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:12px">NEUER KATALOG</div>
+      <div style="margin-bottom:18px">
+        <div style="font-size:10px;letter-spacing:1px;color:var(--muted);margin-bottom:6px">NAME</div>
+        <input class="pinput" id="newCatName" placeholder="z.B. Firma ABC, Tour 2025 …"
+          style="width:100%;margin:0"
+          onkeydown="if(event.key==='Escape')_renderCatMgrTab1()">
+      </div>
+      <div style="font-size:10px;letter-spacing:1px;color:var(--muted);margin-bottom:8px">INHALT</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--border);cursor:pointer;background:var(--bg3);transition:border-color .15s"
+          onclick="document.getElementById('newCatCopy').checked=true;this.closest('.catopt-group')?.querySelectorAll('label').forEach(l=>l.style.borderColor='');this.style.borderColor='var(--accent)'">
+          <input type="radio" name="newCatMode" id="newCatCopy" value="copy" style="margin-top:2px;accent-color:var(--accent)">
+          <div>
+            <div style="font-weight:700;font-size:13px;color:var(--text);margin-bottom:3px">Kopie vom Standard-Katalog</div>
+            <div style="font-size:11px;color:var(--muted)">Alle vordefinierten Typen und Gruppen werden übernommen. Ideal als Ausgangspunkt.</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--border);cursor:pointer;background:var(--bg3);transition:border-color .15s"
+          onclick="document.getElementById('newCatEmpty').checked=true;this.closest('.catopt-group')?.querySelectorAll('label').forEach(l=>l.style.borderColor='');this.style.borderColor='var(--accent)'">
+          <input type="radio" name="newCatMode" id="newCatEmpty" value="empty" style="margin-top:2px;accent-color:var(--accent)">
+          <div>
+            <div style="font-weight:700;font-size:13px;color:var(--text);margin-bottom:3px">Leerer Katalog</div>
+            <div style="font-size:11px;color:var(--muted)">Katalog ohne Einträge anlegen und selbst befüllen.</div>
+          </div>
+        </label>
+      </div>
+    </div>`;
+  document.getElementById('mFooter').innerHTML = `
+    <button class="btn" onclick="_renderCatMgrTab1()">Abbrechen</button>
+    <button class="btn btn-accent" onclick="_catMgrSaveNew()">KATALOG ERSTELLEN</button>`;
+  setTimeout(()=>document.getElementById('newCatName')?.focus(), 50);
+}
+
+function _catMgrSaveNew(){
+  const name = document.getElementById('newCatName')?.value.trim();
+  if(!name){ toast('Bitte einen Katalog-Namen eingeben.',true); document.getElementById('newCatName')?.focus(); return; }
+  const copy    = document.getElementById('newCatCopy')?.checked;
+  const stdCat  = catalogsStore.catalogs.find(c=>c.id==='cat-default');
+  const types   = copy&&stdCat ? JSON.parse(JSON.stringify(stdCat.types)) : {};
+  const groups  = copy&&stdCat ? JSON.parse(JSON.stringify(stdCat.groups||[])) : [];
+  const id      = genCatalogId();
+  catalogsStore.catalogs.push({id,name,isBuiltin:false,
     created:new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}),
-    groups:[],types});
-  saveCatalogsStore(); _catEditorId=id; _renderCatMgrTab1();
-  toast('✓ Katalog „'+name.trim()+'" erstellt');
+    groups,types});
+  saveCatalogsStore(); _catEditorId=id; _renderCatMgr();
+  toast('✓ Katalog „'+name+'" erstellt');
 }
 
 function catMgrImportJSON(input){
