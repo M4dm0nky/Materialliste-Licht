@@ -81,7 +81,7 @@ function _renderCatMgrTab2(){
   document.getElementById('catMgrContent').innerHTML = `
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
       <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">KATALOG:</div>
-      <select class="pinput" onchange="catEditorSwitch(this.value)" style="width:auto;min-width:180px">
+      <select class="selin" onchange="catEditorSwitch(this.value)" style="width:auto;min-width:180px;margin-bottom:0;font-size:14px;padding:6px 12px">
         ${cats.map(c=>`<option value="${c.id}"${c.id===cat.id?' selected':''}>${esc(c.name)}</option>`).join('')}
       </select>
       <button class="btn btn-sm btn-green" onclick="catEditorExport(${s(cat.id)})">↓ EXPORTIEREN</button>
@@ -163,9 +163,12 @@ function _renderCatTree(cat, weltName){
         <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
       </div>`;
     } else {
+      const weltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===(val.cat||CAT_ORDER[0])?' selected':''}>${w}</option>`).join('');
       row += `<span class="tree-toggle">▶</span>
         <span class="tree-label">${esc(key)}</span>
         <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
+        <select class="cat-welt-sel" title="Welt wechseln"
+          onchange="catEditorSetCat(${s(catId)},${s(key)},this.value)">${weltOpts}</select>
         <div class="tree-actions">
           <button onclick="catTreeToggleUnitType(${s(catId)},${s(key)})" title="${isKabel?'Zu Gerät wechseln':'Zu Kabel wechseln'}" style="font-size:10px;opacity:.65">
             ${isKabel?'→Gerät':'→Kabel'}
@@ -507,7 +510,7 @@ function catEditorSetCat(catalogId, typeKey, catName){
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
   if(!cat.types[typeKey]) return;
   cat.types[typeKey].cat = catName;
-  saveCatalogsStore(); rerenderAllCats();
+  saveCatalogsStore(); rerenderAllCats(); _renderCatMgrTab2();
 }
 
 // ── LÄNGEN (Legacy-API für Wizard-Kompatibilität) ──────────────────
