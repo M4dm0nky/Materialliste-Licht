@@ -57,7 +57,6 @@ function buildGroupHeader(groupName, ci, groupId){
     const grpHandle = el.querySelector('.drag-handle');
     grpHandle.draggable = true;
     grpHandle.addEventListener('dragstart',e=>{
-      e.stopPropagation();
       dragSrcGrp = {groupId};
       dragType = 'group';
       el.classList.add('grp-dragging');
@@ -106,6 +105,37 @@ function buildQtyRow(ci, si){
     <td class="tdtext"><input type="text" value="${esc(item.kapitel||'')}" placeholder="Kap…"
       onchange="upf(${ci},${si},0,'kapitel',this.value)" oninput="save()"></td>
     <td class="td-actions"><button class="delbtn" onclick="delRow(${ci},${si},0)" title="Zeile löschen">✕</button></td>`;
+  tr.draggable = true;
+  tr.addEventListener('dragstart',e=>{
+    dragSrcSec = {ci,si};
+    dragType = 'qty-row';
+    tr.classList.add('row-dragging');
+    e.dataTransfer.effectAllowed='move';
+    e.dataTransfer.setData('text/plain',`qty-${ci}-${si}`);
+  });
+  tr.addEventListener('dragend',()=>{
+    dragType = null;
+    tr.classList.remove('row-dragging');
+    document.querySelectorAll('tr.row-drop-before,tr.row-drop-after').forEach(el=>el.classList.remove('row-drop-before','row-drop-after'));
+  });
+  tr.addEventListener('dragover',e=>{
+    if(dragType!=='qty-row') return;
+    e.preventDefault(); e.stopPropagation();
+    e.dataTransfer.dropEffect='move';
+    document.querySelectorAll('tr.row-drop-before,tr.row-drop-after').forEach(el=>el.classList.remove('row-drop-before','row-drop-after'));
+    const rect = tr.getBoundingClientRect();
+    tr.classList.add(e.clientY < rect.top+rect.height/2 ? 'row-drop-before' : 'row-drop-after');
+  });
+  tr.addEventListener('dragleave',()=>{
+    tr.classList.remove('row-drop-before','row-drop-after');
+  });
+  tr.addEventListener('drop',e=>{
+    e.preventDefault(); e.stopPropagation();
+    tr.classList.remove('row-drop-before','row-drop-after');
+    if(dragType!=='qty-row'||!dragSrcSec) return;
+    const rect = tr.getBoundingClientRect();
+    dropQtyRow(ci,si,e.clientY>=rect.top+rect.height/2);
+  });
   return tr;
 }
 
@@ -225,7 +255,7 @@ function buildSecEl(ci,si){
   block.className='secblock'+(noLen?' no-length':''); block.id=`sec-${ci}-${si}`;
   block.innerHTML=`
     <div class="sechdr" id="sechdr-${ci}-${si}"
-      ondragover="if(dragType==='row'){event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('drop-target');}else if(dragType==='section'){event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('sec-drop-target');}"
+      ondragover="event.preventDefault();event.dataTransfer.dropEffect='move';if(dragType==='section')this.classList.add('sec-drop-target');else this.classList.add('drop-target');"
       ondragleave="this.classList.remove('drop-target','sec-drop-target')"
       ondrop="dropOnSec(${ci},${si},event)">
       <div class="sechdr-title">
@@ -259,13 +289,11 @@ function buildSecEl(ci,si){
   if(dragHandle){
     dragHandle.draggable = true;
     dragHandle.addEventListener('dragstart',e=>{
-      e.stopPropagation();
       dragSrcSec = {ci,si};
       dragType = 'section';
       block.classList.add('sec-dragging');
       e.dataTransfer.effectAllowed='move';
       e.dataTransfer.setData('text/plain',`sec-${ci}-${si}`);
-      e.dataTransfer.setDragImage(block, 40, 20);
     });
     dragHandle.addEventListener('dragend',()=>{
       block.classList.remove('sec-dragging');
@@ -394,6 +422,21 @@ function dropSecOnSec(tci,tsi){
     save(); rerenderCat(sci); rerenderCat(tci);
   }
   toast('↕ Sektion verschoben');
+}
+
+function dropQtyRow(tci,tsi,insertAfter){
+  if(!dragSrcSec) return;
+  const {ci:sci,si:ssi} = dragSrcSec;
+  dragSrcSec = null; dragType = null;
+  if(sci===tci && ssi===tsi) return;
+  const cats = currentCats();
+  const sec = cats[sci].sections.splice(ssi,1)[0];
+  let adj = (sci===tci && ssi<tsi) ? tsi-1 : tsi;
+  let idx = insertAfter ? adj+1 : adj;
+  idx = Math.max(0, Math.min(idx, cats[tci].sections.length));
+  cats[tci].sections.splice(idx,0,sec);
+  save(); rerenderCat(tci);
+  if(sci!==tci) rerenderCat(sci);
 }
 
 function dropOnGroupHeader(targetGroupId){
