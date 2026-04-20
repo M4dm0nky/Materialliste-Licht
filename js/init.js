@@ -50,7 +50,7 @@ initState();
   // ESC schließt Modal
   document.addEventListener('keydown', e=>{
     if(e.key==='Escape' && document.getElementById('overlay').classList.contains('open')){
-      closeWiz();
+      if(!document.querySelector('.app-dialog.open')) closeWiz();
     }
   });
 
