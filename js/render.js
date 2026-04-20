@@ -54,18 +54,17 @@ function buildGroupHeader(groupName, ci, groupId){
   el.innerHTML = `<span class="drag-handle" title="Gruppe verschieben">⠿</span><span class="grp-chevron">▼</span><span class="grp-title-text" title="Klicken zum Umbenennen">${esc(groupName)}</span>`;
   if(groupId){
     el.querySelector('.grp-title-text').addEventListener('click',()=>editGroupName(groupId));
-    el.querySelector('.drag-handle').addEventListener('mousedown',e=>{ e.stopPropagation(); el.draggable=true; });
-    el.querySelector('.drag-handle').addEventListener('mouseup',()=>{ el.draggable=false; });
-    el.addEventListener('dragstart',e=>{
-      if(!el.draggable) return;
+    const grpHandle = el.querySelector('.drag-handle');
+    grpHandle.draggable = true;
+    grpHandle.addEventListener('dragstart',e=>{
+      e.stopPropagation();
       dragSrcGrp = {groupId};
       dragType = 'group';
       el.classList.add('grp-dragging');
       e.dataTransfer.effectAllowed='move';
       e.dataTransfer.setData('text/plain','grp-'+groupId);
     });
-    el.addEventListener('dragend',()=>{
-      el.draggable=false;
+    grpHandle.addEventListener('dragend',()=>{
       el.classList.remove('grp-dragging');
       document.querySelectorAll('.grp-section-hdr.grp-drop-target').forEach(x=>x.classList.remove('grp-drop-target'));
     });
@@ -258,21 +257,17 @@ function buildSecEl(ci,si){
     </div>`;
   const dragHandle = block.querySelector('.drag-handle');
   if(dragHandle){
-    dragHandle.addEventListener('mousedown',e=>{
+    dragHandle.draggable = true;
+    dragHandle.addEventListener('dragstart',e=>{
       e.stopPropagation();
-      block.draggable=true;
-    });
-    dragHandle.addEventListener('mouseup',()=>{ block.draggable=false; });
-    block.addEventListener('dragstart',e=>{
-      if(!block.draggable) return;
       dragSrcSec = {ci,si};
       dragType = 'section';
       block.classList.add('sec-dragging');
       e.dataTransfer.effectAllowed='move';
       e.dataTransfer.setData('text/plain',`sec-${ci}-${si}`);
+      e.dataTransfer.setDragImage(block, 40, 20);
     });
-    block.addEventListener('dragend',()=>{
-      block.draggable=false;
+    dragHandle.addEventListener('dragend',()=>{
       block.classList.remove('sec-dragging');
       dragType = null; dragSrcSec = null;
       document.querySelectorAll('.sechdr.sec-drop-target').forEach(el=>el.classList.remove('sec-drop-target'));
