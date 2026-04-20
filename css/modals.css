@@ -227,3 +227,6 @@
 /* Anklickbarer Artikel-Name im Tree */
 .tree-artikel-link{cursor:pointer;transition:color .1s;}
 .tree-artikel-link:hover{color:var(--accent);text-decoration:underline;}
+/* Editierbare Längen-Chips */
+.len-tag{cursor:pointer;transition:border-color .1s,color .1s;}
+.len-tag:hover{border-color:var(--accent);color:var(--accent);}

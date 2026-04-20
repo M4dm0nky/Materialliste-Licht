@@ -5,6 +5,7 @@ let _catMgrTab          = 1;     // 1 = Übersicht, 2 = Bearbeiten
 let _catEditorId        = null;  // aktiver Katalog im Editor
 let _catEditorWelt      = null;  // aktive Welt im Tree-Tab
 let _catTreeInlineState = null;  // {mode, catalogId, id?, parentId?, weltName?}
+let _catTreeCollapsed   = new Set(); // "catId::typeKey" → eingeklappt
 
 // ── ÖFFNEN & HAUPT-RENDER ──────────────────────────────────────────
 function openCatalogMgr(tab){
@@ -106,6 +107,35 @@ function catTreeSwitchWelt(weltName){
   _renderCatMgrTab2();
 }
 
+function catTreeToggleCollapse(catalogId, key){
+  const id = catalogId+'::'+key;
+  if(_catTreeCollapsed.has(id)) _catTreeCollapsed.delete(id);
+  else _catTreeCollapsed.add(id);
+  _renderCatMgrTab2();
+}
+
+function catTreeEditLen(catalogId, key, idx){
+  _catTreeInlineState = {mode:'edit-len', catalogId, id:key, lenIdx:idx};
+  _renderCatMgrTab2();
+  setTimeout(()=>document.getElementById('tree-inline-input')?.focus(),50);
+}
+
+function catTreeSaveEditLen(catalogId, key, idx){
+  const val = document.getElementById('tree-inline-input')?.value.trim();
+  if(!val){ catTreeInlineCancel(); return; }
+  const lVal = val.match(/^\d+([.,]\d+)?$/) ? val+'m' : val;
+  const cat = catalogsStore?.catalogs?.find(c=>c.id===catalogId); if(!cat) return;
+  const entry = cat.types[key]; if(!entry?.items?.[idx]) return;
+  if(entry.items.some((i,n)=>i.l===lVal && n!==idx)){ toast('Länge existiert bereits.',true); return; }
+  entry.items[idx].l = lVal;
+  entry.items[idx].n = key;
+  entry.items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
+  saveCatalogsStore(); rerenderAllCats();
+  _catTreeInlineState = null;
+  _renderCatMgrTab2();
+  toast('✓ Länge geändert');
+}
+
 // ── TREE RENDERING ─────────────────────────────────────────────────
 function _renderCatTree(cat, weltName){
   const types     = cat.types||{};
@@ -147,12 +177,13 @@ function _renderCatTree(cat, weltName){
   };
 
   const renderArtikelRow = (key, val, indent) => {
-    const isKabel   = (val.unit_type||'qty') === 'lengths';
-    const badgeCls  = isKabel ? 'badge-kabel' : 'badge-geraet';
-    const badgeTxt  = isKabel ? 'Kabel' : 'Gerät';
-    const isEditing = is?.mode==='edit-artikel' && is.id===key;
-    const indCls    = indent===2?'tree-indent-2':indent===1?'tree-indent-1':'';
-    const catId     = cat.id;
+    const isKabel    = (val.unit_type||'qty') === 'lengths';
+    const badgeCls   = isKabel ? 'badge-kabel' : 'badge-geraet';
+    const badgeTxt   = isKabel ? 'Kabel' : 'Gerät';
+    const isEditing  = is?.mode==='edit-artikel' && is.id===key;
+    const indCls     = indent===2?'tree-indent-2':indent===1?'tree-indent-1':'';
+    const catId      = cat.id;
+    const collapsed  = _catTreeCollapsed.has(catId+'::'+key);
 
     let row = `<div class="tree-row tree-artikel ${indCls}">`;
     if(isEditing){
@@ -165,7 +196,7 @@ function _renderCatTree(cat, weltName){
       </div>`;
     } else {
       const weltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===(val.cat||CAT_ORDER[0])?' selected':''}>${w}</option>`).join('');
-      row += `<span class="tree-toggle">▶</span>
+      row += `<button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>
         <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(key)}</span>
         <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
         <select class="cat-welt-sel" title="Welt wechseln"
@@ -174,22 +205,33 @@ function _renderCatTree(cat, weltName){
           <button onclick="catTreeToggleUnitType(${s(catId)},${s(key)})" title="${isKabel?'Zu Gerät wechseln':'Zu Kabel wechseln'}" style="font-size:10px;opacity:.65">
             ${isKabel?'→Gerät':'→Kabel'}
           </button>
-          <button onclick="catTreeInlineEditArtikel(${s(catId)},${s(key)})" title="Umbenennen">✏</button>
+          <button onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">✏</button>
           <button class="del-btn" onclick="catEditorDeleteType(${s(catId)},${s(key)})" title="Löschen">✕</button>
         </div>`;
     }
     row += '</div>';
 
-    // Längen-Tags für Kabel-Artikel
-    if(isKabel && !isEditing){
+    // Längen-Tags für Kabel-Artikel (nur wenn nicht eingeklappt)
+    if(isKabel && !isEditing && !collapsed){
       const items      = val.items||[];
-      const isAddLen   = is?.mode==='add-len' && is.id===key;
+      const isAddLen   = is?.mode==='add-len'   && is.id===key;
+      const isEditLen  = is?.mode==='edit-len'  && is.id===key;
       const tagIndent  = indent===2?'padding-left:52px':indent===1?'padding-left:36px':'padding-left:20px';
       row += `<div class="len-tags" style="${tagIndent}">`;
       items.forEach((it,idx)=>{
         const label = it.l||it.n||'?';
-        row += `<span class="len-tag">${esc(label)}<button class="len-del"
-          onclick="catTreeDeleteLen(${s(catId)},${s(key)},${idx})" title="Löschen">✕</button></span>`;
+        if(isEditLen && is.lenIdx===idx){
+          row += `<span class="len-add-wrap">
+            <input class="len-add-input" id="tree-inline-input" value="${esc(label)}"
+              onkeydown="if(event.key==='Enter'){catTreeSaveEditLen(${s(catId)},${s(key)},${idx})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
+            <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
+              onclick="catTreeSaveEditLen(${s(catId)},${s(key)},${idx})">✓</button>
+            <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
+          </span>`;
+        } else {
+          row += `<span class="len-tag" onclick="catTreeEditLen(${s(catId)},${s(key)},${idx})" title="Klicken zum Bearbeiten">${esc(label)}<button class="len-del"
+            onclick="event.stopPropagation();catTreeDeleteLen(${s(catId)},${s(key)},${idx})" title="Löschen">✕</button></span>`;
+        }
       });
       if(isAddLen){
         row += `<span class="len-add-wrap">
