@@ -277,7 +277,7 @@ function _renderCatTree(cat, weltName){
             subs.map(sg=>`<option value="${sg.id}"${val.group===sg.id?' selected':''}>\u00a0\u00a0▸ ${esc(sg.name)}</option>`).join('');
         }).join('');
       row += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('artikel',${s(catId)},${s(key)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
-        <button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>
+        ${isKabel?`<button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>`:'<span class="tree-toggle-placeholder"></span>'}
         <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(key)}</span>
         <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
         <select class="cat-welt-sel" title="Welt wechseln"
