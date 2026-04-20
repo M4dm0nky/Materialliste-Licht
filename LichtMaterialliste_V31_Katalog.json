@@ -1,6 +1,7 @@
 {
   "name": "LichtMaterialliste V31",
   "types": {
+
     "DMX 5-Pin": {
       "cat": "Datenwelt",
       "unit_type": "lengths",
@@ -19,6 +20,7 @@
         {"n": "", "l": "100m Trommel"}
       ]
     },
+
     "DMX 3-Pin": {
       "cat": "Datenwelt",
       "unit_type": "lengths",
@@ -37,6 +39,7 @@
         {"n": "", "l": "100m Trommel"}
       ]
     },
+
     "DMX 4er Baum 5-Pin": {
       "cat": "Datenwelt",
       "unit_type": "lengths",
@@ -53,6 +56,7 @@
         {"n": "", "l": "100m"}
       ]
     },
+
     "DMX LK37": {
       "cat": "Datenwelt",
       "unit_type": "lengths",
@@ -65,26 +69,28 @@
         {"n": "", "l": "40m"},
         {"n": "", "l": "50m"},
         {"n": "", "l": "70m"},
-        {"n": "", "l": "100m"},
-        {"n": "LK37 M → 12x DMX F", "l": ""},
-        {"n": "LK37 F → 12x DMX M", "l": ""}
+        {"n": "", "l": "100m"}
       ]
     },
+
     "DMX Adapter": {
       "cat": "Datenwelt",
       "unit_type": "qty",
       "items": [
+        {"n": "LK37 M → 12x DMX F", "l": ""},
+        {"n": "LK37 F → 12x DMX M", "l": ""},
         {"n": "Cat → 4x DMX M", "l": ""},
         {"n": "Cat → 4x DMX F", "l": ""},
         {"n": "DMX 3pol M → DMX 5pol F", "l": ""},
         {"n": "DMX 3pol F → DMX 5pol M", "l": ""}
       ]
     },
+
     "Netzwerk LWL Glasfaser": {
       "cat": "Datenwelt",
       "unit_type": "lengths",
       "items": [
-        {"n": "LWL 4er MultiMode SC", "l": "Patchkabel 1m"},
+        {"n": "LWL 4er MultiMode SC", "l": "1m"},
         {"n": "", "l": "3m"},
         {"n": "", "l": "5m"},
         {"n": "", "l": "10m"},
@@ -93,17 +99,25 @@
         {"n": "", "l": "100m"},
         {"n": "", "l": "150m"},
         {"n": "", "l": "300m"},
-        {"n": "", "l": "500m"},
+        {"n": "", "l": "500m"}
+      ]
+    },
+
+    "Netzwerk LWL Zubehör": {
+      "cat": "Datenwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "LWL Verbinder SC–SC", "l": ""},
         {"n": "LWL Adapter LC→SC", "l": ""},
         {"n": "LWL Reinigungset", "l": ""}
       ]
     },
+
     "Netzwerk Cat 6/7 RJ45": {
       "cat": "Datenwelt",
       "unit_type": "lengths",
       "items": [
-        {"n": "Cat 6/7 RJ45", "l": "Patchkabel 1m"},
+        {"n": "Cat 6/7 RJ45", "l": "1m"},
         {"n": "", "l": "3m"},
         {"n": "", "l": "5m"},
         {"n": "", "l": "10m"},
@@ -111,10 +125,18 @@
         {"n": "", "l": "20m"},
         {"n": "", "l": "25m"},
         {"n": "", "l": "50m Trommel"},
-        {"n": "", "l": "100m Trommel"},
+        {"n": "", "l": "100m Trommel"}
+      ]
+    },
+
+    "Netzwerk Cat Zubehör": {
+      "cat": "Datenwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "Cat 6/7 RJ45 Verbinder", "l": ""}
       ]
     },
+
     "Netzwerk Ethercon": {
       "cat": "Datenwelt",
       "unit_type": "lengths",
@@ -125,27 +147,18 @@
         {"n": "", "l": "30m"},
         {"n": "", "l": "50m Trommel"},
         {"n": "", "l": "90m Trommel"},
-        {"n": "", "l": "100m Trommel"},
+        {"n": "", "l": "100m Trommel"}
+      ]
+    },
+
+    "Netzwerk Ethercon Zubehör": {
+      "cat": "Datenwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "Ethercon Verbinder", "l": ""}
       ]
     },
-    "DMX Steuerung & Netzwerk": {
-      "cat": "Datenwelt",
-      "unit_type": "lengths",
-      "items": [
-        {"n": "GrandMA2 Full", "l": ""},
-        {"n": "GrandMA2 Light", "l": ""},
-        {"n": "GrandMA2 ONPC Set", "l": ""},
-        {"n": "GrandMA2 NPU", "l": "", "b": "mit USV und SG300"},
-        {"n": "GrandMA2 4-Port Node", "l": ""},
-        {"n": "GrandMA2 8-Port Node", "l": ""},
-        {"n": "Cisco SG300 Switch (LWL SC Ports)", "l": ""},
-        {"n": "DMX Switch Single", "l": "Swisson"},
-        {"n": "2x DMX Switch", "l": "Swisson"},
-        {"n": "4x DMX Switch", "l": "Swisson"},
-        {"n": "Adapterkoffer Cat → DMX (Swisson 4er Rack)", "l": ""}
-      ]
-    },
+
     "Stromkabel Han16": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -159,7 +172,14 @@
         {"n": "", "l": "25m"},
         {"n": "", "l": "30m"},
         {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"},
+        {"n": "", "l": "50m"}
+      ]
+    },
+
+    "Han16 Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "Han16 M → 6x Schuko", "l": ""},
         {"n": "Han16 M → 6x Schuko + Han F", "l": ""},
         {"n": "6x Schuko M → Han F", "l": ""},
@@ -167,6 +187,7 @@
         {"n": "Han16 Verbinder", "l": ""}
       ]
     },
+
     "Stromkabel Han6 5kW": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -180,11 +201,19 @@
         {"n": "", "l": "25m"},
         {"n": "", "l": "30m"},
         {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"},
+        {"n": "", "l": "50m"}
+      ]
+    },
+
+    "Han6 Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "Han8 5KW → 3x CEE32 F", "l": ""},
         {"n": "3x CEE32 M → Han8 5KW", "l": ""}
       ]
     },
+
     "Stromkabel Socapex": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -198,7 +227,14 @@
         {"n": "", "l": "25m"},
         {"n": "", "l": "30m"},
         {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"},
+        {"n": "", "l": "50m"}
+      ]
+    },
+
+    "Socapex Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "Soca M → 6x Schuko", "l": ""},
         {"n": "Soca M → 6x Schuko + Soca F", "l": ""},
         {"n": "6x Schuko M → Soca F", "l": ""},
@@ -207,6 +243,7 @@
         {"n": "Socapex F → Harting M", "l": ""}
       ]
     },
+
     "Stromkabel Schuko": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -217,11 +254,19 @@
         {"n": "", "l": "10m"},
         {"n": "", "l": "15m"},
         {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
+        {"n": "", "l": "25m"}
+      ]
+    },
+
+    "Schuko Verteiler": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "3er Verteiler", "l": ""},
         {"n": "6er Verteiler", "l": ""}
       ]
     },
+
     "Stromkabel VL5": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -235,6 +280,7 @@
         {"n": "", "l": "25m"}
       ]
     },
+
     "CEE 16A Blau": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -246,11 +292,19 @@
         {"n": "", "l": "15m"},
         {"n": "", "l": "20m"},
         {"n": "", "l": "25m"},
-        {"n": "", "l": "50m"},
+        {"n": "", "l": "50m"}
+      ]
+    },
+
+    "CEE 16A Blau Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "CEE16 → Schuko F", "l": ""},
         {"n": "Schuko M → CEE16", "l": ""}
       ]
     },
+
     "CEE 32A Blau": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -262,11 +316,19 @@
         {"n": "", "l": "15m"},
         {"n": "", "l": "20m"},
         {"n": "", "l": "25m"},
-        {"n": "", "l": "50m"},
+        {"n": "", "l": "50m"}
+      ]
+    },
+
+    "CEE 32A Blau Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "CEE16 → CEE32 Blau", "l": ""},
         {"n": "CEE32 Blau → 3x CEE32 Blau", "l": ""}
       ]
     },
+
     "CEE 16A Rot": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -277,11 +339,19 @@
         {"n": "", "l": "15m"},
         {"n": "", "l": "20m"},
         {"n": "", "l": "25m"},
-        {"n": "", "l": "50m"},
+        {"n": "", "l": "50m"}
+      ]
+    },
+
+    "CEE 16A Rot Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "CEE16A Rot → 3x Schuko F", "l": ""},
         {"n": "CEE16A Rot → 6x Schuko F", "l": ""}
       ]
     },
+
     "CEE 32A Rot": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -292,11 +362,19 @@
         {"n": "", "l": "20m"},
         {"n": "", "l": "40m"},
         {"n": "", "l": "50m"},
-        {"n": "", "l": "100m"},
-        {"n": "VT 32A → 32A+2x16A+3x Schuko", "l": ""},
+        {"n": "", "l": "100m"}
+      ]
+    },
+
+    "CEE 32A Rot Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
+        {"n": "VT 32A → 32A + 2x16A + 3x Schuko", "l": ""},
         {"n": "32A → 3x 32A CEE", "l": ""}
       ]
     },
+
     "CEE 63A Rot": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -307,12 +385,20 @@
         {"n": "", "l": "20m"},
         {"n": "", "l": "40m"},
         {"n": "", "l": "50m"},
-        {"n": "", "l": "100m"},
-        {"n": "VT 63A → 63A+2x32A+2x16A+3xSchuko", "l": ""},
+        {"n": "", "l": "100m"}
+      ]
+    },
+
+    "CEE 63A Rot Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
+        {"n": "VT 63A → 63A + 2x32A + 2x16A + 3x Schuko", "l": ""},
         {"n": "32A → 63A Adapter", "l": ""},
         {"n": "VT 63A → 2x 63A", "l": ""}
       ]
     },
+
     "CEE 125A Rot": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -323,12 +409,20 @@
         {"n": "", "l": "20m"},
         {"n": "", "l": "40m"},
         {"n": "", "l": "50m"},
-        {"n": "", "l": "100m"},
-        {"n": "VT 125A → 2x63A+2x32A+2x16A+3xSchuko", "l": ""},
+        {"n": "", "l": "100m"}
+      ]
+    },
+
+    "CEE 125A Rot Adapter": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "63A → 125A Adapter", "l": ""},
+        {"n": "VT 125A → 2x63A + 2x32A + 2x16A + 3x Schuko", "l": ""},
         {"n": "VT 125A → 2x 63A", "l": ""}
       ]
     },
+
     "Erdungskabel": {
       "cat": "Stromwelt",
       "unit_type": "lengths",
@@ -338,33 +432,60 @@
         {"n": "", "l": "10m"},
         {"n": "", "l": "20m"},
         {"n": "", "l": "30m"},
-        {"n": "Erdungskabel Set groß", "l": ""},
         {"n": "Erdungskabel Connex", "l": "3m"},
         {"n": "", "l": "5m"},
         {"n": "", "l": "10m"},
         {"n": "", "l": "20m"},
-        {"n": "", "l": "30m"},
+        {"n": "", "l": "30m"}
+      ]
+    },
+
+    "Erdungskabel Sets": {
+      "cat": "Stromwelt",
+      "unit_type": "qty",
+      "items": [
+        {"n": "Erdungskabel Set groß", "l": ""},
         {"n": "Erdungskabel Set Connex", "l": ""}
       ]
     },
+
     "Dimmer & Feststrom VT": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Lichtwelt",
+      "unit_type": "qty",
       "items": [
-        {"n": "Handdimmer 2kW", "l": "Schuko"},
-        {"n": "6-Kanal Dimmer → 6x Schuko", "l": "16A CEE"},
-        {"n": "12-Kanal Dimmer MA → 2x Han", "l": "32A CEE"},
-        {"n": "24-Kanal Dimmer MA → Han", "l": "63A/125A CEE", "b": "mit Hotpatch / 2x Han Input"},
-        {"n": "36-Kanal Dimmer MA → Han", "l": "125A CEE", "b": "mit Hotpatch / 2x Han Input"},
-        {"n": "12-Kanal VT → 2x Han", "l": "32A CEE"},
-        {"n": "12-Kanal VT → 2x Han Y Single FI", "l": "32A CEE"},
-        {"n": "18-Kanal VT → 3x Han", "l": "63A CEE"},
-        {"n": "36-Kanal VT → Han", "l": "63A CEE", "b": "Hotpatch"},
-        {"n": "48-Kanal VT → Han", "l": "125A CEE", "b": "Hotpatch / 4x Han Input"},
-        {"n": "USV 1000W", "l": "Schuko"},
-        {"n": "USV 1500W", "l": "Schuko"}
+        {"n": "Handdimmer 2kW", "l": "", "b": "Schuko"},
+        {"n": "6-Kanal Dimmer → 6x Schuko", "l": "", "b": "16A CEE"},
+        {"n": "12-Kanal Dimmer MA → 2x Han", "l": "", "b": "32A CEE"},
+        {"n": "24-Kanal Dimmer MA → Han", "l": "", "b": "63A/125A CEE, mit Hotpatch / 2x Han Input"},
+        {"n": "36-Kanal Dimmer MA → Han", "l": "", "b": "125A CEE, mit Hotpatch / 2x Han Input"},
+        {"n": "12-Kanal VT → 2x Han", "l": "", "b": "32A CEE"},
+        {"n": "12-Kanal VT → 2x Han Y Single FI", "l": "", "b": "32A CEE"},
+        {"n": "18-Kanal VT → 3x Han", "l": "", "b": "63A CEE"},
+        {"n": "36-Kanal VT → Han", "l": "", "b": "63A CEE, Hotpatch"},
+        {"n": "48-Kanal VT → Han", "l": "", "b": "125A CEE, Hotpatch / 4x Han Input"},
+        {"n": "USV 1000W", "l": "", "b": "Schuko"},
+        {"n": "USV 1500W", "l": "", "b": "Schuko"}
       ]
     },
+
+    "DMX Steuerung & Netzwerk": {
+      "cat": "Lichtwelt",
+      "unit_type": "qty",
+      "items": [
+        {"n": "GrandMA2 Full", "l": ""},
+        {"n": "GrandMA2 Light", "l": ""},
+        {"n": "GrandMA2 ONPC Set", "l": ""},
+        {"n": "GrandMA2 NPU", "l": "", "b": "mit USV und SG300"},
+        {"n": "GrandMA2 4-Port Node", "l": ""},
+        {"n": "GrandMA2 8-Port Node", "l": ""},
+        {"n": "Cisco SG300 Switch (LWL SC Ports)", "l": ""},
+        {"n": "DMX Switch Single Swisson", "l": ""},
+        {"n": "2x DMX Switch Swisson", "l": ""},
+        {"n": "4x DMX Switch Swisson", "l": ""},
+        {"n": "Adapterkoffer Cat → DMX (Swisson 4er Rack)", "l": ""}
+      ]
+    },
+
     "Hardware Lampen": {
       "cat": "Lichtwelt",
       "unit_type": "qty",
@@ -403,7 +524,8 @@
         {"n": "Lampe", "l": ""}
       ]
     },
-    "Alurohr & Schellen": {
+
+    "Alurohr schwarz": {
       "cat": "Riggingwelt",
       "unit_type": "lengths",
       "items": [
@@ -413,36 +535,59 @@
         {"n": "", "l": "3m"},
         {"n": "", "l": "4m"},
         {"n": "", "l": "5m"},
-        {"n": "", "l": "6m"},
-        {"n": "Gelenkschelle schwarz", "l": ""},
-        {"n": "Starre Schelle schwarz", "l": ""},
-        {"n": "Halbschelle + Ring schwarz", "l": ""},
+        {"n": "", "l": "6m"}
+      ]
+    },
+
+    "Alurohr silber": {
+      "cat": "Riggingwelt",
+      "unit_type": "lengths",
+      "items": [
         {"n": "Alurohr silber", "l": "1m"},
         {"n": "", "l": "1,5m"},
         {"n": "", "l": "2m"},
         {"n": "", "l": "3m"},
         {"n": "", "l": "4m"},
         {"n": "", "l": "5m"},
-        {"n": "", "l": "6m"},
-        {"n": "Gelenkschelle silber", "l": ""},
-        {"n": "Starre Schelle silber", "l": ""},
-        {"n": "Halbschelle + Ring silber", "l": ""}
+        {"n": "", "l": "6m"}
       ]
     },
-    "Drop Arms & Verlängerungen": {
+
+    "Rohr Schellen": {
+      "cat": "Riggingwelt",
+      "unit_type": "qty",
+      "items": [
+        {"n": "Gelenkschelle Alu schwarz", "l": ""},
+        {"n": "Starre Aluschelle schwarz", "l": ""},
+        {"n": "Halbschelle mit Ring schwarz", "l": ""},
+        {"n": "Gelenkschelle Alu silber", "l": ""},
+        {"n": "Starre Aluschelle silber", "l": ""},
+        {"n": "Halbschelle mit Ring silber", "l": ""}
+      ]
+    },
+
+    "Drop Arm Moving Light": {
       "cat": "Riggingwelt",
       "unit_type": "lengths",
       "items": [
         {"n": "Drop Arm Moving Light schwarz", "l": "1m"},
         {"n": "", "l": "1,5m"},
         {"n": "", "l": "2m"},
-        {"n": "", "l": "3m"},
+        {"n": "", "l": "3m"}
+      ]
+    },
+
+    "Drop Arm TV-Zapfen Verlängerung": {
+      "cat": "Riggingwelt",
+      "unit_type": "lengths",
+      "items": [
         {"n": "Drop Arm TV-Zapfen Verlängerung", "l": "45–65cm"},
         {"n": "", "l": "0,5–1m"},
         {"n": "", "l": "1,2–2m"},
         {"n": "", "l": "1,8–3m"}
       ]
     },
+
     "Licht Stative": {
       "cat": "Riggingwelt",
       "unit_type": "qty",
@@ -454,43 +599,59 @@
         {"n": "FD31 Stahlplatte", "l": ""},
         {"n": "Truss FD34 Schwarz", "l": ""},
         {"n": "Truss Husse Schwarz", "l": ""},
-        {"n": "Stahlplatte 60×60cm Truss 80kg", "l": ""},
-        {"n": "Holzverblendung 60×60cm", "l": ""},
+        {"n": "Stahlplatte 60x60cm Truss 80kg", "l": ""},
+        {"n": "Holzverblendung Stahlplatte 60x60cm", "l": ""},
         {"n": "Stahlgewichte 25kg", "l": ""},
-        {"n": "Konus → Halbschelle", "l": ""},
-        {"n": "Konus → mini TV-Zapfen", "l": ""},
+        {"n": "Konus auf Halbschelle", "l": ""},
+        {"n": "Konus auf mini TV-Zapfen", "l": ""},
         {"n": "Truss Koffer", "l": ""},
-        {"n": "Bodenstativ 3-Bein klein", "l": ""},
-        {"n": "Bodenstativ 3-Bein mittel", "l": ""},
-        {"n": "Bodenstativ 3-Bein groß", "l": ""},
-        {"n": "Bodenstativ Holz + Schraube", "l": ""},
-        {"n": "Bodenstativ Holz + mini TV-Zapfen", "l": ""}
+        {"n": "Bodenstativ 3-Bein klein (mini TV-Zapfen)", "l": ""},
+        {"n": "Bodenstativ 3-Bein mittel (mini TV-Zapfen)", "l": ""},
+        {"n": "Bodenstativ 3-Bein groß (TV-Zapfen)", "l": ""},
+        {"n": "Bodenstativ Holz mit Schraube", "l": ""},
+        {"n": "Bodenstativ Holz (mini TV-Zapfen)", "l": ""}
       ]
     },
-    "Stahlzeug & Sicherung": {
+
+    "Stahlseil & Safety": {
       "cat": "Riggingwelt",
       "unit_type": "lengths",
       "items": [
-        {"n": "Stahlseil / Safety", "l": "30kg 1m"},
-        {"n": "", "l": "60kg 1m"},
-        {"n": "", "l": "10m Slider 125kg"},
-        {"n": "", "l": "10m Slider 500kg"},
+        {"n": "Stahlseil / Safety 30kg", "l": "1m"},
+        {"n": "Stahlseil / Safety 60kg", "l": "1m"},
+        {"n": "Slider 125kg", "l": "10m"},
+        {"n": "Slider 500kg", "l": "10m"}
+      ]
+    },
+
+    "Rundschlingen & Steelflex": {
+      "cat": "Riggingwelt",
+      "unit_type": "lengths",
+      "items": [
         {"n": "Rundschlinge", "l": "1m"},
         {"n": "", "l": "1,5m"},
         {"n": "", "l": "2m"},
         {"n": "Steelflex", "l": "1m"},
         {"n": "", "l": "1,5m"},
-        {"n": "", "l": "2m"},
+        {"n": "", "l": "2m"}
+      ]
+    },
+
+    "Rigging Zubehör": {
+      "cat": "Riggingwelt",
+      "unit_type": "qty",
+      "items": [
         {"n": "Omegaschäkel 1t", "l": ""},
         {"n": "Omegaschäkel 2t", "l": ""},
         {"n": "Omegaschäkel 3,25t", "l": ""},
-        {"n": "Zurgurt klein", "l": "5m"},
-        {"n": "Zurgurt mittel", "l": "5m"},
-        {"n": "Zurgurt groß", "l": "5m"},
+        {"n": "Zurgurt klein 5m", "l": ""},
+        {"n": "Zurgurt mittel 5m", "l": ""},
+        {"n": "Zurgurt groß 5m", "l": ""},
         {"n": "Magic Arm", "l": ""},
         {"n": "P5 Klemmen mit Bolzen", "l": ""}
       ]
     },
+
     "Verbrauchsmaterial": {
       "cat": "Verbrauchswelt",
       "unit_type": "qty",
@@ -511,9 +672,10 @@
         {"n": "Beschriftungstape gelb", "l": ""},
         {"n": "Beschriftungstape pink", "l": ""},
         {"n": "Beschriftungstape grün", "l": ""},
-        {"n": "Dekomolton 1lfm", "l": "3m breit"}
+        {"n": "Dekomolton 1lfm / 3m breit", "l": ""}
       ]
     },
+
     "System & Sonderzubehör": {
       "cat": "Verbrauchswelt",
       "unit_type": "qty",
@@ -525,19 +687,20 @@
         {"n": "Patchkabel → Schuko F", "l": ""},
         {"n": "Schuko M → Patchkabel", "l": ""},
         {"n": "Ersatzbrenner Kiste", "l": ""},
-        {"n": "Nebelfluid Fog", "l": "5l"},
-        {"n": "Nebelfluid Tour Haze", "l": "5l"},
-        {"n": "Nebelfluid MDG", "l": "5l"},
-        {"n": "CO2 Flasche", "l": "20kg"},
+        {"n": "Nebelfluid Fog 5l", "l": ""},
+        {"n": "Nebelfluid Tour Haze 5l", "l": ""},
+        {"n": "Nebelfluid MDG 5l", "l": ""},
+        {"n": "CO2 Flasche 20kg", "l": ""},
         {"n": "Trichter", "l": ""},
         {"n": "Ventilator", "l": ""}
       ]
     },
+
     "Büro & Office": {
       "cat": "Verbrauchswelt",
       "unit_type": "qty",
       "items": [
-        {"n": "Podest 2×1m", "l": ""},
+        {"n": "Podest 2x1m", "l": ""},
         {"n": "Podest Fuß 60cm", "l": ""},
         {"n": "Podest Fuß 20cm Rolle", "l": ""},
         {"n": "Drucker Brother A3", "l": ""},
@@ -548,29 +711,31 @@
         {"n": "Bürostuhl", "l": ""}
       ]
     },
+
     "Farbfolien LEE": {
       "cat": "Verbrauchswelt",
-      "unit_type": "lengths",
+      "unit_type": "qty",
       "items": [
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"},
-        {"n": "LEE", "l": "Rolle/Geschnitten"}
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""},
+        {"n": "LEE Rolle/Geschnitten", "l": ""}
       ]
     }
+
   },
   "groups": []
 }
