@@ -1,0 +1,581 @@
+{
+  "version": 2,
+  "project": "LichtMaterialliste V31 Vorlage",
+  "date": "2026-04-20",
+  "positions": [
+    {
+      "name": "Hauptposition",
+      "categories": [
+        {
+          "name": "Datenwelt",
+          "sections": [
+            {
+              "type_name": "DMX 5-Pin",
+              "items": [
+                {"name": "5-Pin DMX", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "7m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "DMX 3-Pin",
+              "items": [
+                {"name": "3-Pin DMX", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "9m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "DMX 4er Baum 5-Pin",
+              "items": [
+                {"name": "4er Baum 5-Pin", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "DMX LK37",
+              "items": [
+                {"name": "LK37", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "70m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LK37 M → 12x DMX F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LK37 F → 12x DMX M", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "DMX Adapter",
+              "items": [
+                {"name": "Cat → 4x DMX M", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Cat → 4x DMX F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "DMX 3pol M → DMX 5pol F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "DMX 3pol F → DMX 5pol M", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Netzwerk LWL Glasfaser",
+              "items": [
+                {"name": "LWL 4er MultiMode SC", "length": "Patchkabel 1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "150m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "300m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "500m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LWL Verbinder SC–SC", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LWL Adapter LC→SC", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LWL Reinigungset", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Netzwerk Cat 6/7 RJ45",
+              "items": [
+                {"name": "Cat 6/7 RJ45", "length": "Patchkabel 1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Cat 6/7 RJ45 Verbinder", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Netzwerk Ethercon",
+              "items": [
+                {"name": "Ethercon Cat 6/7", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "90m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m Trommel", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Ethercon Verbinder", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "DMX Steuerung & Netzwerk",
+              "items": [
+                {"name": "GrandMA2 Full", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "GrandMA2 Light", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "GrandMA2 ONPC Set", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "GrandMA2 NPU", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": "mit USV und SG300"},
+                {"name": "GrandMA2 4-Port Node", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "GrandMA2 8-Port Node", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Cisco SG300 Switch (LWL SC Ports)", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "DMX Switch Single", "length": "Swisson", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "2x DMX Switch", "length": "Swisson", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "4x DMX Switch", "length": "Swisson", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Adapterkoffer Cat → DMX (Swisson 4er Rack)", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Stromwelt",
+          "sections": [
+            {
+              "type_name": "Stromkabel Han16",
+              "items": [
+                {"name": "Han16 2,5\"", "length": "1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Han16 M → 6x Schuko", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Han16 M → 6x Schuko + Han F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "6x Schuko M → Han F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Han16 Y-Verbinder", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Han16 Verbinder", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Stromkabel Han6 5kW",
+              "items": [
+                {"name": "Han6 5KW", "length": "1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Han8 5KW → 3x CEE32 F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "3x CEE32 M → Han8 5KW", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Stromkabel Socapex",
+              "items": [
+                {"name": "Socapex 2,5\"", "length": "1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Soca M → 6x Schuko", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Soca M → 6x Schuko + Soca F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "6x Schuko M → Soca F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Soca M → Varilite Smart Repeater", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Socapex M → Harting F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Socapex F → Harting M", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Stromkabel Schuko",
+              "items": [
+                {"name": "Schuko", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "3er Verteiler", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "6er Verteiler", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Stromkabel VL5",
+              "items": [
+                {"name": "VL5 Verbindungskabel", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "CEE 16A Blau",
+              "items": [
+                {"name": "CEE 16A Blau", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "CEE16 → Schuko F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Schuko M → CEE16", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "CEE 32A Blau",
+              "items": [
+                {"name": "CEE 32A Blau", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "CEE16 → CEE32 Blau", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "CEE32 Blau → 3x CEE32 Blau", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "CEE 16A Rot",
+              "items": [
+                {"name": "CEE 16A Rot", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "25m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "CEE16A Rot → 3x Schuko F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "CEE16A Rot → 6x Schuko F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "CEE 32A Rot",
+              "items": [
+                {"name": "CEE 32A Rot", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "VT 32A → 32A+2x16A+3x Schuko", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "32A → 3x 32A CEE", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "CEE 63A Rot",
+              "items": [
+                {"name": "CEE 63A Rot", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "VT 63A → 63A+2x32A+2x16A+3xSchuko", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "32A → 63A Adapter", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "VT 63A → 2x 63A", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "CEE 125A Rot",
+              "items": [
+                {"name": "CEE 125A Rot", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "15m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "40m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "50m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "100m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "VT 125A → 2x63A+2x32A+2x16A+3xSchuko", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "63A → 125A Adapter", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "VT 125A → 2x 63A", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Erdungskabel",
+              "items": [
+                {"name": "Erdungskabel mit Öse", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Erdungskabel Set groß", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Erdungskabel Connex", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "20m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "30m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Erdungskabel Set Connex", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Dimmer & Feststrom VT",
+              "items": [
+                {"name": "Handdimmer 2kW", "length": "Schuko", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "6-Kanal Dimmer → 6x Schuko", "length": "16A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "12-Kanal Dimmer MA → 2x Han", "length": "32A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "24-Kanal Dimmer MA → Han", "length": "63A/125A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": "mit Hotpatch / 2x Han Input"},
+                {"name": "36-Kanal Dimmer MA → Han", "length": "125A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": "mit Hotpatch / 2x Han Input"},
+                {"name": "12-Kanal VT → 2x Han", "length": "32A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "12-Kanal VT → 2x Han Y Single FI", "length": "32A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "18-Kanal VT → 3x Han", "length": "63A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "36-Kanal VT → Han", "length": "63A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": "Hotpatch"},
+                {"name": "48-Kanal VT → Han", "length": "125A CEE", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": "Hotpatch / 4x Han Input"},
+                {"name": "USV 1000W", "length": "Schuko", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "USV 1500W", "length": "Schuko", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Lichtwelt",
+          "sections": [
+            {
+              "type_name": "Hardware Lampen",
+              "items": [
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Lampe", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Riggingwelt",
+          "sections": [
+            {
+              "type_name": "Alurohr & Schellen",
+              "items": [
+                {"name": "Alurohr schwarz", "length": "1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "2m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "4m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "6m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Gelenkschelle schwarz", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Starre Schelle schwarz", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Halbschelle + Ring schwarz", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Alurohr silber", "length": "1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "2m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "4m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "6m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Gelenkschelle silber", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Starre Schelle silber", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Halbschelle + Ring silber", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Drop Arms & Verlängerungen",
+              "items": [
+                {"name": "Drop Arm Moving Light schwarz", "length": "1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "2m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Drop Arm TV-Zapfen Verlängerung", "length": "45–65cm", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "0,5–1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "1,2–2m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "1,8–3m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Licht Stative",
+              "items": [
+                {"name": "Stahlstativ U126", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Kurbelstativ", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Genie", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "FD31", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "FD31 Stahlplatte", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Truss FD34 Schwarz", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Truss Husse Schwarz", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Stahlplatte 60×60cm Truss 80kg", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Holzverblendung 60×60cm", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Stahlgewichte 25kg", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Konus → Halbschelle", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Konus → mini TV-Zapfen", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Truss Koffer", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Bodenstativ 3-Bein klein", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Bodenstativ 3-Bein mittel", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Bodenstativ 3-Bein groß", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Bodenstativ Holz + Schraube", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Bodenstativ Holz + mini TV-Zapfen", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Stahlzeug & Sicherung",
+              "items": [
+                {"name": "Stahlseil / Safety", "length": "30kg 1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "60kg 1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m Slider 125kg", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "10m Slider 500kg", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Rundschlinge", "length": "1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "2m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Steelflex", "length": "1m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "1,5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "", "length": "2m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Omegaschäkel 1t", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Omegaschäkel 2t", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Omegaschäkel 3,25t", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Zurgurt klein", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Zurgurt mittel", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Zurgurt groß", "length": "5m", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Magic Arm", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "P5 Klemmen mit Bolzen", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Verbrauchswelt",
+          "sections": [
+            {
+              "type_name": "Verbrauchsmaterial",
+              "items": [
+                {"name": "PVC Schwarz", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "PVC Grau", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Gaffa schwarz", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Gaffa silber", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Gaffa weiss", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Kabelbinder schwarz dick", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Kabelbinder schwarz normal", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Kabelbinder weiss dick", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Kabelbinder weiss normal", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Absperrband Rot/Weiss", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Markierungstape Rot/Weiss", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Markierungstape gelb/schwarz", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Beschriftungstape orange", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Beschriftungstape gelb", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Beschriftungstape pink", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Beschriftungstape grün", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Dekomolton 1lfm", "length": "3m breit", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "System & Sonderzubehör",
+              "items": [
+                {"name": "Notenpultlampen", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Handdimmer", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Baufluter 500W", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "mini At10", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Patchkabel → Schuko F", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Schuko M → Patchkabel", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Ersatzbrenner Kiste", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Nebelfluid Fog", "length": "5l", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Nebelfluid Tour Haze", "length": "5l", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Nebelfluid MDG", "length": "5l", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "CO2 Flasche", "length": "20kg", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Trichter", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Ventilator", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Büro & Office",
+              "items": [
+                {"name": "Podest 2×1m", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Podest Fuß 60cm", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Podest Fuß 20cm Rolle", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Drucker Brother A3", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Monitor 24 Zoll", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Erste-Hilfe Case", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Feuerlöscher Case", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Kaffeemaschinen Case", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "Bürostuhl", "length": "", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            },
+            {
+              "type_name": "Farbfolien LEE",
+              "items": [
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""},
+                {"name": "LEE", "length": "Rolle/Geschnitten", "anzahl": 0, "spare": 0, "im_projekt": 0, "kapitel": "", "bemerkung": ""}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "logos": {
+    "planer": "",
+    "band": "",
+    "booking": ""
+  }
+}
