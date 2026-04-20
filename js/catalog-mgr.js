@@ -201,11 +201,19 @@ function _renderCatTree(cat, weltName){
       </div>`;
     } else {
       const weltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===(val.cat||CAT_ORDER[0])?' selected':''}>${w}</option>`).join('');
+      const grpOpts  = '<option value="">(keine Gruppe)</option>' +
+        (cat.groups||[]).filter(g=>!g.parentId).map(g=>{
+          const subs = catGetSubGroups(cat,g.id);
+          return `<option value="${g.id}"${val.group===g.id?' selected':''}>${esc(g.name)}</option>` +
+            subs.map(sg=>`<option value="${sg.id}"${val.group===sg.id?' selected':''}>\u00a0\u00a0▸ ${esc(sg.name)}</option>`).join('');
+        }).join('');
       row += `<button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>
         <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(key)}</span>
         <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
         <select class="cat-welt-sel" title="Welt wechseln"
           onchange="catEditorSetCat(${s(catId)},${s(key)},this.value)">${weltOpts}</select>
+        <select class="cat-grp-sel" title="Gruppe wechseln"
+          onchange="catEditorSetTypeGroup(${s(catId)},${s(key)},this.value)">${grpOpts}</select>
         <div class="tree-actions">
           <button onclick="catTreeToggleUnitType(${s(catId)},${s(key)})" title="${isKabel?'Zu Gerät wechseln':'Zu Kabel wechseln'}" style="font-size:10px;opacity:.65">
             ${isKabel?'→Gerät':'→Kabel'}
@@ -284,6 +292,7 @@ function _renderCatTree(cat, weltName){
         <div class="tree-actions">
           <button onclick="catTreeAddInline(${s(cat.id)},'add-ug',${s(g.id)},null)" title="+ Untergruppe" style="font-size:10px">+UG</button>
           <button onclick="catTreeAddInline(${s(cat.id)},'add-artikel',${s(g.id)},${s(weltName)})" title="+ Artikel" style="font-size:10px">+Art</button>
+          <button onclick="catTreeMakeSubGroup(${s(cat.id)},${s(g.id)})" title="Zu Untergruppe einer anderen Gruppe machen" style="font-size:10px;opacity:.65">↓UG</button>
           <button onclick="catTreeInlineEditGruppe(${s(cat.id)},${s(g.id)})" title="Umbenennen">✏</button>
           <button class="del-btn" onclick="catEditorDeleteGroup(${s(cat.id)},${s(g.id)})" title="Gruppe löschen">✕</button>
         </div>`;
@@ -531,6 +540,26 @@ function catEditorRenameGroup(catalogId, groupId){
   catTreeInlineEditGruppe(catalogId, groupId);
 }
 
+function catTreeMakeSubGroup(catalogId, groupId){
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  const g   = cat.groups.find(x=>x.id===groupId); if(!g) return;
+  const candidates = (cat.groups||[]).filter(x=>!x.parentId && x.id!==groupId);
+  if(!candidates.length){ toast('Keine andere Top-Gruppe vorhanden. Erst eine neue Gruppe anlegen.',true); return; }
+  const opts = candidates.map(x=>({value:x.id, label:x.name}));
+  showSelect(
+    `„${g.name}" als Untergruppe von welcher Gruppe einordnen?`,
+    opts,
+    parentId => {
+      g.parentId = parentId;
+      saveCatalogsStore();
+      _renderCatMgrTab2();
+      const parent = cat.groups.find(x=>x.id===parentId);
+      toast(`✓ „${g.name}" ist jetzt Untergruppe von „${parent?.name}"`);
+    },
+    'Zu Untergruppe machen'
+  );
+}
+
 function catEditorDeleteGroup(catalogId, groupId){
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
   const g   = cat.groups.find(x=>x.id===groupId); if(!g) return;
@@ -599,6 +628,15 @@ function catEditorSetCat(catalogId, typeKey, catName){
   if(!cat.types[typeKey]) return;
   cat.types[typeKey].cat = catName;
   saveCatalogsStore(); rerenderAllCats(); _renderCatMgrTab2();
+}
+
+function catEditorSetTypeGroup(catalogId, typeKey, groupId){
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  if(!cat.types[typeKey]) return;
+  if(groupId) cat.types[typeKey].group = groupId;
+  else delete cat.types[typeKey].group;
+  saveCatalogsStore(); rerenderAllCats(); _renderCatMgrTab2();
+  toast('✓ Gruppe geändert');
 }
 
 function catEditorSetGroupCat(catalogId, groupId, catName){

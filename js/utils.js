@@ -48,3 +48,21 @@ function showPrompt(msg, defaultVal, onOk, title){
   document.addEventListener('keydown', onKey);
   setTimeout(()=>{ inp.focus(); inp.select(); }, 50);
 }
+
+// options: [{value, label}, ...]
+function showSelect(msg, options, onOk, title){
+  const d   = document.getElementById('appSelectDialog');
+  const sel = document.getElementById('appSelectInput');
+  const ok  = document.getElementById('appSelectOk');
+  const can = document.getElementById('appSelectCancel');
+  document.getElementById('appSelectMsg').textContent   = msg;
+  document.getElementById('appSelectTitle').textContent = title || 'Auswahl';
+  sel.innerHTML = options.map(o=>`<option value="${o.value}">${o.label}</option>`).join('');
+  d.classList.add('open');
+  function cleanup(){ d.classList.remove('open'); ok.onclick=null; can.onclick=null; d.onclick=null; document.removeEventListener('keydown',onKey); }
+  function onKey(e){ if(e.key==='Escape'){ e.stopPropagation(); cleanup(); } }
+  ok.onclick  = () => { cleanup(); onOk(sel.value); };
+  can.onclick = () => { cleanup(); };
+  d.onclick   = e => { if(e.target===d) cleanup(); };
+  document.addEventListener('keydown', onKey);
+}

@@ -182,6 +182,21 @@
   </div>
 </div>
 
+<!-- SELECT DIALOG -->
+<div id="appSelectDialog" class="overlay app-dialog">
+  <div class="modal" style="max-width:420px;">
+    <div class="mhdr"><h2 id="appSelectTitle">Auswahl</h2></div>
+    <div class="mbody">
+      <p id="appSelectMsg" style="font-size:13px;color:var(--muted);margin:0 0 12px;"></p>
+      <select class="pinput" id="appSelectInput" style="width:100%;box-sizing:border-box;"></select>
+    </div>
+    <div class="mfooter">
+      <button class="btn" id="appSelectCancel">Abbrechen</button>
+      <button class="btn btn-accent" id="appSelectOk">OK</button>
+    </div>
+  </div>
+</div>
+
 <!-- JAVASCRIPT — Ladereihenfolge ist kritisch (globaler Scope) -->
 <script src="js/utils.js"></script>
 <script src="js/catalog.js"></script>

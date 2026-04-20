@@ -3,6 +3,7 @@
 .overlay.open{display:flex;}
 /* Confirm/Prompt dialogs always above other overlays */
 .app-dialog{z-index:2100;}
+select.pinput{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;padding:6px 10px;outline:none;cursor:pointer;}
 .modal{background:var(--bg2);border:1px solid var(--border);width:min(960px,96vw);max-height:92vh;display:flex;flex-direction:column;overflow:hidden;animation:mIn .2s ease;}
 .mhdr{padding:18px 26px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .mhdr h2{font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);}
@@ -131,6 +132,8 @@
 .tree-badge.badge-geraet{border-color:rgba(232,200,74,.3);color:var(--accent);}
 .cat-welt-sel{appearance:none;-webkit-appearance:none;background:var(--bg3) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath fill='%235a6080' d='M0 0l4 5 4-5z'/%3E%3C/svg%3E") no-repeat right 6px center;color:var(--text2);border:1px solid var(--border);border-radius:2px;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:.5px;padding:2px 22px 2px 7px;cursor:pointer;flex-shrink:0;outline:none;transition:border-color .15s,color .15s;}
 .cat-welt-sel:hover,.cat-welt-sel:focus{border-color:var(--accent);color:var(--accent);}
+.cat-grp-sel{appearance:none;-webkit-appearance:none;background:var(--bg3) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath fill='%235a6080' d='M0 0l4 5 4-5z'/%3E%3C/svg%3E") no-repeat right 6px center;color:var(--muted);border:1px solid var(--border);border-radius:2px;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:.5px;padding:2px 22px 2px 7px;cursor:pointer;flex-shrink:0;outline:none;transition:border-color .15s,color .15s;max-width:140px;}
+.cat-grp-sel:hover,.cat-grp-sel:focus{border-color:rgba(232,200,74,.5);color:var(--accent);}
 .tree-actions{display:flex;gap:3px;flex-shrink:0;}
 .tree-actions button{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:2px 4px;line-height:1;transition:color .1s;border-radius:2px;}
 .tree-actions button:hover{color:var(--text);}

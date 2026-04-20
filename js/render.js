@@ -2,6 +2,9 @@
 // RENDER — UI aufbauen & aktualisieren
 // ══════════════════════════════════════════════════
 let dragSrc = null;
+let dragSrcSec = null;
+let dragSrcGrp = null;
+let dragType = null;
 
 function render(){
   renderPosBar(); renderTabs(); renderContent();
@@ -44,10 +47,40 @@ function rerenderCat(ci){
   recalcAll();
 }
 
-function buildGroupHeader(groupName, ci){
+function buildGroupHeader(groupName, ci, groupId){
   const el = document.createElement('div');
   el.className = 'grp-section-hdr';
-  el.innerHTML = `<span class="grp-chevron">▼</span><span>${esc(groupName)}</span>`;
+  const gidJson = groupId ? JSON.stringify(groupId) : 'null';
+  el.innerHTML = `<span class="drag-handle" title="Gruppe verschieben">⠿</span><span class="grp-chevron">▼</span><span class="grp-title-text" title="Klicken zum Umbenennen">${esc(groupName)}</span>`;
+  if(groupId){
+    el.querySelector('.grp-title-text').addEventListener('click',()=>editGroupName(groupId));
+    el.querySelector('.drag-handle').addEventListener('mousedown',()=>{ el.draggable=true; });
+    el.addEventListener('dragstart',e=>{
+      if(!el.draggable) return;
+      dragSrcGrp = {groupId};
+      dragType = 'group';
+      el.classList.add('grp-dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain','grp-'+groupId);
+    });
+    el.addEventListener('dragend',()=>{
+      el.draggable=false;
+      el.classList.remove('grp-dragging');
+      document.querySelectorAll('.grp-section-hdr.grp-drop-target').forEach(x=>x.classList.remove('grp-drop-target'));
+    });
+    el.addEventListener('dragover',e=>{
+      if(dragType!=='group') return;
+      e.preventDefault(); e.stopPropagation();
+      e.dataTransfer.dropEffect='move';
+      el.classList.add('grp-drop-target');
+    });
+    el.addEventListener('dragleave',()=>el.classList.remove('grp-drop-target'));
+    el.addEventListener('drop',e=>{
+      e.preventDefault(); e.stopPropagation();
+      el.classList.remove('grp-drop-target');
+      dropOnGroupHeader(groupId);
+    });
+  }
   return el;
 }
 
@@ -118,7 +151,7 @@ function rerenderCatInto(ci,panel){
     });
     allGroups.filter(g=>!g.parentId).forEach(g=>{
       const secs = grouped[g.id]||[];
-      if(secs.length){ panel.appendChild(buildGroupHeader(g.name, ci)); secs.forEach(si=>panel.appendChild(buildSecEl(ci,si))); }
+      if(secs.length){ panel.appendChild(buildGroupHeader(g.name, ci, g.id)); secs.forEach(si=>panel.appendChild(buildSecEl(ci,si))); }
     });
     (grouped['__none']||[]).forEach(si=>panel.appendChild(buildSecEl(ci,si)));
   }
@@ -140,7 +173,7 @@ function rerenderCatInto(ci,panel){
 
       const block = document.createElement('div');
       block.className = 'qty-group-block';
-      block.appendChild(buildGroupHeader(gName, ci));
+      block.appendChild(buildGroupHeader(gName, ci, gid==='__none'?null:gid));
 
       const table = document.createElement('table');
       table.className = 'qty-table';
@@ -192,11 +225,12 @@ function buildSecEl(ci,si){
   block.className='secblock'+(noLen?' no-length':''); block.id=`sec-${ci}-${si}`;
   block.innerHTML=`
     <div class="sechdr" id="sechdr-${ci}-${si}"
-      ondragover="event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('drop-target')"
-      ondragleave="this.classList.remove('drop-target')"
+      ondragover="if(dragType==='row'){event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('drop-target');}else if(dragType==='section'){event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('sec-drop-target');}"
+      ondragleave="this.classList.remove('drop-target','sec-drop-target')"
       ondrop="dropOnSec(${ci},${si},event)">
-      <div class="sechdr-title" onclick="toggleSec(${ci},${si})">
-        <span class="chevron">▼</span>${esc(sec.type_name)}
+      <span class="drag-handle" title="Sektion verschieben">⠿</span>
+      <div class="sechdr-title">
+        <span class="chevron" onclick="toggleSec(${ci},${si})">▼</span><span class="sec-title-text" onclick="editSectionName(${ci},${si})" title="Klicken zum Umbenennen">${esc(sec.type_name)}</span>
       </div>
       <div class="sechdr-col">DIFF</div>
       <div class="sechdr-col">TOTAL</div>
@@ -221,6 +255,26 @@ function buildSecEl(ci,si){
         <button class="btn btn-sm" onclick="openWiz(${ci})">+ NEUE LÄNGE / MATERIAL</button>
       </div>
     </div>`;
+  const dragHandle = block.querySelector('.drag-handle');
+  if(dragHandle){
+    dragHandle.addEventListener('mousedown',()=>{
+      block.draggable=true;
+    });
+    block.addEventListener('dragstart',e=>{
+      if(!block.draggable) return;
+      dragSrcSec = {ci,si};
+      dragType = 'section';
+      block.classList.add('sec-dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain',`sec-${ci}-${si}`);
+    });
+    block.addEventListener('dragend',()=>{
+      block.draggable=false;
+      block.classList.remove('sec-dragging');
+      dragType = null; dragSrcSec = null;
+      document.querySelectorAll('.sechdr.sec-drop-target').forEach(el=>el.classList.remove('sec-drop-target'));
+    });
+  }
   const tbody = block.querySelector(`#tbody-${ci}-${si}`);
   if(tbody){
     currentCats()[ci].sections[si].items.forEach((_,ii)=>tbody.appendChild(buildRow(ci,si,ii)));
@@ -251,13 +305,36 @@ function buildRow(ci,si,ii){
   tr.draggable = true;
   tr.addEventListener('dragstart',e=>{
     dragSrc = {ci,si,ii};
+    dragType = 'row';
     tr.classList.add('row-dragging');
     e.dataTransfer.effectAllowed='move';
     e.dataTransfer.setData('text/plain',`${ci}-${si}-${ii}`);
   });
   tr.addEventListener('dragend',()=>{
+    dragType = null;
     tr.classList.remove('row-dragging');
-    document.querySelectorAll('.sechdr.drop-target').forEach(el=>el.classList.remove('drop-target'));
+    document.querySelectorAll('.sechdr.drop-target,.sechdr.sec-drop-target').forEach(el=>el.classList.remove('drop-target','sec-drop-target'));
+    document.querySelectorAll('tr.row-drop-before,tr.row-drop-after').forEach(el=>el.classList.remove('row-drop-before','row-drop-after'));
+  });
+  tr.addEventListener('dragover',e=>{
+    if(dragType!=='row') return;
+    e.preventDefault(); e.stopPropagation();
+    e.dataTransfer.dropEffect='move';
+    document.querySelectorAll('tr.row-drop-before,tr.row-drop-after').forEach(el=>el.classList.remove('row-drop-before','row-drop-after'));
+    const rect = tr.getBoundingClientRect();
+    const half = rect.top + rect.height/2;
+    tr.classList.add(e.clientY < half ? 'row-drop-before' : 'row-drop-after');
+  });
+  tr.addEventListener('dragleave',()=>{
+    tr.classList.remove('row-drop-before','row-drop-after');
+  });
+  tr.addEventListener('drop',e=>{
+    e.preventDefault(); e.stopPropagation();
+    tr.classList.remove('row-drop-before','row-drop-after');
+    if(dragType!=='row'||!dragSrc) return;
+    const rect = tr.getBoundingClientRect();
+    const insertAfter = e.clientY >= rect.top + rect.height/2;
+    dropOnRow(ci,si,ii,insertAfter);
   });
   tr.innerHTML=`
     <td class="tdname"><input type="text" value="${nameVal}" placeholder="${namePlaceholder}"
@@ -280,12 +357,105 @@ function buildRow(ci,si,ii){
   return tr;
 }
 
-function dropOnSec(tci,tsi,e){
-  e.preventDefault();
-  document.querySelectorAll('.sechdr.drop-target').forEach(el=>el.classList.remove('drop-target'));
+function dropOnRow(tci,tsi,tii,insertAfter){
   if(!dragSrc) return;
   const {ci:sci,si:ssi,ii:sii} = dragSrc;
-  dragSrc = null;
+  dragSrc = null; dragType = null;
+  const cats = currentCats();
+  const item = cats[sci].sections[ssi].items.splice(sii,1)[0];
+  if(sci===tci && ssi===tsi){
+    let idx = tii;
+    if(insertAfter) idx++;
+    if(sii < tii) idx--;
+    idx = Math.max(0, Math.min(idx, cats[tci].sections[tsi].items.length));
+    cats[tci].sections[tsi].items.splice(idx,0,item);
+    save(); renderRows(tci,tsi);
+  } else {
+    let idx = insertAfter ? tii+1 : tii;
+    idx = Math.max(0, Math.min(idx, cats[tci].sections[tsi].items.length));
+    cats[tci].sections[tsi].items.splice(idx,0,item);
+    save(); renderRows(sci,ssi); renderRows(tci,tsi);
+    toast(`→ verschoben nach „${cats[tci].sections[tsi].type_name}"`);
+  }
+}
+
+function dropSecOnSec(tci,tsi){
+  if(!dragSrcSec) return;
+  const {ci:sci,si:ssi} = dragSrcSec;
+  dragSrcSec = null; dragType = null;
+  document.querySelectorAll('.secblock.sec-dragging').forEach(el=>el.classList.remove('sec-dragging'));
+  if(sci===tci && ssi===tsi) return;
+  const cats = currentCats();
+  const sec = cats[sci].sections.splice(ssi,1)[0];
+  if(sci===tci){
+    const insertIdx = ssi < tsi ? tsi-1 : tsi;
+    cats[tci].sections.splice(Math.max(0,insertIdx),0,sec);
+    save(); rerenderCat(tci);
+  } else {
+    cats[tci].sections.splice(tsi,0,sec);
+    save(); rerenderCat(sci); rerenderCat(tci);
+  }
+  toast('↕ Sektion verschoben');
+}
+
+function dropOnGroupHeader(targetGroupId){
+  if(!dragSrcGrp) return;
+  const {groupId:srcId} = dragSrcGrp;
+  dragSrcGrp = null; dragType = null;
+  document.querySelectorAll('.grp-section-hdr.grp-dragging').forEach(el=>el.classList.remove('grp-dragging'));
+  if(srcId===targetGroupId) return;
+  const cat = getActiveCatalog();
+  if(!cat || !cat.groups) return;
+  const srcIdx = cat.groups.findIndex(g=>g.id===srcId);
+  const tgtIdx = cat.groups.findIndex(g=>g.id===targetGroupId);
+  if(srcIdx<0||tgtIdx<0) return;
+  const grp = cat.groups.splice(srcIdx,1)[0];
+  cat.groups.splice(tgtIdx,0,grp);
+  saveCatalogsStore();
+  currentCats().forEach((_,ci)=>rerenderCat(ci));
+  toast('↕ Gruppe verschoben');
+}
+
+function editSectionName(ci,si){
+  const sec = currentCats()[ci].sections[si];
+  showPrompt('Sektionsname ändern:', sec.type_name, newName=>{
+    if(!newName.trim()) return;
+    newName = newName.trim();
+    const cat = getActiveCatalog();
+    if(cat && cat.types[newName] && newName!==sec.type_name){
+      toast('Name existiert bereits!', true); return;
+    }
+    if(cat && cat.types[sec.type_name]){
+      cat.types[newName] = cat.types[sec.type_name];
+      delete cat.types[sec.type_name];
+      saveCatalogsStore();
+    }
+    sec.type_name = newName;
+    save(); rerenderCat(ci);
+    toast(`✓ Umbenannt in „${newName}"`);
+  }, 'Sektion umbenennen');
+}
+
+function editGroupName(groupId){
+  const cat = getActiveCatalog();
+  const grp = (cat?.groups||[]).find(g=>g.id===groupId);
+  if(!grp) return;
+  showPrompt('Gruppenname ändern:', grp.name, newName=>{
+    if(!newName.trim()) return;
+    grp.name = newName.trim();
+    saveCatalogsStore();
+    currentCats().forEach((_,ci)=>rerenderCat(ci));
+    toast(`✓ Umbenannt in „${grp.name}"`);
+  }, 'Gruppe umbenennen');
+}
+
+function dropOnSec(tci,tsi,e){
+  e.preventDefault();
+  document.querySelectorAll('.sechdr.drop-target,.sechdr.sec-drop-target').forEach(el=>el.classList.remove('drop-target','sec-drop-target'));
+  if(dragType==='section'){ dropSecOnSec(tci,tsi); return; }
+  if(!dragSrc) return;
+  const {ci:sci,si:ssi,ii:sii} = dragSrc;
+  dragSrc = null; dragType = null;
   if(sci===tci && ssi===tsi) return;
   const cats = currentCats();
   const item = cats[sci].sections[ssi].items.splice(sii,1)[0];

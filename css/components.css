@@ -137,3 +137,18 @@ tbody tr.row-dragging{opacity:.35;}
 .formlbl{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
 .formrow{margin-bottom:16px;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* ── DRAG & DROP ─────────────────────────────────────────────────── */
+.drag-handle{cursor:grab;color:var(--muted);padding:0 8px;font-size:13px;opacity:0.45;user-select:none;flex-shrink:0;}
+.drag-handle:hover{opacity:1;color:var(--accent);}
+.drag-handle:active{cursor:grabbing;}
+.secblock.sec-dragging{opacity:0.4;}
+.sechdr.sec-drop-target{background:rgba(232,200,74,.12)!important;outline:2px dashed var(--gold);}
+.grp-section-hdr.grp-dragging{opacity:0.4;}
+.grp-section-hdr.grp-drop-target{outline:2px dashed var(--gold);background:rgba(232,200,74,.1)!important;}
+tr.row-drop-before > td{border-top:2px solid var(--accent)!important;}
+tr.row-drop-after > td{border-bottom:2px solid var(--accent)!important;}
+.sechdr-title .sec-title-text{cursor:pointer;}
+.sechdr-title .sec-title-text:hover{color:var(--gold);}
+.grp-section-hdr .grp-title-text{cursor:pointer;}
+.grp-section-hdr .grp-title-text:hover{color:var(--gold);}
