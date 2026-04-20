@@ -300,7 +300,7 @@ function _renderCatTree(cat, weltName){
       const isAddLen   = is?.mode==='add-len'   && is.id===key;
       const isEditLen  = is?.mode==='edit-len'  && is.id===key;
       const tagIndent  = indent===2?'padding-left:52px':indent===1?'padding-left:36px':'padding-left:20px';
-      if(items.length>0 || isKabel){
+      if(isKabel){
         row += `<div class="len-tags" style="${tagIndent}">`;
         items.forEach((it,idx)=>{
           const label = isKabel ? (it.l||it.n||'?') : (it.n||it.l||'?');
@@ -578,6 +578,7 @@ function catTreeToggleUnitType(catalogId, typeKey){
     );
   } else {
     entry.unit_type = isLengths ? 'qty' : 'lengths';
+    if(isLengths) entry.items = [];
     saveCatalogsStore(); rerenderAllCats();
     _renderCatMgrTab2();
     toast('✓ Artikel-Typ geändert');
@@ -1097,6 +1098,7 @@ function _artEditSetType(catalogId, typeKey, unitType){
   const cat = catalogsStore?.catalogs?.find(c=>c.id===catalogId); if(!cat) return;
   if(!cat.types[typeKey]) return;
   cat.types[typeKey].unit_type = unitType;
+  if(unitType === 'qty') cat.types[typeKey].items = [];
   saveCatalogsStore(); rerenderAllCats();
   _renderCatMgrTab2();
   _renderArticleEditModal();
