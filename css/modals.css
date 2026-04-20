@@ -139,6 +139,10 @@
 .len-tag{display:inline-flex;align-items:center;gap:3px;background:var(--bg);border:1px solid rgba(74,232,160,.25);padding:2px 6px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);}
 .len-tag .len-del{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:10px;padding:0;line-height:1;}
 .len-tag .len-del:hover{color:var(--red);}
+.qty-tag{display:inline-flex;align-items:center;gap:3px;background:var(--bg);border:1px solid rgba(232,200,74,.25);padding:2px 6px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);cursor:pointer;transition:border-color .1s,color .1s;}
+.qty-tag:hover{border-color:var(--accent);color:var(--accent);}
+.qty-tag .len-del{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:10px;padding:0;line-height:1;}
+.qty-tag .len-del:hover{color:var(--red);}
 .len-add-wrap{display:inline-flex;align-items:center;gap:4px;}
 .len-add-btn{background:transparent;border:1px dashed rgba(74,232,160,.3);color:var(--green);cursor:pointer;font-size:11px;padding:1px 6px;transition:all .15s;}
 .len-add-btn:hover{border-color:var(--green);background:rgba(74,232,160,.08);}

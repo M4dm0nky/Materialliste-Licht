@@ -153,12 +153,17 @@ function _renderCatTree(cat, weltName){
     else byGroup['__none'].push({key,val});
   });
 
-  // Sichtbare Top-Gruppen: hat Typen in dieser Welt, oder ein aktives Add-State
+  // Sichtbare Top-Gruppen: hat Typen in dieser Welt, oder ein aktives Add-State, oder komplett leer
   const is = _catTreeInlineState;
   const weltsTopGroups = topGroups.filter(g=>{
     if((byGroup[g.id]||[]).length>0) return true;
     if(catGetSubGroups(cat,g.id).some(sg=>(byGroup[sg.id]||[]).length>0)) return true;
     if(is && (is.parentId===g.id || catGetSubGroups(cat,g.id).some(sg=>is.parentId===sg.id))) return true;
+    // Leere Gruppen (kein Artikel in irgendeiner Welt) immer anzeigen
+    const allSubIds = catGetSubGroups(cat,g.id).map(sg=>sg.id);
+    const hasItemsAnywhere = Object.values(cat.types||{})
+      .some(t => t.group===g.id || allSubIds.includes(t.group));
+    if(!hasItemsAnywhere) return true;
     return false;
   });
 
@@ -211,39 +216,44 @@ function _renderCatTree(cat, weltName){
     }
     row += '</div>';
 
-    // Längen-Tags für Kabel-Artikel (nur wenn nicht eingeklappt)
-    if(isKabel && !isEditing && !collapsed){
+    // Tags für Kabel- und Gerät-Artikel (nur wenn nicht eingeklappt)
+    if(!isEditing && !collapsed){
       const items      = val.items||[];
       const isAddLen   = is?.mode==='add-len'   && is.id===key;
       const isEditLen  = is?.mode==='edit-len'  && is.id===key;
       const tagIndent  = indent===2?'padding-left:52px':indent===1?'padding-left:36px':'padding-left:20px';
-      row += `<div class="len-tags" style="${tagIndent}">`;
-      items.forEach((it,idx)=>{
-        const label = it.l||it.n||'?';
-        if(isEditLen && is.lenIdx===idx){
-          row += `<span class="len-add-wrap">
-            <input class="len-add-input" id="tree-inline-input" value="${esc(label)}"
-              onkeydown="if(event.key==='Enter'){catTreeSaveEditLen(${s(catId)},${s(key)},${idx})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
-            <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
-              onclick="catTreeSaveEditLen(${s(catId)},${s(key)},${idx})">✓</button>
-            <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
-          </span>`;
-        } else {
-          row += `<span class="len-tag" onclick="catTreeEditLen(${s(catId)},${s(key)},${idx})" title="Klicken zum Bearbeiten">${esc(label)}<button class="len-del"
-            onclick="event.stopPropagation();catTreeDeleteLen(${s(catId)},${s(key)},${idx})" title="Löschen">✕</button></span>`;
+      if(items.length>0 || isKabel){
+        row += `<div class="len-tags" style="${tagIndent}">`;
+        items.forEach((it,idx)=>{
+          const label = isKabel ? (it.l||it.n||'?') : (it.n||it.l||'?');
+          const tagCls = isKabel ? 'len-tag' : 'qty-tag';
+          if(isEditLen && is.lenIdx===idx){
+            row += `<span class="len-add-wrap">
+              <input class="len-add-input" id="tree-inline-input" value="${esc(label)}"
+                onkeydown="if(event.key==='Enter'){catTreeSaveEditLen(${s(catId)},${s(key)},${idx})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
+              <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
+                onclick="catTreeSaveEditLen(${s(catId)},${s(key)},${idx})">✓</button>
+              <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
+            </span>`;
+          } else {
+            row += `<span class="${tagCls}" onclick="catTreeEditLen(${s(catId)},${s(key)},${idx})" title="Klicken zum Bearbeiten">${esc(label)}<button class="len-del"
+              onclick="event.stopPropagation();catTreeDeleteLen(${s(catId)},${s(key)},${idx})" title="Löschen">✕</button></span>`;
+          }
+        });
+        if(isKabel){
+          if(isAddLen){
+            row += `<span class="len-add-wrap">
+              <input class="len-add-input" id="tree-inline-input" placeholder="z.B. 15m"
+                onkeydown="if(event.key==='Enter'){catTreeSaveLen(${s(catId)},${s(key)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
+              <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
+                onclick="catTreeSaveLen(${s(catId)},${s(key)})">✓</button>
+            </span>`;
+          } else {
+            row += `<button class="len-add-btn" onclick="catTreeAddLenInline(${s(catId)},${s(key)})">+ Länge</button>`;
+          }
         }
-      });
-      if(isAddLen){
-        row += `<span class="len-add-wrap">
-          <input class="len-add-input" id="tree-inline-input" placeholder="z.B. 15m"
-            onkeydown="if(event.key==='Enter'){catTreeSaveLen(${s(catId)},${s(key)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
-          <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
-            onclick="catTreeSaveLen(${s(catId)},${s(key)})">✓</button>
-        </span>`;
-      } else {
-        row += `<button class="len-add-btn" onclick="catTreeAddLenInline(${s(catId)},${s(key)})">+ Länge</button>`;
+        row += '</div>';
       }
-      row += '</div>';
     }
     return row;
   };
@@ -471,10 +481,39 @@ function catTreeDeleteLen(catalogId, typeKey, idx){
 function catTreeToggleUnitType(catalogId, typeKey){
   const cat   = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
   const entry = cat.types[typeKey]; if(!entry) return;
-  entry.unit_type = entry.unit_type==='lengths' ? 'qty' : 'lengths';
+  const isLengths = (entry.unit_type||'qty') === 'lengths';
+  if(isLengths && (entry.items||[]).length > 1){
+    // Mehrere Items → Aufteilen anbieten
+    showConfirm(
+      `„${typeKey}" hat ${entry.items.length} Einträge. Jeden Eintrag als eigenen Gerät-Artikel anlegen und das Original löschen?`,
+      () => catTreeSplitToGeraete(catalogId, typeKey),
+      'In Geräte aufteilen', 'Ja, aufteilen'
+    );
+  } else {
+    entry.unit_type = isLengths ? 'qty' : 'lengths';
+    saveCatalogsStore(); rerenderAllCats();
+    _renderCatMgrTab2();
+    toast('✓ Artikel-Typ geändert');
+  }
+}
+
+function catTreeSplitToGeraete(catalogId, typeKey){
+  const cat   = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  const entry = cat.types[typeKey]; if(!entry) return;
+  const items = entry.items||[];
+  const grp   = entry.group;
+  const welt  = entry.cat||CAT_ORDER[0];
+  items.forEach(it=>{
+    const name = it.l||it.n||'Gerät';
+    if(!cat.types[name]){
+      cat.types[name] = {cat:welt, items:[], unit_type:'qty'};
+      if(grp) cat.types[name].group = grp;
+    }
+  });
+  delete cat.types[typeKey];
   saveCatalogsStore(); rerenderAllCats();
   _renderCatMgrTab2();
-  toast('✓ Artikel-Typ geändert');
+  toast(`✓ ${items.length} Geräte angelegt, „${typeKey}" gelöscht`);
 }
 
 // ── GRUPPEN CRUD ────────────────────────────────────────────────────
