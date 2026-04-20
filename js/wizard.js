@@ -24,7 +24,7 @@ function _doCloseWiz(){
 }
 function closeWiz(){
   if(_wizHasDirtyData()){
-    showConfirm('Eingaben verwerfen und schließen?', _doCloseWiz);
+    showConfirm('Eingaben verwerfen und schließen?', _doCloseWiz, 'Schließen', 'Ja, verwerfen');
     return;
   }
   _doCloseWiz();
@@ -296,12 +296,17 @@ function _wizFooter(){
     <button class="btn btn-green" onclick="wizFinish()">✓ FERTIG</button>`;
 }
 
+function _wizWeltBadge(){
+  const weltName = currentCats()[wiz.ci]?.name||'?';
+  return `<span style="display:inline-block;margin-left:8px;color:var(--accent2);background:rgba(74,232,160,.08);border:1px solid rgba(74,232,160,.3);padding:1px 7px;font-size:10px;letter-spacing:1px;vertical-align:middle">→ ${esc(weltName)}</span>`;
+}
+
 function _step2Qty(t){
   document.getElementById('mBody').innerHTML=`
     ${_wizStepsHeader()}
     ${_wizProgressHint()}
     <div style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:1px">
-      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Anzahl eingeben:
+      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Anzahl eingeben: ${_wizWeltBadge()}
     </div>
     <div class="cablelist">
       <div class="cablerow" id="cr-0">
@@ -339,7 +344,7 @@ function _step2Lengths(t){
     ${_wizStepsHeader()}
     ${_wizProgressHint()}
     <div style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:1px">
-      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Längen ankreuzen und Anzahl eingeben:
+      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Längen ankreuzen und Anzahl eingeben: ${_wizWeltBadge()}
     </div>
     <div class="cablelist">
       ${rows}

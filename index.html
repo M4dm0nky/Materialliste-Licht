@@ -26,7 +26,7 @@
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.2</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.2.2</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -156,19 +156,19 @@
 </div>
 
 <!-- CONFIRM DIALOG -->
-<div id="appConfirmDialog" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(5px);">
+<div id="appConfirmDialog" class="overlay app-dialog">
   <div class="modal" style="max-width:400px;">
     <div class="mhdr"><h2 id="appConfirmTitle">Bestätigung</h2></div>
-    <div class="mbody"><p id="appConfirmMsg" style="font-size:15px;line-height:1.6;margin:0;"></p></div>
+    <div class="mbody"><p id="appConfirmMsg" style="font-size:15px;line-height:1.6;margin:0;white-space:pre-line;"></p></div>
     <div class="mfooter">
       <button class="btn" id="appConfirmNo">Abbrechen</button>
-      <button class="btn btn-red" id="appConfirmYes">Ja, löschen</button>
+      <button class="btn btn-red" id="appConfirmYes">Ja</button>
     </div>
   </div>
 </div>
 
 <!-- PROMPT DIALOG -->
-<div id="appPromptDialog" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(5px);">
+<div id="appPromptDialog" class="overlay app-dialog">
   <div class="modal" style="max-width:420px;">
     <div class="mhdr"><h2 id="appPromptTitle">Eingabe</h2></div>
     <div class="mbody">

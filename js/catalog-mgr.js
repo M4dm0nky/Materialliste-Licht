@@ -223,8 +223,11 @@ function _renderCatTree(cat, weltName){
         <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
       </div>`;
     } else {
+      const grpWeltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===weltName?' selected':''}>${w}</option>`).join('');
       html += `<span class="tree-toggle">▼</span>
         <span class="tree-label">${esc(g.name)}</span>
+        <select class="cat-welt-sel" title="Alle Artikel dieser Gruppe in andere Welt verschieben"
+          onchange="catEditorSetGroupCat(${s(cat.id)},${s(g.id)},this.value)">${grpWeltOpts}</select>
         <div class="tree-actions">
           <button onclick="catTreeAddInline(${s(cat.id)},'add-ug',${s(g.id)},null)" title="+ Untergruppe" style="font-size:10px">+UG</button>
           <button onclick="catTreeAddInline(${s(cat.id)},'add-artikel',${s(g.id)},${s(weltName)})" title="+ Artikel" style="font-size:10px">+Art</button>
@@ -254,8 +257,11 @@ function _renderCatTree(cat, weltName){
           <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
         </div>`;
       } else {
+        const ugWeltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===weltName?' selected':''}>${w}</option>`).join('');
         html += `<span class="tree-toggle" style="opacity:.55">▽</span>
           <span class="tree-label" style="font-weight:500;font-size:12px">${esc(sg.name)}</span>
+          <select class="cat-welt-sel" title="Alle Artikel dieser Untergruppe in andere Welt verschieben"
+            onchange="catEditorSetGroupCat(${s(cat.id)},${s(sg.id)},this.value)">${ugWeltOpts}</select>
           <div class="tree-actions">
             <button onclick="catTreeAddInline(${s(cat.id)},'add-artikel',${s(sg.id)},${s(weltName)})" title="+ Artikel" style="font-size:10px">+Art</button>
             <button onclick="catTreeInlineEditGruppe(${s(cat.id)},${s(sg.id)})" title="Umbenennen">✏</button>
@@ -415,7 +421,7 @@ function catTreeDeleteLen(catalogId, typeKey, idx){
     entry.items.splice(idx,1);
     saveCatalogsStore();
     _renderCatMgrTab2();
-  });
+  }, 'Löschen', 'Ja, löschen');
 }
 
 // ── UNIT TYPE TOGGLE ───────────────────────────────────────────────
@@ -458,7 +464,7 @@ function catEditorDeleteGroup(catalogId, groupId){
     _catTreeInlineState = null;
     _renderCatMgrTab2();
     toast('✓ Gruppe gelöscht');
-  });
+  }, 'Löschen', 'Ja, löschen');
 }
 
 function catEditorSetTypeGroup(catalogId, typeKey, groupId){
@@ -486,7 +492,7 @@ function catEditorDeleteType(catalogId, typeKey){
     _catTreeInlineState = null;
     _renderCatMgrTab2();
     toast('✓ Artikel gelöscht');
-  });
+  }, 'Löschen', 'Ja, löschen');
 }
 
 function catEditorSetUnitType(catalogId, typeKey, unitType){
@@ -511,6 +517,21 @@ function catEditorSetCat(catalogId, typeKey, catName){
   if(!cat.types[typeKey]) return;
   cat.types[typeKey].cat = catName;
   saveCatalogsStore(); rerenderAllCats(); _renderCatMgrTab2();
+}
+
+function catEditorSetGroupCat(catalogId, groupId, catName){
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  const subGroups  = catGetSubGroups(cat, groupId);
+  const allIds     = [groupId, ...subGroups.map(g=>g.id)];
+  let count = 0;
+  Object.values(cat.types).forEach(t=>{
+    if(allIds.includes(t.group) && (t.cat||CAT_ORDER[0])===_catEditorWelt){
+      t.cat = catName; count++;
+    }
+  });
+  if(!count){ toast('Keine Artikel in dieser Gruppe für die aktuelle Welt.',true); return; }
+  saveCatalogsStore(); rerenderAllCats(); _renderCatMgrTab2();
+  toast(`✓ ${count} Artikel nach „${catName}" verschoben`);
 }
 
 // ── LÄNGEN (Legacy-API für Wizard-Kompatibilität) ──────────────────
@@ -583,7 +604,7 @@ function catMgrDelete(catalogId){
   showConfirm(`Katalog „${cat.name}" wirklich löschen? Alle Einträge gehen verloren.`, ()=>{
     catalogsStore.catalogs = catalogsStore.catalogs.filter(c=>c.id!==catalogId);
     saveCatalogsStore(); _renderCatMgrTab1(); toast('Katalog gelöscht');
-  });
+  }, 'Löschen', 'Ja, löschen');
 }
 
 function catMgrCreateNew(){

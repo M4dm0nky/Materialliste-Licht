@@ -1,6 +1,8 @@
 /* ── OVERLAY & MODAL BASIS ────────────────────────────────────────── */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
 .overlay.open{display:flex;}
+/* Confirm/Prompt dialogs always above other overlays */
+.app-dialog{z-index:2100;}
 .modal{background:var(--bg2);border:1px solid var(--border);width:min(960px,96vw);max-height:92vh;display:flex;flex-direction:column;overflow:hidden;animation:mIn .2s ease;}
 .mhdr{padding:18px 26px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .mhdr h2{font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);}

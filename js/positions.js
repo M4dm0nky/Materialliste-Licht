@@ -45,5 +45,5 @@ function deletePos(idx){
     activePosIdx = Math.min(activePosIdx, state.positions.length-1);
     state._activePosIdx = activePosIdx;
     save(); renderPosBar(); render();
-  });
+  }, 'Löschen', 'Ja, löschen');
 }

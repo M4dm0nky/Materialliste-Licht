@@ -310,13 +310,13 @@ function delRow(ci,si,ii){
   showConfirm(`„${label}" wirklich löschen?`, ()=>{
     currentCats()[ci].sections[si].items.splice(ii,1);
     save(); renderRows(ci,si); recalcAll();
-  });
+  }, 'Löschen', 'Ja, löschen');
 }
 function delSec(ci,si){
   const typeName = currentCats()[ci].sections[si].type_name;
   showConfirm(`Sektion „${typeName}" wirklich löschen?`, ()=>{
     currentCats()[ci].sections.splice(si,1); save(); rerenderCat(ci);
-  });
+  }, 'Löschen', 'Ja, löschen');
 }
 
 // ── UI-STEUERUNG ───────────────────────────────────────────────────
@@ -341,5 +341,5 @@ function resetAll(){
     localStorage.removeItem(STORAGE_KEY);
     state = {_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
     activePosIdx=0; render();
-  }, 'Reset');
+  }, 'Reset', 'Ja, alles löschen');
 }

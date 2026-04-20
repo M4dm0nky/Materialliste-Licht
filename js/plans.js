@@ -128,7 +128,7 @@ function deletePlan(id){
     }
     renderPlanList();
     toast('Plan gelöscht');
-  });
+  }, 'Löschen', 'Ja, löschen');
 }
 
 function renamePlan(id){

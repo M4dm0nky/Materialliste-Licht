@@ -8,31 +8,43 @@ function parseLen(s){
   return parseFloat(String(s).replace(',','.').replace(/[^0-9.]/g,'')) || 0;
 }
 
-function showConfirm(msg, onYes, title){
-  const d = document.getElementById('appConfirmDialog');
-  document.getElementById('appConfirmMsg').textContent  = msg;
-  document.getElementById('appConfirmTitle').textContent = title || 'Bestätigung';
-  d.style.display = 'flex';
+function showConfirm(msg, onYes, title, yesLabel){
+  const d   = document.getElementById('appConfirmDialog');
   const yes = document.getElementById('appConfirmYes');
   const no  = document.getElementById('appConfirmNo');
-  function cleanup(){ d.style.display='none'; yes.onclick=null; no.onclick=null; }
+  document.getElementById('appConfirmMsg').textContent   = msg;
+  document.getElementById('appConfirmTitle').textContent = title || 'Bestätigung';
+  yes.textContent = yesLabel || 'Ja';
+  d.classList.add('open');
+  function cleanup(){
+    d.classList.remove('open');
+    yes.onclick = null; no.onclick = null;
+    document.removeEventListener('keydown', onKey);
+  }
+  function onKey(e){ if(e.key==='Escape'){ e.stopPropagation(); cleanup(); } }
   yes.onclick = () => { cleanup(); onYes(); };
   no.onclick  = () => { cleanup(); };
+  document.addEventListener('keydown', onKey);
+  // Backdrop click cancels
+  d.onclick = e => { if(e.target===d) cleanup(); };
 }
 
 function showPrompt(msg, defaultVal, onOk, title){
   const d   = document.getElementById('appPromptDialog');
   const inp = document.getElementById('appPromptInput');
+  const ok  = document.getElementById('appPromptOk');
+  const can = document.getElementById('appPromptCancel');
   document.getElementById('appPromptMsg').textContent   = msg;
   document.getElementById('appPromptTitle').textContent = title || 'Eingabe';
   inp.value = defaultVal || '';
-  d.style.display = 'flex';
-  const ok  = document.getElementById('appPromptOk');
-  const can = document.getElementById('appPromptCancel');
-  function cleanup(){ d.style.display='none'; ok.onclick=null; can.onclick=null; inp.onkeydown=null; }
+  d.classList.add('open');
+  function cleanup(){ d.classList.remove('open'); ok.onclick=null; can.onclick=null; inp.onkeydown=null; d.onclick=null; document.removeEventListener('keydown',onKey); }
   function doOk(){ const v=inp.value.trim(); if(!v) return; cleanup(); onOk(v); }
-  ok.onclick      = doOk;
-  can.onclick     = () => { cleanup(); };
-  inp.onkeydown   = e => { if(e.key==='Enter') doOk(); if(e.key==='Escape') cleanup(); };
+  function onKey(e){ if(e.key==='Escape'){ e.stopPropagation(); cleanup(); } }
+  ok.onclick    = doOk;
+  can.onclick   = () => { cleanup(); };
+  inp.onkeydown = e => { if(e.key==='Enter') doOk(); };
+  d.onclick     = e => { if(e.target===d) cleanup(); };
+  document.addEventListener('keydown', onKey);
   setTimeout(()=>{ inp.focus(); inp.select(); }, 50);
 }
