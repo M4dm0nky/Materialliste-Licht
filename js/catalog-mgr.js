@@ -643,10 +643,16 @@ function catMgrImportJSON(input){
       const rawTypes = data.types||data;
       const catName  = (data.name&&typeof data.name==='string')
         ? data.name : (file.name.replace(/\.json$/i,'')||'Importierter Katalog');
+      // Migration: alte Cat-Namen → Welt-Namen
+      const _OLD_CAT_MAP = {'Kabel Liste':'Datenwelt','Zubehör Liste':'Riggingwelt','Hardware Liste':'Datenwelt','Lampen Liste':'Lichtwelt'};
+      const _builtinWelt = {};
+      if(typeof CATALOG!=='undefined') Object.entries(CATALOG).forEach(([k,v])=>{ _builtinWelt[k]=v.cat; });
       const types = {};
       Object.entries(rawTypes).forEach(([key,val])=>{
-        if(typeof val==='object'&&val.items){
-          const entry={cat:val.cat||'Datenwelt',items:val.items,unit_type:val.unit_type||_detectUnitType(val)};
+        if(typeof val==='object'&&val.items!==undefined){
+          let catWelt = val.cat||'Datenwelt';
+          if(_OLD_CAT_MAP.hasOwnProperty(catWelt)) catWelt = _builtinWelt[key]||_OLD_CAT_MAP[catWelt];
+          const entry={cat:catWelt,items:val.items,unit_type:val.unit_type||_detectUnitType(val)};
           if(val.group)    entry.group    = val.group;
           if(val.subgroup) entry.subgroup = val.subgroup;
           types[key]=entry;
