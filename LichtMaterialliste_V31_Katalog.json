@@ -1,741 +1,458 @@
 {
   "name": "LichtMaterialliste V31",
+  "groups": [
+    {"id": "g-dmx-adapter",   "name": "DMX Adapter"},
+    {"id": "g-net-lwl-zbh",   "name": "Netzwerk LWL Zubehör"},
+    {"id": "g-net-cat-zbh",   "name": "Netzwerk Cat Zubehör"},
+    {"id": "g-net-etc-zbh",   "name": "Netzwerk Ethercon Zubehör"},
+    {"id": "g-dmx-ctrl",      "name": "DMX Steuerung & Netzwerk"},
+    {"id": "g-han16-adp",     "name": "Han16 Adapter"},
+    {"id": "g-han6-adp",      "name": "Han6 Adapter"},
+    {"id": "g-soca-adp",      "name": "Socapex Adapter"},
+    {"id": "g-schuko-vt",     "name": "Schuko Verteiler"},
+    {"id": "g-cee16b-adp",    "name": "CEE 16A Blau Adapter"},
+    {"id": "g-cee32b-adp",    "name": "CEE 32A Blau Adapter"},
+    {"id": "g-cee16r-adp",    "name": "CEE 16A Rot Adapter"},
+    {"id": "g-cee32r-adp",    "name": "CEE 32A Rot Adapter"},
+    {"id": "g-cee63r-adp",    "name": "CEE 63A Rot Adapter"},
+    {"id": "g-cee125r-adp",   "name": "CEE 125A Rot Adapter"},
+    {"id": "g-erd-sets",      "name": "Erdungskabel Sets"},
+    {"id": "g-dimmer-vt",     "name": "Dimmer & Feststrom VT"},
+    {"id": "g-rohr-schellen", "name": "Rohr Schellen"},
+    {"id": "g-stative",       "name": "Licht Stative"},
+    {"id": "g-rigging-zbh",   "name": "Rigging Zubehör"},
+    {"id": "g-hw-lampen",     "name": "Hardware Lampen"},
+    {"id": "g-verbrauch",     "name": "Verbrauchsmaterial"},
+    {"id": "g-system-zbh",    "name": "System & Sonderzubehör"},
+    {"id": "g-buero",         "name": "Büro & Office"},
+    {"id": "g-farbfolien",    "name": "Farbfolien LEE"}
+  ],
   "types": {
 
     "DMX 5-Pin": {
-      "cat": "Datenwelt",
-      "unit_type": "lengths",
+      "cat": "Datenwelt", "unit_type": "lengths",
       "items": [
-        {"n": "5-Pin DMX", "l": "1,5m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "7m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "30m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m Trommel"},
-        {"n": "", "l": "100m Trommel"}
+        {"n": "5-Pin DMX", "l": "1,5m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "7m"}, {"n": "", "l": "10m"}, {"n": "", "l": "15m"},
+        {"n": "", "l": "20m"}, {"n": "", "l": "25m"}, {"n": "", "l": "30m"},
+        {"n": "", "l": "40m"}, {"n": "", "l": "50m Trommel"}, {"n": "", "l": "100m Trommel"}
       ]
     },
 
     "DMX 3-Pin": {
-      "cat": "Datenwelt",
-      "unit_type": "lengths",
+      "cat": "Datenwelt", "unit_type": "lengths",
       "items": [
-        {"n": "3-Pin DMX", "l": "1,5m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "9m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "30m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m Trommel"},
-        {"n": "", "l": "100m Trommel"}
+        {"n": "3-Pin DMX", "l": "1,5m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "9m"}, {"n": "", "l": "10m"}, {"n": "", "l": "15m"},
+        {"n": "", "l": "20m"}, {"n": "", "l": "25m"}, {"n": "", "l": "30m"},
+        {"n": "", "l": "40m"}, {"n": "", "l": "50m Trommel"}, {"n": "", "l": "100m Trommel"}
       ]
     },
 
     "DMX 4er Baum 5-Pin": {
-      "cat": "Datenwelt",
-      "unit_type": "lengths",
+      "cat": "Datenwelt", "unit_type": "lengths",
       "items": [
-        {"n": "4er Baum 5-Pin", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "30m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"},
-        {"n": "", "l": "100m"}
+        {"n": "4er Baum 5-Pin", "l": "3m"}, {"n": "", "l": "5m"}, {"n": "", "l": "10m"},
+        {"n": "", "l": "15m"}, {"n": "", "l": "20m"}, {"n": "", "l": "25m"},
+        {"n": "", "l": "30m"}, {"n": "", "l": "40m"}, {"n": "", "l": "50m"}, {"n": "", "l": "100m"}
       ]
     },
 
     "DMX LK37": {
-      "cat": "Datenwelt",
-      "unit_type": "lengths",
+      "cat": "Datenwelt", "unit_type": "lengths",
       "items": [
-        {"n": "LK37", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "30m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"},
-        {"n": "", "l": "70m"},
-        {"n": "", "l": "100m"}
+        {"n": "LK37", "l": "5m"}, {"n": "", "l": "10m"}, {"n": "", "l": "15m"},
+        {"n": "", "l": "20m"}, {"n": "", "l": "30m"}, {"n": "", "l": "40m"},
+        {"n": "", "l": "50m"}, {"n": "", "l": "70m"}, {"n": "", "l": "100m"}
       ]
     },
 
-    "DMX Adapter": {
-      "cat": "Datenwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "LK37 M → 12x DMX F", "l": ""},
-        {"n": "LK37 F → 12x DMX M", "l": ""},
-        {"n": "Cat → 4x DMX M", "l": ""},
-        {"n": "Cat → 4x DMX F", "l": ""},
-        {"n": "DMX 3pol M → DMX 5pol F", "l": ""},
-        {"n": "DMX 3pol F → DMX 5pol M", "l": ""}
-      ]
-    },
+    "LK37 M → 12x DMX F":         {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-adapter", "items": [{"n": "LK37 M → 12x DMX F", "l": ""}]},
+    "LK37 F → 12x DMX M":         {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-adapter", "items": [{"n": "LK37 F → 12x DMX M", "l": ""}]},
+    "Cat → 4x DMX M":              {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-adapter", "items": [{"n": "Cat → 4x DMX M", "l": ""}]},
+    "Cat → 4x DMX F":              {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-adapter", "items": [{"n": "Cat → 4x DMX F", "l": ""}]},
+    "DMX 3pol M → DMX 5pol F":    {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-adapter", "items": [{"n": "DMX 3pol M → DMX 5pol F", "l": ""}]},
+    "DMX 3pol F → DMX 5pol M":    {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-adapter", "items": [{"n": "DMX 3pol F → DMX 5pol M", "l": ""}]},
 
     "Netzwerk LWL Glasfaser": {
-      "cat": "Datenwelt",
-      "unit_type": "lengths",
+      "cat": "Datenwelt", "unit_type": "lengths",
       "items": [
-        {"n": "LWL 4er MultiMode SC", "l": "1m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "50m"},
-        {"n": "", "l": "100m"},
-        {"n": "", "l": "150m"},
-        {"n": "", "l": "300m"},
-        {"n": "", "l": "500m"}
+        {"n": "LWL 4er MultiMode SC", "l": "1m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "20m"}, {"n": "", "l": "50m"},
+        {"n": "", "l": "100m"}, {"n": "", "l": "150m"}, {"n": "", "l": "300m"}, {"n": "", "l": "500m"}
       ]
     },
 
-    "Netzwerk LWL Zubehör": {
-      "cat": "Datenwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "LWL Verbinder SC–SC", "l": ""},
-        {"n": "LWL Adapter LC→SC", "l": ""},
-        {"n": "LWL Reinigungset", "l": ""}
-      ]
-    },
+    "LWL Verbinder SC–SC":   {"cat": "Datenwelt", "unit_type": "qty", "group": "g-net-lwl-zbh", "items": [{"n": "LWL Verbinder SC–SC", "l": ""}]},
+    "LWL Adapter LC→SC":     {"cat": "Datenwelt", "unit_type": "qty", "group": "g-net-lwl-zbh", "items": [{"n": "LWL Adapter LC→SC", "l": ""}]},
+    "LWL Reinigungset":      {"cat": "Datenwelt", "unit_type": "qty", "group": "g-net-lwl-zbh", "items": [{"n": "LWL Reinigungset", "l": ""}]},
 
     "Netzwerk Cat 6/7 RJ45": {
-      "cat": "Datenwelt",
-      "unit_type": "lengths",
+      "cat": "Datenwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Cat 6/7 RJ45", "l": "1m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "50m Trommel"},
-        {"n": "", "l": "100m Trommel"}
+        {"n": "Cat 6/7 RJ45", "l": "1m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "15m"}, {"n": "", "l": "20m"},
+        {"n": "", "l": "25m"}, {"n": "", "l": "50m Trommel"}, {"n": "", "l": "100m Trommel"}
       ]
     },
 
-    "Netzwerk Cat Zubehör": {
-      "cat": "Datenwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Cat 6/7 RJ45 Verbinder", "l": ""}
-      ]
-    },
+    "Cat 6/7 RJ45 Verbinder": {"cat": "Datenwelt", "unit_type": "qty", "group": "g-net-cat-zbh", "items": [{"n": "Cat 6/7 RJ45 Verbinder", "l": ""}]},
 
     "Netzwerk Ethercon": {
-      "cat": "Datenwelt",
-      "unit_type": "lengths",
+      "cat": "Datenwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Ethercon Cat 6/7", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "30m"},
-        {"n": "", "l": "50m Trommel"},
-        {"n": "", "l": "90m Trommel"},
-        {"n": "", "l": "100m Trommel"}
+        {"n": "Ethercon Cat 6/7", "l": "5m"}, {"n": "", "l": "10m"}, {"n": "", "l": "20m"},
+        {"n": "", "l": "30m"}, {"n": "", "l": "50m Trommel"}, {"n": "", "l": "90m Trommel"}, {"n": "", "l": "100m Trommel"}
       ]
     },
 
-    "Netzwerk Ethercon Zubehör": {
-      "cat": "Datenwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Ethercon Verbinder", "l": ""}
-      ]
-    },
+    "Ethercon Verbinder": {"cat": "Datenwelt", "unit_type": "qty", "group": "g-net-etc-zbh", "items": [{"n": "Ethercon Verbinder", "l": ""}]},
+
+    "GrandMA2 Full":                          {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "GrandMA2 Full", "l": ""}]},
+    "GrandMA2 Light":                         {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "GrandMA2 Light", "l": ""}]},
+    "GrandMA2 ONPC Set":                      {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "GrandMA2 ONPC Set", "l": ""}]},
+    "GrandMA2 NPU":                           {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "GrandMA2 NPU", "l": "", "b": "mit USV und SG300"}]},
+    "GrandMA2 4-Port Node":                   {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "GrandMA2 4-Port Node", "l": ""}]},
+    "GrandMA2 8-Port Node":                   {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "GrandMA2 8-Port Node", "l": ""}]},
+    "Cisco SG300 Switch (LWL SC Ports)":      {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "Cisco SG300 Switch (LWL SC Ports)", "l": ""}]},
+    "DMX Switch Single Swisson":              {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "DMX Switch Single Swisson", "l": ""}]},
+    "2x DMX Switch Swisson":                  {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "2x DMX Switch Swisson", "l": ""}]},
+    "4x DMX Switch Swisson":                  {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "4x DMX Switch Swisson", "l": ""}]},
+    "Adapterkoffer Cat → DMX (Swisson 4er)":  {"cat": "Datenwelt", "unit_type": "qty", "group": "g-dmx-ctrl", "items": [{"n": "Adapterkoffer Cat → DMX (Swisson 4er Rack)", "l": ""}]},
 
     "Stromkabel Han16": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Han16 2,5\"", "l": "1m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "30m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"}
+        {"n": "Han16 2,5\"", "l": "1m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "15m"}, {"n": "", "l": "20m"},
+        {"n": "", "l": "25m"}, {"n": "", "l": "30m"}, {"n": "", "l": "40m"}, {"n": "", "l": "50m"}
       ]
     },
 
-    "Han16 Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Han16 M → 6x Schuko", "l": ""},
-        {"n": "Han16 M → 6x Schuko + Han F", "l": ""},
-        {"n": "6x Schuko M → Han F", "l": ""},
-        {"n": "Han16 Y-Verbinder", "l": ""},
-        {"n": "Han16 Verbinder", "l": ""}
-      ]
-    },
+    "Han16 M → 6x Schuko":           {"cat": "Stromwelt", "unit_type": "qty", "group": "g-han16-adp", "items": [{"n": "Han16 M → 6x Schuko", "l": ""}]},
+    "Han16 M → 6x Schuko + Han F":   {"cat": "Stromwelt", "unit_type": "qty", "group": "g-han16-adp", "items": [{"n": "Han16 M → 6x Schuko + Han F", "l": ""}]},
+    "6x Schuko M → Han F":           {"cat": "Stromwelt", "unit_type": "qty", "group": "g-han16-adp", "items": [{"n": "6x Schuko M → Han F", "l": ""}]},
+    "Han16 Y-Verbinder":             {"cat": "Stromwelt", "unit_type": "qty", "group": "g-han16-adp", "items": [{"n": "Han16 Y-Verbinder", "l": ""}]},
+    "Han16 Verbinder":               {"cat": "Stromwelt", "unit_type": "qty", "group": "g-han16-adp", "items": [{"n": "Han16 Verbinder", "l": ""}]},
 
     "Stromkabel Han6 5kW": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Han6 5KW", "l": "1m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "30m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"}
+        {"n": "Han6 5KW", "l": "1m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "15m"}, {"n": "", "l": "20m"},
+        {"n": "", "l": "25m"}, {"n": "", "l": "30m"}, {"n": "", "l": "40m"}, {"n": "", "l": "50m"}
       ]
     },
 
-    "Han6 Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Han8 5KW → 3x CEE32 F", "l": ""},
-        {"n": "3x CEE32 M → Han8 5KW", "l": ""}
-      ]
-    },
+    "Han8 5KW → 3x CEE32 F":    {"cat": "Stromwelt", "unit_type": "qty", "group": "g-han6-adp", "items": [{"n": "Han8 5KW → 3x CEE32 F", "l": ""}]},
+    "3x CEE32 M → Han8 5KW":    {"cat": "Stromwelt", "unit_type": "qty", "group": "g-han6-adp", "items": [{"n": "3x CEE32 M → Han8 5KW", "l": ""}]},
 
     "Stromkabel Socapex": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Socapex 2,5\"", "l": "1m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "30m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"}
+        {"n": "Socapex 2,5\"", "l": "1m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "15m"}, {"n": "", "l": "20m"},
+        {"n": "", "l": "25m"}, {"n": "", "l": "30m"}, {"n": "", "l": "40m"}, {"n": "", "l": "50m"}
       ]
     },
 
-    "Socapex Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Soca M → 6x Schuko", "l": ""},
-        {"n": "Soca M → 6x Schuko + Soca F", "l": ""},
-        {"n": "6x Schuko M → Soca F", "l": ""},
-        {"n": "Soca M → Varilite Smart Repeater", "l": ""},
-        {"n": "Socapex M → Harting F", "l": ""},
-        {"n": "Socapex F → Harting M", "l": ""}
-      ]
-    },
+    "Soca M → 6x Schuko":                  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-soca-adp", "items": [{"n": "Soca M → 6x Schuko", "l": ""}]},
+    "Soca M → 6x Schuko + Soca F":         {"cat": "Stromwelt", "unit_type": "qty", "group": "g-soca-adp", "items": [{"n": "Soca M → 6x Schuko + Soca F", "l": ""}]},
+    "6x Schuko M → Soca F":                {"cat": "Stromwelt", "unit_type": "qty", "group": "g-soca-adp", "items": [{"n": "6x Schuko M → Soca F", "l": ""}]},
+    "Soca M → Varilite Smart Repeater":    {"cat": "Stromwelt", "unit_type": "qty", "group": "g-soca-adp", "items": [{"n": "Soca M → Varilite Smart Repeater", "l": ""}]},
+    "Socapex M → Harting F":               {"cat": "Stromwelt", "unit_type": "qty", "group": "g-soca-adp", "items": [{"n": "Socapex M → Harting F", "l": ""}]},
+    "Socapex F → Harting M":               {"cat": "Stromwelt", "unit_type": "qty", "group": "g-soca-adp", "items": [{"n": "Socapex F → Harting M", "l": ""}]},
 
     "Stromkabel Schuko": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Schuko", "l": "1,5m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"}
+        {"n": "Schuko", "l": "1,5m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "15m"}, {"n": "", "l": "20m"}, {"n": "", "l": "25m"}
       ]
     },
 
-    "Schuko Verteiler": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "3er Verteiler", "l": ""},
-        {"n": "6er Verteiler", "l": ""}
-      ]
-    },
+    "3er Verteiler": {"cat": "Stromwelt", "unit_type": "qty", "group": "g-schuko-vt", "items": [{"n": "3er Verteiler", "l": ""}]},
+    "6er Verteiler": {"cat": "Stromwelt", "unit_type": "qty", "group": "g-schuko-vt", "items": [{"n": "6er Verteiler", "l": ""}]},
 
     "Stromkabel VL5": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "VL5 Verbindungskabel", "l": "1,5m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"}
+        {"n": "VL5 Verbindungskabel", "l": "1,5m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "15m"}, {"n": "", "l": "20m"}, {"n": "", "l": "25m"}
       ]
     },
 
     "CEE 16A Blau": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "CEE 16A Blau", "l": "1,5m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "50m"}
+        {"n": "CEE 16A Blau", "l": "1,5m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "15m"}, {"n": "", "l": "20m"},
+        {"n": "", "l": "25m"}, {"n": "", "l": "50m"}
       ]
     },
 
-    "CEE 16A Blau Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "CEE16 → Schuko F", "l": ""},
-        {"n": "Schuko M → CEE16", "l": ""}
-      ]
-    },
+    "CEE16 → Schuko F":   {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee16b-adp", "items": [{"n": "CEE16 → Schuko F", "l": ""}]},
+    "Schuko M → CEE16":   {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee16b-adp", "items": [{"n": "Schuko M → CEE16", "l": ""}]},
 
     "CEE 32A Blau": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "CEE 32A Blau", "l": "1,5m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "50m"}
+        {"n": "CEE 32A Blau", "l": "1,5m"}, {"n": "", "l": "3m"}, {"n": "", "l": "5m"},
+        {"n": "", "l": "10m"}, {"n": "", "l": "15m"}, {"n": "", "l": "20m"},
+        {"n": "", "l": "25m"}, {"n": "", "l": "50m"}
       ]
     },
 
-    "CEE 32A Blau Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "CEE16 → CEE32 Blau", "l": ""},
-        {"n": "CEE32 Blau → 3x CEE32 Blau", "l": ""}
-      ]
-    },
+    "CEE16 → CEE32 Blau":          {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee32b-adp", "items": [{"n": "CEE16 → CEE32 Blau", "l": ""}]},
+    "CEE32 Blau → 3x CEE32 Blau":  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee32b-adp", "items": [{"n": "CEE32 Blau → 3x CEE32 Blau", "l": ""}]},
 
     "CEE 16A Rot": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "CEE 16A Rot", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "25m"},
-        {"n": "", "l": "50m"}
+        {"n": "CEE 16A Rot", "l": "3m"}, {"n": "", "l": "5m"}, {"n": "", "l": "10m"},
+        {"n": "", "l": "15m"}, {"n": "", "l": "20m"}, {"n": "", "l": "25m"}, {"n": "", "l": "50m"}
       ]
     },
 
-    "CEE 16A Rot Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "CEE16A Rot → 3x Schuko F", "l": ""},
-        {"n": "CEE16A Rot → 6x Schuko F", "l": ""}
-      ]
-    },
+    "CEE16A Rot → 3x Schuko F":  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee16r-adp", "items": [{"n": "CEE16A Rot → 3x Schuko F", "l": ""}]},
+    "CEE16A Rot → 6x Schuko F":  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee16r-adp", "items": [{"n": "CEE16A Rot → 6x Schuko F", "l": ""}]},
 
     "CEE 32A Rot": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "CEE 32A Rot", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"},
-        {"n": "", "l": "100m"}
+        {"n": "CEE 32A Rot", "l": "5m"}, {"n": "", "l": "10m"}, {"n": "", "l": "15m"},
+        {"n": "", "l": "20m"}, {"n": "", "l": "40m"}, {"n": "", "l": "50m"}, {"n": "", "l": "100m"}
       ]
     },
 
-    "CEE 32A Rot Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "VT 32A → 32A + 2x16A + 3x Schuko", "l": ""},
-        {"n": "32A → 3x 32A CEE", "l": ""}
-      ]
-    },
+    "VT 32A → 32A + 2x16A + 3x Schuko":  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee32r-adp", "items": [{"n": "VT 32A → 32A + 2x16A + 3x Schuko", "l": ""}]},
+    "32A → 3x 32A CEE":                   {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee32r-adp", "items": [{"n": "32A → 3x 32A CEE", "l": ""}]},
 
     "CEE 63A Rot": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "CEE 63A Rot", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"},
-        {"n": "", "l": "100m"}
+        {"n": "CEE 63A Rot", "l": "5m"}, {"n": "", "l": "10m"}, {"n": "", "l": "15m"},
+        {"n": "", "l": "20m"}, {"n": "", "l": "40m"}, {"n": "", "l": "50m"}, {"n": "", "l": "100m"}
       ]
     },
 
-    "CEE 63A Rot Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "VT 63A → 63A + 2x32A + 2x16A + 3x Schuko", "l": ""},
-        {"n": "32A → 63A Adapter", "l": ""},
-        {"n": "VT 63A → 2x 63A", "l": ""}
-      ]
-    },
+    "VT 63A → 63A + 2x32A + 2x16A + 3x Schuko":  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee63r-adp", "items": [{"n": "VT 63A → 63A + 2x32A + 2x16A + 3x Schuko", "l": ""}]},
+    "32A → 63A Adapter":                           {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee63r-adp", "items": [{"n": "32A → 63A Adapter", "l": ""}]},
+    "VT 63A → 2x 63A":                            {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee63r-adp", "items": [{"n": "VT 63A → 2x 63A", "l": ""}]},
 
     "CEE 125A Rot": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "CEE 125A Rot", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "15m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "40m"},
-        {"n": "", "l": "50m"},
-        {"n": "", "l": "100m"}
+        {"n": "CEE 125A Rot", "l": "5m"}, {"n": "", "l": "10m"}, {"n": "", "l": "15m"},
+        {"n": "", "l": "20m"}, {"n": "", "l": "40m"}, {"n": "", "l": "50m"}, {"n": "", "l": "100m"}
       ]
     },
 
-    "CEE 125A Rot Adapter": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "63A → 125A Adapter", "l": ""},
-        {"n": "VT 125A → 2x63A + 2x32A + 2x16A + 3x Schuko", "l": ""},
-        {"n": "VT 125A → 2x 63A", "l": ""}
-      ]
-    },
+    "63A → 125A Adapter":                              {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee125r-adp", "items": [{"n": "63A → 125A Adapter", "l": ""}]},
+    "VT 125A → 2x63A + 2x32A + 2x16A + 3x Schuko":   {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee125r-adp", "items": [{"n": "VT 125A → 2x63A + 2x32A + 2x16A + 3x Schuko", "l": ""}]},
+    "VT 125A → 2x 63A":                               {"cat": "Stromwelt", "unit_type": "qty", "group": "g-cee125r-adp", "items": [{"n": "VT 125A → 2x 63A", "l": ""}]},
 
     "Erdungskabel": {
-      "cat": "Stromwelt",
-      "unit_type": "lengths",
+      "cat": "Stromwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Erdungskabel mit Öse", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "30m"},
-        {"n": "Erdungskabel Connex", "l": "3m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "10m"},
-        {"n": "", "l": "20m"},
-        {"n": "", "l": "30m"}
+        {"n": "Erdungskabel mit Öse", "l": "3m"}, {"n": "", "l": "5m"}, {"n": "", "l": "10m"},
+        {"n": "", "l": "20m"}, {"n": "", "l": "30m"},
+        {"n": "Erdungskabel Connex", "l": "3m"}, {"n": "", "l": "5m"}, {"n": "", "l": "10m"},
+        {"n": "", "l": "20m"}, {"n": "", "l": "30m"}
       ]
     },
 
-    "Erdungskabel Sets": {
-      "cat": "Stromwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Erdungskabel Set groß", "l": ""},
-        {"n": "Erdungskabel Set Connex", "l": ""}
-      ]
-    },
+    "Erdungskabel Set groß":    {"cat": "Stromwelt", "unit_type": "qty", "group": "g-erd-sets", "items": [{"n": "Erdungskabel Set groß", "l": ""}]},
+    "Erdungskabel Set Connex":  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-erd-sets", "items": [{"n": "Erdungskabel Set Connex", "l": ""}]},
 
-    "Dimmer & Feststrom VT": {
-      "cat": "Lichtwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Handdimmer 2kW", "l": "", "b": "Schuko"},
-        {"n": "6-Kanal Dimmer → 6x Schuko", "l": "", "b": "16A CEE"},
-        {"n": "12-Kanal Dimmer MA → 2x Han", "l": "", "b": "32A CEE"},
-        {"n": "24-Kanal Dimmer MA → Han", "l": "", "b": "63A/125A CEE, mit Hotpatch / 2x Han Input"},
-        {"n": "36-Kanal Dimmer MA → Han", "l": "", "b": "125A CEE, mit Hotpatch / 2x Han Input"},
-        {"n": "12-Kanal VT → 2x Han", "l": "", "b": "32A CEE"},
-        {"n": "12-Kanal VT → 2x Han Y Single FI", "l": "", "b": "32A CEE"},
-        {"n": "18-Kanal VT → 3x Han", "l": "", "b": "63A CEE"},
-        {"n": "36-Kanal VT → Han", "l": "", "b": "63A CEE, Hotpatch"},
-        {"n": "48-Kanal VT → Han", "l": "", "b": "125A CEE, Hotpatch / 4x Han Input"},
-        {"n": "USV 1000W", "l": "", "b": "Schuko"},
-        {"n": "USV 1500W", "l": "", "b": "Schuko"}
-      ]
-    },
-
-    "DMX Steuerung & Netzwerk": {
-      "cat": "Lichtwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "GrandMA2 Full", "l": ""},
-        {"n": "GrandMA2 Light", "l": ""},
-        {"n": "GrandMA2 ONPC Set", "l": ""},
-        {"n": "GrandMA2 NPU", "l": "", "b": "mit USV und SG300"},
-        {"n": "GrandMA2 4-Port Node", "l": ""},
-        {"n": "GrandMA2 8-Port Node", "l": ""},
-        {"n": "Cisco SG300 Switch (LWL SC Ports)", "l": ""},
-        {"n": "DMX Switch Single Swisson", "l": ""},
-        {"n": "2x DMX Switch Swisson", "l": ""},
-        {"n": "4x DMX Switch Swisson", "l": ""},
-        {"n": "Adapterkoffer Cat → DMX (Swisson 4er Rack)", "l": ""}
-      ]
-    },
-
-    "Hardware Lampen": {
-      "cat": "Lichtwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""},
-        {"n": "Lampe", "l": ""}
-      ]
-    },
+    "Handdimmer 2kW":                      {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "Handdimmer 2kW", "l": "", "b": "Schuko"}]},
+    "6-Kanal Dimmer → 6x Schuko":          {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "6-Kanal Dimmer → 6x Schuko", "l": "", "b": "16A CEE"}]},
+    "12-Kanal Dimmer MA → 2x Han":         {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "12-Kanal Dimmer MA → 2x Han", "l": "", "b": "32A CEE"}]},
+    "24-Kanal Dimmer MA → Han":            {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "24-Kanal Dimmer MA → Han", "l": "", "b": "63A/125A CEE, Hotpatch / 2x Han Input"}]},
+    "36-Kanal Dimmer MA → Han":            {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "36-Kanal Dimmer MA → Han", "l": "", "b": "125A CEE, Hotpatch / 2x Han Input"}]},
+    "12-Kanal VT → 2x Han":               {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "12-Kanal VT → 2x Han", "l": "", "b": "32A CEE"}]},
+    "12-Kanal VT → 2x Han Y Single FI":   {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "12-Kanal VT → 2x Han Y Single FI", "l": "", "b": "32A CEE"}]},
+    "18-Kanal VT → 3x Han":               {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "18-Kanal VT → 3x Han", "l": "", "b": "63A CEE"}]},
+    "36-Kanal VT → Han":                  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "36-Kanal VT → Han", "l": "", "b": "63A CEE, Hotpatch"}]},
+    "48-Kanal VT → Han":                  {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "48-Kanal VT → Han", "l": "", "b": "125A CEE, Hotpatch / 4x Han Input"}]},
+    "USV 1000W":                           {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "USV 1000W", "l": "", "b": "Schuko"}]},
+    "USV 1500W":                           {"cat": "Stromwelt", "unit_type": "qty", "group": "g-dimmer-vt", "items": [{"n": "USV 1500W", "l": "", "b": "Schuko"}]},
 
     "Alurohr schwarz": {
-      "cat": "Riggingwelt",
-      "unit_type": "lengths",
+      "cat": "Riggingwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Alurohr schwarz", "l": "1m"},
-        {"n": "", "l": "1,5m"},
-        {"n": "", "l": "2m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "4m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "6m"}
+        {"n": "Alurohr schwarz", "l": "1m"}, {"n": "", "l": "1,5m"}, {"n": "", "l": "2m"},
+        {"n": "", "l": "3m"}, {"n": "", "l": "4m"}, {"n": "", "l": "5m"}, {"n": "", "l": "6m"}
       ]
     },
 
     "Alurohr silber": {
-      "cat": "Riggingwelt",
-      "unit_type": "lengths",
+      "cat": "Riggingwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Alurohr silber", "l": "1m"},
-        {"n": "", "l": "1,5m"},
-        {"n": "", "l": "2m"},
-        {"n": "", "l": "3m"},
-        {"n": "", "l": "4m"},
-        {"n": "", "l": "5m"},
-        {"n": "", "l": "6m"}
+        {"n": "Alurohr silber", "l": "1m"}, {"n": "", "l": "1,5m"}, {"n": "", "l": "2m"},
+        {"n": "", "l": "3m"}, {"n": "", "l": "4m"}, {"n": "", "l": "5m"}, {"n": "", "l": "6m"}
       ]
     },
 
-    "Rohr Schellen": {
-      "cat": "Riggingwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Gelenkschelle Alu schwarz", "l": ""},
-        {"n": "Starre Aluschelle schwarz", "l": ""},
-        {"n": "Halbschelle mit Ring schwarz", "l": ""},
-        {"n": "Gelenkschelle Alu silber", "l": ""},
-        {"n": "Starre Aluschelle silber", "l": ""},
-        {"n": "Halbschelle mit Ring silber", "l": ""}
-      ]
-    },
+    "Gelenkschelle Alu schwarz":       {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rohr-schellen", "items": [{"n": "Gelenkschelle Alu schwarz", "l": ""}]},
+    "Starre Aluschelle schwarz":       {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rohr-schellen", "items": [{"n": "Starre Aluschelle schwarz", "l": ""}]},
+    "Halbschelle mit Ring schwarz":    {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rohr-schellen", "items": [{"n": "Halbschelle mit Ring schwarz", "l": ""}]},
+    "Gelenkschelle Alu silber":        {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rohr-schellen", "items": [{"n": "Gelenkschelle Alu silber", "l": ""}]},
+    "Starre Aluschelle silber":        {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rohr-schellen", "items": [{"n": "Starre Aluschelle silber", "l": ""}]},
+    "Halbschelle mit Ring silber":     {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rohr-schellen", "items": [{"n": "Halbschelle mit Ring silber", "l": ""}]},
 
-    "Drop Arm Moving Light": {
-      "cat": "Riggingwelt",
-      "unit_type": "lengths",
+    "Drop Arm Moving Light schwarz": {
+      "cat": "Riggingwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Drop Arm Moving Light schwarz", "l": "1m"},
-        {"n": "", "l": "1,5m"},
-        {"n": "", "l": "2m"},
-        {"n": "", "l": "3m"}
+        {"n": "Drop Arm Moving Light schwarz", "l": "1m"}, {"n": "", "l": "1,5m"},
+        {"n": "", "l": "2m"}, {"n": "", "l": "3m"}
       ]
     },
 
     "Drop Arm TV-Zapfen Verlängerung": {
-      "cat": "Riggingwelt",
-      "unit_type": "lengths",
+      "cat": "Riggingwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Drop Arm TV-Zapfen Verlängerung", "l": "45–65cm"},
-        {"n": "", "l": "0,5–1m"},
-        {"n": "", "l": "1,2–2m"},
-        {"n": "", "l": "1,8–3m"}
+        {"n": "Drop Arm TV-Zapfen Verlängerung", "l": "45–65cm"}, {"n": "", "l": "0,5–1m"},
+        {"n": "", "l": "1,2–2m"}, {"n": "", "l": "1,8–3m"}
       ]
     },
 
-    "Licht Stative": {
-      "cat": "Riggingwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Stahlstativ U126", "l": ""},
-        {"n": "Kurbelstativ", "l": ""},
-        {"n": "Genie", "l": ""},
-        {"n": "FD31", "l": ""},
-        {"n": "FD31 Stahlplatte", "l": ""},
-        {"n": "Truss FD34 Schwarz", "l": ""},
-        {"n": "Truss Husse Schwarz", "l": ""},
-        {"n": "Stahlplatte 60x60cm Truss 80kg", "l": ""},
-        {"n": "Holzverblendung Stahlplatte 60x60cm", "l": ""},
-        {"n": "Stahlgewichte 25kg", "l": ""},
-        {"n": "Konus auf Halbschelle", "l": ""},
-        {"n": "Konus auf mini TV-Zapfen", "l": ""},
-        {"n": "Truss Koffer", "l": ""},
-        {"n": "Bodenstativ 3-Bein klein (mini TV-Zapfen)", "l": ""},
-        {"n": "Bodenstativ 3-Bein mittel (mini TV-Zapfen)", "l": ""},
-        {"n": "Bodenstativ 3-Bein groß (TV-Zapfen)", "l": ""},
-        {"n": "Bodenstativ Holz mit Schraube", "l": ""},
-        {"n": "Bodenstativ Holz (mini TV-Zapfen)", "l": ""}
-      ]
-    },
+    "Stahlstativ U126":                              {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Stahlstativ U126", "l": ""}]},
+    "Kurbelstativ":                                  {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Kurbelstativ", "l": ""}]},
+    "Genie":                                         {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Genie", "l": ""}]},
+    "FD31":                                          {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "FD31", "l": ""}]},
+    "FD31 Stahlplatte":                              {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "FD31 Stahlplatte", "l": ""}]},
+    "Truss FD34 Schwarz":                            {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Truss FD34 Schwarz", "l": ""}]},
+    "Truss Husse Schwarz":                           {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Truss Husse Schwarz", "l": ""}]},
+    "Stahlplatte 60x60cm Truss 80kg":                {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Stahlplatte 60x60cm Truss 80kg", "l": ""}]},
+    "Holzverblendung Stahlplatte 60x60cm":           {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Holzverblendung Stahlplatte 60x60cm", "l": ""}]},
+    "Stahlgewichte 25kg":                            {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Stahlgewichte 25kg", "l": ""}]},
+    "Konus auf Halbschelle":                         {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Konus auf Halbschelle", "l": ""}]},
+    "Konus auf mini TV-Zapfen":                      {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Konus auf mini TV-Zapfen", "l": ""}]},
+    "Truss Koffer":                                  {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Truss Koffer", "l": ""}]},
+    "Bodenstativ 3-Bein klein (mini TV-Zapfen)":     {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Bodenstativ 3-Bein klein (mini TV-Zapfen)", "l": ""}]},
+    "Bodenstativ 3-Bein mittel (mini TV-Zapfen)":    {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Bodenstativ 3-Bein mittel (mini TV-Zapfen)", "l": ""}]},
+    "Bodenstativ 3-Bein groß (TV-Zapfen)":           {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Bodenstativ 3-Bein groß (TV-Zapfen)", "l": ""}]},
+    "Bodenstativ Holz mit Schraube":                 {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Bodenstativ Holz mit Schraube", "l": ""}]},
+    "Bodenstativ Holz (mini TV-Zapfen)":             {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-stative", "items": [{"n": "Bodenstativ Holz (mini TV-Zapfen)", "l": ""}]},
 
     "Stahlseil & Safety": {
-      "cat": "Riggingwelt",
-      "unit_type": "lengths",
+      "cat": "Riggingwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Stahlseil / Safety 30kg", "l": "1m"},
-        {"n": "Stahlseil / Safety 60kg", "l": "1m"},
-        {"n": "Slider 125kg", "l": "10m"},
-        {"n": "Slider 500kg", "l": "10m"}
+        {"n": "Stahlseil / Safety 30kg", "l": "1m"}, {"n": "Stahlseil / Safety 60kg", "l": "1m"},
+        {"n": "Slider 125kg", "l": "10m"}, {"n": "Slider 500kg", "l": "10m"}
       ]
     },
 
     "Rundschlingen & Steelflex": {
-      "cat": "Riggingwelt",
-      "unit_type": "lengths",
+      "cat": "Riggingwelt", "unit_type": "lengths",
       "items": [
-        {"n": "Rundschlinge", "l": "1m"},
-        {"n": "", "l": "1,5m"},
-        {"n": "", "l": "2m"},
-        {"n": "Steelflex", "l": "1m"},
-        {"n": "", "l": "1,5m"},
-        {"n": "", "l": "2m"}
+        {"n": "Rundschlinge", "l": "1m"}, {"n": "", "l": "1,5m"}, {"n": "", "l": "2m"},
+        {"n": "Steelflex", "l": "1m"}, {"n": "", "l": "1,5m"}, {"n": "", "l": "2m"}
       ]
     },
 
-    "Rigging Zubehör": {
-      "cat": "Riggingwelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Omegaschäkel 1t", "l": ""},
-        {"n": "Omegaschäkel 2t", "l": ""},
-        {"n": "Omegaschäkel 3,25t", "l": ""},
-        {"n": "Zurgurt klein 5m", "l": ""},
-        {"n": "Zurgurt mittel 5m", "l": ""},
-        {"n": "Zurgurt groß 5m", "l": ""},
-        {"n": "Magic Arm", "l": ""},
-        {"n": "P5 Klemmen mit Bolzen", "l": ""}
-      ]
-    },
+    "Omegaschäkel 1t":       {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rigging-zbh", "items": [{"n": "Omegaschäkel 1t", "l": ""}]},
+    "Omegaschäkel 2t":       {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rigging-zbh", "items": [{"n": "Omegaschäkel 2t", "l": ""}]},
+    "Omegaschäkel 3,25t":    {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rigging-zbh", "items": [{"n": "Omegaschäkel 3,25t", "l": ""}]},
+    "Zurgurt klein 5m":      {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rigging-zbh", "items": [{"n": "Zurgurt klein 5m", "l": ""}]},
+    "Zurgurt mittel 5m":     {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rigging-zbh", "items": [{"n": "Zurgurt mittel 5m", "l": ""}]},
+    "Zurgurt groß 5m":       {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rigging-zbh", "items": [{"n": "Zurgurt groß 5m", "l": ""}]},
+    "Magic Arm":             {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rigging-zbh", "items": [{"n": "Magic Arm", "l": ""}]},
+    "P5 Klemmen mit Bolzen": {"cat": "Riggingwelt", "unit_type": "qty", "group": "g-rigging-zbh", "items": [{"n": "P5 Klemmen mit Bolzen", "l": ""}]},
 
-    "Verbrauchsmaterial": {
-      "cat": "Verbrauchswelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "PVC Schwarz", "l": ""},
-        {"n": "PVC Grau", "l": ""},
-        {"n": "Gaffa schwarz", "l": ""},
-        {"n": "Gaffa silber", "l": ""},
-        {"n": "Gaffa weiss", "l": ""},
-        {"n": "Kabelbinder schwarz dick", "l": ""},
-        {"n": "Kabelbinder schwarz normal", "l": ""},
-        {"n": "Kabelbinder weiss dick", "l": ""},
-        {"n": "Kabelbinder weiss normal", "l": ""},
-        {"n": "Absperrband Rot/Weiss", "l": ""},
-        {"n": "Markierungstape Rot/Weiss", "l": ""},
-        {"n": "Markierungstape gelb/schwarz", "l": ""},
-        {"n": "Beschriftungstape orange", "l": ""},
-        {"n": "Beschriftungstape gelb", "l": ""},
-        {"n": "Beschriftungstape pink", "l": ""},
-        {"n": "Beschriftungstape grün", "l": ""},
-        {"n": "Dekomolton 1lfm / 3m breit", "l": ""}
-      ]
-    },
+    "Lampe 01": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 02": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 03": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 04": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 05": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 06": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 07": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 08": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 09": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 10": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 11": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 12": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 13": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 14": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 15": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 16": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 17": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 18": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 19": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 20": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 21": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 22": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 23": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 24": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 25": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 26": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 27": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 28": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 29": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 30": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 31": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
+    "Lampe 32": {"cat": "Lichtwelt", "unit_type": "qty", "group": "g-hw-lampen", "items": [{"n": "Lampe", "l": ""}]},
 
-    "System & Sonderzubehör": {
-      "cat": "Verbrauchswelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Notenpultlampen", "l": ""},
-        {"n": "Handdimmer", "l": ""},
-        {"n": "Baufluter 500W", "l": ""},
-        {"n": "mini At10", "l": ""},
-        {"n": "Patchkabel → Schuko F", "l": ""},
-        {"n": "Schuko M → Patchkabel", "l": ""},
-        {"n": "Ersatzbrenner Kiste", "l": ""},
-        {"n": "Nebelfluid Fog 5l", "l": ""},
-        {"n": "Nebelfluid Tour Haze 5l", "l": ""},
-        {"n": "Nebelfluid MDG 5l", "l": ""},
-        {"n": "CO2 Flasche 20kg", "l": ""},
-        {"n": "Trichter", "l": ""},
-        {"n": "Ventilator", "l": ""}
-      ]
-    },
+    "PVC Schwarz":                  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "PVC Schwarz", "l": ""}]},
+    "PVC Grau":                     {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "PVC Grau", "l": ""}]},
+    "Gaffa schwarz":                {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Gaffa schwarz", "l": ""}]},
+    "Gaffa silber":                 {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Gaffa silber", "l": ""}]},
+    "Gaffa weiss":                  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Gaffa weiss", "l": ""}]},
+    "Kabelbinder schwarz dick":     {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Kabelbinder schwarz dick", "l": ""}]},
+    "Kabelbinder schwarz normal":   {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Kabelbinder schwarz normal", "l": ""}]},
+    "Kabelbinder weiss dick":       {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Kabelbinder weiss dick", "l": ""}]},
+    "Kabelbinder weiss normal":     {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Kabelbinder weiss normal", "l": ""}]},
+    "Absperrband Rot/Weiss":        {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Absperrband Rot/Weiss", "l": ""}]},
+    "Markierungstape Rot/Weiss":    {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Markierungstape Rot/Weiss", "l": ""}]},
+    "Markierungstape gelb/schwarz": {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Markierungstape gelb/schwarz", "l": ""}]},
+    "Beschriftungstape orange":     {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Beschriftungstape orange", "l": ""}]},
+    "Beschriftungstape gelb":       {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Beschriftungstape gelb", "l": ""}]},
+    "Beschriftungstape pink":       {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Beschriftungstape pink", "l": ""}]},
+    "Beschriftungstape grün":       {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Beschriftungstape grün", "l": ""}]},
+    "Dekomolton 1lfm 3m breit":     {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-verbrauch", "items": [{"n": "Dekomolton 1lfm / 3m breit", "l": ""}]},
 
-    "Büro & Office": {
-      "cat": "Verbrauchswelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "Podest 2x1m", "l": ""},
-        {"n": "Podest Fuß 60cm", "l": ""},
-        {"n": "Podest Fuß 20cm Rolle", "l": ""},
-        {"n": "Drucker Brother A3", "l": ""},
-        {"n": "Monitor 24 Zoll", "l": ""},
-        {"n": "Erste-Hilfe Case", "l": ""},
-        {"n": "Feuerlöscher Case", "l": ""},
-        {"n": "Kaffeemaschinen Case", "l": ""},
-        {"n": "Bürostuhl", "l": ""}
-      ]
-    },
+    "Notenpultlampen":            {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Notenpultlampen", "l": ""}]},
+    "Handdimmer (System)":        {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Handdimmer", "l": ""}]},
+    "Baufluter 500W":             {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Baufluter 500W", "l": ""}]},
+    "mini At10":                  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "mini At10", "l": ""}]},
+    "Patchkabel → Schuko F":      {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Patchkabel → Schuko F", "l": ""}]},
+    "Schuko M → Patchkabel":      {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Schuko M → Patchkabel", "l": ""}]},
+    "Ersatzbrenner Kiste":        {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Ersatzbrenner Kiste", "l": ""}]},
+    "Nebelfluid Fog 5l":          {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Nebelfluid Fog 5l", "l": ""}]},
+    "Nebelfluid Tour Haze 5l":    {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Nebelfluid Tour Haze 5l", "l": ""}]},
+    "Nebelfluid MDG 5l":          {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Nebelfluid MDG 5l", "l": ""}]},
+    "CO2 Flasche 20kg":           {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "CO2 Flasche 20kg", "l": ""}]},
+    "Trichter":                   {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Trichter", "l": ""}]},
+    "Ventilator":                 {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-system-zbh", "items": [{"n": "Ventilator", "l": ""}]},
 
-    "Farbfolien LEE": {
-      "cat": "Verbrauchswelt",
-      "unit_type": "qty",
-      "items": [
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""},
-        {"n": "LEE Rolle/Geschnitten", "l": ""}
-      ]
-    }
+    "Podest 2x1m":                  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Podest 2x1m", "l": ""}]},
+    "Podest Fuß 60cm":              {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Podest Fuß 60cm", "l": ""}]},
+    "Podest Fuß 20cm Rolle":        {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Podest Fuß 20cm Rolle", "l": ""}]},
+    "Drucker Brother A3":           {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Drucker Brother A3", "l": ""}]},
+    "Monitor 24 Zoll":              {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Monitor 24 Zoll", "l": ""}]},
+    "Erste-Hilfe Case":             {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Erste-Hilfe Case", "l": ""}]},
+    "Feuerlöscher Case":            {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Feuerlöscher Case", "l": ""}]},
+    "Kaffeemaschinen Case":         {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Kaffeemaschinen Case", "l": ""}]},
+    "Bürostuhl":                    {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-buero", "items": [{"n": "Bürostuhl", "l": ""}]},
 
-  },
-  "groups": []
+    "Farbe 01":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 02":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 03":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 04":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 05":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 06":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 07":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 08":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 09":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 10":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 11":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 12":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 13":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 14":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 15":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 16":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]},
+    "Farbe 17":  {"cat": "Verbrauchswelt", "unit_type": "qty", "group": "g-farbfolien", "items": [{"n": "LEE Rolle/Geschnitten", "l": ""}]}
+
+  }
 }

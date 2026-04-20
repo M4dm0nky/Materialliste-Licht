@@ -338,11 +338,12 @@ function _renderCatTree(cat, weltName){
 
   // ── Gruppen dieser Welt ─────────────────────────────────────────
   weltsTopGroups.forEach(g=>{
-    const subGroups  = catGetSubGroups(cat,g.id);
-    const directTypes= byGroup[g.id]||[];
-    const isEditing  = is?.mode==='edit-gruppe' && is.id===g.id;
-    const isAddUG    = is?.mode==='add-ug'      && is.parentId===g.id;
-    const isAddArt   = is?.mode==='add-artikel' && is.parentId===g.id;
+    const subGroups   = catGetSubGroups(cat,g.id);
+    const directTypes = byGroup[g.id]||[];
+    const isEditing   = is?.mode==='edit-gruppe' && is.id===g.id;
+    const isAddUG     = is?.mode==='add-ug'      && is.parentId===g.id;
+    const isAddArt    = is?.mode==='add-artikel' && is.parentId===g.id;
+    const grpCollapsed= _catTreeCollapsed.has(cat.id+'::'+g.id);
 
     html += `<div class="tree-row tree-gruppe" ondragover="catDragOver(event)" ondragleave="catDragLeave(event)" ondrop="catDrop('gruppe',${s(cat.id)},${s(g.id)},event)">`;
     if(isEditing){
@@ -356,7 +357,7 @@ function _renderCatTree(cat, weltName){
     } else {
       const grpWeltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===weltName?' selected':''}>${w}</option>`).join('');
       html += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('gruppe',${s(cat.id)},${s(g.id)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
-        <span class="tree-toggle">▼</span>
+        <button class="tree-toggle" onclick="catTreeToggleCollapse(${s(cat.id)},${s(g.id)})" title="Ein-/Ausklappen">${grpCollapsed?'▶':'▼'}</button>
         <span class="tree-label">${esc(g.name)}</span>
         <select class="cat-welt-sel" title="Alle Artikel dieser Gruppe in andere Welt verschieben"
           onchange="catEditorSetGroupCat(${s(cat.id)},${s(g.id)},this.value)">${grpWeltOpts}</select>
@@ -370,45 +371,50 @@ function _renderCatTree(cat, weltName){
     }
     html += '</div>';
 
-    // Direkte Typen (ohne Untergruppe)
-    directTypes.forEach(({key,val})=>{ html += renderArtikelRow(key,val,1); });
-    if(isAddArt) html += renderInlineAddRow(1,`catTreeSaveAddArtikel(${s(cat.id)})`);
+    if(!grpCollapsed){
+      // Direkte Typen (ohne Untergruppe)
+      directTypes.forEach(({key,val})=>{ html += renderArtikelRow(key,val,1); });
+      if(isAddArt) html += renderInlineAddRow(1,`catTreeSaveAddArtikel(${s(cat.id)})`);
 
-    // Untergruppen
-    subGroups.forEach(sg=>{
-      const sgTypes  = byGroup[sg.id]||[];
-      const isEditSG = is?.mode==='edit-gruppe'  && is.id===sg.id;
-      const isAddSGA = is?.mode==='add-artikel'  && is.parentId===sg.id;
+      // Untergruppen
+      subGroups.forEach(sg=>{
+        const sgTypes    = byGroup[sg.id]||[];
+        const isEditSG   = is?.mode==='edit-gruppe'  && is.id===sg.id;
+        const isAddSGA   = is?.mode==='add-artikel'  && is.parentId===sg.id;
+        const sgCollapsed= _catTreeCollapsed.has(cat.id+'::'+sg.id);
 
-      html += `<div class="tree-row tree-untergruppe tree-indent-1" ondragover="catDragOver(event)" ondragleave="catDragLeave(event)" ondrop="catDrop('untergruppe',${s(cat.id)},${s(sg.id)},event)">`;
-      if(isEditSG){
-        html += `<div class="inline-edit-wrap" style="flex:1">
-          <span style="font-size:11px;color:var(--muted);margin-right:4px">▽</span>
-          <input class="inline-input" id="tree-inline-input" value="${esc(sg.name)}"
-            onkeydown="if(event.key==='Enter'){catTreeSaveRenameGruppe(${s(cat.id)},${s(sg.id)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
-          <button class="inline-btn ok" onclick="catTreeSaveRenameGruppe(${s(cat.id)},${s(sg.id)})">✓</button>
-          <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
-        </div>`;
-      } else {
-        const ugWeltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===weltName?' selected':''}>${w}</option>`).join('');
-        html += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('untergruppe',${s(cat.id)},${s(sg.id)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
-          <span class="tree-toggle" style="opacity:.55">▽</span>
-          <span class="tree-label" style="font-weight:500;font-size:12px">${esc(sg.name)}</span>
-          <select class="cat-welt-sel" title="Alle Artikel dieser Untergruppe in andere Welt verschieben"
-            onchange="catEditorSetGroupCat(${s(cat.id)},${s(sg.id)},this.value)">${ugWeltOpts}</select>
-          <div class="tree-actions">
-            <button onclick="catTreeAddInline(${s(cat.id)},'add-artikel',${s(sg.id)},${s(weltName)})" title="+ Artikel" style="font-size:10px">+Art</button>
-            <button onclick="catTreeInlineEditGruppe(${s(cat.id)},${s(sg.id)})" title="Umbenennen">✏</button>
-            <button class="del-btn" onclick="catEditorDeleteGroup(${s(cat.id)},${s(sg.id)})" title="Untergruppe löschen">✕</button>
+        html += `<div class="tree-row tree-untergruppe tree-indent-1" ondragover="catDragOver(event)" ondragleave="catDragLeave(event)" ondrop="catDrop('untergruppe',${s(cat.id)},${s(sg.id)},event)">`;
+        if(isEditSG){
+          html += `<div class="inline-edit-wrap" style="flex:1">
+            <span style="font-size:11px;color:var(--muted);margin-right:4px">▽</span>
+            <input class="inline-input" id="tree-inline-input" value="${esc(sg.name)}"
+              onkeydown="if(event.key==='Enter'){catTreeSaveRenameGruppe(${s(cat.id)},${s(sg.id)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
+            <button class="inline-btn ok" onclick="catTreeSaveRenameGruppe(${s(cat.id)},${s(sg.id)})">✓</button>
+            <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
           </div>`;
-      }
-      html += '</div>';
+        } else {
+          const ugWeltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===weltName?' selected':''}>${w}</option>`).join('');
+          html += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('untergruppe',${s(cat.id)},${s(sg.id)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
+            <button class="tree-toggle" style="opacity:.55" onclick="catTreeToggleCollapse(${s(cat.id)},${s(sg.id)})" title="Ein-/Ausklappen">${sgCollapsed?'▷':'▽'}</button>
+            <span class="tree-label" style="font-weight:500;font-size:12px">${esc(sg.name)}</span>
+            <select class="cat-welt-sel" title="Alle Artikel dieser Untergruppe in andere Welt verschieben"
+              onchange="catEditorSetGroupCat(${s(cat.id)},${s(sg.id)},this.value)">${ugWeltOpts}</select>
+            <div class="tree-actions">
+              <button onclick="catTreeAddInline(${s(cat.id)},'add-artikel',${s(sg.id)},${s(weltName)})" title="+ Artikel" style="font-size:10px">+Art</button>
+              <button onclick="catTreeInlineEditGruppe(${s(cat.id)},${s(sg.id)})" title="Umbenennen">✏</button>
+              <button class="del-btn" onclick="catEditorDeleteGroup(${s(cat.id)},${s(sg.id)})" title="Untergruppe löschen">✕</button>
+            </div>`;
+        }
+        html += '</div>';
 
-      sgTypes.forEach(({key,val})=>{ html += renderArtikelRow(key,val,2); });
-      if(isAddSGA) html += renderInlineAddRow(2,`catTreeSaveAddArtikel(${s(cat.id)})`);
-    });
+        if(!sgCollapsed){
+          sgTypes.forEach(({key,val})=>{ html += renderArtikelRow(key,val,2); });
+          if(isAddSGA) html += renderInlineAddRow(2,`catTreeSaveAddArtikel(${s(cat.id)})`);
+        }
+      });
 
-    if(isAddUG) html += renderInlineAddRow(1,`catTreeSaveAddUG(${s(cat.id)},${s(g.id)})`);
+      if(isAddUG) html += renderInlineAddRow(1,`catTreeSaveAddUG(${s(cat.id)},${s(g.id)})`);
+    }
   });
 
   // Typen ohne Gruppe in dieser Welt

@@ -171,25 +171,25 @@ const CATALOG = {
     Array.from({length:17},()=>({n:"LEE",l:"Rolle/Geschnitten"}))
   },
   "Dimmer & Feststrom VT":{cat:"Stromwelt",items:[
-    {n:"Handdimmer 2kW",l:"Schuko"},
-    {n:"6-Kanal Dimmer → 6x Schuko",l:"16A CEE"},
-    {n:"12-Kanal Dimmer MA → 2x Han",l:"32A CEE"},
-    {n:"24-Kanal Dimmer MA → Han",l:"63A/125A CEE",b:"mit Hotpatch / 2x Han Input"},
-    {n:"36-Kanal Dimmer MA → Han",l:"125A CEE",b:"mit Hotpatch / 2x Han Input"},
-    {n:"12-Kanal VT → 2x Han",l:"32A CEE"},
-    {n:"12-Kanal VT → 2x Han Y Single FI",l:"32A CEE"},
-    {n:"18-Kanal VT → 3x Han",l:"63A CEE"},
-    {n:"36-Kanal VT → Han",l:"63A CEE",b:"Hotpatch"},
-    {n:"48-Kanal VT → Han",l:"125A CEE",b:"Hotpatch / 4x Han Input"},
-    {n:"USV 1000W",l:"Schuko"},{n:"USV 1500W",l:"Schuko"}
+    {n:"Handdimmer 2kW",l:"",b:"Schuko"},
+    {n:"6-Kanal Dimmer → 6x Schuko",l:"",b:"16A CEE"},
+    {n:"12-Kanal Dimmer MA → 2x Han",l:"",b:"32A CEE"},
+    {n:"24-Kanal Dimmer MA → Han",l:"",b:"63A/125A CEE, Hotpatch / 2x Han Input"},
+    {n:"36-Kanal Dimmer MA → Han",l:"",b:"125A CEE, Hotpatch / 2x Han Input"},
+    {n:"12-Kanal VT → 2x Han",l:"",b:"32A CEE"},
+    {n:"12-Kanal VT → 2x Han Y Single FI",l:"",b:"32A CEE"},
+    {n:"18-Kanal VT → 3x Han",l:"",b:"63A CEE"},
+    {n:"36-Kanal VT → Han",l:"",b:"63A CEE, Hotpatch"},
+    {n:"48-Kanal VT → Han",l:"",b:"125A CEE, Hotpatch / 4x Han Input"},
+    {n:"USV 1000W",l:"",b:"Schuko"},{n:"USV 1500W",l:"",b:"Schuko"}
   ]},
   "DMX Steuerung & Netzwerk":{cat:"Datenwelt",items:[
     {n:"GrandMA2 Full",l:""},{n:"GrandMA2 Light",l:""},{n:"GrandMA2 ONPC Set",l:""},
     {n:"GrandMA2 NPU",l:"",b:"mit USV und SG300"},
     {n:"GrandMA2 4-Port Node",l:""},{n:"GrandMA2 8-Port Node",l:""},
     {n:"Cisco SG300 Switch (LWL SC Ports)",l:""},
-    {n:"DMX Switch Single",l:"Swisson"},{n:"2x DMX Switch",l:"Swisson"},
-    {n:"4x DMX Switch",l:"Swisson"},
+    {n:"DMX Switch Single Swisson",l:""},{n:"2x DMX Switch Swisson",l:""},
+    {n:"4x DMX Switch Swisson",l:""},
     {n:"Adapterkoffer Cat → DMX (Swisson 4er Rack)",l:""}
   ]}
 };
