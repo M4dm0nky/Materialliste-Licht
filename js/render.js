@@ -54,7 +54,8 @@ function buildGroupHeader(groupName, ci, groupId){
   el.innerHTML = `<span class="drag-handle" title="Gruppe verschieben">⠿</span><span class="grp-chevron">▼</span><span class="grp-title-text" title="Klicken zum Umbenennen">${esc(groupName)}</span>`;
   if(groupId){
     el.querySelector('.grp-title-text').addEventListener('click',()=>editGroupName(groupId));
-    el.querySelector('.drag-handle').addEventListener('mousedown',()=>{ el.draggable=true; });
+    el.querySelector('.drag-handle').addEventListener('mousedown',e=>{ e.stopPropagation(); el.draggable=true; });
+    el.querySelector('.drag-handle').addEventListener('mouseup',()=>{ el.draggable=false; });
     el.addEventListener('dragstart',e=>{
       if(!el.draggable) return;
       dragSrcGrp = {groupId};
@@ -228,8 +229,8 @@ function buildSecEl(ci,si){
       ondragover="if(dragType==='row'){event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('drop-target');}else if(dragType==='section'){event.preventDefault();event.dataTransfer.dropEffect='move';this.classList.add('sec-drop-target');}"
       ondragleave="this.classList.remove('drop-target','sec-drop-target')"
       ondrop="dropOnSec(${ci},${si},event)">
-      <span class="drag-handle" title="Sektion verschieben">⠿</span>
       <div class="sechdr-title">
+        <span class="drag-handle" title="Sektion verschieben">⠿</span>
         <span class="chevron" onclick="toggleSec(${ci},${si})">▼</span><span class="sec-title-text" onclick="editSectionName(${ci},${si})" title="Klicken zum Umbenennen">${esc(sec.type_name)}</span>
       </div>
       <div class="sechdr-col">DIFF</div>
@@ -257,9 +258,11 @@ function buildSecEl(ci,si){
     </div>`;
   const dragHandle = block.querySelector('.drag-handle');
   if(dragHandle){
-    dragHandle.addEventListener('mousedown',()=>{
+    dragHandle.addEventListener('mousedown',e=>{
+      e.stopPropagation();
       block.draggable=true;
     });
+    dragHandle.addEventListener('mouseup',()=>{ block.draggable=false; });
     block.addEventListener('dragstart',e=>{
       if(!block.draggable) return;
       dragSrcSec = {ci,si};
