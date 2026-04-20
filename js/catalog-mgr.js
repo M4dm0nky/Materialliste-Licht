@@ -6,6 +6,73 @@ let _catEditorId        = null;  // aktiver Katalog im Editor
 let _catEditorWelt      = null;  // aktive Welt im Tree-Tab
 let _catTreeInlineState = null;  // {mode, catalogId, id?, parentId?, weltName?}
 let _catTreeCollapsed   = new Set(); // "catId::typeKey" → eingeklappt
+let _catDragSrc         = null;  // {type, catId, id} — aktive Drag-Quelle
+
+function _getCatById(id){ return (catalogsStore?.catalogs||[]).find(c=>c.id===id); }
+
+function catDragStart(type,catId,id,e){
+  _catDragSrc = {type,catId,id};
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain',type+':'+id);
+  e.currentTarget.closest('.tree-row')?.classList.add('tree-row-dragging');
+}
+function catDragOver(e){
+  if(!_catDragSrc) return;
+  e.preventDefault(); e.stopPropagation();
+  e.dataTransfer.dropEffect='move';
+  document.querySelectorAll('.tree-drop-before,.tree-drop-after').forEach(x=>x.classList.remove('tree-drop-before','tree-drop-after'));
+  const rect=e.currentTarget.getBoundingClientRect();
+  e.currentTarget.classList.add(e.clientY<rect.top+rect.height/2?'tree-drop-before':'tree-drop-after');
+}
+function catDragLeave(e){ e.currentTarget.classList.remove('tree-drop-before','tree-drop-after'); }
+function catDragEnd(){
+  _catDragSrc=null;
+  document.querySelectorAll('.tree-row-dragging,.tree-drop-before,.tree-drop-after').forEach(x=>x.classList.remove('tree-row-dragging','tree-drop-before','tree-drop-after'));
+}
+function catDrop(type,catId,id,e){
+  e.preventDefault(); e.stopPropagation();
+  e.currentTarget.classList.remove('tree-drop-before','tree-drop-after');
+  if(!_catDragSrc) return;
+  const insertAfter=e.clientY>=e.currentTarget.getBoundingClientRect().top+e.currentTarget.getBoundingClientRect().height/2;
+  if(_catDragSrc.type==='gruppe'&&type==='gruppe') _catDropGruppe(catId,id,insertAfter);
+  else if(_catDragSrc.type==='untergruppe'&&type==='untergruppe') _catDropUntergruppe(catId,id,insertAfter);
+  else if(_catDragSrc.type==='artikel'&&type==='artikel') _catDropArtikel(catId,id,insertAfter);
+  _catDragSrc=null;
+}
+function _catDropGruppe(catId,targetId,insertAfter){
+  const cat=_getCatById(catId); if(!cat||!_catDragSrc) return;
+  const srcId=_catDragSrc.id; if(srcId===targetId) return;
+  const si=cat.groups.findIndex(g=>g.id===srcId), ti=cat.groups.findIndex(g=>g.id===targetId);
+  if(si<0||ti<0) return;
+  const grp=cat.groups.splice(si,1)[0];
+  let idx=insertAfter?(si<ti?ti:ti+1):(si<ti?ti-1:ti);
+  idx=Math.max(0,Math.min(idx,cat.groups.length));
+  cat.groups.splice(idx,0,grp); saveCatalogsStore(); _renderCatMgrTab2();
+}
+function _catDropUntergruppe(catId,targetId,insertAfter){
+  const cat=_getCatById(catId); if(!cat||!_catDragSrc) return;
+  const srcId=_catDragSrc.id; if(srcId===targetId) return;
+  const sg=cat.groups.find(g=>g.id===srcId), tg=cat.groups.find(g=>g.id===targetId);
+  if(!sg||!tg||sg.parentId!==tg.parentId) return;
+  const si=cat.groups.findIndex(g=>g.id===srcId), ti=cat.groups.findIndex(g=>g.id===targetId);
+  const grp=cat.groups.splice(si,1)[0];
+  let idx=insertAfter?(si<ti?ti:ti+1):(si<ti?ti-1:ti);
+  idx=Math.max(0,Math.min(idx,cat.groups.length));
+  cat.groups.splice(idx,0,grp); saveCatalogsStore(); _renderCatMgrTab2();
+}
+function _catDropArtikel(catId,targetKey,insertAfter){
+  const cat=_getCatById(catId); if(!cat||!_catDragSrc) return;
+  const srcKey=_catDragSrc.id; if(srcKey===targetKey) return;
+  const keys=Object.keys(cat.types);
+  const si=keys.indexOf(srcKey), ti=keys.indexOf(targetKey);
+  if(si<0||ti<0) return;
+  keys.splice(si,1);
+  let idx=insertAfter?(si<ti?ti:ti+1):(si<ti?ti-1:ti);
+  idx=Math.max(0,Math.min(idx,keys.length));
+  keys.splice(idx,0,srcKey);
+  const nt={}; keys.forEach(k=>{nt[k]=cat.types[k];}); cat.types=nt;
+  saveCatalogsStore(); _renderCatMgrTab2();
+}
 
 // ── ÖFFNEN & HAUPT-RENDER ──────────────────────────────────────────
 function openCatalogMgr(tab){
@@ -71,6 +138,7 @@ function _renderCatMgrTab1(){
 
 // ── TAB 2: KATALOG BEARBEITEN (TREE) ──────────────────────────────
 function _renderCatMgrTab2(){
+  const _prevScroll = document.getElementById('catTreeBody')?.scrollTop||0;
   const cats = catalogsStore?.catalogs||[];
   const cat  = cats.find(c=>c.id===_catEditorId)||cats[0];
   if(!cat){
@@ -99,6 +167,7 @@ function _renderCatMgrTab2(){
     <div id="catTreeBody" style="max-height:440px;overflow-y:auto;">
       ${_renderCatTree(cat, _catEditorWelt)}
     </div>`;
+  document.getElementById('catTreeBody').scrollTop = _prevScroll;
 }
 
 function catTreeSwitchWelt(weltName){
@@ -190,7 +259,7 @@ function _renderCatTree(cat, weltName){
     const catId      = cat.id;
     const collapsed  = _catTreeCollapsed.has(catId+'::'+key);
 
-    let row = `<div class="tree-row tree-artikel ${indCls}">`;
+    let row = `<div class="tree-row tree-artikel ${indCls}" ondragover="catDragOver(event)" ondragleave="catDragLeave(event)" ondrop="catDrop('artikel',${s(catId)},${s(key)},event)">`;
     if(isEditing){
       row += `<div class="inline-edit-wrap" style="flex:1">
         <span style="font-size:11px;color:var(--muted);margin-right:4px">▶</span>
@@ -207,7 +276,8 @@ function _renderCatTree(cat, weltName){
           return `<option value="${g.id}"${val.group===g.id?' selected':''}>${esc(g.name)}</option>` +
             subs.map(sg=>`<option value="${sg.id}"${val.group===sg.id?' selected':''}>\u00a0\u00a0▸ ${esc(sg.name)}</option>`).join('');
         }).join('');
-      row += `<button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>
+      row += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('artikel',${s(catId)},${s(key)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
+        <button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>
         <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(key)}</span>
         <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
         <select class="cat-welt-sel" title="Welt wechseln"
@@ -274,7 +344,7 @@ function _renderCatTree(cat, weltName){
     const isAddUG    = is?.mode==='add-ug'      && is.parentId===g.id;
     const isAddArt   = is?.mode==='add-artikel' && is.parentId===g.id;
 
-    html += `<div class="tree-row tree-gruppe">`;
+    html += `<div class="tree-row tree-gruppe" ondragover="catDragOver(event)" ondragleave="catDragLeave(event)" ondrop="catDrop('gruppe',${s(cat.id)},${s(g.id)},event)">`;
     if(isEditing){
       html += `<div class="inline-edit-wrap" style="flex:1">
         <span style="font-size:11px;color:var(--muted);margin-right:4px">▼</span>
@@ -285,7 +355,8 @@ function _renderCatTree(cat, weltName){
       </div>`;
     } else {
       const grpWeltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===weltName?' selected':''}>${w}</option>`).join('');
-      html += `<span class="tree-toggle">▼</span>
+      html += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('gruppe',${s(cat.id)},${s(g.id)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
+        <span class="tree-toggle">▼</span>
         <span class="tree-label">${esc(g.name)}</span>
         <select class="cat-welt-sel" title="Alle Artikel dieser Gruppe in andere Welt verschieben"
           onchange="catEditorSetGroupCat(${s(cat.id)},${s(g.id)},this.value)">${grpWeltOpts}</select>
@@ -309,7 +380,7 @@ function _renderCatTree(cat, weltName){
       const isEditSG = is?.mode==='edit-gruppe'  && is.id===sg.id;
       const isAddSGA = is?.mode==='add-artikel'  && is.parentId===sg.id;
 
-      html += `<div class="tree-row tree-untergruppe tree-indent-1">`;
+      html += `<div class="tree-row tree-untergruppe tree-indent-1" ondragover="catDragOver(event)" ondragleave="catDragLeave(event)" ondrop="catDrop('untergruppe',${s(cat.id)},${s(sg.id)},event)">`;
       if(isEditSG){
         html += `<div class="inline-edit-wrap" style="flex:1">
           <span style="font-size:11px;color:var(--muted);margin-right:4px">▽</span>
@@ -320,7 +391,8 @@ function _renderCatTree(cat, weltName){
         </div>`;
       } else {
         const ugWeltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===weltName?' selected':''}>${w}</option>`).join('');
-        html += `<span class="tree-toggle" style="opacity:.55">▽</span>
+        html += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('untergruppe',${s(cat.id)},${s(sg.id)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
+          <span class="tree-toggle" style="opacity:.55">▽</span>
           <span class="tree-label" style="font-weight:500;font-size:12px">${esc(sg.name)}</span>
           <select class="cat-welt-sel" title="Alle Artikel dieser Untergruppe in andere Welt verschieben"
             onchange="catEditorSetGroupCat(${s(cat.id)},${s(sg.id)},this.value)">${ugWeltOpts}</select>

@@ -93,6 +93,7 @@ function buildQtyRow(ci, si){
   const diffCls = d<0?'neg':d>0?'pos':'zero';
   const diffTxt = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0 ? (d>=0?'+'+d:d) : '—';
   tr.innerHTML=`
+    <td class="td-handle"><span class="drag-handle" title="Verschieben">⠿</span></td>
     <td class="tdname"><input type="text" value="${esc(item.name||sec.type_name||'')}"
       onchange="upf(${ci},${si},0,'name',this.value)" oninput="save()"></td>
     <td class="tdinput"><input type="number" min="0" value="${item.anzahl||0}"
@@ -105,8 +106,9 @@ function buildQtyRow(ci, si){
     <td class="tdtext"><input type="text" value="${esc(item.kapitel||'')}" placeholder="Kap…"
       onchange="upf(${ci},${si},0,'kapitel',this.value)" oninput="save()"></td>
     <td class="td-actions"><button class="delbtn" onclick="delRow(${ci},${si},0)" title="Zeile löschen">✕</button></td>`;
-  tr.draggable = true;
-  tr.addEventListener('dragstart',e=>{
+  const handle = tr.querySelector('.drag-handle');
+  handle.draggable = true;
+  handle.addEventListener('dragstart',e=>{
     dragSrcSec = {ci,si};
     dragType = 'qty-row';
     tr.classList.add('row-dragging');
@@ -210,7 +212,7 @@ function rerenderCatInto(ci,panel){
 
       // Tabellenkopf
       table.innerHTML = `<thead><tr>
-        <th>Bezeichnung</th><th class="num">Stk.</th><th class="num">Spare</th>
+        <th style="width:22px"></th><th>Bezeichnung</th><th class="num">Stk.</th><th class="num">Spare</th>
         <th class="num">Im&nbsp;Proj.</th><th class="num">Diff</th><th>Kapitel</th><th></th>
       </tr></thead>`;
       const tbody = document.createElement('tbody');

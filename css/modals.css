@@ -117,6 +117,9 @@ select.pinput{background:var(--bg3);border:1px solid var(--border);color:var(--t
 .cat-tree-topbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:8px;}
 .tree-row{display:flex;align-items:center;gap:6px;padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .1s;}
 .tree-row:hover{background:rgba(255,255,255,.04);}
+.tree-row-dragging{opacity:.35;}
+.tree-row.tree-drop-before{border-top:2px solid var(--accent) !important;}
+.tree-row.tree-drop-after{border-bottom:2px solid var(--accent) !important;}
 .tree-row.editing{background:rgba(232,200,74,.07);border-color:rgba(232,200,74,.2);}
 .tree-row.tree-gruppe{background:var(--bg3);border-bottom-color:var(--border);}
 .tree-row.tree-untergruppe{background:rgba(255,255,255,.02);}
