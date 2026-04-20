@@ -10,6 +10,7 @@ let _catTreeInlineState = null;  // {mode, catalogId, id?, parentId?, weltName?}
 function openCatalogMgr(tab){
   _catMgrTab = tab||1;
   if(!_catEditorId) _catEditorId = activeCatalogId||'cat-default';
+  wiz = {};
   document.getElementById('mTitle').textContent = 'Katalog-Verwaltung';
   document.getElementById('overlay').classList.add('open');
   _renderCatMgr();

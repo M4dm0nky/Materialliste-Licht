@@ -184,7 +184,7 @@ function wizBuildGrid(query){
     const entries = allEntries.filter(([_,v])=>v.cat===catName);
     if(!entries.length) return `<div style="color:var(--muted);font-size:13px;padding:24px;grid-column:1/-1;">
       Dieser Katalog enthält noch keine Einträge für „${esc(catName)}".
-      <br><button class="btn btn-sm" style="margin-top:12px" onclick="closeWiz();openCatalogMgr()">→ Katalog bearbeiten</button>
+      <br><button class="btn btn-sm" style="margin-top:12px" onclick="openCatalogMgr()">→ Katalog bearbeiten</button>
     </div>`;
     return buildHierarchy(entries, ci);
   }
