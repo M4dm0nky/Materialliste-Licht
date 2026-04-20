@@ -175,3 +175,55 @@
 .wiz-step2-nav .nav-lbl{font-size:11px;color:var(--muted);letter-spacing:1px;flex:1;}
 .wiz-step2-nav button{font-size:11px;padding:4px 10px;}
 .wiz-step2-progress{font-size:12px;color:var(--accent);font-family:'Share Tech Mono',monospace;}
+
+/* ── ARTIKEL-EDIT-MODAL ────────────────────────────────────────────── */
+.art-edit-overlay{display:flex;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1500;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.art-edit-modal{background:var(--bg2);border:1px solid var(--border);width:min(600px,96vw);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;animation:mIn .18s ease;}
+.art-edit-header{padding:14px 20px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.art-edit-title{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent);text-transform:uppercase;}
+.art-edit-close{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:20px;padding:0 4px;line-height:1;}
+.art-edit-close:hover{color:var(--red);}
+.art-edit-body{padding:18px 20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px;}
+.art-edit-section{display:flex;flex-direction:column;gap:8px;}
+.art-edit-section-label{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.art-edit-name-row{display:flex;gap:8px;align-items:center;}
+.art-edit-name-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;padding:7px 12px;outline:none;}
+.art-edit-name-input:focus{border-color:var(--accent);}
+.art-edit-type-toggle{display:flex;gap:0;}
+.art-type-btn{background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;padding:6px 16px;cursor:pointer;transition:all .15s;flex:1;text-align:center;}
+.art-type-btn:hover{color:var(--text);}
+.art-type-btn.active{background:rgba(232,200,74,.12);border-color:var(--accent);color:var(--accent);}
+.art-edit-len-list{display:flex;flex-direction:column;gap:3px;max-height:180px;overflow-y:auto;}
+.art-edit-len-item{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;background:var(--bg3);border:1px solid var(--border);}
+.art-edit-len-val{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text2);}
+.art-len-del{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0 3px;line-height:1;transition:color .1s;}
+.art-len-del:hover{color:var(--red);}
+.art-edit-len-add{display:flex;gap:8px;align-items:center;padding-top:4px;}
+.art-edit-len-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:13px;padding:6px 10px;outline:none;}
+.art-edit-len-input:focus{border-color:var(--green);}
+.art-edit-len-input::placeholder{color:var(--muted);}
+.art-edit-empty{font-size:11px;color:var(--muted);font-style:italic;padding:6px 0;}
+.art-edit-location{display:flex;align-items:center;gap:10px;}
+.art-edit-loc-path{flex:1;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text2);}
+/* ── STANDORT-PICKER (Baum) ──────────────────────────────────────── */
+.loc-picker{margin-top:8px;border:1px solid var(--border);background:var(--bg3);max-height:260px;overflow-y:auto;}
+.loc-welt{border-bottom:1px solid var(--border);}
+.loc-welt:last-child{border-bottom:none;}
+.loc-welt-header{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);padding:7px 12px;background:rgba(232,200,74,.06);border-bottom:1px solid rgba(232,200,74,.15);cursor:default;}
+.loc-item{display:flex;align-items:center;gap:6px;padding:6px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:background .1s;border-bottom:1px solid rgba(255,255,255,.03);}
+.loc-item:last-child{border-bottom:none;}
+.loc-item:hover{background:rgba(255,255,255,.06);color:var(--text);}
+.loc-item.loc-item-current{background:rgba(74,232,160,.08);color:var(--green);}
+.loc-item.loc-item-current:hover{background:rgba(74,232,160,.14);}
+.loc-group-item{padding-left:20px;font-weight:600;}
+.loc-subgroup-item{padding-left:34px;font-size:11px;}
+.loc-item-icon{color:var(--muted);font-size:10px;flex-shrink:0;}
+.loc-current-badge{margin-left:auto;font-size:10px;letter-spacing:1px;color:var(--green);background:rgba(74,232,160,.1);border:1px solid rgba(74,232,160,.25);padding:1px 5px;border-radius:2px;flex-shrink:0;}
+.loc-add-group-row{display:flex;align-items:center;gap:6px;padding:5px 12px;border-top:1px dashed rgba(255,255,255,.06);}
+.loc-add-group-input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-size:11px;padding:3px 7px;outline:none;font-family:'Barlow Condensed',sans-serif;}
+.loc-add-group-input:focus{border-color:var(--accent);}
+.loc-add-group-btn{background:transparent;border:1px solid rgba(232,200,74,.3);color:var(--accent);cursor:pointer;font-size:10px;padding:2px 8px;letter-spacing:1px;transition:all .15s;}
+.loc-add-group-btn:hover{background:rgba(232,200,74,.1);}
+/* Anklickbarer Artikel-Name im Tree */
+.tree-artikel-link{cursor:pointer;transition:color .1s;}
+.tree-artikel-link:hover{color:var(--accent);text-decoration:underline;}

@@ -166,7 +166,7 @@ function _renderCatTree(cat, weltName){
     } else {
       const weltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===(val.cat||CAT_ORDER[0])?' selected':''}>${w}</option>`).join('');
       row += `<span class="tree-toggle">▶</span>
-        <span class="tree-label">${esc(key)}</span>
+        <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(key)}</span>
         <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
         <select class="cat-welt-sel" title="Welt wechseln"
           onchange="catEditorSetCat(${s(catId)},${s(key)},this.value)">${weltOpts}</select>
@@ -714,4 +714,236 @@ function downloadJSON(data, filename){
   a.href     = URL.createObjectURL(blob);
   a.download = filename;
   a.click();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// ARTIKEL-EDIT-MODAL
+// ══════════════════════════════════════════════════════════════════════
+let _artEditState = null; // {catalogId, typeKey, locPickerOpen}
+
+function openArticleEdit(catalogId, typeKey){
+  _artEditState = {catalogId, typeKey, locPickerOpen: false};
+  let el = document.getElementById('artEditOverlay');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'artEditOverlay';
+    el.className = 'art-edit-overlay';
+    el.addEventListener('click', e=>{ if(e.target===el) _artEditClose(); });
+    document.body.appendChild(el);
+  }
+  _renderArticleEditModal();
+}
+
+function _artEditClose(){
+  const el = document.getElementById('artEditOverlay');
+  if(el) el.remove();
+  _artEditState = null;
+}
+
+function _renderArticleEditModal(){
+  const el = document.getElementById('artEditOverlay');
+  if(!el || !_artEditState) return;
+  const {catalogId, typeKey, locPickerOpen} = _artEditState;
+  const cat   = catalogsStore?.catalogs?.find(c=>c.id===catalogId);
+  if(!cat){ _artEditClose(); return; }
+  const type  = cat.types[typeKey];
+  if(!type){ _artEditClose(); return; }
+  const s       = v => JSON.stringify(v).replace(/"/g,'&quot;');
+  const isKabel = (type.unit_type||'qty') === 'lengths';
+
+  // Aktuellen Standort-Text ermitteln
+  const weltName = type.cat || CAT_ORDER[0];
+  let locPath = weltName;
+  if(type.group){
+    const grp = (cat.groups||[]).find(g=>g.id===type.group);
+    if(grp){
+      if(grp.parentId){
+        const parent = (cat.groups||[]).find(g=>g.id===grp.parentId);
+        locPath = weltName + (parent ? ' → '+esc(parent.name) : '') + ' → '+esc(grp.name);
+      } else {
+        locPath = weltName + ' → '+esc(grp.name);
+      }
+    }
+  }
+
+  // Längen-Bereich
+  let lenHtml = '';
+  if(isKabel){
+    const items = type.items||[];
+    lenHtml = `
+      <div class="art-edit-section">
+        <div class="art-edit-section-label">LÄNGEN</div>
+        <div class="art-edit-len-list">
+          ${!items.length ? '<div class="art-edit-empty">Noch keine Längen angelegt</div>' : ''}
+          ${items.map((it,idx)=>{
+            const lbl = it.l||it.n||'?';
+            return `<div class="art-edit-len-item">
+              <span class="art-edit-len-val">${esc(lbl)}</span>
+              <button class="art-len-del" onclick="_artEditDeleteLen(${s(catalogId)},${s(typeKey)},${idx})" title="Löschen">✕</button>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="art-edit-len-add">
+          <input class="art-edit-len-input" id="artEditLenInput" placeholder="z.B. 15m"
+            onkeydown="if(event.key==='Enter')_artEditAddLen(${s(catalogId)},${s(typeKey)})">
+          <button class="btn btn-sm btn-green" onclick="_artEditAddLen(${s(catalogId)},${s(typeKey)})">+ HINZUFÜGEN</button>
+        </div>
+      </div>`;
+  }
+
+  el.innerHTML = `
+    <div class="art-edit-modal">
+      <div class="art-edit-header">
+        <span class="art-edit-title">ARTIKEL BEARBEITEN</span>
+        <button class="art-edit-close" onclick="_artEditClose()">✕</button>
+      </div>
+      <div class="art-edit-body">
+        <div class="art-edit-section">
+          <div class="art-edit-section-label">BEZEICHNUNG</div>
+          <div class="art-edit-name-row">
+            <input class="art-edit-name-input" id="artEditNameInput" value="${esc(typeKey)}"
+              onkeydown="if(event.key==='Enter')_artEditSaveName(${s(catalogId)},${s(typeKey)});else if(event.key==='Escape')_artEditClose()">
+            <button class="btn btn-sm" onclick="_artEditSaveName(${s(catalogId)},${s(typeKey)})">UMBENENNEN</button>
+          </div>
+        </div>
+        <div class="art-edit-section">
+          <div class="art-edit-section-label">TYP</div>
+          <div class="art-edit-type-toggle">
+            <button class="art-type-btn${isKabel?' active':''}"
+              onclick="_artEditSetType(${s(catalogId)},${s(typeKey)},'lengths')">KABEL (LÄNGEN)</button>
+            <button class="art-type-btn${!isKabel?' active':''}"
+              onclick="_artEditSetType(${s(catalogId)},${s(typeKey)},'qty')">GERÄT (STÜCK)</button>
+          </div>
+        </div>
+        ${lenHtml}
+        <div class="art-edit-section">
+          <div class="art-edit-section-label">STANDORT</div>
+          <div class="art-edit-location">
+            <span class="art-edit-loc-path">${locPath}</span>
+            <button class="btn btn-sm" onclick="_artEditToggleLocPicker(${s(catalogId)},${s(typeKey)})">
+              ${locPickerOpen?'SCHLIESSEN ▲':'VERSCHIEBEN ▼'}
+            </button>
+          </div>
+          ${locPickerOpen ? _renderLocPicker(cat, typeKey) : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── STANDORT-PICKER ────────────────────────────────────────────────
+function _renderLocPicker(cat, typeKey){
+  const type       = cat.types[typeKey];
+  const s          = v => JSON.stringify(v).replace(/"/g,'&quot;');
+  const currentWelt= type.cat || CAT_ORDER[0];
+  const currentGrp = type.group || null;
+  const topGroups  = catGetTopGroups(cat);
+
+  let html = '<div class="loc-picker">';
+  CAT_ORDER.forEach(weltName=>{
+    html += `<div class="loc-welt">
+      <div class="loc-welt-header">${weltName}</div>`;
+
+    const noGrpActive = currentWelt===weltName && !currentGrp;
+    html += `<div class="loc-item${noGrpActive?' loc-item-current':''}"
+      onclick="_artEditSelectLocation(${s(cat.id)},${s(typeKey)},${s(weltName)},null)">
+      <span class="loc-item-icon">▸</span> Ohne Gruppe (Sonstiges)
+      ${noGrpActive?'<span class="loc-current-badge">aktuell</span>':''}
+    </div>`;
+
+    topGroups.forEach(grp=>{
+      const subGroups = catGetSubGroups(cat, grp.id);
+      const grpActive = currentWelt===weltName && currentGrp===grp.id;
+      html += `<div class="loc-item loc-group-item${grpActive?' loc-item-current':''}"
+        onclick="_artEditSelectLocation(${s(cat.id)},${s(typeKey)},${s(weltName)},${s(grp.id)})">
+        <span class="loc-item-icon">▸</span> <strong>${esc(grp.name)}</strong>
+        ${grpActive?'<span class="loc-current-badge">aktuell</span>':''}
+      </div>`;
+      subGroups.forEach(sg=>{
+        const sgActive = currentWelt===weltName && currentGrp===sg.id;
+        html += `<div class="loc-item loc-subgroup-item${sgActive?' loc-item-current':''}"
+          onclick="_artEditSelectLocation(${s(cat.id)},${s(typeKey)},${s(weltName)},${s(sg.id)})">
+          <span class="loc-item-icon">▸</span> ${esc(sg.name)}
+          ${sgActive?'<span class="loc-current-badge">aktuell</span>':''}
+        </div>`;
+      });
+    });
+
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function _artEditToggleLocPicker(catalogId, typeKey){
+  if(_artEditState) _artEditState.locPickerOpen = !_artEditState.locPickerOpen;
+  _renderArticleEditModal();
+}
+
+// ── SPEICHER-FUNKTIONEN ────────────────────────────────────────────
+function _artEditSaveName(catalogId, oldKey){
+  const val = document.getElementById('artEditNameInput')?.value.trim();
+  if(!val){ toast('Bitte einen Namen eingeben.',true); return; }
+  if(val === oldKey) return;
+  const cat = catalogsStore?.catalogs?.find(c=>c.id===catalogId); if(!cat) return;
+  if(cat.types[val]){ toast('Dieser Artikel-Name existiert bereits.',true); return; }
+  const newTypes = {};
+  Object.entries(cat.types).forEach(([k,v])=>{ newTypes[k===oldKey?val:k]=v; });
+  cat.types = newTypes;
+  saveCatalogsStore(); rerenderAllCats();
+  _artEditState.typeKey = val;
+  _renderCatMgrTab2();
+  _renderArticleEditModal();
+  toast('✓ Umbenannt');
+}
+
+function _artEditSetType(catalogId, typeKey, unitType){
+  const cat = catalogsStore?.catalogs?.find(c=>c.id===catalogId); if(!cat) return;
+  if(!cat.types[typeKey]) return;
+  cat.types[typeKey].unit_type = unitType;
+  saveCatalogsStore(); rerenderAllCats();
+  _renderCatMgrTab2();
+  _renderArticleEditModal();
+  toast('✓ Typ geändert');
+}
+
+function _artEditAddLen(catalogId, typeKey){
+  const val = document.getElementById('artEditLenInput')?.value.trim();
+  if(!val) return;
+  const cat = catalogsStore?.catalogs?.find(c=>c.id===catalogId); if(!cat) return;
+  const entry = cat.types[typeKey]; if(!entry) return;
+  const lVal = val.match(/^\d+([.,]\d+)?$/) ? val+'m' : val;
+  if((entry.items||[]).some(i=>i.l===lVal)){ toast('Diese Länge existiert bereits.',true); return; }
+  if(!entry.items) entry.items = [];
+  entry.items.push({n:typeKey, l:lVal});
+  entry.items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
+  saveCatalogsStore();
+  _renderCatMgrTab2();
+  _renderArticleEditModal();
+  toast('✓ Länge „'+lVal+'" hinzugefügt');
+}
+
+function _artEditDeleteLen(catalogId, typeKey, idx){
+  const cat = catalogsStore?.catalogs?.find(c=>c.id===catalogId); if(!cat) return;
+  const entry = cat.types[typeKey]; if(!entry||!entry.items?.[idx]) return;
+  const label = entry.items[idx].l||entry.items[idx].n||'?';
+  showConfirm(`Länge „${label}" löschen?`, ()=>{
+    entry.items.splice(idx,1);
+    saveCatalogsStore();
+    _renderCatMgrTab2();
+    _renderArticleEditModal();
+  }, 'Löschen', 'Ja, löschen');
+}
+
+function _artEditSelectLocation(catalogId, typeKey, weltName, groupId){
+  const cat = catalogsStore?.catalogs?.find(c=>c.id===catalogId); if(!cat) return;
+  if(!cat.types[typeKey]) return;
+  cat.types[typeKey].cat = weltName;
+  if(groupId) cat.types[typeKey].group = groupId;
+  else delete cat.types[typeKey].group;
+  saveCatalogsStore(); rerenderAllCats();
+  _artEditState.locPickerOpen = false;
+  _catEditorWelt = weltName;
+  _renderCatMgrTab2();
+  _renderArticleEditModal();
+  toast('✓ Verschoben nach „'+weltName+'"');
 }
