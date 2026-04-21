@@ -69,7 +69,6 @@ function importProjectJSON(input){
       if(needsCatSave) saveCatalogsStore();
       if(data.logos){ logos.planer=data.logos.planer||''; logos.band=data.logos.band||''; logos.booking=data.logos.booking||''; applyAllLogos(); saveLogosGlobal(); }
       document.getElementById('pName').value = state._project;
-      document.getElementById('pDate').value = state._date;
       const plans = getPlansIndex();
       plans.push({id,name:state._project,created:todayStr(),modified:todayStr(),catalogId:'cat-default'});
       savePlansIndex(plans); savePlanToLS(id);
