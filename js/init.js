@@ -28,6 +28,11 @@ initState();
     const startPlan = (lastId && plans.find(p=>p.id===lastId)) || plans[0];
     activePlanId    = startPlan.id;
     activeCatalogId = startPlan.catalogId || 'cat-default';
+    if(!catalogsStore?.catalogs?.find(c=>c.id===activeCatalogId)){
+      const backup = localStorage.getItem(ACTIVE_CAT_KEY);
+      activeCatalogId = (backup && catalogsStore?.catalogs?.find(c=>c.id===backup))
+        ? backup : 'cat-default';
+    }
     if(loadPlanFromLS(activePlanId)){
       renderPlanList();
     } else {

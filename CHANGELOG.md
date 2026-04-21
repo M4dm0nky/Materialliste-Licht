@@ -5,6 +5,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.10] — 2026-04-21
+
+### Behoben
+- `catalog.js` / `init.js`: Katalog-Zuweisung pro Plan wurde nach Reload nicht wiederhergestellt — Backup-Key `materialliste-active-catalog` sichert die aktive Katalog-ID zusätzlich zur Plan-Metadaten; Validierung beim Start prüft ob der Katalog noch existiert
+- `catalog-mgr.js`: Neuer Katalog wurde nicht automatisch dem aktiven Plan zugewiesen — nach dem Erstellen wird `setActivePlanCatalog` direkt aufgerufen, kein manueller „VERWENDEN"-Klick mehr nötig
+- `plans.js`: Kabel-Items im alten Format (`name="3m"`, `length=""`) wurden im Materialplaner falsch dargestellt (Länge in BEZEICHNUNG statt LÄNGE/TYP) — Migration in `migrateState()` normalisiert alle betroffenen Einträge beim nächsten Seitenload automatisch; fehlerhafte Gegenmigration (Commit 4df44e7) entfernt
+
+---
+
 ## [v0.4.9] — 2026-04-21
 
 ### Behoben

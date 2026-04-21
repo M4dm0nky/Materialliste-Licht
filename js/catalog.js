@@ -198,6 +198,7 @@ const CAT_ORDER = ["Datenwelt","Stromwelt","Lichtwelt","Riggingwelt","Verbrauchs
 const STORAGE_KEY  = 'materialliste-licht-v1';
 const CATALOG_KEY  = 'materialliste-licht-catalog-v1';
 const CATALOGS_KEY = 'materialliste-licht-catalogs-v1';
+const ACTIVE_CAT_KEY = 'materialliste-active-catalog';
 
 let catalogsStore = null;
 let activeCatalogId = null;
@@ -236,10 +237,12 @@ function renderActiveCatalogBadge(){
 }
 
 function setActivePlanCatalog(planId, catalogId){
+  if(!planId){ console.warn('setActivePlanCatalog: planId ist null'); }
   const plans = getPlansIndex();
   const plan  = plans.find(p=>p.id===planId);
   if(plan){ plan.catalogId=catalogId; savePlansIndex(plans); }
   activeCatalogId = catalogId||'cat-default';
+  try{ localStorage.setItem(ACTIVE_CAT_KEY, activeCatalogId); }catch(e){}
   renderActiveCatalogBadge();
 }
 

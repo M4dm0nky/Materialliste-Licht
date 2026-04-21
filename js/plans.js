@@ -18,14 +18,15 @@ function migrateState(s){
   // Rückwärtskompatibilität: ältere Saves nutzten 'project'/'date' statt '_project'/'_date'
   if(st._project===undefined) st._project = st.project||'';
   if(st._date===undefined)    st._date    = st.date||'';
-  // Migration: Bezeichnung/Länge-Tausch rückgängig machen (Fehler commit 4df44e7)
+  // Migration: Kabel-Items ohne Länge-Feld normalisieren (name→length, name=type_name)
   st.positions.forEach(pos=>{
     pos.categories.forEach(cat=>{
       cat.sections.forEach(sec=>{
+        if(sec.unit_type==='qty') return;
         sec.items.forEach(item=>{
-          if(item.name===sec.type_name){
-            item.name   = item.length||'';
-            item.length = '';
+          if(!item.length && item.name){
+            item.length = item.name;
+            item.name   = sec.type_name||'';
           }
         });
       });
@@ -61,7 +62,7 @@ function currentCats(){
 }
 
 function getPlansIndex(){ try{ const r=localStorage.getItem(PLANS_KEY); return r?JSON.parse(r):[]; }catch(e){return[];} }
-function savePlansIndex(list){ try{ localStorage.setItem(PLANS_KEY,JSON.stringify(list)); }catch(e){} }
+function savePlansIndex(list){ try{ localStorage.setItem(PLANS_KEY,JSON.stringify(list)); }catch(e){ console.error('savePlansIndex fehlgeschlagen:',e); } }
 function genPlanId(){ return 'p'+Date.now().toString(36); }
 function todayStr(){ return new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}); }
 

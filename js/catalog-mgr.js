@@ -854,8 +854,10 @@ function _catMgrSaveNew(){
   catalogsStore.catalogs.push({id,name,isBuiltin:false,
     created:new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}),
     groups,types});
-  saveCatalogsStore(); _catEditorId=id; _renderCatMgr();
-  toast('✓ Katalog „'+name+'" erstellt');
+  saveCatalogsStore();
+  setActivePlanCatalog(activePlanId, id);
+  _catEditorId=id; _renderCatMgr();
+  toast('✓ Katalog „'+name+'" erstellt und diesem Plan zugewiesen');
 }
 
 function catMgrImportJSON(input){
