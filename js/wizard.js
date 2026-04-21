@@ -195,7 +195,7 @@ function wizBuildGrid(query){
     k.toLowerCase().includes(q)||
     (v.cat||'').toLowerCase().includes(q)||
     (activeCat.groups||[]).some(g=>g.id===v.group&&g.name.toLowerCase().includes(q))||
-    (v.items||[]).some(it=>(it.l||it.n||'').toLowerCase().includes(q))
+    (v.items||[]).some(it=>(it.n||'').toLowerCase().includes(q)||(it.l||'').toLowerCase().includes(q)||(it.b||'').toLowerCase().includes(q))
   );
   if(!matches.length) return `<div style="color:var(--muted);font-size:13px;padding:20px;grid-column:1/-1;">Keine Treffer für „${esc(query)}".</div>`;
 
@@ -312,7 +312,7 @@ function _step2Qty(t){
       <div class="cablerow" id="cr-0">
         <span class="qlbl" style="flex:1;font-weight:600">${esc(wiz.key)}</span>
         <span class="qlbl">#&nbsp;Stk.:</span>
-        <input class="qin" type="number" id="qa-0" min="0" value="0" oninput="wizQ(0)">
+        <input class="qin" type="number" id="qa-0" min="0" value="1" oninput="wizQ(0)">
         <span class="qlbl">Spare:</span>
         <input class="qin" type="number" id="qs-0" min="0" value="0" oninput="wizQ(0)">
       </div>
@@ -322,6 +322,7 @@ function _step2Qty(t){
       <div id="wizSumItems" style="color:var(--muted);font-size:12px">Mengen eingeben…</div>
     </div>`;
   _wizFooter();
+  setTimeout(()=>wizQ(0),0);
 }
 
 function _step2Lengths(t){
@@ -370,7 +371,8 @@ function wizToggleLen(i){
   qs.disabled = !checked;
   qa.style.opacity = checked ? '1' : '0.4';
   qs.style.opacity = checked ? '1' : '0.4';
-  if(!checked){ qa.value='0'; qs.value='0'; }
+  if(checked){ if(!+qa.value) qa.value='1'; }
+  else { qa.value='0'; qs.value='0'; }
   wiz.selLengths[i] = checked;
   wizQ(i);
 }

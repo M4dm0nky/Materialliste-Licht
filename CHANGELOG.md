@@ -5,6 +5,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.4] — 2026-04-21
+
+### Geändert
+- `wizard.js`: Suche durchsucht jetzt Name, Länge und Bemerkung eines Artikels separat — kein Übersehen mehr wenn z.B. nur der Name "Bühnenlüfter" ohne Längeneintrag gesucht wird
+- `wizard.js`: Menge bei qty-Artikeln startet auf 1 (statt 0), Vorschau aktualisiert sich sofort
+- `wizard.js`: Beim Ankreuzen einer Länge springt die Menge automatisch auf 1
+
+---
+
 ## [v0.4.3] — 2026-04-21
 
 ### Geändert

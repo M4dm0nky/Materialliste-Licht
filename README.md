@@ -3,7 +3,7 @@
 **Touring Production · Material Management · Lichttechnik**
 
 > Web-App für die Verwaltung von Kabeln, Zubehör, Hardware und Lampen auf Tour.  
-> Version **v0.4.3** · [Live öffnen](https://m4dm0nky.github.io/Materialliste-Licht/index.html) · [Changelog](CHANGELOG.md)
+> Version **v0.4.4** · [Live öffnen](https://m4dm0nky.github.io/Materialliste-Licht/index.html) · [Changelog](CHANGELOG.md)
 
 ---
 
