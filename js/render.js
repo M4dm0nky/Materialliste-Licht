@@ -193,7 +193,9 @@ function rerenderCatInto(ci,panel){
     const topGroups = allGroups.filter(g=>!g.parentId);
     const qGrouped  = {};
     qtySecs.forEach(s=>{
-      const gid = s.t?.group||'__none';
+      let gid = s.t?.group||'__none';
+      const grpDef = allGroups.find(g=>g.id===gid);
+      if(grpDef?.parentId) gid = grpDef.parentId;
       (qGrouped[gid]=qGrouped[gid]||[]).push(s);
     });
 
