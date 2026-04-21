@@ -21,7 +21,6 @@ function save(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(()=>{
     state._project = document.getElementById('pName').value;
-    state._date    = document.getElementById('pDate').value;
     const el = document.getElementById('saveInd');
     try{
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -31,6 +30,13 @@ function save(){
       el.textContent='⚠ SPEICHERN FEHLGESCHLAGEN'; el.className='save-ind error';
       setTimeout(()=>{ el.textContent='●'; el.className='save-ind'; }, 5000);
       console.error('save() localStorage error:', e);
+    }
+    if(activePlanId){
+      const _plans = getPlansIndex();
+      const _ap = _plans.find(x=>x.id===activePlanId);
+      if(_ap){ _ap.name = state._project; savePlansIndex(_plans); }
+      savePlanToLS(activePlanId);
+      renderPlanList();
     }
     recalcAll();
   }, 350);

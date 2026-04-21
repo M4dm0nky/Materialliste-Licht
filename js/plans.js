@@ -91,7 +91,6 @@ function loadPlanFromLS(id){
     state       = migrateState(data);
     activePosIdx = Math.min(state._activePosIdx||0, state.positions.length-1);
     document.getElementById('pName').value = state._project;
-    document.getElementById('pDate').value = state._date;
     recalcAll(); rerenderAllCats();
     return true;
   }catch(e){ return false; }
@@ -147,7 +146,6 @@ function openNewPlan(){
       activePosIdx = 0;
       state = {_project:planName,_date:'',_activePosIdx:0,positions:[{name:posName,categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
       document.getElementById('pName').value = state._project;
-      document.getElementById('pDate').value = '';
       const plans = getPlansIndex();
       plans.push({id,name:planName,created:todayStr(),modified:todayStr(),catalogId:activeCatalogId||'cat-default'});
       savePlansIndex(plans);

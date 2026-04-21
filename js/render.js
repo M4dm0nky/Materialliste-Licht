@@ -100,6 +100,7 @@ function buildQtyRow(ci, si){
       onchange="upn(${ci},${si},0,'anzahl',this)" oninput="lc(${ci},${si},0)"></td>
     <td class="tdinput"><input type="number" min="0" value="${item.spare||0}"
       onchange="upn(${ci},${si},0,'spare',this)" oninput="lc(${ci},${si},0)"></td>
+    <td class="td-total" id="total-${ci}-${si}-0">${(item.anzahl||0)+(item.spare||0)>0?(item.anzahl||0)+(item.spare||0):'—'}</td>
     <td class="tdinput"><input type="number" min="0" value="${item.im_projekt||0}"
       onchange="upn(${ci},${si},0,'im_projekt',this)" oninput="lc(${ci},${si},0)"></td>
     <td class="td-diff ${diffCls}" id="diff-${ci}-${si}-0">${diffTxt}</td>
@@ -225,7 +226,7 @@ function rerenderCatInto(ci,panel){
       // Tabellenkopf
       table.innerHTML = `<thead><tr>
         <th style="width:22px"></th><th>Bezeichnung</th><th class="num">Stk.</th><th class="num">Spare</th>
-        <th class="num">Im&nbsp;Proj.</th><th class="num">Diff</th><th>Kapitel</th><th></th>
+        <th class="num">Gesamt</th><th class="num">Im&nbsp;Proj.</th><th class="num">Diff</th><th>Kapitel</th><th></th>
       </tr></thead>`;
       const tbody = document.createElement('tbody');
 
