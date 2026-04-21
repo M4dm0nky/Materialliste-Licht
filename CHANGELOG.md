@@ -5,6 +5,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.0] — 2026-04-21
+
+### Geändert
+- `state.js`: Projektname wird jetzt auch im Plan-spezifischen localStorage-Key gespeichert → bleibt nach Reload erhalten
+- `state.js`, `plans.js`, `index.html`: Datumsfeld neben Projektname entfernt
+- `plans.js`: Sidebar und Header-Anzeige aktualisieren sich sofort beim Tippen des Projektnamens
+- `render.js`: Neue „Gesamt"-Spalte (Stk. + Spare) in der qty-Tabelle
+
+---
+
 ## [v0.3.9] — 2026-04-21
 
 ### Geändert
