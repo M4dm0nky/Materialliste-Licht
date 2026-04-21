@@ -534,7 +534,8 @@ function upf(ci,si,ii,field,val){ currentCats()[ci].sections[si].items[ii][field
 function delRow(ci,si,ii){
   const item = currentCats()[ci].sections[si].items[ii];
   if(!item) return;
-  const label = item.name || item.length || 'diese Zeile';
+  const sec = currentCats()[ci].sections[si];
+  const label = item.name || item.length || sec.type_name || 'diese Zeile';
   showConfirm(`„${label}" wirklich löschen?`, ()=>{
     const sec = currentCats()[ci].sections[si];
     sec.items.splice(ii,1);

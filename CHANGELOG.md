@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.9] — 2026-04-21
+
+### Behoben
+- `render.js`: Löschen-Dialog zeigte bei qty-Artikeln ohne Namen „diese Zeile" — jetzt wird der Sektions-Typname als Fallback verwendet (z.B. „MAJOR DMX Booster…")
+
+---
+
 ## [v0.4.8] — 2026-04-21
 
 ### Behoben
