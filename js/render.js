@@ -9,7 +9,6 @@ let dragType = null;
 function render(){
   renderPosBar(); renderTabs(); renderContent();
   document.getElementById('pName').value = state._project||'';
-  document.getElementById('pDate').value = state._date||'';
   renderActiveCatalogBadge();
   recalcAll();
 }
