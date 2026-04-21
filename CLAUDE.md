@@ -34,6 +34,7 @@ Materialliste-Licht/
 │   ├── components.css         ← Buttons, Tabs, Tabellen, Inputs, Sektionen
 │   └── modals.css             ← Overlays, Wizard, Katalog-Manager, Logo/PDF-Modal
 ├── js/
+│   ├── utils.js               ← Hilfsfunktionen: parseLen(), showConfirm(), showPrompt()
 │   ├── catalog.js             ← CATALOG-Konstante + catalogsStore-Verwaltung
 │   ├── state.js               ← state-Objekt, save(), initState(), esc()
 │   ├── calc.js                ← xdiff(), xtotal(), lc(), recalcAll(), recalcBadge()
@@ -48,11 +49,12 @@ Materialliste-Licht/
 │   └── init.js                ← App-Start (initCatalogs, initState, initPlans)
 ├── materialliste-licht.html   ← ältere Version, nicht bearbeiten
 ├── LichtMaterialliste.html    ← noch ältere Version (v3), nicht bearbeiten
+├── CHANGELOG.md               ← Versionshistorie (alle Änderungen)
 └── README.md                  ← Benutzeranleitung & TODO-Liste
 ```
 
 **Ladereihenfolge der JS-Dateien ist kritisch** (globaler Scope, kein Modulsystem):
-`catalog` → `state` → `calc` → `render` → `wizard` → `catalog-mgr` → `logos` → `plans` → `positions` → `export` → `pdf` → `init`
+`utils` → `catalog` → `state` → `calc` → `render` → `wizard` → `catalog-mgr` → `logos` → `plans` → `positions` → `export` → `pdf` → `init`
 
 ## Version & Live-URL
 

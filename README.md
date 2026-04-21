@@ -3,7 +3,7 @@
 **Touring Production · Material Management · Lichttechnik**
 
 > Web-App für die Verwaltung von Kabeln, Zubehör, Hardware und Lampen auf Tour.  
-> Version **v0.1.6.1** · [Live öffnen](https://m4dm0nky.github.io/Materialliste-Licht/index.html)
+> Version **v0.3.9** · [Live öffnen](https://m4dm0nky.github.io/Materialliste-Licht/index.html) · [Changelog](CHANGELOG.md)
 
 ---
 
@@ -90,7 +90,7 @@ Materialliste-Licht/
 │   ├── components.css  ← Buttons, Tabs, Tabellen
 │   └── modals.css      ← Wizard, Katalog-Editor, Dialoge
 ├── js/
-│   ├── utils.js        ← Hilfsfunktionen, In-App-Dialoge
+│   ├── utils.js        ← Hilfsfunktionen, In-App-Dialoge (showConfirm, showPrompt)
 │   ├── catalog.js      ← Katalog-Konstante + Store
 │   ├── state.js        ← Globaler State, save()
 │   ├── calc.js         ← DIFF/TOTAL Berechnungen
@@ -128,6 +128,14 @@ Materialliste-Licht/
 - [ ] **Offline-Modus (PWA)** — App ohne Internet nutzbar
 - [ ] **Mobile Optimierung** — bessere Bedienbarkeit auf Tablet
 - [ ] **Backup-Verlauf** — mehrere automatische Sicherungspunkte
+
+### Bereits umgesetzt ✓
+- [x] Mehrfachauswahl im Wizard mit sequenzieller Mengeneingabe
+- [x] Live-Suchfeld mit Kategoriepfad-Anzeige
+- [x] „Zuletzt verwendet"-Liste (letzte 5 Artikel)
+- [x] In-App-Dialoge — keine nativen Browser-Popups mehr
+- [x] Vollbild-Katalog-Editor mit Inline-Editing
+- [x] Multi-Plan-System mit eigenen Positionen
 
 ---
 

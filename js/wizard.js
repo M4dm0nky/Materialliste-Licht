@@ -446,12 +446,13 @@ function wizDone(){
   const ci = wiz.ci; const cat = currentCats()[ci];
   const sortByLen = items=>{ items.sort((a,b)=>parseLen(a.length)-parseLen(b.length)); return items; };
   if(wiz.targetSi!==null){
-    cat.sections[wiz.targetSi].items.push(...selected);
-    sortByLen(cat.sections[wiz.targetSi].items);
+    if(isQty){ cat.sections[wiz.targetSi].items = selected; }
+    else { cat.sections[wiz.targetSi].items.push(...selected); sortByLen(cat.sections[wiz.targetSi].items); }
   } else {
     const ex = cat.sections.findIndex(s=>s.type_name===wiz.key);
-    if(ex>=0){ cat.sections[ex].items.push(...selected); sortByLen(cat.sections[ex].items); }
-    else cat.sections.push({type_name:wiz.key,items:sortByLen(selected)});
+    if(ex>=0 && isQty){ cat.sections[ex].items = selected; }
+    else if(ex>=0){ cat.sections[ex].items.push(...selected); sortByLen(cat.sections[ex].items); }
+    else cat.sections.push({type_name:wiz.key, unit_type: isQty?'qty':'lengths', items:sortByLen(selected)});
   }
   save(); rerenderCat(ci); recalcAll();
   _saveRecent(wiz.key);

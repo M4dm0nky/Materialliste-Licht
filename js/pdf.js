@@ -54,14 +54,18 @@ function generatePDF(){
         if(!secs.length) return;
         if(gname) bodies += `<tbody><tr class="grp-hdr"><td colspan="${cols}">${gname}</td></tr></tbody>`;
         secs.forEach(({sec, items}) => {
-          let rows = `<tr class="sec-hdr"><td colspan="${cols}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
-          items.forEach(item => {
+          const isQty = (pdfCatTypes[sec.type_name]?.unit_type === 'qty')
+                     || (sec.unit_type === 'qty')
+                     || (sec.items.length > 0 && sec.items.every(it => !it.length));
+          const renderItems = isQty ? items.slice(0,1) : items;
+          let rows = isQty ? '' : `<tr class="sec-hdr"><td colspan="${cols}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
+          renderItems.forEach(item => {
             const d = (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0);
             const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
             const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
             rows += `<tr${hasData?' class="filled"':''}>
-              <td class="ntd">${item.name||''}</td>
-              <td class="ltd">${item.length||''}</td>
+              <td class="ntd">${isQty ? (item.name||sec.type_name||'') : (item.name||'')}</td>
+              <td class="ltd">${isQty ? '' : (item.length||'')}</td>
               <td class="ntd2">${item.anzahl||0}</td>
               <td class="ntd2">${item.spare||0}</td>
               <td class="ntd2">${item.im_projekt||0}</td>
@@ -69,7 +73,7 @@ function generatePDF(){
               <td class="ktd">${item.kapitel||''}</td>
             </tr>`;
           });
-          bodies += `<tbody class="sec-group">${rows}</tbody>`;
+          if(rows) bodies += `<tbody class="sec-group">${rows}</tbody>`;
         });
       });
     });

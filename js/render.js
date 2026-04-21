@@ -155,9 +155,19 @@ function rerenderCatInto(ci,panel){
   const lengthsSecs = [], qtySecs = [];
   cat.sections.forEach((sec, si) => {
     const t = types[sec.type_name];
-    if(!t || t.unit_type !== 'qty') lengthsSecs.push({sec, si, t});
+    const isQty = (t?.unit_type === 'qty')
+               || (sec.unit_type === 'qty')
+               || (!t && !sec.unit_type && sec.items.length > 0 && sec.items.every(it => !it.length));
+    if(!isQty) lengthsSecs.push({sec, si, t});
     else qtySecs.push({sec, si, t});
   });
+
+  // Ghost-Items bereinigen: qty-Sektionen dürfen nur 1 Item haben
+  let _ghostFixed = false;
+  qtySecs.forEach(({sec}) => {
+    if(sec.items.length > 1){ sec.items.splice(1); _ghostFixed = true; }
+  });
+  if(_ghostFixed) save();
 
   if(lengthsSecs.length === 0 && qtySecs.length === 0){
     const es = document.createElement('div'); es.className='empty-state';
@@ -249,7 +259,9 @@ function rerenderCatInto(ci,panel){
 function _secHasLengths(ci,si){
   const sec = currentCats()[ci].sections[si];
   const t   = getActiveCatalogTypes()[sec.type_name];
-  return t ? t.unit_type !== 'qty' : true;
+  if(t) return t.unit_type !== 'qty';
+  if(sec.unit_type) return sec.unit_type !== 'qty';
+  return !(sec.items.length > 0 && sec.items.every(it => !it.length));
 }
 
 function buildSecEl(ci,si){
@@ -524,7 +536,10 @@ function delRow(ci,si,ii){
   const label = item.name || item.length || 'diese Zeile';
   showConfirm(`„${label}" wirklich löschen?`, ()=>{
     currentCats()[ci].sections[si].items.splice(ii,1);
-    save(); renderRows(ci,si); recalcAll();
+    save();
+    if(document.getElementById(`tbody-${ci}-${si}`)) renderRows(ci,si);
+    else rerenderCat(ci);
+    recalcAll();
   }, 'Löschen', 'Ja, löschen');
 }
 function delSec(ci,si){
