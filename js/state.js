@@ -26,6 +26,8 @@ function save(){
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       el.textContent='✓ GESPEICHERT'; el.className='save-ind saved';
       setTimeout(()=>{ el.textContent='●'; el.className='save-ind'; }, 2000);
+      const tsEl = document.getElementById('gStatus');
+      if(tsEl){ const t=new Date(); tsEl.textContent='Autosave '+t.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
     }catch(e){
       el.textContent='⚠ SPEICHERN FEHLGESCHLAGEN'; el.className='save-ind error';
       setTimeout(()=>{ el.textContent='●'; el.className='save-ind'; }, 5000);

@@ -38,9 +38,4 @@ function recalcBadge(ci){
   const neg = all.filter(i=>xdiff(i)<0&&((i.anzahl||0)+(i.spare||0)+(i.im_projekt||0)>0)).length;
   const b = document.getElementById(`badge-${ci}`);
   if(b){ b.textContent=neg>0?neg:'✓'; b.className='tbadge '+(neg>0?'warn':'ok'); }
-  const anyWarn = currentCats().some(cat=>
-    cat.sections.flatMap(s=>s.items).some(i=>xdiff(i)<0&&((i.anzahl||0)+(i.spare||0)+(i.im_projekt||0)>0))
-  );
-  document.getElementById('gDot').className   = 'sdot '+(anyWarn?'warn':'ok');
-  document.getElementById('gStatus').textContent = anyWarn?'! ZU BUCHEN':'ALLES OK';
 }

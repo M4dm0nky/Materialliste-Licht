@@ -5,6 +5,17 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.3] — 2026-04-21
+
+### Geändert
+- `catalog-mgr.js`: Katalog-Export öffnet jetzt "Speichern unter"-Dialog statt sofort herunterzuladen
+- `export.js`: Speichern-Button merkt sich das File-Handle — zweites Speichern überschreibt direkt ohne Dialog
+- `export.js`: Nach Import wird Handle zurückgesetzt (neues Projekt → erneute Standortwahl)
+- `state.js`, `index.html`: Status-Pill ("ALLES OK") ersetzt durch Autosave-Zeitstempel oben rechts
+- `calc.js`: Globale Statusanzeige entfernt (Tab-Badges zeigen Warnungen weiterhin)
+
+---
+
 ## [v0.4.2] — 2026-04-21
 
 ### Geändert

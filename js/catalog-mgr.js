@@ -899,10 +899,19 @@ function catEditorSwitch(catalogId){
   _catEditorId=catalogId; _catTreeInlineState=null; _renderCatMgrTab2();
 }
 
-function catEditorExport(catalogId){
+async function catEditorExport(catalogId){
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  const out = {name:cat.name,groups:cat.groups||[],types:cat.types};
-  downloadJSON(out,(cat.name||'katalog').replace(/[^a-zA-Z0-9äöüÄÖÜß]/g,'_').toLowerCase()+'.json');
+  const out      = {name:cat.name, groups:cat.groups||[], types:cat.types};
+  const json     = JSON.stringify(out, null, 2);
+  const safeName = (cat.name||'katalog').replace(/[^a-zA-Z0-9äöüÄÖÜß\-_ ]/g,'_').toLowerCase()+'.json';
+  if(window.showSaveFilePicker){
+    try{
+      const h = await window.showSaveFilePicker({suggestedName:safeName, types:[{description:'JSON',accept:{'application/json':['.json']}}]});
+      const w = await h.createWritable(); await w.write(json); await w.close();
+      toast('✓ Katalog gespeichert'); return;
+    }catch(e){ if(e.name==='AbortError') return; }
+  }
+  downloadJSON(out, safeName);
   toast('✓ Katalog exportiert');
 }
 

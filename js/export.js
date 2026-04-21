@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════
 // EXPORT / IMPORT — JSON & CSV
 // ══════════════════════════════════════════════════
+let _fileHandle = null;
 function exportCSV(){
   const posName = state.positions[activePosIdx].name;
   let csv = 'Projekt;'+(state._project||'')+';Datum;'+(state._date||'')+'\nPosition;'+posName+'\n\n';
@@ -25,10 +26,15 @@ async function saveProjectJSON(){
   const json     = JSON.stringify(data, null, 2);
   if(window.showSaveFilePicker){
     try{
-      const h = await window.showSaveFilePicker({suggestedName:safeName+'.json',types:[{description:'JSON',accept:{'application/json':['.json']}}]});
-      const w = await h.createWritable(); await w.write(json); await w.close();
-      toast('✓ Gespeichert als '+safeName+'.json'); return;
-    }catch(e){ if(e.name==='AbortError') return; }
+      if(!_fileHandle){
+        _fileHandle = await window.showSaveFilePicker({suggestedName:safeName+'.json', types:[{description:'JSON',accept:{'application/json':['.json']}}]});
+      }
+      const w = await _fileHandle.createWritable(); await w.write(json); await w.close();
+      toast('✓ Gespeichert'); return;
+    }catch(e){
+      if(e.name==='AbortError'){ _fileHandle=null; return; }
+      _fileHandle=null; // Handle ungültig → beim nächsten Mal neu fragen
+    }
   }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([json],{type:'application/json;charset=utf-8'}));
@@ -38,6 +44,7 @@ async function saveProjectJSON(){
 
 function importProjectJSON(input){
   const file = input.files[0]; if(!file) return;
+  _fileHandle = null;
   const r = new FileReader();
   r.onload = e=>{
     try{
