@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.2] — 2026-04-21
+
+### Geändert
+- `pdf.js`: Kein Seitenumbruch innerhalb einer Kategorie — Gruppe rutscht als Ganzes auf die nächste Seite (bei Gruppen die größer als eine Seite sind wird trotzdem umgebrochen)
+
+---
+
 ## [v0.4.1] — 2026-04-21
 
 ### Geändert

@@ -52,7 +52,8 @@ function generatePDF(){
       groupOrder.forEach(({id:gid, name:gname}) => {
         const secs = grouped[gid] || [];
         if(!secs.length) return;
-        if(gname) bodies += `<tbody><tr class="grp-hdr"><td colspan="${cols}">${gname}</td></tr></tbody>`;
+        let groupContent = '';
+        if(gname) groupContent += `<tr class="grp-hdr"><td colspan="${cols}">${gname}</td></tr>`;
         secs.forEach(({sec, items}) => {
           const isQty = (pdfCatTypes[sec.type_name]?.unit_type === 'qty')
                      || (sec.unit_type === 'qty')
@@ -74,8 +75,9 @@ function generatePDF(){
               <td class="ktd">${item.kapitel||''}</td>
             </tr>`;
           });
-          if(rows) bodies += `<tbody class="sec-group">${rows}</tbody>`;
+          groupContent += rows;
         });
+        if(groupContent) bodies += `<tbody class="cat-group">${groupContent}</tbody>`;
       });
     });
     return bodies;
@@ -110,7 +112,7 @@ thead th:nth-child(n+3){text-align:center;}
 .sec-hdr td{background:#1c2030;color:#e8c84a;font-family:'Bebas Neue',sans-serif;font-size:10pt;letter-spacing:2px;padding:5px 8px;border-top:1px solid #2a3050;border-bottom:1px solid #2a3050;}
 .pos-hdr td{background:#000;color:#000;font-family:'Bebas Neue',sans-serif;font-size:18pt;letter-spacing:5px;padding:14px 10px;text-align:center;border:3px solid #000;box-shadow:inset 0 0 0 4px #e8c84a;}
 .pos-hdr td span{background:#e8c84a;color:#000;padding:6px 28px;display:inline-block;}
-tbody.sec-group{page-break-inside:avoid;}
+tbody.cat-group{page-break-inside:avoid;}
 tbody tr{border-bottom:1px solid #e8e8e8;}
 tbody tr.filled{background:#f8fdf9;}
 .ntd{padding:4px 7px;font-size:8pt;}
@@ -122,7 +124,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.4.1</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.4.2</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
