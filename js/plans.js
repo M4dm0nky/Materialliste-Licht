@@ -15,6 +15,9 @@ function migrateState(s){
   const st = s.positions
     ? s
     : {_project:s._project||'',_date:s._date||'',_activePosIdx:0,positions:[{name:'Standard',categories:s.categories||CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
+  // Rückwärtskompatibilität: ältere Saves nutzten 'project'/'date' statt '_project'/'_date'
+  if(st._project===undefined) st._project = st.project||'';
+  if(st._date===undefined)    st._date    = st.date||'';
   // Migration: Bezeichnung/Länge-Tausch rückgängig machen (Fehler commit 4df44e7)
   st.positions.forEach(pos=>{
     pos.categories.forEach(cat=>{
@@ -80,7 +83,7 @@ function renderPlanList(){
 function savePlanToLS(id){
   if(!id) return;
   try{
-    const data = { version:2, project:state._project, date:state._date, _activePosIdx:activePosIdx, positions:state.positions };
+    const data = { version:2, _project:state._project, _date:state._date, _activePosIdx:activePosIdx, positions:state.positions };
     localStorage.setItem(PLAN_PFX+id, JSON.stringify(data));
     const plans=getPlansIndex(); const p=plans.find(x=>x.id===id);
     if(p){ p.modified=todayStr(); savePlansIndex(plans); }

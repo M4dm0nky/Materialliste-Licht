@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.5] — 2026-04-21
+
+### Behoben
+- `plans.js`: Projektname zeigte "undefined" beim Wechsel zwischen Plänen — `savePlanToLS` speicherte `project`/`date` statt `_project`/`_date`; Fallback für bereits gespeicherte Daten ergänzt
+
+---
+
 ## [v0.4.4] — 2026-04-21
 
 ### Geändert
