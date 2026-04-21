@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.8] — 2026-04-21
+
+### Behoben
+- `render.js`: qty-Artikel konnten nicht vollständig gelöscht werden — nach Löschung des Items blieb die Sektion mit Null-Zeile übrig, zweiter ✕-Klick crashte lautlos (TypeError). Fix: qty-Sektionen werden jetzt automatisch mitgelöscht wenn das letzte Item entfernt wird; Guard gegen undefined-Item ergänzt
+
+---
+
 ## [v0.4.7] — 2026-04-21
 
 ### Behoben

@@ -533,12 +533,16 @@ function upf(ci,si,ii,field,val){ currentCats()[ci].sections[si].items[ii][field
 // ── DELETE ─────────────────────────────────────────────────────────
 function delRow(ci,si,ii){
   const item = currentCats()[ci].sections[si].items[ii];
+  if(!item) return;
   const label = item.name || item.length || 'diese Zeile';
   showConfirm(`„${label}" wirklich löschen?`, ()=>{
-    currentCats()[ci].sections[si].items.splice(ii,1);
+    const sec = currentCats()[ci].sections[si];
+    sec.items.splice(ii,1);
+    if(sec.items.length === 0 && !_secHasLengths(ci,si)){
+      currentCats()[ci].sections.splice(si,1);
+    }
     save();
-    if(document.getElementById(`tbody-${ci}-${si}`)) renderRows(ci,si);
-    else rerenderCat(ci);
+    rerenderCat(ci);
     recalcAll();
   }, 'Löschen', 'Ja, löschen');
 }
