@@ -27,7 +27,7 @@ function generatePDF(){
 
   const pdfCatTypes = getActiveCatalogTypes();
   const pdfGroups   = getActiveCatalog().groups || [];
-  const cols        = showDiff ? 7 : 6;
+  const cols        = showDiff ? 8 : 7;
 
   function renderPosSections(pos){
     let bodies = '';
@@ -68,6 +68,7 @@ function generatePDF(){
               <td class="ltd">${isQty ? '' : (item.length||'')}</td>
               <td class="ntd2">${item.anzahl||0}</td>
               <td class="ntd2">${item.spare||0}</td>
+              <td class="ntd2">${(item.anzahl||0)+(item.spare||0)}</td>
               <td class="ntd2">${item.im_projekt||0}</td>
               ${showDiff?`<td class="ntd2" style="color:${diffColor};font-weight:700;">${hasData?(d>=0?'+'+d:d):'—'}</td>`:''}
               <td class="ktd">${item.kapitel||''}</td>
@@ -121,11 +122,11 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.3.6</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.4.1</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
-  <thead><tr><th>Bezeichnung</th><th>Länge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>
+  <thead><tr><th>Bezeichnung</th><th>Länge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Gesamt</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>
   ${tableBodies}
 </table>
 <div class="np"><strong>Cmd+P</strong> / <strong>Strg+P</strong> → "Als PDF speichern" → Querformat empfohlen</div>

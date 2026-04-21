@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.1] — 2026-04-21
+
+### Geändert
+- `pdf.js`: Neue „Gesamt"-Spalte (Stk. + Spare) in der Druckansicht zwischen Spare und Im Proj.
+
+---
+
 ## [v0.4.0] — 2026-04-21
 
 ### Geändert
