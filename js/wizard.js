@@ -485,7 +485,7 @@ function wizDone(){
   step2();
 }
 
-function wizFinish(){ closeWiz(); }
+function wizFinish(){ _doCloseWiz(); }
 
 // ── EIGENER EINTRAG ────────────────────────────────────────────────
 function openCustom(ci,si){

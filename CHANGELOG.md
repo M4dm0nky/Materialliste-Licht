@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.6] — 2026-04-21
+
+### Behoben
+- `wizard.js`: "✓ FERTIG" zeigte fälschlich "Änderungen verwerfen?"-Dialog — `wizFinish()` nutzt jetzt `_doCloseWiz()` direkt statt `closeWiz()`
+
+---
+
 ## [v0.4.5] — 2026-04-21
 
 ### Behoben
