@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.4.7] — 2026-04-21
+
+### Behoben
+- `plans.js`: Projektname blieb nach Plan-Wechsel leer — Fallback auf Plan-Index-Namen wenn `_project` im Datensatz fehlt
+- `state.js`: Plan-Index-Name wurde mit leerem String überschrieben wenn `pName`-Input leer war — Schutz ergänzt
+
+---
+
 ## [v0.4.6] — 2026-04-21
 
 ### Behoben

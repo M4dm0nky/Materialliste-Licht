@@ -96,8 +96,12 @@ function loadPlanFromLS(id){
     const raw  = localStorage.getItem(PLAN_PFX+id); if(!raw) return false;
     const data = JSON.parse(raw);
     state       = migrateState(data);
+    if(!state._project){
+      const _plans = getPlansIndex(); const _p = _plans.find(p=>p.id===id);
+      if(_p && _p.name) state._project = _p.name;
+    }
     activePosIdx = Math.min(state._activePosIdx||0, state.positions.length-1);
-    document.getElementById('pName').value = state._project;
+    document.getElementById('pName').value = state._project||'';
     recalcAll(); rerenderAllCats();
     return true;
   }catch(e){ return false; }

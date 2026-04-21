@@ -36,7 +36,7 @@ function save(){
     if(activePlanId){
       const _plans = getPlansIndex();
       const _ap = _plans.find(x=>x.id===activePlanId);
-      if(_ap){ _ap.name = state._project; savePlansIndex(_plans); }
+      if(_ap && state._project){ _ap.name = state._project; savePlansIndex(_plans); }
       savePlanToLS(activePlanId);
       renderPlanList();
     }
