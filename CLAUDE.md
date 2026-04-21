@@ -138,6 +138,14 @@ Kein Test-Framework vorhanden. Tests erfolgen manuell im Browser:
 - PDF-Export über Ctrl+P / Cmd+P testen
 - Import/Export-Roundtrip mit JSON-Dateien prüfen
 
+## LLM Council Skill
+
+Wenn der User "Consult the council:", "Frag andere KIs", "Was denken ChatGPT und Gemini darüber" oder ähnliches sagt — nutze den `llm-council` Skill via Skill-Tool.
+
+Der Skill befragt ChatGPT und Gemini, analysiert deren Antworten und synthetisiert einen Plan mit Quellenangaben.
+
+Voraussetzung: `.env`-Datei im Projektverzeichnis mit API-Keys (siehe `~/.claude/skills/llm-council/.env.template`).
+
 ## Tipps
 
 - **`#` in Claude Code** — während einer Session drücken um Learnings direkt in diese CLAUDE.md zu schreiben
