@@ -763,6 +763,7 @@ function catEditorOpenTypeDetail(catalogId, typeKey){
 // ── KATALOG CRUD ────────────────────────────────────────────────────
 function catMgrAssign(catalogId){
   setActivePlanCatalog(activePlanId, catalogId);
+  _catEditorId = catalogId;
   _renderCatMgrTab1();
   toast('✓ Katalog „'+getActiveCatalog().name+'" diesem Plan zugewiesen');
 }

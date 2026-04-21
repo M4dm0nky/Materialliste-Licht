@@ -24,8 +24,10 @@ initState();
   if(migrated) savePlansIndex(plans);
 
   if(plans.length > 0){
-    activePlanId    = plans[0].id;
-    activeCatalogId = plans[0].catalogId || 'cat-default';
+    const lastId    = loadLastActivePlan();
+    const startPlan = (lastId && plans.find(p=>p.id===lastId)) || plans[0];
+    activePlanId    = startPlan.id;
+    activeCatalogId = startPlan.catalogId || 'cat-default';
     if(loadPlanFromLS(activePlanId)){
       renderPlanList();
     } else {

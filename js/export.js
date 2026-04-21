@@ -45,6 +45,7 @@ function importProjectJSON(input){
       if(!data.categories && !data.positions) throw new Error('Kein gültiges Materialliste-Format');
       savePlanToLS(activePlanId);
       const id = genPlanId(); activePlanId=id;
+      saveLastActivePlan(id);
       activeCatalogId = 'cat-default';
       state = migrateState({...data, _project:data.project||file.name.replace(/\.json$/i,''), _date:data.date||''});
       activePosIdx=0; state._activePosIdx=0;

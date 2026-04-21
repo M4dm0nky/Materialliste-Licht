@@ -1,10 +1,14 @@
 // ══════════════════════════════════════════════════
 // MULTI-PLAN SYSTEM — Pläne verwalten
 // ══════════════════════════════════════════════════
-const PLANS_KEY = 'materialliste-plans';
-const PLAN_PFX  = 'materialliste-plan-';
+const PLANS_KEY    = 'materialliste-plans';
+const PLAN_PFX     = 'materialliste-plan-';
+const LAST_PLAN_KEY = 'materialliste-last-plan';
 let activePlanId = null;
 let activePosIdx = 0;
+
+function saveLastActivePlan(id){ try{ localStorage.setItem(LAST_PLAN_KEY, id); }catch(e){} }
+function loadLastActivePlan(){ try{ return localStorage.getItem(LAST_PLAN_KEY)||null; }catch(e){return null;} }
 
 function migrateState(s){
   if(!s) return {_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
@@ -106,6 +110,7 @@ function switchPlan(id){
   if(id===activePlanId) return;
   savePlanToLS(activePlanId);
   activePlanId = id;
+  saveLastActivePlan(id);
   loadPlanFromLS(id);
   const plans = getPlansIndex();
   const plan  = plans.find(p=>p.id===id);
@@ -143,6 +148,7 @@ function openNewPlan(){
       savePlanToLS(activePlanId);
       const id = genPlanId();
       activePlanId = id;
+      saveLastActivePlan(id);
       activePosIdx = 0;
       state = {_project:planName,_date:'',_activePosIdx:0,positions:[{name:posName,categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
       document.getElementById('pName').value = state._project;
