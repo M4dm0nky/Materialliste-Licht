@@ -125,14 +125,17 @@
   <div class="modal" style="max-width:480px;">
     <div class="mhdr"><h2>🖨 PDF Export</h2><button class="mclose" onclick="closeModal('pdfModal')">✕</button></div>
     <div class="mbody">
-      <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Strg+P / Cmd+P → Als PDF speichern · Querformat empfohlen</p>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Strg+P / Cmd+P → Als PDF speichern</p>
       <div style="font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Positionen</div>
       <div id="pdfPosCbs" style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"></div>
       <div style="font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Kategorien</div>
       <div id="pdfCatCbs" style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"></div>
       <div style="font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Optionen</div>
       <label class="pdf-cb-row"><input type="checkbox" id="pdfOnlyFilled" checked> Nur Zeilen mit Einträgen anzeigen</label>
-      <label class="pdf-cb-row"><input type="checkbox" id="pdfShowDiff"> Differenz-Spalte einblenden</label>
+      <label class="pdf-cb-row"><input type="checkbox" id="pdfShowDiff" checked> Differenz-Spalte einblenden</label>
+      <div style="margin-top:12px;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Ausrichtung</div>
+      <label class="pdf-cb-row"><input type="radio" name="pdfOrient" value="landscape" checked> Querformat (empfohlen)</label>
+      <label class="pdf-cb-row"><input type="radio" name="pdfOrient" value="portrait"> Hochkant</label>
     </div>
     <div class="mfooter">
       <button class="btn" onclick="closeModal('pdfModal')">Abbrechen</button>

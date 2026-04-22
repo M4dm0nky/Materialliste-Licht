@@ -16,6 +16,7 @@ function generatePDF(){
   const selCats   = [...document.querySelectorAll('.pdfcatcb')].filter(c=>c.checked).map(c=>+c.dataset.ci);
   const onlyFilled = document.getElementById('pdfOnlyFilled').checked;
   const showDiff   = document.getElementById('pdfShowDiff').checked;
+  const orient     = document.querySelector('input[name="pdfOrient"]:checked')?.value || 'landscape';
   closeModal('pdfModal');
   if(!selPos.length){ toast('Bitte mindestens eine Position wählen.',true); return; }
 
@@ -120,7 +121,7 @@ tbody tr.filled{background:#f8fdf9;}
 .ltd{padding:4px 7px;font-size:7.5pt;font-family:'IBM Plex Mono',monospace;color:#555;white-space:nowrap;}
 .ktd{padding:4px 7px;font-size:7.5pt;color:#888;}
 .np{margin-top:14px;padding:8px;background:#fffbe6;border:1px solid #e8c84a;font-size:8pt;color:#333;border-radius:3px;}
-@media print{body{padding:5px;}.np{display:none!important;}@page{size:A4 landscape;margin:8mm;}}
+@media print{body{padding:5px;}.np{display:none!important;}@page{size:A4 ${orient};margin:8mm;}}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
@@ -131,7 +132,7 @@ tbody tr.filled{background:#f8fdf9;}
   <thead><tr><th>Bezeichnung</th><th>Länge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Gesamt</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>
   ${tableBodies}
 </table>
-<div class="np"><strong>Cmd+P</strong> / <strong>Strg+P</strong> → "Als PDF speichern" → Querformat empfohlen</div>
+<div class="np"><strong>Cmd+P</strong> / <strong>Strg+P</strong> → "Als PDF speichern"</div>
 <script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script>
 </body></html>`;
 
