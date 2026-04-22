@@ -5,6 +5,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5] — 2026-04-22
+
+### Neu
+- PDF-Export: Seitenausrichtung wählbar (Querformat / Hochkant) direkt im Export-Modal
+- PDF-Export: Differenz-Spalte (DIFF) standardmäßig eingeblendet — negative Werte rot, positive grün
+- PDF-Export: DIFF-Berechnung geändert auf `Im Projekt − (Anzahl + Spare)`
+
+---
+
 ## [v0.4.10] — 2026-04-21
 
 ### Behoben
