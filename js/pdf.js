@@ -62,7 +62,7 @@ function generatePDF(){
           const renderItems = isQty ? items.slice(0,1) : items;
           let rows = isQty ? '' : `<tr class="sec-hdr"><td colspan="${cols}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
           renderItems.forEach(item => {
-            const d = (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0);
+            const d = (item.im_projekt||0)-(item.anzahl||0)-(item.spare||0);
             const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
             const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
             rows += `<tr${hasData?' class="filled"':''}>
