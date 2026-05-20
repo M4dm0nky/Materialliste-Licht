@@ -184,6 +184,8 @@ const CATALOG = {
     {n:"USV 1000W",l:"",b:"Schuko"},{n:"USV 1500W",l:"",b:"Schuko"}
   ]},
   "DMX Steuerung & Netzwerk":{cat:"Datenwelt",items:[
+    {n:"GrandMA3 Full",l:""},{n:"GrandMA3 Light",l:""},{n:"GrandMA3 Compact",l:""},
+    {n:"GrandMA3 ONPC Set",l:""},{n:"GrandMA3 8-Port Node",l:""},{n:"GrandMA3 4-Port Node",l:""},
     {n:"GrandMA2 Full",l:""},{n:"GrandMA2 Light",l:""},{n:"GrandMA2 ONPC Set",l:""},
     {n:"GrandMA2 NPU",l:"",b:"mit USV und SG300"},
     {n:"GrandMA2 4-Port Node",l:""},{n:"GrandMA2 8-Port Node",l:""},
@@ -196,25 +198,24 @@ const CATALOG = {
     {n:"Robe Pointe",l:""},{n:"Robe Forte",l:""},{n:"Robe Spiider",l:""},
     {n:"Robe MegaPointe",l:""},{n:"Clay Paky Sharpy Plus",l:""},
     {n:"Clay Paky Mythos 2",l:""},{n:"MA Lighting MAC Encore Performance",l:""},
-    {n:"Martin Mac Aura XB",l:""},{n:"Chauvet Maverick Storm 2 Spot",l:""},
+    {n:"Chauvet Maverick Storm 2 Spot",l:""},{n:"Martin MAC Viper Performance",l:""},
     {n:"Generic Moving Head Spot",l:""}
   ]},
   "Moving Light Wash":{cat:"Lichtwelt",items:[
     {n:"Robe T11 Profile",l:""},{n:"Robe T11 Wash",l:""},
     {n:"Robe Robin 600 LEDWash",l:""},{n:"Clay Paky Sharpy Wash 330",l:""},
-    {n:"Martin MAC Quantum Wash",l:""},{n:"Chauvet COLORado Solo Batten",l:""},
-    {n:"Generic Moving Head Wash",l:""}
+    {n:"Clay Paky B-EYE K20",l:""},{n:"Martin MAC Quantum Wash",l:""},
+    {n:"Martin Mac Aura XB",l:""},{n:"Generic Moving Head Wash",l:""}
   ]},
   "Moving Light Beam":{cat:"Lichtwelt",items:[
     {n:"Robe BMFL Blade",l:""},{n:"Robe BMFL FollowSpot",l:""},
-    {n:"Clay Paky B-EYE K20",l:""},{n:"Martin MAC Quantum Profile",l:""},
-    {n:"Ayrton MagicBlade FX",l:""},
-    {n:"Generic Moving Head Beam",l:""}
+    {n:"Martin MAC Quantum Profile",l:""},{n:"Ayrton MagicBlade FX",l:""},
+    {n:"Ayrton Perseo Beam",l:""},{n:"Generic Moving Head Beam",l:""}
   ]},
   "LED Wash & Batten":{cat:"Lichtwelt",items:[
     {n:"Astera Titan Tube",l:""},{n:"Astera Helios Tube",l:""},
     {n:"Astera AX5 Fresnel",l:""},{n:"Astera AX1 Pixel Tube",l:""},
-    {n:"Chauvet COLORdash Batten Quad 6",l:""},
+    {n:"Chauvet COLORdash Batten Quad 6",l:""},{n:"Chauvet COLORado Solo Batten",l:""},
     {n:"ADJ Hydro Wash X9",l:""},{n:"Generic LED PAR",l:""},
     {n:"Generic LED Batten",l:""}
   ]},

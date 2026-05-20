@@ -15,8 +15,8 @@ function generatePDF(){
   const selPos    = [...document.querySelectorAll('.pdfposcb')].filter(c=>c.checked).map(c=>+c.dataset.pi);
   const selCats   = [...document.querySelectorAll('.pdfcatcb')].filter(c=>c.checked).map(c=>+c.dataset.ci);
   const onlyFilled  = document.getElementById('pdfOnlyFilled').checked;
-  const showDiff    = document.getElementById('pdfShowDiff').checked;
   const onlyMissing = document.getElementById('pdfOnlyMissing').checked;
+  const showDiff    = document.getElementById('pdfShowDiff').checked || onlyMissing;
   const orient      = document.querySelector('input[name="pdfOrient"]:checked')?.value || 'landscape';
   closeModal('pdfModal');
   if(!selPos.length){ toast('Bitte mindestens eine Position wählen.',true); return; }
@@ -30,6 +30,7 @@ function generatePDF(){
   const pdfCatTypes = getActiveCatalogTypes();
   const pdfGroups   = getActiveCatalog().groups || [];
   const cols        = showDiff ? 8 : 7;
+  let itemCount     = 0;
 
   function renderPosSections(pos){
     let bodies = '';
@@ -64,6 +65,7 @@ function generatePDF(){
           const renderItems = isQty ? items.slice(0,1) : items;
           let rows = isQty ? '' : `<tr class="sec-hdr"><td colspan="${cols}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
           renderItems.forEach(item => {
+            itemCount++;
             const d = (item.im_projekt||0)-(item.anzahl||0)-(item.spare||0);
             const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
             const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
@@ -94,6 +96,8 @@ function generatePDF(){
     tableBodies += `<tbody ${pageBreak}><tr class="pos-hdr"><td colspan="${cols}"><span>${esc(pos.name)}</span></td></tr></tbody>`;
     tableBodies += renderPosSections(pos);
   });
+
+  if(onlyMissing && itemCount === 0){ toast('Keine fehlenden Positionen gefunden.', true); return; }
 
   const diffHeader = showDiff ? '<th>DIFF</th>' : '';
   const html = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>${projectName}</title>
@@ -127,7 +131,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5.1</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5.2</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>

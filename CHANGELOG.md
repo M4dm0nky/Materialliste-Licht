@@ -5,6 +5,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.2] — 2026-05-20
+
+### Verbessert
+- PDF-Export: `Nur fehlende Positionen` aktiviert jetzt automatisch die DIFF-Spalte
+- PDF-Export: Toast-Meldung wenn keine fehlenden Positionen gefunden wurden (statt leerem PDF)
+- Katalog: 3 Fixtures in korrekte Lichtwelt-Gruppen verschoben (Martin Mac Aura XB → Wash, Clay Paky B-EYE K20 → Wash, Chauvet COLORado Solo Batten → LED Wash & Batten)
+- Katalog: GrandMA3 Full/Light/Compact/Nodes ergänzt (Datenwelt)
+- Katalog: Martin MAC Viper Performance ergänzt (Moving Light Spot)
+- Katalog: Ayrton Perseo Beam ergänzt (Moving Light Beam)
+
+---
+
 ## [v0.5.1] — 2026-05-20
 
 ### Neu
