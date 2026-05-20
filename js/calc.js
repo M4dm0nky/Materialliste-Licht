@@ -1,7 +1,7 @@
 // ══════════════════════════════════════════════════
 // BERECHNUNG — DIFF, TOTAL, Badges
 // ══════════════════════════════════════════════════
-function xdiff(item){ return (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0); }
+function xdiff(item){ return (item.im_projekt||0)-(item.anzahl||0)-(item.spare||0); }
 function xtotal(item){ return (item.anzahl||0)+(item.spare||0); }
 
 function lc(ci,si,ii){

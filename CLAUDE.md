@@ -7,7 +7,7 @@
 Kernfunktionen:
 - Kabel, Zubehör, Hardware und Lampen erfassen und verwalten
 - Mengen, Reserven und „Im Projekt"-Anzahl pro Position tracken
-- DIFF-Berechnung: (Menge + Reserve) − Im Projekt → Grün/Rot
+- DIFF-Berechnung: Im Projekt − (Menge + Reserve) → Grün wenn ≥ 0 (genug geliefert), Rot wenn < 0 (Fehlmenge)
 - Mehrere Projekte mit eigenem Sidebar-Menü
 - JSON-Import/Export, CSV-Export, PDF-Druck
 - Logo-Slots (Planer, Band, Agentur) je Projekt
@@ -58,7 +58,7 @@ Materialliste-Licht/
 
 ## Version & Live-URL
 
-- Aktuelle Version: **v0.5.3**
+- Aktuelle Version: **v0.5.4**
 - Live: https://m4dm0nky.github.io/Materialliste-Licht/
 
 ## Entwicklungs-Workflow

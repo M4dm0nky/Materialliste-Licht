@@ -85,7 +85,7 @@ function buildGroupHeader(groupName, ci, groupId){
 function buildQtyRow(ci, si){
   const sec  = currentCats()[ci].sections[si];
   const item = sec.items[0] || {};
-  const d    = (item.anzahl||0)+(item.spare||0)-(item.im_projekt||0);
+  const d    = (item.im_projekt||0)-(item.anzahl||0)-(item.spare||0);
   const tr   = document.createElement('tr');
   tr.id = `qrow-${ci}-${si}`;
   if((item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0) tr.className='has-data';

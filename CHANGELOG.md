@@ -5,6 +5,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.4] — 2026-05-20
+
+### Behoben (kritisch — Kernlogik)
+- DIFF-Formel korrigiert: `Im Projekt − (Anzahl + Spare)` ist die richtige Berechnung
+  - Negativ (rot) = du hast weniger geliefert bekommen als du brauchst → Fehlmenge
+  - Positiv (grün) = du hast mehr als genug → Überschuss
+- `xdiff()` in calc.js und inline-Berechnung in render.js angepasst
+- CLAUDE.md-Spec entsprechend aktualisiert
+- v0.5.3 hatte die Formel in die falsche Richtung "korrigiert" — dieser Fix revidiert das
+
+---
+
 ## [v0.5.3] — 2026-05-20
 
 ### Behoben (kritisch)
