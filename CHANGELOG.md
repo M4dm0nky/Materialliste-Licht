@@ -5,6 +5,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.3] — 2026-05-20
+
+### Behoben (kritisch)
+- PDF-Export: DIFF-Formel war seit v0.5 invertiert (`Im Projekt − Anzahl − Spare` statt `Anzahl + Spare − Im Projekt`) — Farben im PDF waren dadurch vertauscht (grüne Positionen rot angezeigt und umgekehrt)
+- PDF-Export: Filter „Nur fehlende Positionen" zeigte durch die invertierte Formel die falschen Items — jetzt korrekt via `xdiff()` aus calc.js
+- Beide Fixes bringen PDF-Logik in Übereinstimmung mit Haupt-App und CLAUDE.md-Spec
+
+---
+
 ## [v0.5.2] — 2026-05-20
 
 ### Verbessert

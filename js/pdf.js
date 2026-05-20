@@ -46,7 +46,7 @@ function generatePDF(){
         let items = onlyFilled
           ? sec.items.filter(i => (i.anzahl||0)+(i.spare||0)+(i.im_projekt||0) > 0)
           : sec.items;
-        if(onlyMissing) items = items.filter(i => (i.im_projekt||0)-(i.anzahl||0)-(i.spare||0) < 0);
+        if(onlyMissing) items = items.filter(i => xdiff(i) < 0);
         if(!items.length) return;
         const gid = pdfCatTypes[sec.type_name]?.group || '__none';
         (grouped[gid] || grouped['__none']).push({sec, items});
@@ -66,7 +66,7 @@ function generatePDF(){
           let rows = isQty ? '' : `<tr class="sec-hdr"><td colspan="${cols}">${sec.type_name} <span style="color:#888;font-weight:400;font-size:7pt;">(${cat.name})</span></td></tr>`;
           renderItems.forEach(item => {
             itemCount++;
-            const d = (item.im_projekt||0)-(item.anzahl||0)-(item.spare||0);
+            const d = xdiff(item);
             const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
             const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
             rows += `<tr${hasData?' class="filled"':''}>
@@ -131,7 +131,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5.2</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5.3</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
