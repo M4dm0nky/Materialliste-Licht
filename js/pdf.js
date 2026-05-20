@@ -14,9 +14,10 @@ function openPDFExport(){
 function generatePDF(){
   const selPos    = [...document.querySelectorAll('.pdfposcb')].filter(c=>c.checked).map(c=>+c.dataset.pi);
   const selCats   = [...document.querySelectorAll('.pdfcatcb')].filter(c=>c.checked).map(c=>+c.dataset.ci);
-  const onlyFilled = document.getElementById('pdfOnlyFilled').checked;
-  const showDiff   = document.getElementById('pdfShowDiff').checked;
-  const orient     = document.querySelector('input[name="pdfOrient"]:checked')?.value || 'landscape';
+  const onlyFilled  = document.getElementById('pdfOnlyFilled').checked;
+  const showDiff    = document.getElementById('pdfShowDiff').checked;
+  const onlyMissing = document.getElementById('pdfOnlyMissing').checked;
+  const orient      = document.querySelector('input[name="pdfOrient"]:checked')?.value || 'landscape';
   closeModal('pdfModal');
   if(!selPos.length){ toast('Bitte mindestens eine Position wählen.',true); return; }
 
@@ -41,9 +42,10 @@ function generatePDF(){
       grouped['__none'] = [];
 
       cat.sections.forEach(sec => {
-        const items = onlyFilled
+        let items = onlyFilled
           ? sec.items.filter(i => (i.anzahl||0)+(i.spare||0)+(i.im_projekt||0) > 0)
           : sec.items;
+        if(onlyMissing) items = items.filter(i => (i.im_projekt||0)-(i.anzahl||0)-(i.spare||0) < 0);
         if(!items.length) return;
         const gid = pdfCatTypes[sec.type_name]?.group || '__none';
         (grouped[gid] || grouped['__none']).push({sec, items});
@@ -125,7 +127,7 @@ tbody tr.filled{background:#f8fdf9;}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${projectName}</div><div class="ps">Material Planer · Touring Production · ◆ v0.5.1</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>

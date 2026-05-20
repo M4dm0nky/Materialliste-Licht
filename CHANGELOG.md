@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.1] — 2026-05-20
+
+### Neu
+- PDF-Export: Checkbox „Nur fehlende Positionen (DIFF < 0)" — PDF enthält ausschließlich Positionen wo Im Projekt < Anzahl + Spare
+- Katalog Lichtwelt: 6 neue Standardgruppen — Moving Light Spot, Moving Light Wash, Moving Light Beam, LED Wash & Batten, Konventionell, Spezialeffekte (56 Fixtures)
+
+---
+
 ## [v0.5] — 2026-04-22
 
 ### Neu

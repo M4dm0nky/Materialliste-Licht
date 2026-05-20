@@ -191,6 +191,47 @@ const CATALOG = {
     {n:"DMX Switch Single Swisson",l:""},{n:"2x DMX Switch Swisson",l:""},
     {n:"4x DMX Switch Swisson",l:""},
     {n:"Adapterkoffer Cat → DMX (Swisson 4er Rack)",l:""}
+  ]},
+  "Moving Light Spot":{cat:"Lichtwelt",items:[
+    {n:"Robe Pointe",l:""},{n:"Robe Forte",l:""},{n:"Robe Spiider",l:""},
+    {n:"Robe MegaPointe",l:""},{n:"Clay Paky Sharpy Plus",l:""},
+    {n:"Clay Paky Mythos 2",l:""},{n:"MA Lighting MAC Encore Performance",l:""},
+    {n:"Martin Mac Aura XB",l:""},{n:"Chauvet Maverick Storm 2 Spot",l:""},
+    {n:"Generic Moving Head Spot",l:""}
+  ]},
+  "Moving Light Wash":{cat:"Lichtwelt",items:[
+    {n:"Robe T11 Profile",l:""},{n:"Robe T11 Wash",l:""},
+    {n:"Robe Robin 600 LEDWash",l:""},{n:"Clay Paky Sharpy Wash 330",l:""},
+    {n:"Martin MAC Quantum Wash",l:""},{n:"Chauvet COLORado Solo Batten",l:""},
+    {n:"Generic Moving Head Wash",l:""}
+  ]},
+  "Moving Light Beam":{cat:"Lichtwelt",items:[
+    {n:"Robe BMFL Blade",l:""},{n:"Robe BMFL FollowSpot",l:""},
+    {n:"Clay Paky B-EYE K20",l:""},{n:"Martin MAC Quantum Profile",l:""},
+    {n:"Ayrton MagicBlade FX",l:""},
+    {n:"Generic Moving Head Beam",l:""}
+  ]},
+  "LED Wash & Batten":{cat:"Lichtwelt",items:[
+    {n:"Astera Titan Tube",l:""},{n:"Astera Helios Tube",l:""},
+    {n:"Astera AX5 Fresnel",l:""},{n:"Astera AX1 Pixel Tube",l:""},
+    {n:"Chauvet COLORdash Batten Quad 6",l:""},
+    {n:"ADJ Hydro Wash X9",l:""},{n:"Generic LED PAR",l:""},
+    {n:"Generic LED Batten",l:""}
+  ]},
+  "Konventionell":{cat:"Lichtwelt",items:[
+    {n:"Fresnel 1kW",l:""},{n:"Fresnel 2kW",l:""},
+    {n:"PC 1kW",l:""},{n:"PC 2kW",l:""},
+    {n:"Profilspot 750W",l:""},{n:"Profilspot 1kW",l:""},
+    {n:"ETC Source Four 750W",l:""},{n:"ETC Source Four 575W",l:""},
+    {n:"PAR 64 CP60",l:""},{n:"PAR 64 CP61",l:""},
+    {n:"PAR 64 CP62",l:""},{n:"PAR 56",l:""}
+  ]},
+  "Spezialeffekte":{cat:"Lichtwelt",items:[
+    {n:"Hazer MDG",l:""},{n:"Hazer Look Solutions Unique 2.1",l:""},
+    {n:"Nebelmaschine 1500W",l:""},{n:"Nebelmaschine 3000W",l:""},
+    {n:"CO2 Jet",l:""},{n:"Stroboskop Martin Atomic 3000",l:""},
+    {n:"UV-Flood",l:""},{n:"UV-Strahler Spot",l:""},
+    {n:"Laser Diode 1W",l:""},{n:"Confetti Kanone",l:""}
   ]}
 };
 
