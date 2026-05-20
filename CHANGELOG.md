@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.7] — 2026-05-20
+
+### Behoben
+- `plans.js`: Migration beim Laden bereinigt automatisch doppelte Einträge in bestehenden Plänen — gleiche Kabellängen und gleiche Gerätenamen werden zusammengeführt und Mengen addiert
+
+---
+
 ## [v0.5.6] — 2026-05-20
 
 ### Behoben

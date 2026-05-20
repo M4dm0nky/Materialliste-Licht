@@ -32,6 +32,23 @@ function migrateState(s){
       });
     });
   });
+  // Migration: doppelte Einträge zusammenführen (gleiche Länge bei Kabel, gleicher Name bei Geräten)
+  st.positions.forEach(pos=>{
+    pos.categories.forEach(cat=>{
+      cat.sections.forEach(sec=>{
+        const merged = [];
+        sec.items.forEach(item=>{
+          const key = item.length || item.name;
+          const ex  = item.length
+            ? merged.find(i=>i.length===item.length)
+            : merged.find(i=>i.name===item.name);
+          if(ex){ ex.anzahl=(ex.anzahl||0)+(item.anzahl||0); ex.spare=(ex.spare||0)+(item.spare||0); }
+          else merged.push(item);
+        });
+        sec.items = merged;
+      });
+    });
+  });
   // Migration v0.11 → v0.12: 4 Kategorien → 5 Welten
   const OLD_CAT_NAMES = new Set(["Kabel Liste","Zubehör Liste","Hardware Liste","Lampen Liste"]);
   const needsWeltMigration = st.positions && st.positions.length > 0 &&
