@@ -430,6 +430,17 @@ function toast(msg, isErr=false){
   setTimeout(()=>el.remove(), 2800);
 }
 
+function _mergeItems(sectionItems, newItems){
+  let merged = 0;
+  newItems.forEach(item=>{
+    const ex = item.length ? sectionItems.find(i=>i.length===item.length) : null;
+    if(ex){ ex.anzahl=(ex.anzahl||0)+item.anzahl; ex.spare=(ex.spare||0)+item.spare; merged++; }
+    else sectionItems.push(item);
+  });
+  sectionItems.sort((a,b)=>parseLen(a.length)-parseLen(b.length));
+  return merged;
+}
+
 function wizDone(){
   const catalog  = getActiveCatalogTypes()[wiz.key];
   const isQty    = catalog && catalog.unit_type === 'qty';
@@ -449,11 +460,11 @@ function wizDone(){
   const sortByLen = items=>{ items.sort((a,b)=>parseLen(a.length)-parseLen(b.length)); return items; };
   if(wiz.targetSi!==null){
     if(isQty){ cat.sections[wiz.targetSi].items = selected; }
-    else { cat.sections[wiz.targetSi].items.push(...selected); sortByLen(cat.sections[wiz.targetSi].items); }
+    else { _mergeItems(cat.sections[wiz.targetSi].items, selected); }
   } else {
     const ex = cat.sections.findIndex(s=>s.type_name===wiz.key);
     if(ex>=0 && isQty){ cat.sections[ex].items = selected; }
-    else if(ex>=0){ cat.sections[ex].items.push(...selected); sortByLen(cat.sections[ex].items); }
+    else if(ex>=0){ _mergeItems(cat.sections[ex].items, selected); }
     else cat.sections.push({type_name:wiz.key, unit_type: isQty?'qty':'lengths', items:sortByLen(selected)});
   }
   save(); rerenderCat(ci); recalcAll();

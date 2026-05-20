@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.5] — 2026-05-20
+
+### Behoben
+- `wizard.js`: Gleiche Kabellänge doppelt gebucht erzeugte zwei separate Zeilen — jetzt werden Mengen zusammengerechnet (`_mergeItems()`): beim erneuten Hinzufügen einer bereits vorhandenen Länge wird Anzahl und Spare addiert statt eine neue Zeile anzulegen
+
+---
+
 ## [v0.5.4] — 2026-05-20
 
 ### Behoben (kritisch — Kernlogik)
