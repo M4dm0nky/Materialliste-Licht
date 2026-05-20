@@ -5,6 +5,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.8] — 2026-05-20
+
+### Behoben (Root Cause)
+- `wizard.js`: Kabel-Items wurden im alten Format erstellt — Länge landete in BEZEICHNUNG statt LÄNGE/TYP
+  - Ursache: `displayName = ci2.n || ci2.l` verwendete die Länge ("5m") als Namen wenn kein Artikel-Name im Katalog gesetzt war
+  - Fix: `displayName = ci2.n || wiz.key` (Typname als Fallback), `displayLen = ci2.l` (Länge immer in length-Feld)
+  - Betrifft alle Standard-Katalog-Kabel (DMX, Schuko, CEE, etc.) mit leerem `n`-Feld
+
+---
+
 ## [v0.5.7] — 2026-05-20
 
 ### Behoben

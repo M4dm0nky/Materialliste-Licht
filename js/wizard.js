@@ -451,8 +451,8 @@ function wizDone(){
         return {name:wiz.key,length:'',anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:''};
       }
       const ci2         = catalog.items[+i];
-      const displayName = ci2.n || ci2.l || '';
-      const displayLen  = ci2.n ? (ci2.l||'') : '';
+      const displayName = ci2.n || wiz.key || '';
+      const displayLen  = ci2.l || '';
       return {name:displayName,length:displayLen,anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:ci2.b||''};
     });
   if(!selected.length){ toast('Bitte mindestens eine Menge > 0 eingeben.', true); return; }
