@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.6] — 2026-05-20
+
+### Behoben
+- `wizard.js`: Merge-Logik auf alle Artikeltypen ausgeweitet — auch Geräte (qty) werden beim erneuten Hinzufügen addiert statt ersetzt; `_mergeItems()` matcht qty-Artikel per Name, Kabel per Länge
+
+---
+
 ## [v0.5.5] — 2026-05-20
 
 ### Behoben

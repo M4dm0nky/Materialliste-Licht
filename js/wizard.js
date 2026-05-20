@@ -431,14 +431,14 @@ function toast(msg, isErr=false){
 }
 
 function _mergeItems(sectionItems, newItems){
-  let merged = 0;
   newItems.forEach(item=>{
-    const ex = item.length ? sectionItems.find(i=>i.length===item.length) : null;
-    if(ex){ ex.anzahl=(ex.anzahl||0)+item.anzahl; ex.spare=(ex.spare||0)+item.spare; merged++; }
+    const ex = item.length
+      ? sectionItems.find(i=>i.length===item.length)
+      : sectionItems.find(i=>i.name===item.name);
+    if(ex){ ex.anzahl=(ex.anzahl||0)+item.anzahl; ex.spare=(ex.spare||0)+item.spare; }
     else sectionItems.push(item);
   });
   sectionItems.sort((a,b)=>parseLen(a.length)-parseLen(b.length));
-  return merged;
 }
 
 function wizDone(){
@@ -459,12 +459,10 @@ function wizDone(){
   const ci = wiz.ci; const cat = currentCats()[ci];
   const sortByLen = items=>{ items.sort((a,b)=>parseLen(a.length)-parseLen(b.length)); return items; };
   if(wiz.targetSi!==null){
-    if(isQty){ cat.sections[wiz.targetSi].items = selected; }
-    else { _mergeItems(cat.sections[wiz.targetSi].items, selected); }
+    _mergeItems(cat.sections[wiz.targetSi].items, selected);
   } else {
     const ex = cat.sections.findIndex(s=>s.type_name===wiz.key);
-    if(ex>=0 && isQty){ cat.sections[ex].items = selected; }
-    else if(ex>=0){ _mergeItems(cat.sections[ex].items, selected); }
+    if(ex>=0){ _mergeItems(cat.sections[ex].items, selected); }
     else cat.sections.push({type_name:wiz.key, unit_type: isQty?'qty':'lengths', items:sortByLen(selected)});
   }
   save(); rerenderCat(ci); recalcAll();
