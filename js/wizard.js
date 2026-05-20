@@ -13,8 +13,9 @@ function _saveRecent(typeKey){
   try{ localStorage.setItem(WIZ_RECENT_KEY, JSON.stringify(r.slice(0,8))); }catch(e){}
 }
 
-function openWiz(ci){ wiz={ci,targetSi:null,step:1,key:null,sel:{},selLengths:{},multiQueue:[],multiIdx:0}; showWiz('Material hinzufügen'); step1(); }
-function openWizToSec(ci,si){ wiz={ci,targetSi:si,step:1,key:null,sel:{},selLengths:{},multiQueue:[],multiIdx:0}; showWiz('Material hinzufügen'); step1(); }
+function openWiz(ci){ wiz={ci,targetSi:null,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
+function openWizToSec(ci,si){ wiz={ci,targetSi:si,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
+
 function _wizHasDirtyData(){
   return Object.values(wiz.sel||{}).some(v=>(v.a||0)+(v.s||0)>0);
 }
@@ -33,25 +34,23 @@ function showWiz(title){ document.getElementById('mTitle').textContent=title; do
 
 function step1(){
   wiz.step = 1;
-  if(!wiz.multiQueue) wiz.multiQueue=[];
   const ci = wiz.ci, catName = currentCats()[ci].name;
   wiz._allEntries  = Object.entries(getActiveCatalogTypes());
   wiz._entries     = wiz._allEntries.filter(([_,v])=>v.cat===catName);
   wiz._gridEntries = [];
 
-  const recent       = _loadRecent();
-  const types        = getActiveCatalogTypes();
-  const recentInCat  = recent.filter(k=>types[k]);
-  const recentHtml   = recentInCat.length ? `
+  const recent      = _loadRecent();
+  const types       = getActiveCatalogTypes();
+  const recentInCat = recent.filter(k=>types[k]);
+  const recentHtml  = recentInCat.length ? `
     <div class="wiz-section-hdr">ZULETZT VERWENDET</div>
     <div class="catgrid" style="margin-bottom:16px" id="wizRecentGrid">
       ${recentInCat.slice(0,6).map(key=>{
         const v = types[key]; if(!v) return '';
-        const idx    = wiz._gridEntries.length;
-        const catCi  = currentCats().findIndex(c=>c.name===v.cat);
-        wiz._gridEntries.push({key, ci: catCi>=0 ? catCi : ci});
-        const isSel = wiz.multiQueue.some(x=>x.key===key);
-        return `<div class="catcard${isSel?' sel':''}" onclick="wizToggleCard(${idx})">
+        const idx   = wiz._gridEntries.length;
+        const rCatCi = currentCats().findIndex(c=>c.name===v.cat);
+        wiz._gridEntries.push({key, ci: rCatCi>=0 ? rCatCi : ci});
+        return `<div class="catcard" onclick="wizPickCard(${idx})">
           <div class="catcard-t">${esc(key)}</div>
           <div class="catcard-s">${esc(v.cat||'')}</div>
         </div>`;
@@ -62,7 +61,6 @@ function step1(){
     <div class="steps">
       <div class="step active">1 · TYP WÄHLEN</div>
       <div class="step">2 · MENGEN EINGEBEN</div>
-      <div class="step">3 · FERTIG</div>
     </div>
     <div class="wiz-search-wrap">
       <span class="wiz-search-icon">🔍</span>
@@ -73,42 +71,19 @@ function step1(){
     <div id="wizSearchInfoBar" style="font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">
       ${esc(getActiveCatalog().name)} · ${esc(catName)}
     </div>
-    <div id="wizGrid" class="catgrid">${wizBuildGrid('')}</div>
-    ${wiz.multiQueue.length ? _renderQueueBar() : ''}`;
+    <div id="wizGrid" class="catgrid">${wizBuildGrid('')}</div>`;
 
   _renderStep1Footer();
   const si = document.getElementById('wizSearch'); if(si) setTimeout(()=>si.focus(),50);
 }
 
 function _renderStep1Footer(){
-  const n = wiz.multiQueue?.length||0;
-  document.getElementById('mFooter').innerHTML=`
-    <button class="btn" onclick="closeWiz()">Abbrechen</button>
-    <button class="btn btn-accent" onclick="wizStartQueue()" ${n===0?'disabled style="opacity:.4"':''}>
-      WEITER →${n>0?' ('+n+' ausgewählt)':''}
-    </button>`;
-}
-
-function _renderQueueBar(){
-  if(!wiz.multiQueue?.length) return '';
-  const s = JSON.stringify;
-  return `<div class="wiz-queue-bar">
-    <div class="wiz-queue-bar-t">AUSGEWÄHLT:</div>
-    ${wiz.multiQueue.map((item,i)=>`<span class="wiz-queue-item">
-      ${esc(item.key)}
-      <button class="wiq-del" onclick="wizDequeue(${i})" title="Entfernen">✕</button>
-    </span>`).join('')}
-  </div>`;
-}
-
-function wizDequeue(idx){
-  wiz.multiQueue.splice(idx,1);
-  step1();
+  document.getElementById('mFooter').innerHTML=
+    `<button class="btn" onclick="closeWiz()">Abbrechen</button>`;
 }
 
 function wizUpdateSearch(val){
   const grid = document.getElementById('wizGrid'); if(!grid) return;
-  // Indizes komplett neu aufbauen (Recent + Grid teilen dasselbe Array)
   wiz._gridEntries = [];
   const recentGrid = document.getElementById('wizRecentGrid');
   if(recentGrid){
@@ -116,11 +91,10 @@ function wizUpdateSearch(val){
     const types  = getActiveCatalogTypes();
     recentGrid.innerHTML = recent.filter(k=>types[k]).slice(0,6).map(key=>{
       const v = types[key]; if(!v) return '';
-      const idx   = wiz._gridEntries.length;
+      const idx    = wiz._gridEntries.length;
       const rCatCi = currentCats().findIndex(c=>c.name===v.cat);
       wiz._gridEntries.push({key, ci: rCatCi>=0 ? rCatCi : wiz.ci});
-      const isSel = wiz.multiQueue?.some(x=>x.key===key);
-      return `<div class="catcard${isSel?' sel':''}" onclick="wizToggleCard(${idx})">
+      return `<div class="catcard" onclick="wizPickCard(${idx})">
         <div class="catcard-t">${esc(key)}</div>
         <div class="catcard-s">${esc(v.cat||'')}</div>
       </div>`;
@@ -131,20 +105,18 @@ function wizUpdateSearch(val){
   if(info) info.textContent = val.trim()
     ? (wiz._gridEntries.length+' Treffer')
     : (esc(getActiveCatalog().name)+' · '+currentCats()[wiz.ci].name);
-  _renderStep1Footer();
 }
 
 function wizBuildGrid(query){
-  const ci         = wiz.ci, catName = currentCats()[ci].name;
-  const activeCat  = getActiveCatalog();
+  const ci        = wiz.ci, catName = currentCats()[ci].name;
+  const activeCat = getActiveCatalog();
   const allEntries = wiz._allEntries||[];
   if(!wiz._gridEntries) wiz._gridEntries=[];
 
   const makeCard = (k,v,targetCi)=>{
-    const idx    = wiz._gridEntries.length;
-    wiz._gridEntries.push({key:k,ci:targetCi});
-    const isSel  = wiz.multiQueue?.some(x=>x.key===k);
-    return `<div class="catcard${isSel?' sel':''}" onclick="wizToggleCard(${idx})">
+    const idx = wiz._gridEntries.length;
+    wiz._gridEntries.push({key:k, ci:targetCi});
+    return `<div class="catcard" onclick="wizPickCard(${idx})">
       <div class="catcard-t">${esc(k)}</div>
       <div class="catcard-s">${(v.items||[]).length} Eintr.</div>
     </div>`;
@@ -159,8 +131,8 @@ function wizBuildGrid(query){
     entries.forEach(([k,v])=>{ const gid=v.group||'__none'; if(byGrp[gid]!==undefined) byGrp[gid].push([k,v]); else byGrp['__none'].push([k,v]); });
     let h='';
     topGroups.forEach(g=>{
-      const subGroups = catGetSubGroups(activeCat,g.id);
-      const direct    = byGrp[g.id]||[];
+      const subGroups  = catGetSubGroups(activeCat,g.id);
+      const direct     = byGrp[g.id]||[];
       const hasContent = direct.length||subGroups.some(sg=>(byGrp[sg.id]||[]).length);
       if(!hasContent) return;
       h+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--accent);margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)">▸ ${esc(g.name)}</div>`;
@@ -189,7 +161,6 @@ function wizBuildGrid(query){
     return buildHierarchy(entries, ci);
   }
 
-  // Suche: alle Kategorien + Item-Inhalte, case-insensitive
   const q = query.toLowerCase();
   const matches = allEntries.filter(([k,v])=>
     k.toLowerCase().includes(q)||
@@ -212,50 +183,10 @@ function wizBuildGrid(query){
   return html||`<div style="color:var(--muted);grid-column:1/-1;padding:20px">Keine Treffer.</div>`;
 }
 
-// ── KARTEN TOGGLE (ersetzt wizPickGridIdx) ─────────────────────────
-function wizToggleCard(idx){
-  const e = wiz._gridEntries&&wiz._gridEntries[idx]; if(!e) return;
-  if(!wiz.multiQueue) wiz.multiQueue=[];
-  const existingIdx = wiz.multiQueue.findIndex(x=>x.key===e.key);
-  if(existingIdx>=0){
-    wiz.multiQueue.splice(existingIdx,1);
-  } else {
-    wiz.multiQueue.push(e);
-  }
-  // Card-Selektion visuell aktualisieren ohne komplett neu zu rendern
-  const allCards = document.querySelectorAll('#wizGrid .catcard, #wizRecentGrid .catcard');
-  allCards.forEach(card=>{
-    const m = card.getAttribute('onclick')?.match(/wizToggleCard\((\d+)\)/);
-    if(!m) return;
-    const entry = wiz._gridEntries[parseInt(m[1])];
-    if(entry) card.classList.toggle('sel', wiz.multiQueue.some(x=>x.key===entry.key));
-  });
-  // Queue-Bar ersetzen
-  document.querySelector('.wiz-queue-bar')?.remove();
-  if(wiz.multiQueue.length){
-    const grid = document.getElementById('wizGrid');
-    if(grid) grid.insertAdjacentHTML('afterend', _renderQueueBar());
-  }
-  _renderStep1Footer();
-}
-
-function wizPickGridIdx(idx){ wizToggleCard(idx); } // Backward-Compat
-
-function wizPickIdx(idx){
-  const e = wiz._entries&&wiz._entries[idx]; if(!e) return;
-  wiz.key=e[0]; wiz.sel={}; step2();
-}
-
-// ── QUEUE STARTEN ──────────────────────────────────────────────────
-function wizStartQueue(){
-  if(!wiz.multiQueue?.length) return;
-  wiz.multiIdx = 0;
-  const item = wiz.multiQueue[0];
-  if(item.ci!==wiz.ci) wiz.targetSi=null;
-  wiz.ci  = item.ci;
-  wiz.key = item.key;
-  wiz.sel = {};
-  wiz.selLengths = {};
+function wizPickCard(idx){
+  const e = wiz._gridEntries && wiz._gridEntries[idx]; if(!e) return;
+  if(e.ci !== wiz.ci) wiz.targetSi = null;
+  wiz.ci = e.ci; wiz.key = e.key; wiz.sel = {}; wiz.selLengths = {};
   step2();
 }
 
@@ -268,32 +199,18 @@ function step2(){
   else _step2Lengths(t);
 }
 
-function _wizProgressHint(){
-  if(!wiz.multiQueue?.length || wiz.multiQueue.length<=1) return '';
-  const n = wiz.multiQueue.length;
-  const i = (wiz.multiIdx||0)+1;
-  return `<div style="font-size:11px;color:var(--accent);font-family:'Share Tech Mono',monospace;margin-bottom:10px;letter-spacing:.5px">
-    Artikel ${i} von ${n}: ${esc(wiz.key)}
-  </div>`;
-}
-
 function _wizStepsHeader(){
   return `<div class="steps">
     <div class="step done" onclick="step1()" style="cursor:pointer">1 · TYP ✓</div>
     <div class="step active">2 · MENGEN EINGEBEN</div>
-    <div class="step">3 · FERTIG</div>
   </div>`;
 }
 
 function _wizFooter(){
-  const hasMore = wiz.multiQueue?.length>1 && (wiz.multiIdx||0) < wiz.multiQueue.length-1;
   document.getElementById('mFooter').innerHTML=`
     <button class="btn" onclick="step1()">← ZURÜCK</button>
     <button class="btn" onclick="closeWiz()">Abbrechen</button>
-    <button class="btn btn-accent" onclick="wizDone()">
-      ${hasMore ? '+ HINZUFÜGEN & WEITER →' : '+ HINZUFÜGEN'}
-    </button>
-    <button class="btn btn-green" onclick="wizFinish()">✓ FERTIG</button>`;
+    <button class="btn btn-accent" onclick="wizDone()">✓ HINZUFÜGEN</button>`;
 }
 
 function _wizWeltBadge(){
@@ -304,7 +221,6 @@ function _wizWeltBadge(){
 function _step2Qty(t){
   document.getElementById('mBody').innerHTML=`
     ${_wizStepsHeader()}
-    ${_wizProgressHint()}
     <div style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:1px">
       <b style="color:var(--accent)">${esc(wiz.key)}</b> — Anzahl eingeben: ${_wizWeltBadge()}
     </div>
@@ -343,7 +259,6 @@ function _step2Lengths(t){
   }).join('');
   document.getElementById('mBody').innerHTML=`
     ${_wizStepsHeader()}
-    ${_wizProgressHint()}
     <div style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:1px">
       <b style="color:var(--accent)">${esc(wiz.key)}</b> — Längen ankreuzen und Anzahl eingeben: ${_wizWeltBadge()}
     </div>
@@ -456,7 +371,8 @@ function wizDone(){
       return {name:displayName,length:displayLen,anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:ci2.b||''};
     });
   if(!selected.length){ toast('Bitte mindestens eine Menge > 0 eingeben.', true); return; }
-  const ci = wiz.ci; const cat = currentCats()[ci];
+  const ci  = wiz.ci;
+  const cat = currentCats()[ci];
   const sortByLen = items=>{ items.sort((a,b)=>parseLen(a.length)-parseLen(b.length)); return items; };
   if(wiz.targetSi!==null){
     _mergeItems(cat.sections[wiz.targetSi].items, selected);
@@ -468,33 +384,8 @@ function wizDone(){
   save(); rerenderCat(ci); recalcAll();
   _saveRecent(wiz.key);
   toast('✓ ' + selected.length + ' Position(en) hinzugefügt');
-
-  // Multi-Queue: nächsten Artikel verarbeiten
-  if(wiz.multiQueue?.length>1){
-    wiz.multiIdx = (wiz.multiIdx||0) + 1;
-    if(wiz.multiIdx < wiz.multiQueue.length){
-      const item = wiz.multiQueue[wiz.multiIdx];
-      if(item.ci!==wiz.ci) wiz.targetSi=null;
-      wiz.ci  = item.ci;
-      wiz.key = item.key;
-      wiz.sel = {};
-      wiz.selLengths = {};
-      step2();
-      return;
-    }
-    // Alle erledigt
-    wiz.multiQueue = [];
-    wiz.multiIdx   = 0;
-    toast('✓ Alle Artikel hinzugefügt');
-    closeWiz();
-    return;
-  }
-
-  wiz.sel={};
-  step2();
+  _doCloseWiz();
 }
-
-function wizFinish(){ _doCloseWiz(); }
 
 // ── EIGENER EINTRAG ────────────────────────────────────────────────
 function openCustom(ci,si){

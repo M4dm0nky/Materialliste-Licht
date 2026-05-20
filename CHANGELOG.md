@@ -5,6 +5,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9] — 2026-05-20
+
+### Geändert
+- `wizard.js`: Wizard-Flow komplett vereinfacht — Karte anklicken öffnet sofort die Mengen-Eingabe, kein Multi-Queue mehr
+- `wizard.js`: Nach "✓ HINZUFÜGEN" schließt der Wizard — für den nächsten Artikel erneut "Material hinzufügen" klicken
+- `wizard.js`: Schrittanzeige reduziert auf 2 Schritte (TYP WÄHLEN → MENGEN EINGEBEN)
+- `wizard.js`: Entfernt: Multi-Queue, Queue-Bar, "WEITER →"-Button, Mehrfachauswahl, Fortschrittsanzeige
+
+---
+
 ## [v0.5.8] — 2026-05-20
 
 ### Behoben (Root Cause)
