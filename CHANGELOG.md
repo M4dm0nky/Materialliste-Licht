@@ -5,6 +5,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.4] — 2026-05-21
+
+### Hinzugefügt
+- `wizard.js`: Welt-Filter-Chips im Global-Such-Modus — klickbar, toggle-fähig, gold wenn aktiv
+- `wizard.js`: `wizSetBrowseWorld()` — Browse-Modus zeigt alle Einträge der gewählten Welt ohne Tipp-Suche
+- `wizard.js`: Kombinierbar: Welt-Chip aktiv + Suche tippen → filtert nur innerhalb dieser Welt
+- `css/modals.css`: `.wiz-world-chips`, `.wiz-world-chip`, `.wiz-world-chip.active`
+
+---
+
 ## [v0.5.9.3] — 2026-05-21
 
 ### Geändert

@@ -15,7 +15,7 @@ function _saveRecent(typeKey){
 
 function openWiz(ci){ wiz={ci,targetSi:null,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
 function openWizToSec(ci,si){ wiz={ci,targetSi:si,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
-function openWizSearch(){ wiz={ci:-1,targetSi:null,key:null,sel:{},selLengths:{}}; showWiz('Material suchen'); step1(); }
+function openWizSearch(){ wiz={ci:-1,targetSi:null,key:null,sel:{},selLengths:{},_browseWorld:null}; showWiz('Material suchen'); step1(); }
 
 function _wizHasDirtyData(){
   return Object.values(wiz.sel||{}).some(v=>(v.a||0)+(v.s||0)>0);
@@ -59,6 +59,11 @@ function step1(){
       }).join('')}
     </div>` : '';
 
+  const chipHtml = ci < 0 ? `
+    <div class="wiz-world-chips" id="wizWorldChips">
+      ${CAT_ORDER.map(w=>`<button class="wiz-world-chip" onclick="wizSetBrowseWorld('${w}')">${w}</button>`).join('')}
+    </div>` : '';
+
   document.getElementById('mBody').innerHTML=`
     <div class="steps">
       <div class="step active">1 · TYP WÄHLEN</div>
@@ -69,6 +74,7 @@ function step1(){
       <input class="wiz-search" id="wizSearch" placeholder="Suchen — z.B. DMX, Han16, GrandMA, 1,5m …"
         oninput="wizUpdateSearch(this.value)" autocomplete="off">
     </div>
+    ${chipHtml}
     ${recentHtml}
     <div id="wizSearchInfoBar" style="font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">
       ${ci >= 0 ? esc(getActiveCatalog().name)+' · '+esc(catName) : esc(getActiveCatalog().name)+' · ALLE WELTEN'}
@@ -106,7 +112,21 @@ function wizUpdateSearch(val){
   const info = document.getElementById('wizSearchInfoBar');
   if(info) info.textContent = val.trim()
     ? (wiz._gridEntries.length+' Treffer')
-    : (wiz.ci >= 0 ? esc(getActiveCatalog().name)+' · '+currentCats()[wiz.ci].name : esc(getActiveCatalog().name)+' · ALLE WELTEN');
+    : (wiz.ci >= 0 ? esc(getActiveCatalog().name)+' · '+currentCats()[wiz.ci].name : wiz._browseWorld ? esc(getActiveCatalog().name)+' · '+wiz._browseWorld : esc(getActiveCatalog().name)+' · ALLE WELTEN');
+}
+
+function wizSetBrowseWorld(weltName){
+  wiz._browseWorld = (wiz._browseWorld === weltName) ? null : weltName;
+  wiz._gridEntries = [];
+  document.querySelectorAll('.wiz-world-chip').forEach(btn=>{
+    btn.classList.toggle('active', btn.textContent === wiz._browseWorld);
+  });
+  const searchVal = (document.getElementById('wizSearch')||{}).value||'';
+  document.getElementById('wizGrid').innerHTML = wizBuildGrid(searchVal.trim());
+  const info = document.getElementById('wizSearchInfoBar');
+  if(info) info.textContent = searchVal.trim()
+    ? (wiz._gridEntries.length+' Treffer')
+    : (wiz._browseWorld ? esc(getActiveCatalog().name)+' · '+wiz._browseWorld : esc(getActiveCatalog().name)+' · ALLE WELTEN');
 }
 
 function wizBuildGrid(query){
@@ -156,7 +176,13 @@ function wizBuildGrid(query){
   };
 
   if(!query){
-    if(ci < 0) return '<div class="wiz-search-hint">Suchbegriff eingeben — z.B. Pipe, DMX, Scheinwerfer, Han16&nbsp;…</div>';
+    if(ci < 0){
+      if(!wiz._browseWorld) return '<div class="wiz-search-hint">Suchbegriff eingeben oder eine Welt auswählen&nbsp;…</div>';
+      const browseCi  = currentCats().findIndex(c=>c.name===wiz._browseWorld);
+      const browseEntries = allEntries.filter(([_,v])=>v.cat===wiz._browseWorld);
+      if(!browseEntries.length) return `<div style="color:var(--muted);padding:24px;grid-column:1/-1;">Keine Einträge für „${esc(wiz._browseWorld)}".</div>`;
+      return buildHierarchy(browseEntries, browseCi >= 0 ? browseCi : 0);
+    }
     const entries = allEntries.filter(([_,v])=>v.cat===catName);
     if(!entries.length) return `<div style="color:var(--muted);font-size:13px;padding:24px;grid-column:1/-1;">
       Dieser Katalog enthält noch keine Einträge für „${esc(catName)}".
@@ -172,12 +198,13 @@ function wizBuildGrid(query){
     (activeCat.groups||[]).some(g=>g.id===v.group&&g.name.toLowerCase().includes(q))||
     (v.items||[]).some(it=>(it.n||'').toLowerCase().includes(q)||(it.l||'').toLowerCase().includes(q)||(it.b||'').toLowerCase().includes(q))
   );
-  if(!matches.length) return `<div style="color:var(--muted);font-size:13px;padding:20px;grid-column:1/-1;">Keine Treffer für „${esc(query)}".</div>`;
+  const filteredMatches = wiz._browseWorld ? matches.filter(([_,v])=>v.cat===wiz._browseWorld) : matches;
+  if(!filteredMatches.length) return `<div style="color:var(--muted);font-size:13px;padding:20px;grid-column:1/-1;">Keine Treffer für „${esc(query)}"${wiz._browseWorld?' in '+wiz._browseWorld:''}.</div>`;
 
   const cats = currentCats();
   let html='';
   CAT_ORDER.forEach(catN=>{
-    const catEntries = matches.filter(([_,v])=>v.cat===catN);
+    const catEntries = filteredMatches.filter(([_,v])=>v.cat===catN);
     if(!catEntries.length) return;
     const targetCi = cats.findIndex(c=>c.name===catN);
     const useCi    = targetCi>=0?targetCi:ci;
