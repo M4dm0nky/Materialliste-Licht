@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.5] — 2026-05-21
+
+### Geändert
+- `render.js`: Spalte LÄNGE/TYP zeigt bei leerer Länge den Artikel-Namen als Placeholder statt "Länge…" — betrifft alle Stück-Artikel ohne Längenangabe (z.B. Omegaschäkel, Magic Arm, Schellen)
+
+---
+
 ## [v0.5.9.4] — 2026-05-21
 
 ### Hinzugefügt

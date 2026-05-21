@@ -337,7 +337,8 @@ function buildRow(ci,si,ii){
   if((item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0) tr.className='has-data';
   const namePlaceholder = item.name==='' && item.length ? '↳ (Unterzeile)' : 'Bezeichnung…';
   const nameVal = esc(item.name||'');
-  const lenVal  = esc(item.length||'');
+  const lenVal        = esc(item.length||'');
+  const lenPlaceholder = item.length ? 'Länge…' : esc(item.name||'Länge…');
   const anzVal  = item.anzahl||0;
   const sprVal  = item.spare||0;
   const impVal  = item.im_projekt||0;
@@ -380,7 +381,7 @@ function buildRow(ci,si,ii){
   tr.innerHTML=`
     <td class="tdname"><input type="text" value="${nameVal}" placeholder="${namePlaceholder}"
       onchange="upf(${ci},${si},${ii},'name',this.value)" oninput="save()"></td>
-    <td class="tdlen"><input type="text" value="${lenVal}" placeholder="Länge…"
+    <td class="tdlen"><input type="text" value="${lenVal}" placeholder="${lenPlaceholder}"
       onchange="upf(${ci},${si},${ii},'length',this.value)" oninput="save()"></td>
     <td class="td-diff zero" id="diff-${ci}-${si}-${ii}">—</td>
     <td class="td-total" id="total-${ci}-${si}-${ii}">—</td>
