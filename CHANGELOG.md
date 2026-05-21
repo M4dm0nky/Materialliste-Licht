@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.20] — 2026-05-21
+
+### Geändert
+- `pdf.js`: NYX-Band von `position:fixed` auf `<thead>`-Architektur umgestellt — Band wiederholt sich auf jeder Seite via nativen CSS-Print-Mechanismus, kein Konflikt mit Chrome-Margin-Bereich; `@page{margin:8mm 0 8mm 0}` lässt Chromes Header/Footer in 8mm-Margin-Zonen (getrennt von Content-Bereich); Slim-Footer bleibt `position:fixed` aber korrekt unterhalb der Content-Area-Grenze
+
+---
+
 ## [v0.5.9.19] — 2026-05-21
 
 ### Geändert

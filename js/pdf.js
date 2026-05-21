@@ -156,23 +156,25 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 .slim-footer span:nth-child(3){text-align:right;}
 .cf-center svg{height:22mm!important;width:auto!important;}
 .np{margin:16px 10mm;padding:12px 16px;background:#fffbeb;border:1.5px solid #f59e0b;border-left:4px solid #d97706;font-size:9pt;color:#78350f;border-radius:3px;font-family:'JetBrains Mono',monospace;line-height:1.6;}
+.outer{width:100%;border-collapse:collapse;}
+.outer-td{padding:0;vertical-align:top;}
 @media print{
   .np{display:none!important;}
-  .band{position:fixed;top:0;left:0;right:0;z-index:100;}
   .slim-footer{position:fixed;bottom:0;left:0;right:0;z-index:100;}
-  .ph{padding-top:2mm;}
-  body{padding-top:14mm;padding-bottom:9mm;}
-  @page{size:A4 ${orient};margin:0mm;}
+  body{padding-bottom:9mm;}
+  @page{size:A4 ${orient};margin:8mm 0 8mm 0;}
 }
 </style></head><body>
-<div class="band">
+<table class="outer"><colgroup><col></colgroup>
+<thead><tr><td class="outer-td"><div class="band">
   <div class="band-logo">${NYX_LOGO_HZ}</div>
   <div class="band-tag">${esc(projectName)} &middot; Material Planer</div>
-</div>
+</div></td></tr></thead>
+<tbody><tr><td class="outer-td">
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.19</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.20</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}${lbPlaner}</div>
 </div>
@@ -190,14 +192,14 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="closing-content">
   <div class="cf-headline">Export vollst&auml;ndig.</div>
   <div class="cf-stats">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen &middot; ${missingCount}&nbsp;Fehlend</div>
-  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.19</div>
+  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.20</div>
 </div>
 <div class="closing-footer">
   <div class="cf-left">
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.5.9.19</div>
+    <div class="cf-val">◆ v0.5.9.20</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>
@@ -209,6 +211,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
     <div class="cf-final" style="margin-top:4px;"></div>
   </div>
 </div>
+</td></tr></tbody></table>
 <div class="slim-footer">
   <span>NYX LIGHTWORK</span>
   <span>${esc(projectName)} &ndash; MATERIAL PLANER</span>
