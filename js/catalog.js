@@ -337,6 +337,19 @@ function initCatalogs(){
         });
       });
       if(pipeMigrated) saveCatalogsStore();
+      // Migration: Geräte-Typen (alle CATALOG-Einträge ohne Längenfelder) in user-Katalogen auf qty erzwingen
+      const _pureQtyTypes = Object.entries(CATALOG).filter(([,v])=>v.items.every(it=>!it.l)).map(([k])=>k);
+      let fixedQty = false;
+      catalogsStore.catalogs.forEach(c=>{
+        _pureQtyTypes.forEach(qt=>{
+          if(c.types[qt] && c.types[qt].unit_type !== 'qty'){
+            c.types[qt].unit_type = 'qty';
+            c.types[qt].items = c.types[qt].items.map(it=>({...it,l:''}));
+            fixedQty = true;
+          }
+        });
+      });
+      if(fixedQty) saveCatalogsStore();
       activeCatalogId = 'cat-default';
       return;
     }

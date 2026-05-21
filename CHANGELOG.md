@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.9] — 2026-05-21
+
+### Geändert
+- `catalog.js`: Migration erzwingt `unit_type:'qty'` für alle reinen Geräte-Typen (Moving Lights, Stative, DMX Steuerung etc.) in allen User-Katalogen — behebt falsch als "Kabel" gespeicherte Fixture-Einträge
+
+---
+
 ## [v0.5.9.8] — 2026-05-21
 
 ### Geändert
