@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.15] — 2026-05-21
+
+### Geändert
+- `pdf.js`: PDF-Export nach NYX CI Reference-PDF pixelgenau umgebaut — NYX `horizontal-dark.svg` und `primary-dark.svg` als Inline-SVG eingebettet (kein Netzwerk nötig); Top Band zeigt NYX-Logo links statt User-Logo; Header: alle 3 User-Logos rechts ohne invert-Filter; Slim Footer: 3-spaltig (NYX | Projektname | SEITE X / Y); neue "Export vollständig."-Section (Geist 28pt, weiß, fließt nach Tabelle); Closing Footer: navy 3-spaltig (Stats+Version+Datum | NYX Primary-Logo | Projektname+Final), kein page-break-before
+
+---
+
 ## [v0.5.9.14] — 2026-05-21
 
 ### Geändert
