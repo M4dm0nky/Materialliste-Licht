@@ -148,7 +148,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 .cf-val{font-family:'Geist',sans-serif;font-size:10pt;font-weight:500;color:#dde2ee;margin-top:1px;}
 .cf-name{font-family:'Geist',sans-serif;font-size:16pt;font-weight:600;color:#dde2ee;letter-spacing:-0.018em;}
 .cf-stats-sm{font-family:'JetBrains Mono',monospace;font-size:9pt;color:#9AA3B5;font-variant-numeric:tabular-nums;}
-.cf-final::before{content:"SEITE " counter(page) " \2013 FINAL";font-family:'JetBrains Mono',monospace;font-size:8pt;letter-spacing:0.14em;text-transform:uppercase;color:#9AA3B5;}
+.cf-final::before{content:"SEITE " counter(page) " – FINAL";font-family:'JetBrains Mono',monospace;font-size:8pt;letter-spacing:0.14em;text-transform:uppercase;color:#9AA3B5;}
 .slim-footer{background:#0b0d14;height:9mm;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:0 10mm;margin-top:0;}
 .slim-footer span{font-family:'JetBrains Mono',monospace;font-size:8pt;letter-spacing:0.14em;text-transform:uppercase;color:#9AA3B5;}
 .slim-footer span:nth-child(2){text-align:center;}
