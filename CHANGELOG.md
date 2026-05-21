@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.8] — 2026-05-21
+
+### Geändert
+- `css/components.css`: TOTAL + DIFF von 20px → 17px (fett bleibt); STK/SPARE/IM PROJ. Inputs font-weight 600/700 → 400 (normale Schriftdicke)
+- `css/components.css`: Qty-Tabelle (Multicore etc.) an Längen-Tabelle angeglichen — Inputs 18px/bold → 15px/normal, DIFF 16px → 17px
+
+---
+
 ## [v0.5.9.7] — 2026-05-21
 
 ### Geändert
