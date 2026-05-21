@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.17] — 2026-05-21
+
+### Geändert
+- `pdf.js`: `print-color-adjust:exact` hinzugefügt — ohne diese Property druckt Chrome keine Hintergrundfarben (navy Band, Tabellenheader, Closing Footer verschwanden im Druck); Font-Loading-Fix: `document.fonts.ready` Promise statt 500ms Hardcode-Timeout damit Geist/JetBrains Mono vor dem Drucken geladen sind
+
+---
+
 ## [v0.5.9.16] — 2026-05-21
 
 ### Geändert

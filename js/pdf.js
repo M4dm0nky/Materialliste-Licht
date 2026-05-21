@@ -111,6 +111,7 @@ function generatePDF(){
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
+*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
 body{font-family:'Geist',sans-serif;font-size:9pt;color:#0b0d14;background:#fff;}
 .band{background:#0b0d14;height:14mm;display:flex;align-items:center;justify-content:space-between;padding:0 10mm;}
 .band-logo{display:flex;align-items:center;}.band-logo svg{height:10mm;width:auto;}
@@ -170,7 +171,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.16</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.17</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}${lbPlaner}</div>
 </div>
@@ -188,7 +189,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="closing-content">
   <div class="cf-headline">Export vollst&auml;ndig.</div>
   <div class="cf-stats">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen &middot; ${missingCount}&nbsp;Fehlend</div>
-  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.16</div>
+  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.17</div>
 </div>
 <div class="closing-footer">
   <div class="cf-left">
@@ -213,7 +214,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
   <span>${projectDate}</span>
 </div>
 <div class="np"><strong>Cmd+P</strong> / <strong>Strg+P</strong> &rarr; "Als PDF speichern"</div>
-<script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script>
+<script>window.onload=()=>{if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>setTimeout(()=>window.print(),150));}else{setTimeout(()=>window.print(),800);}};<\/script>
 </body></html>`;
 
   const win = window.open('','_blank');
