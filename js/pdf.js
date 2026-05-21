@@ -155,13 +155,14 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 .slim-footer span:nth-child(2){text-align:center;}
 .slim-footer span:nth-child(3){text-align:right;}
 .cf-center svg{height:22mm!important;width:auto!important;}
-.np{margin:8px 10mm;padding:8px;background:#F1EFE9;border:1px solid #D6D9DE;font-size:8pt;color:#333;border-radius:2px;font-family:'JetBrains Mono',monospace;}
+.np{margin:16px 10mm;padding:12px 16px;background:#fffbeb;border:1.5px solid #f59e0b;border-left:4px solid #d97706;font-size:9pt;color:#78350f;border-radius:3px;font-family:'JetBrains Mono',monospace;line-height:1.6;}
 @media print{
   .np{display:none!important;}
   .band{position:fixed;top:0;left:0;right:0;z-index:100;}
   .slim-footer{position:fixed;bottom:0;left:0;right:0;z-index:100;}
   .ph{padding-top:2mm;}
-  @page{size:A4 ${orient};margin:14mm 0mm 9mm 0mm;@top-left{content:"";}@top-center{content:"";}@top-right{content:"";}@bottom-left{content:"";}@bottom-center{content:"";}@bottom-right{content:"";}}
+  body{padding-top:14mm;padding-bottom:9mm;}
+  @page{size:A4 ${orient};margin:0mm;}
 }
 </style></head><body>
 <div class="band">
@@ -171,7 +172,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.18</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.19</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}${lbPlaner}</div>
 </div>
@@ -189,14 +190,14 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="closing-content">
   <div class="cf-headline">Export vollst&auml;ndig.</div>
   <div class="cf-stats">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen &middot; ${missingCount}&nbsp;Fehlend</div>
-  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.18</div>
+  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.19</div>
 </div>
 <div class="closing-footer">
   <div class="cf-left">
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.5.9.18</div>
+    <div class="cf-val">◆ v0.5.9.19</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>
@@ -213,7 +214,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
   <span>${esc(projectName)} &ndash; MATERIAL PLANER</span>
   <span>${projectDate}</span>
 </div>
-<div class="np"><strong>Cmd+P</strong> / <strong>Strg+P</strong> &rarr; "Als PDF speichern"</div>
+<div class="np"><strong>Cmd+P / Strg+P</strong> &rarr; Als PDF speichern &nbsp;&nbsp; <strong>&#9888; Chrome-Tipp:</strong> Druckdialog &rarr; &ldquo;Weitere Einstellungen&rdquo; &rarr; Haken bei <strong>&ldquo;Kopf- und Fu&szlig;zeilen&rdquo;</strong> entfernen &mdash; sonst erscheinen Chromes Datum + &ldquo;about:blank&rdquo; &uuml;ber/unter unseren Balken.</div>
 <script>window.onload=()=>{if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>setTimeout(()=>window.print(),150));}else{setTimeout(()=>window.print(),800);}};<\/script>
 </body></html>`;
 

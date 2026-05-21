@@ -5,6 +5,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.19] — 2026-05-21
+
+### Geändert
+- `pdf.js`: `@page{margin:0mm}` + `body{padding-top:14mm;padding-bottom:9mm}` in `@media print` — Band/Footer landen jetzt am physischen Seitenrand statt im CSS-Content-Bereich; Chrome-Text-Dekorationen landen hinter unserem navy Band
+- `pdf.js`: `.np` Hinweisbox auf Amber-Warning-Stil aktualisiert mit Chrome-spezifischer Anweisung zum Deaktivieren von "Kopf- und Fußzeilen"
+- `index.html`: PDF-Modal erhält denselben Chrome-Tipp vor dem Öffnen des Druckfensters
+
+---
+
 ## [v0.5.9.18] — 2026-05-21
 
 ### Geändert
