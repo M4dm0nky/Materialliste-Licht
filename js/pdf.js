@@ -21,9 +21,12 @@ function generatePDF(){
   closeModal('pdfModal');
   if(!selPos.length){ toast('Bitte mindestens eine Position wählen.',true); return; }
 
-  const lbPlaner  = logos.planer  ? `<img src="${logos.planer}"  style="max-height:10mm;max-width:50mm;object-fit:contain;object-position:left center;filter:brightness(0) invert(1);">` : '';
-  const lbBooking = logos.booking ? `<img src="${logos.booking}" style="max-height:14mm;max-width:40mm;object-fit:contain;">` : '';
-  const lbBand    = logos.band    ? `<img src="${logos.band}"    style="max-height:14mm;max-width:40mm;object-fit:contain;">` : '';
+  const lbPlaner   = logos.planer  ? `<img src="${logos.planer}"  style="max-height:10mm;max-width:50mm;object-fit:contain;object-position:left center;filter:brightness(0) invert(1);">` : '';
+  const lbBooking  = logos.booking ? `<img src="${logos.booking}" style="max-height:14mm;max-width:40mm;object-fit:contain;">` : '';
+  const lbBand     = logos.band    ? `<img src="${logos.band}"    style="max-height:14mm;max-width:40mm;object-fit:contain;">` : '';
+  const lbCfCenter = logos.band
+    ? `<img src="${logos.band}"    style="max-height:20mm;max-width:60mm;object-fit:contain;">`
+    : (logos.planer ? `<img src="${logos.planer}" style="max-height:20mm;max-width:60mm;object-fit:contain;filter:brightness(0) invert(1);">` : '');
   const projectName = state._project || 'Material Planer';
   const projectDate = state._date || new Date().toLocaleDateString('de-DE');
 
@@ -132,8 +135,17 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 .ktd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:8.5pt;color:#5A6678;}
 .slim-footer{background:#0b0d14;height:9mm;display:flex;align-items:center;justify-content:space-between;padding:0 10mm;margin-top:8mm;}
 .slim-footer span{font-family:'JetBrains Mono',monospace;font-size:8.5pt;letter-spacing:0.14em;text-transform:uppercase;color:#9AA3B5;}
+.closing-footer{page-break-before:always;background:#0b0d14;min-height:36mm;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:8mm 10mm;gap:10mm;}
+.cf-left{color:#dde2ee;}.cf-center{display:flex;justify-content:center;align-items:center;}.cf-right{color:#dde2ee;text-align:right;}
+.cf-label{font-family:'JetBrains Mono',monospace;font-size:8pt;letter-spacing:0.22em;text-transform:uppercase;color:#9AA3B5;}
+.cf-val{font-family:'Geist',sans-serif;font-size:10pt;font-weight:500;color:#dde2ee;margin-top:1px;}
 .np{margin:8px 10mm;padding:8px;background:#F1EFE9;border:1px solid #D6D9DE;font-size:8pt;color:#333;border-radius:2px;font-family:'JetBrains Mono',monospace;}
-@media print{.np{display:none!important;}.slim-footer{position:fixed;bottom:0;left:0;right:0;}@page{size:A4 ${orient};margin:0mm 0mm 12mm 0mm;}}
+@media print{
+  .np{display:none!important;}
+  .band{position:fixed;top:0;left:0;right:0;z-index:100;}
+  .slim-footer{position:fixed;bottom:0;left:0;right:0;z-index:100;}
+  @page{size:A4 ${orient};margin:14mm 0mm 9mm 0mm;}
+}
 </style></head><body>
 <div class="band">
   <div>${lbPlaner}</div>
@@ -142,7 +154,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer · Touring Production · ${projectDate} · ◆ v0.5.9.13</div>
+    <div class="ps">Material Planer · Touring Production · ${projectDate} · ◆ v0.5.9.14</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}</div>
 </div>
@@ -160,6 +172,23 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="slim-footer">
   <span>NYX Lightwork · Material Planer</span>
   <span>${projectDate}</span>
+</div>
+<div class="closing-footer">
+  <div class="cf-left">
+    <div class="cf-label">Projekt</div>
+    <div class="cf-val">${esc(projectName)}</div>
+    <div class="cf-label" style="margin-top:6px;">Datum</div>
+    <div class="cf-val">${projectDate}</div>
+    <div class="cf-label" style="margin-top:6px;">Version</div>
+    <div class="cf-val">◆ v0.5.9.14</div>
+  </div>
+  <div class="cf-center">${lbCfCenter}</div>
+  <div class="cf-right">
+    <div class="cf-label">Erstellt mit</div>
+    <div class="cf-val">Material Planer</div>
+    <div class="cf-label" style="margin-top:6px;">NYX Lightwork</div>
+    <div class="cf-val">Touring Production</div>
+  </div>
 </div>
 <div class="np"><strong>Cmd+P</strong> / <strong>Strg+P</strong> → "Als PDF speichern"</div>
 <script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script>

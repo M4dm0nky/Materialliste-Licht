@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.14] — 2026-05-21
+
+### Geändert
+- `pdf.js`: Top Band jetzt `position:fixed` im Druck → erscheint auf jeder Seite; `@page{margin:14mm 0mm 9mm 0mm}` verhindert Content-Überlap; Closing Footer (36mm, navy, 3-spaltig: Metadaten | Logo | Signatur) auf eigener letzter Seite ergänzt
+
+---
+
 ## [v0.5.9.13] — 2026-05-21
 
 ### Geändert
