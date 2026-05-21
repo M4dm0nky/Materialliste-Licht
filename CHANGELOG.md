@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.3] — 2026-05-21
+
+### Geändert
+- `render.js`: Kein „+ MATERIAL HINZUFÜGEN"-Button mehr — nur noch „🔍 MATERIAL SUCHEN" (grün) am Panel-Ende
+- `render.js`: Empty-State-Text aktualisiert auf neuen Workflow (suchen statt hinzufügen)
+
+---
+
 ## [v0.5.9.2] — 2026-05-21
 
 ### Hinzugefügt

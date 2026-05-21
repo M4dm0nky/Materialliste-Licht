@@ -173,13 +173,10 @@ function rerenderCatInto(ci,panel){
     const es = document.createElement('div'); es.className='empty-state';
     es.innerHTML=`<div class="empty-icon">${_weltIcons[weltName]||'📦'}</div>
       <div class="empty-title">NOCH LEER</div>
-      <div class="empty-sub">Klicke auf "Material hinzufügen" und wähle aus dem Katalog — oder füge einen eigenen Eintrag hinzu.</div>
-      <button class="btn btn-green" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>
-      <button class="btn btn-outline" onclick="openWizSearch()">🔍 MATERIAL SUCHEN</button>`;
+      <div class="empty-sub">Klicke auf „Material suchen" und tippe einen Suchbegriff — das Material landet automatisch in der richtigen Welt.</div>`;
     panel.appendChild(es);
     const ar = document.createElement('div'); ar.className='add-row';
-    ar.innerHTML=`<button class="btn btn-green" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>
-      <button class="btn btn-outline" onclick="openWizSearch()">🔍 MATERIAL SUCHEN</button>`;
+    ar.innerHTML=`<button class="btn btn-green" onclick="openWizSearch()">🔍 MATERIAL SUCHEN</button>`;
     panel.appendChild(ar);
     return;
   }
@@ -254,8 +251,7 @@ function rerenderCatInto(ci,panel){
   }
 
   const ar = document.createElement('div'); ar.className='add-row';
-  ar.innerHTML=`<button class="btn btn-green" onclick="openWiz(${ci})">+ MATERIAL HINZUFÜGEN</button>
-    <button class="btn btn-outline" onclick="openWizSearch()">🔍 MATERIAL SUCHEN</button>`;
+  ar.innerHTML=`<button class="btn btn-green" onclick="openWizSearch()">🔍 MATERIAL SUCHEN</button>`;
   panel.appendChild(ar);
 }
 
