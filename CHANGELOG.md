@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.16] — 2026-05-21
+
+### Geändert
+- `pdf.js`: 3 Print-Bugs behoben — (1) CSS `counter(page)`/`counter(pages)` entfernt (funktionierten nicht in Chrome Print, zeigten "0/0"), rechte Spalte Slim Footer zeigt jetzt Datum; (2) NYX Primary Logo: `width`/`height` Attribute aus SVG-Root entfernt damit `height:22mm` in CSS korrekt greift; (3) `.ph{padding-top:2mm}` in `@media print` gegen Band-Überlappung auf Seite 1
+
+---
+
 ## [v0.5.9.15] — 2026-05-21
 
 ### Geändert
