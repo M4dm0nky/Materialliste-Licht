@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.11] — 2026-05-21
+
+### Geändert
+- `catalog.js`: Vollständiger Katalog-Audit — Verbrauchsmaterial, System & Sonderzubehör und Farbfolien LEE korrekt auf qty-type gestellt (Spezifikationen wie "3m breit", "5l", "20kg", "Rolle/Geschnitten" in b-Feld verschoben)
+- `catalog.js`: Lichtwelt-Migration auf smart umgestellt (respektiert Typen mit echten Längen); neue datengetriebene Migration als Sicherheitsnetz
+
+---
+
 ## [v0.5.9.10] — 2026-05-21
 
 ### Geändert

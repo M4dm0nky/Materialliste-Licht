@@ -158,14 +158,14 @@ const CATALOG = {
     {n:"Absperrband Rot/Weiss",l:""},{n:"Markierungstape Rot/Weiss",l:""},
     {n:"Markierungstape gelb/schwarz",l:""},{n:"Beschriftungstape orange",l:""},
     {n:"Beschriftungstape gelb",l:""},{n:"Beschriftungstape pink",l:""},
-    {n:"Beschriftungstape grün",l:""},{n:"Dekomolton 1lfm",l:"3m breit"}
+    {n:"Beschriftungstape grün",l:""},{n:"Dekomolton 1lfm",l:"",b:"3m breit"}
   ]},
   "System & Sonderzubehör":{cat:"Verbrauchswelt",items:[
     {n:"Notenpultlampen",l:""},{n:"Handdimmer",l:""},{n:"Baufluter 500W",l:""},
     {n:"mini At10",l:""},{n:"Patchkabel → Schuko F",l:""},{n:"Schuko M → Patchkabel",l:""},
-    {n:"Ersatzbrenner Kiste",l:""},{n:"Nebelfluid Fog",l:"5l"},
-    {n:"Nebelfluid Tour Haze",l:"5l"},{n:"Nebelfluid MDG",l:"5l"},
-    {n:"CO2 Flasche",l:"20kg"},{n:"Trichter",l:""},{n:"Ventilator",l:""}
+    {n:"Ersatzbrenner Kiste",l:""},{n:"Nebelfluid Fog",l:"",b:"5l"},
+    {n:"Nebelfluid Tour Haze",l:"",b:"5l"},{n:"Nebelfluid MDG",l:"",b:"5l"},
+    {n:"CO2 Flasche",l:"",b:"20kg"},{n:"Trichter",l:""},{n:"Ventilator",l:""}
   ]},
   "Büro & Office":{cat:"Verbrauchswelt",items:[
     {n:"Podest 2×1m",l:""},{n:"Podest Fuß 60cm",l:""},{n:"Podest Fuß 20cm Rolle",l:""},
@@ -174,7 +174,7 @@ const CATALOG = {
     {n:"Kaffeemaschinen Case",l:""},{n:"Bürostuhl",l:""}
   ]},
   "Farbfolien LEE":{cat:"Verbrauchswelt",items:
-    Array.from({length:17},()=>({n:"LEE",l:"Rolle/Geschnitten"}))
+    Array.from({length:17},()=>({n:"LEE",l:"",b:"Rolle/Geschnitten"}))
   },
   "Dimmer & Feststrom VT":{cat:"Stromwelt",items:[
     {n:"Handdimmer 2kW",l:"",b:"Schuko"},
@@ -350,18 +350,28 @@ function initCatalogs(){
         });
       });
       if(fixedQty) saveCatalogsStore();
-      // Migration: ALLE Lichtwelt-Typen auf qty erzwingen (deckt auch Custom-Typen ab)
+      // Migration: Lichtwelt-Typen ohne echte Längen auf qty erzwingen (smart — respektiert künftige Längen-Typen)
       let fixedLicht = false;
       catalogsStore.catalogs.forEach(c=>{
         Object.values(c.types||{}).forEach(t=>{
-          if(t.cat==='Lichtwelt' && t.unit_type!=='qty'){
+          if(t.cat==='Lichtwelt' && t.unit_type!=='qty' && t.items.every(it=>!it.l)){
             t.unit_type='qty';
-            t.items=t.items.map(it=>({...it,l:''}));
             fixedLicht=true;
           }
         });
       });
       if(fixedLicht) saveCatalogsStore();
+      // Datengetriebene Migration: jeder Typ mit unit_type='lengths' aber allen leeren l-Feldern → qty
+      let fixedOrphan = false;
+      catalogsStore.catalogs.forEach(c=>{
+        Object.values(c.types||{}).forEach(t=>{
+          if(t.unit_type==='lengths' && t.items.every(it=>!it.l)){
+            t.unit_type='qty';
+            fixedOrphan=true;
+          }
+        });
+      });
+      if(fixedOrphan) saveCatalogsStore();
       activeCatalogId = 'cat-default';
       return;
     }
