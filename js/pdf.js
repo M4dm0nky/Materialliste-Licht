@@ -161,7 +161,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
   .band{position:fixed;top:0;left:0;right:0;z-index:100;}
   .slim-footer{position:fixed;bottom:0;left:0;right:0;z-index:100;}
   .ph{padding-top:2mm;}
-  @page{size:A4 ${orient};margin:14mm 0mm 9mm 0mm;}
+  @page{size:A4 ${orient};margin:14mm 0mm 9mm 0mm;@top-left{content:"";}@top-center{content:"";}@top-right{content:"";}@bottom-left{content:"";}@bottom-center{content:"";}@bottom-right{content:"";}}
 }
 </style></head><body>
 <div class="band">
@@ -171,7 +171,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.17</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.18</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}${lbPlaner}</div>
 </div>
@@ -189,14 +189,14 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="closing-content">
   <div class="cf-headline">Export vollst&auml;ndig.</div>
   <div class="cf-stats">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen &middot; ${missingCount}&nbsp;Fehlend</div>
-  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.17</div>
+  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.18</div>
 </div>
 <div class="closing-footer">
   <div class="cf-left">
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">&#9670; v0.5.9.15</div>
+    <div class="cf-val">◆ v0.5.9.18</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>

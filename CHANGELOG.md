@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.18] — 2026-05-21
+
+### Geändert
+- `pdf.js`: Browser-eigene Druck-Header/-Footer unterdrückt via CSS `@page` Margin Boxes (`@top-left{content:""}` etc.) — Chrome zeigte "about:blank" und Seitenzahlen unterhalb des Slim Footers auf jeder Seite; Versions-Bug behoben: `&#9670; v0.5.9.15` im Closing Footer war HTML-Entity statt Unicode-Zeichen und wurde nie aktualisiert
+
+---
+
 ## [v0.5.9.17] — 2026-05-21
 
 ### Geändert
