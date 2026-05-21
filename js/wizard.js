@@ -273,6 +273,7 @@ function _step2Qty(t){
 }
 
 function _step2Lengths(t){
+  t.items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
   const rows = t.items.map((item,i)=>{
     const label = item.l || item.n || '—';
     return `<div class="cablerow" id="cr-${i}">

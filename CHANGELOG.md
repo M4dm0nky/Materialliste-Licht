@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.6] — 2026-05-21
+
+### Geändert
+- `wizard.js`: `_step2Lengths()` sortiert Längen jetzt defensiv vor dem Rendern — neu hinzugefügte Längen erscheinen immer numerisch sortiert, nicht mehr am Ende
+
+---
+
 ## [v0.5.9.5] — 2026-05-21
 
 ### Geändert
