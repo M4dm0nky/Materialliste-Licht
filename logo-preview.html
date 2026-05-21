@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nyx Lightwork — Logo Varianten</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #07070f;
+    color: #f0f0f0;
+    font-family: 'Barlow Condensed', sans-serif;
+    padding: 40px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #e8c84a;
+    font-size: 2rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    color: #666;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 48px;
+  }
+
+  .section {
+    margin-bottom: 64px;
+  }
+  .section-title {
+    font-family: 'Share Tech Mono', monospace;
+    color: #4ae8a0;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1a1a2e;
+  }
+
+  .variants-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .variant-card {
+    background: #0d0d1a;
+    border: 1px solid #1e1e3a;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    transition: border-color 0.2s;
+    cursor: pointer;
+  }
+  .variant-card:hover {
+    border-color: #e8c84a;
+  }
+
+  .variant-label {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #e8c84a;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-align: center;
+  }
+  .variant-desc {
+    color: #888;
+    font-size: 0.85rem;
+    text-align: center;
+    max-width: 200px;
+    line-height: 1.4;
+  }
+
+  .sizes-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .size-label {
+    font-family: 'Share Tech Mono', monospace;
+    color: #444;
+    font-size: 0.65rem;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #1e1e3a, transparent);
+    margin: 16px 0;
+  }
+
+  /* Light background test */
+  .on-white {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 16px;
+  }
+</style>
+</head>
+<body>
+
+<h1>NYX LIGHTWORK</h1>
+<div class="subtitle">LOGO VARIANTEN — VISUAL PREVIEW</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  APP ICONS                                                  -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">// APP ICONS — 3 KONZEPTE</div>
+  <div class="variants-row">
+
+    <!-- KONZEPT A: THE BEAM -->
+    <div class="variant-card">
+      <div class="variant-label">A — THE BEAM</div>
+
+      <!-- 512px -->
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <defs>
+          <radialGradient id="bgA" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#1a1a2e"/>
+            <stop offset="100%" stop-color="#07070f"/>
+          </radialGradient>
+          <radialGradient id="glowA" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fffbe0" stop-opacity="1"/>
+            <stop offset="40%" stop-color="#e8c84a" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#e8c84a" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="beamA" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#e8c84a" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#e8c84a" stop-opacity="0.1"/>
+          </linearGradient>
+          <filter id="glowFilterA">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="softGlow">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <clipPath id="roundClipA">
+            <rect width="160" height="160" rx="36"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#roundClipA)">
+          <!-- bg -->
+          <rect width="160" height="160" fill="url(#bgA)"/>
+          <!-- beam cone -->
+          <polygon points="80,28 42,138 118,138" fill="url(#beamA)" opacity="0.25"/>
+          <!-- beam center bright line -->
+          <line x1="80" y1="28" x2="80" y2="138" stroke="#fffbe0" stroke-width="2" opacity="0.4"/>
+          <!-- glow at bottom -->
+          <ellipse cx="80" cy="134" rx="38" ry="10" fill="url(#glowA)" opacity="0.5"/>
+          <!-- spotlight housing -->
+          <rect x="62" y="14" width="36" height="22" rx="5" fill="#1e1e3a" stroke="#e8c84a" stroke-width="1.5"/>
+          <!-- lens ring -->
+          <ellipse cx="80" cy="28" rx="14" ry="5" fill="#0d0d1a" stroke="#e8c84a" stroke-width="1"/>
+          <!-- lens inner glow -->
+          <ellipse cx="80" cy="28" rx="8" ry="3" fill="#e8c84a" opacity="0.9" filter="url(#glowFilterA)"/>
+          <!-- N letterform in housing -->
+          <text x="80" y="24" font-family="Bebas Neue, sans-serif" font-size="13" fill="#e8c84a" text-anchor="middle" dominant-baseline="middle" opacity="0.9">N</text>
+          <!-- mounting bar -->
+          <rect x="55" y="10" width="50" height="5" rx="2.5" fill="#2a2a4a"/>
+          <!-- floor hotspot -->
+          <ellipse cx="80" cy="138" rx="26" ry="6" fill="#e8c84a" opacity="0.3" filter="url(#softGlow)"/>
+          <ellipse cx="80" cy="138" rx="10" ry="3" fill="#fffbe0" opacity="0.7"/>
+        </g>
+      </svg>
+
+      <!-- sizes -->
+      <div class="sizes-row">
+        <div>
+          <svg width="64" height="64" viewBox="0 0 160 160">
+            <defs>
+              <clipPath id="rc64A"><rect width="160" height="160" rx="36"/></clipPath>
+            </defs>
+            <g clip-path="url(#rc64A)">
+              <rect width="160" height="160" fill="#0d0d1a"/>
+              <polygon points="80,28 42,138 118,138" fill="#e8c84a" opacity="0.2"/>
+              <rect x="62" y="14" width="36" height="22" rx="5" fill="#1e1e3a" stroke="#e8c84a" stroke-width="1.5"/>
+              <ellipse cx="80" cy="28" rx="8" ry="3" fill="#e8c84a" opacity="0.9"/>
+              <ellipse cx="80" cy="138" rx="26" ry="6" fill="#e8c84a" opacity="0.35"/>
+              <text x="80" y="24" font-family="Bebas Neue, sans-serif" font-size="13" fill="#e8c84a" text-anchor="middle" dominant-baseline="middle">N</text>
+            </g>
+          </svg>
+          <div class="size-label">64px</div>
+        </div>
+        <div>
+          <svg width="32" height="32" viewBox="0 0 160 160">
+            <defs><clipPath id="rc32A"><rect width="160" height="160" rx="36"/></clipPath></defs>
+            <g clip-path="url(#rc32A)">
+              <rect width="160" height="160" fill="#0d0d1a"/>
+              <polygon points="80,28 42,138 118,138" fill="#e8c84a" opacity="0.25"/>
+              <rect x="62" y="14" width="36" height="22" rx="5" fill="#1e1e3a" stroke="#e8c84a" stroke-width="2"/>
+              <ellipse cx="80" cy="28" rx="8" ry="3" fill="#e8c84a"/>
+              <ellipse cx="80" cy="138" rx="22" ry="6" fill="#e8c84a" opacity="0.4"/>
+            </g>
+          </svg>
+          <div class="size-label">32px</div>
+        </div>
+        <div>
+          <svg width="16" height="16" viewBox="0 0 160 160">
+            <defs><clipPath id="rc16A"><rect width="160" height="160" rx="36"/></clipPath></defs>
+            <g clip-path="url(#rc16A)">
+              <rect width="160" height="160" fill="#0d0d1a"/>
+              <polygon points="80,20 45,140 115,140" fill="#e8c84a" opacity="0.3"/>
+              <ellipse cx="80" cy="30" rx="18" ry="8" fill="#e8c84a"/>
+              <ellipse cx="80" cy="140" rx="28" ry="8" fill="#e8c84a" opacity="0.5"/>
+            </g>
+          </svg>
+          <div class="size-label">16px</div>
+        </div>
+      </div>
+
+      <div class="variant-desc">Scheinwerfer von oben, goldener Lichtstrahl, klassisch professionell</div>
+    </div>
+
+    <!-- KONZEPT B: NYX EYE -->
+    <div class="variant-card">
+      <div class="variant-label">B — NYX EYE</div>
+
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <defs>
+          <radialGradient id="bgB" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#16213e"/>
+            <stop offset="100%" stop-color="#07070f"/>
+          </radialGradient>
+          <radialGradient id="irisGrad" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#fffbe0"/>
+            <stop offset="30%" stop-color="#e8c84a"/>
+            <stop offset="70%" stop-color="#c4922a"/>
+            <stop offset="100%" stop-color="#6b4a0e"/>
+          </radialGradient>
+          <filter id="eyeGlow">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <clipPath id="roundClipB"><rect width="160" height="160" rx="36"/></clipPath>
+        </defs>
+        <g clip-path="url(#roundClipB)">
+          <rect width="160" height="160" fill="url(#bgB)"/>
+
+          <!-- eye outline glow -->
+          <ellipse cx="80" cy="80" rx="58" ry="34" fill="none" stroke="#e8c84a" stroke-width="1" opacity="0.2"/>
+
+          <!-- eye white/outer -->
+          <path d="M22,80 Q80,30 138,80 Q80,130 22,80" fill="#0a0a18" stroke="#e8c84a" stroke-width="1.5"/>
+
+          <!-- iris — fresnel rings -->
+          <circle cx="80" cy="80" r="28" fill="url(#irisGrad)"/>
+          <circle cx="80" cy="80" r="28" fill="none" stroke="#c4922a" stroke-width="0.5" opacity="0.6"/>
+          <circle cx="80" cy="80" r="22" fill="none" stroke="#c4922a" stroke-width="0.5" opacity="0.5"/>
+          <circle cx="80" cy="80" r="16" fill="none" stroke="#e8c84a" stroke-width="0.5" opacity="0.5"/>
+          <circle cx="80" cy="80" r="10" fill="none" stroke="#fffbe0" stroke-width="0.5" opacity="0.4"/>
+
+          <!-- pupil — hexagon -->
+          <polygon points="80,68 89,73 89,87 80,92 71,87 71,73" fill="#07070f"/>
+          <polygon points="80,68 89,73 89,87 80,92 71,87 71,73" fill="none" stroke="#4ae8a0" stroke-width="1" opacity="0.8"/>
+
+          <!-- pupil inner dot -->
+          <circle cx="80" cy="80" r="4" fill="#4ae8a0" opacity="0.9" filter="url(#eyeGlow)"/>
+
+          <!-- iris highlight -->
+          <ellipse cx="70" cy="72" rx="6" ry="4" fill="white" opacity="0.15" transform="rotate(-20 70 72)"/>
+
+          <!-- eyelashes / rays -->
+          <line x1="22" y1="80" x2="10" y2="80" stroke="#e8c84a" stroke-width="1" opacity="0.4"/>
+          <line x1="138" y1="80" x2="150" y2="80" stroke="#e8c84a" stroke-width="1" opacity="0.4"/>
+        </g>
+      </svg>
+
+      <div class="sizes-row">
+        <div>
+          <svg width="64" height="64" viewBox="0 0 160 160">
+            <defs><clipPath id="rc64B"><rect width="160" height="160" rx="36"/></clipPath></defs>
+            <g clip-path="url(#rc64B)">
+              <rect width="160" height="160" fill="#0d0d1a"/>
+              <path d="M22,80 Q80,30 138,80 Q80,130 22,80" fill="#0a0a18" stroke="#e8c84a" stroke-width="2"/>
+              <circle cx="80" cy="80" r="28" fill="#c4922a"/>
+              <circle cx="80" cy="80" r="20" fill="none" stroke="#e8c84a" stroke-width="1"/>
+              <polygon points="80,68 89,73 89,87 80,92 71,87 71,73" fill="#07070f" stroke="#4ae8a0" stroke-width="1.5"/>
+              <circle cx="80" cy="80" r="5" fill="#4ae8a0"/>
+            </g>
+          </svg>
+          <div class="size-label">64px</div>
+        </div>
+        <div>
+          <svg width="32" height="32" viewBox="0 0 160 160">
+            <defs><clipPath id="rc32B"><rect width="160" height="160" rx="36"/></clipPath></defs>
+            <g clip-path="url(#rc32B)">
+              <rect width="160" height="160" fill="#0d0d1a"/>
+              <path d="M22,80 Q80,30 138,80 Q80,130 22,80" fill="#0a0a18" stroke="#e8c84a" stroke-width="3"/>
+              <circle cx="80" cy="80" r="28" fill="#c4922a"/>
+              <polygon points="80,68 89,73 89,87 80,92 71,87 71,73" fill="#07070f" stroke="#4ae8a0" stroke-width="2"/>
+              <circle cx="80" cy="80" r="6" fill="#4ae8a0"/>
+            </g>
+          </svg>
+          <div class="size-label">32px</div>
+        </div>
+        <div>
+          <svg width="16" height="16" viewBox="0 0 160 160">
+            <defs><clipPath id="rc16B"><rect width="160" height="160" rx="36"/></clipPath></defs>
+            <g clip-path="url(#rc16B)">
+              <rect width="160" height="160" fill="#0d0d1a"/>
+              <path d="M22,80 Q80,30 138,80 Q80,130 22,80" fill="#0a0a18"/>
+              <circle cx="80" cy="80" r="28" fill="#c4922a"/>
+              <circle cx="80" cy="80" r="12" fill="#07070f"/>
+              <circle cx="80" cy="80" r="6" fill="#4ae8a0"/>
+            </g>
+          </svg>
+          <div class="size-label">16px</div>
+        </div>
+      </div>
+
+      <div class="variant-desc">Allsehendes Auge, Fresnel-Linsen-Iris, Hexagon-Pupille als DMX-Node</div>
+    </div>
+
+    <!-- KONZEPT C: CIRCUIT NIGHT -->
+    <div class="variant-card">
+      <div class="variant-label">C — CIRCUIT NIGHT</div>
+
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <defs>
+          <radialGradient id="bgC" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#0d1a0d"/>
+            <stop offset="100%" stop-color="#07070f"/>
+          </radialGradient>
+          <filter id="circuitGlow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <clipPath id="roundClipC"><rect width="160" height="160" rx="36"/></clipPath>
+        </defs>
+        <g clip-path="url(#roundClipC)">
+          <rect width="160" height="160" fill="url(#bgC)"/>
+
+          <!-- grid background -->
+          <g stroke="#0d2a1a" stroke-width="0.5" opacity="0.5">
+            <line x1="0" y1="20" x2="160" y2="20"/>
+            <line x1="0" y1="40" x2="160" y2="40"/>
+            <line x1="0" y1="60" x2="160" y2="60"/>
+            <line x1="0" y1="80" x2="160" y2="80"/>
+            <line x1="0" y1="100" x2="160" y2="100"/>
+            <line x1="0" y1="120" x2="160" y2="120"/>
+            <line x1="0" y1="140" x2="160" y2="140"/>
+            <line x1="20" y1="0" x2="20" y2="160"/>
+            <line x1="40" y1="0" x2="40" y2="160"/>
+            <line x1="60" y1="0" x2="60" y2="160"/>
+            <line x1="80" y1="0" x2="80" y2="160"/>
+            <line x1="100" y1="0" x2="100" y2="160"/>
+            <line x1="120" y1="0" x2="120" y2="160"/>
+            <line x1="140" y1="0" x2="140" y2="160"/>
+          </g>
+
+          <!-- N letterform as circuit trace — thick version -->
+          <g stroke="#4ae8a0" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#circuitGlow)">
+            <!-- left vertical of N -->
+            <line x1="44" y1="32" x2="44" y2="128"/>
+            <!-- diagonal of N -->
+            <line x1="44" y1="32" x2="116" y2="128"/>
+            <!-- right vertical of N -->
+            <line x1="116" y1="32" x2="116" y2="128"/>
+          </g>
+
+          <!-- circuit nodes / solder points -->
+          <circle cx="44" cy="32" r="7" fill="#4ae8a0" opacity="0.9" filter="url(#circuitGlow)"/>
+          <circle cx="44" cy="128" r="7" fill="#4ae8a0" opacity="0.9" filter="url(#circuitGlow)"/>
+          <circle cx="116" cy="32" r="7" fill="#4ae8a0" opacity="0.9" filter="url(#circuitGlow)"/>
+          <circle cx="116" cy="128" r="7" fill="#4ae8a0" opacity="0.9" filter="url(#circuitGlow)"/>
+
+          <!-- mid nodes on diagonal -->
+          <circle cx="62" cy="55" r="4" fill="#4ae8a0" opacity="0.5"/>
+          <circle cx="80" cy="80" r="4" fill="#4ae8a0" opacity="0.5"/>
+          <circle cx="98" cy="105" r="4" fill="#4ae8a0" opacity="0.5"/>
+
+          <!-- horizontal traces extending out -->
+          <g stroke="#4ae8a0" stroke-width="1.5" opacity="0.4">
+            <line x1="44" y1="32" x2="20" y2="32"/>
+            <line x1="116" y1="32" x2="140" y2="32"/>
+            <line x1="44" y1="128" x2="20" y2="128"/>
+            <line x1="116" y1="128" x2="140" y2="128"/>
+          </g>
+          <!-- corner pads -->
+          <circle cx="20" cy="32" r="3" fill="#4ae8a0" opacity="0.3"/>
+          <circle cx="140" cy="32" r="3" fill="#4ae8a0" opacity="0.3"/>
+          <circle cx="20" cy="128" r="3" fill="#4ae8a0" opacity="0.3"/>
+          <circle cx="140" cy="128" r="3" fill="#4ae8a0" opacity="0.3"/>
+        </g>
+      </svg>
+
+      <div class="sizes-row">
+        <div>
+          <svg width="64" height="64" viewBox="0 0 160 160">
+            <defs><clipPath id="rc64C"><rect width="160" height="160" rx="36"/></clipPath></defs>
+            <g clip-path="url(#rc64C)">
+              <rect width="160" height="160" fill="#07070f"/>
+              <g stroke="#4ae8a0" stroke-width="5" fill="none" stroke-linecap="round">
+                <line x1="44" y1="32" x2="44" y2="128"/>
+                <line x1="44" y1="32" x2="116" y2="128"/>
+                <line x1="116" y1="32" x2="116" y2="128"/>
+              </g>
+              <circle cx="44" cy="32" r="8" fill="#4ae8a0"/>
+              <circle cx="44" cy="128" r="8" fill="#4ae8a0"/>
+              <circle cx="116" cy="32" r="8" fill="#4ae8a0"/>
+              <circle cx="116" cy="128" r="8" fill="#4ae8a0"/>
+            </g>
+          </svg>
+          <div class="size-label">64px</div>
+        </div>
+        <div>
+          <svg width="32" height="32" viewBox="0 0 160 160">
+            <defs><clipPath id="rc32C"><rect width="160" height="160" rx="36"/></clipPath></defs>
+            <g clip-path="url(#rc32C)">
+              <rect width="160" height="160" fill="#07070f"/>
+              <g stroke="#4ae8a0" stroke-width="6" fill="none" stroke-linecap="round">
+                <line x1="44" y1="32" x2="44" y2="128"/>
+                <line x1="44" y1="32" x2="116" y2="128"/>
+                <line x1="116" y1="32" x2="116" y2="128"/>
+              </g>
+              <circle cx="44" cy="32" r="10" fill="#4ae8a0"/>
+              <circle cx="44" cy="128" r="10" fill="#4ae8a0"/>
+              <circle cx="116" cy="32" r="10" fill="#4ae8a0"/>
+              <circle cx="116" cy="128" r="10" fill="#4ae8a0"/>
+            </g>
+          </svg>
+          <div class="size-label">32px</div>
+        </div>
+        <div>
+          <svg width="16" height="16" viewBox="0 0 160 160">
+            <defs><clipPath id="rc16C"><rect width="160" height="160" rx="36"/></clipPath></defs>
+            <g clip-path="url(#rc16C)">
+              <rect width="160" height="160" fill="#07070f"/>
+              <g stroke="#4ae8a0" stroke-width="8" fill="none" stroke-linecap="round">
+                <line x1="44" y1="32" x2="44" y2="128"/>
+                <line x1="44" y1="32" x2="116" y2="128"/>
+                <line x1="116" y1="32" x2="116" y2="128"/>
+              </g>
+              <circle cx="44" cy="32" r="12" fill="#4ae8a0"/>
+              <circle cx="44" cy="128" r="12" fill="#4ae8a0"/>
+              <circle cx="116" cy="32" r="12" fill="#4ae8a0"/>
+              <circle cx="116" cy="128" r="12" fill="#4ae8a0"/>
+            </g>
+          </svg>
+          <div class="size-label">16px</div>
+        </div>
+      </div>
+
+      <div class="variant-desc">N als Leiterbahn, Schaltplan-Grid, Signal-Grün — technisch & minimal</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  WORDMARKS / FULL LOGOS                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">// WORDMARKS — FULL LOGO</div>
+  <div class="variants-row">
+
+    <!-- WORDMARK A -->
+    <div class="variant-card" style="min-width: 360px;">
+      <div class="variant-label">A — BEAM + WORDMARK</div>
+      <svg width="340" height="90" viewBox="0 0 340 90">
+        <defs>
+          <linearGradient id="beamWM" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#e8c84a"/>
+            <stop offset="100%" stop-color="#e8c84a" stop-opacity="0.2"/>
+          </linearGradient>
+        </defs>
+        <rect width="340" height="90" fill="#0d0d1a" rx="8"/>
+
+        <!-- mini icon -->
+        <rect x="16" y="14" width="38" height="62" rx="6" fill="#0d0d1a"/>
+        <!-- housing -->
+        <rect x="22" y="18" width="26" height="16" rx="3" fill="#1e1e3a" stroke="#e8c84a" stroke-width="1"/>
+        <!-- lens -->
+        <ellipse cx="35" cy="34" rx="9" ry="3.5" fill="#0d0d1a" stroke="#e8c84a" stroke-width="0.8"/>
+        <ellipse cx="35" cy="34" rx="5" ry="2" fill="#e8c84a" opacity="0.9"/>
+        <!-- beam -->
+        <polygon points="35,34 18,76 52,76" fill="#e8c84a" opacity="0.18"/>
+        <!-- floor -->
+        <ellipse cx="35" cy="74" rx="17" ry="4" fill="#e8c84a" opacity="0.35"/>
+        <ellipse cx="35" cy="74" rx="7" ry="2" fill="#fffbe0" opacity="0.6"/>
+
+        <!-- divider -->
+        <line x1="64" y1="20" x2="64" y2="70" stroke="#1e1e3a" stroke-width="1"/>
+
+        <!-- NYX text -->
+        <text x="78" y="52" font-family="Bebas Neue, sans-serif" font-size="44" fill="#e8c84a" dominant-baseline="middle" letter-spacing="4">NYX</text>
+
+        <!-- LIGHTWORK -->
+        <text x="79" y="70" font-family="Barlow Condensed, sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" letter-spacing="8">LIGHTWORK</text>
+
+        <!-- thin line -->
+        <line x1="78" y1="58" x2="330" y2="58" stroke="#e8c84a" stroke-width="0.5" opacity="0.4"/>
+      </svg>
+
+      <!-- on light bg -->
+      <div class="on-white">
+        <svg width="340" height="90" viewBox="0 0 340 90">
+          <rect width="340" height="90" fill="#f5f5f5" rx="8"/>
+          <rect x="22" y="18" width="26" height="16" rx="3" fill="#ddd" stroke="#1a1a2e" stroke-width="1"/>
+          <ellipse cx="35" cy="34" rx="9" ry="3.5" fill="#f5f5f5" stroke="#1a1a2e" stroke-width="0.8"/>
+          <ellipse cx="35" cy="34" rx="5" ry="2" fill="#1a1a2e" opacity="0.9"/>
+          <polygon points="35,34 18,76 52,76" fill="#1a1a2e" opacity="0.1"/>
+          <ellipse cx="35" cy="74" rx="17" ry="4" fill="#1a1a2e" opacity="0.15"/>
+          <line x1="64" y1="20" x2="64" y2="70" stroke="#ccc" stroke-width="1"/>
+          <text x="78" y="52" font-family="Bebas Neue, sans-serif" font-size="44" fill="#1a1a2e" dominant-baseline="middle" letter-spacing="4">NYX</text>
+          <text x="79" y="70" font-family="Barlow Condensed, sans-serif" font-size="13" font-weight="600" fill="#333" letter-spacing="8">LIGHTWORK</text>
+          <line x1="78" y1="58" x2="330" y2="58" stroke="#1a1a2e" stroke-width="0.5" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="variant-desc">Scheinwerfer-Icon + NYX groß + LIGHTWORK schmal — klassisch, lesbar</div>
+    </div>
+
+    <!-- WORDMARK B -->
+    <div class="variant-card" style="min-width: 360px;">
+      <div class="variant-label">B — EYE + STACKED</div>
+      <svg width="340" height="110" viewBox="0 0 340 110">
+        <rect width="340" height="110" fill="#0d0d1a" rx="8"/>
+
+        <!-- centered layout -->
+        <!-- eye mini -->
+        <g transform="translate(130, 18)">
+          <path d="M0,22 Q40,0 80,22 Q40,44 0,22" fill="#0a0a18" stroke="#e8c84a" stroke-width="1.5"/>
+          <circle cx="40" cy="22" r="14" fill="#c4922a"/>
+          <circle cx="40" cy="22" r="14" fill="none" stroke="#e8c84a" stroke-width="0.5"/>
+          <circle cx="40" cy="22" r="10" fill="none" stroke="#e8c84a" stroke-width="0.4"/>
+          <polygon points="40,15 46,18.5 46,25.5 40,29 34,25.5 34,18.5" fill="#07070f" stroke="#4ae8a0" stroke-width="1"/>
+          <circle cx="40" cy="22" r="3" fill="#4ae8a0"/>
+        </g>
+
+        <!-- NYX centered -->
+        <text x="170" y="80" font-family="Bebas Neue, sans-serif" font-size="36" fill="#e8c84a" text-anchor="middle" letter-spacing="12">NYX</text>
+
+        <!-- horizontal rule -->
+        <line x1="80" y1="88" x2="260" y2="88" stroke="#e8c84a" stroke-width="0.5" opacity="0.5"/>
+
+        <!-- LIGHTWORK centered -->
+        <text x="170" y="103" font-family="Barlow Condensed, sans-serif" font-size="11" font-weight="400" fill="#888" text-anchor="middle" letter-spacing="10">LIGHTWORK</text>
+      </svg>
+      <div class="variant-desc">Gestapelt, zentriert — gut für quadratische Flächen, Merchandise, Stempel</div>
+    </div>
+
+    <!-- WORDMARK C -->
+    <div class="variant-card" style="min-width: 360px;">
+      <div class="variant-label">C — CIRCUIT HORIZONTAL</div>
+      <svg width="340" height="90" viewBox="0 0 340 90">
+        <rect width="340" height="90" fill="#0d0d1a" rx="8"/>
+
+        <!-- mini circuit N -->
+        <g transform="translate(16, 15)">
+          <rect x="0" y="0" width="50" height="60" rx="8" fill="#07070f" stroke="#1e3a1e" stroke-width="1"/>
+          <g stroke="#4ae8a0" stroke-width="3" fill="none" stroke-linecap="round">
+            <line x1="13" y1="10" x2="13" y2="50"/>
+            <line x1="13" y1="10" x2="37" y2="50"/>
+            <line x1="37" y1="10" x2="37" y2="50"/>
+          </g>
+          <circle cx="13" cy="10" r="4" fill="#4ae8a0"/>
+          <circle cx="13" cy="50" r="4" fill="#4ae8a0"/>
+          <circle cx="37" cy="10" r="4" fill="#4ae8a0"/>
+          <circle cx="37" cy="50" r="4" fill="#4ae8a0"/>
+        </g>
+
+        <!-- divider -->
+        <line x1="76" y1="20" x2="76" y2="70" stroke="#1e3a1e" stroke-width="1"/>
+
+        <!-- NYX in green this time -->
+        <text x="90" y="52" font-family="Bebas Neue, sans-serif" font-size="44" fill="#4ae8a0" dominant-baseline="middle" letter-spacing="4">NYX</text>
+
+        <!-- LIGHTWORK in mono -->
+        <text x="91" y="70" font-family="Share Tech Mono, monospace" font-size="11" fill="#4ae8a0" letter-spacing="4" opacity="0.7">LIGHTWORK</text>
+
+        <!-- thin line -->
+        <line x1="90" y1="58" x2="330" y2="58" stroke="#4ae8a0" stroke-width="0.5" opacity="0.3"/>
+
+        <!-- decorative traces -->
+        <line x1="245" y1="20" x2="330" y2="20" stroke="#4ae8a0" stroke-width="0.5" opacity="0.2"/>
+        <line x1="260" y1="70" x2="330" y2="70" stroke="#4ae8a0" stroke-width="0.5" opacity="0.2"/>
+        <circle cx="330" cy="20" r="2" fill="#4ae8a0" opacity="0.3"/>
+        <circle cx="330" cy="70" r="2" fill="#4ae8a0" opacity="0.3"/>
+      </svg>
+      <div class="variant-desc">Signal-Grün, Mono-Font, Circuit-Traces — maximaler Tech-Look</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  FARBVERGLEICH                                              -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">// FARBPALETTE</div>
+  <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div style="width:60px;height:60px;border-radius:8px;background:#e8c84a;"></div>
+      <div style="font-family:Share Tech Mono,monospace;font-size:0.7rem;color:#888">#e8c84a<br>GOLD</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div style="width:60px;height:60px;border-radius:8px;background:#4ae8a0;"></div>
+      <div style="font-family:Share Tech Mono,monospace;font-size:0.7rem;color:#888">#4ae8a0<br>SIGNAL</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div style="width:60px;height:60px;border-radius:8px;background:#1a1a2e;border:1px solid #333"></div>
+      <div style="font-family:Share Tech Mono,monospace;font-size:0.7rem;color:#888">#1a1a2e<br>DEEP</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div style="width:60px;height:60px;border-radius:8px;background:#07070f;border:1px solid #333"></div>
+      <div style="font-family:Share Tech Mono,monospace;font-size:0.7rem;color:#888">#07070f<br>NIGHT</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div style="width:60px;height:60px;border-radius:8px;background:#f0f0f0;"></div>
+      <div style="font-family:Share Tech Mono,monospace;font-size:0.7rem;color:#888">#f0f0f0<br>WHITE</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div style="width:60px;height:60px;border-radius:8px;background:#e84a4a;"></div>
+      <div style="font-family:Share Tech Mono,monospace;font-size:0.7rem;color:#888">#e84a4a<br>ALERT</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--  KOMBINATIONS-EMPFEHLUNG                                    -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">// EMPFEHLUNG — KOMBI</div>
+  <div class="variants-row">
+    <div class="variant-card" style="border-color: #e8c84a;">
+      <div class="variant-label" style="font-size:0.8rem; color:#4ae8a0">★ EMPFOHLEN</div>
+      <div style="display:flex;gap:24px;align-items:center;">
+        <!-- App Icon A -->
+        <div style="text-align:center">
+          <svg width="80" height="80" viewBox="0 0 160 160">
+            <defs>
+              <clipPath id="rcFinal"><rect width="160" height="160" rx="36"/></clipPath>
+              <radialGradient id="bgFinal" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#1a1a2e"/>
+                <stop offset="100%" stop-color="#07070f"/>
+              </radialGradient>
+            </defs>
+            <g clip-path="url(#rcFinal)">
+              <rect width="160" height="160" fill="url(#bgFinal)"/>
+              <polygon points="80,28 42,138 118,138" fill="#e8c84a" opacity="0.2"/>
+              <line x1="80" y1="28" x2="80" y2="138" stroke="#fffbe0" stroke-width="2" opacity="0.3"/>
+              <rect x="62" y="14" width="36" height="22" rx="5" fill="#1e1e3a" stroke="#e8c84a" stroke-width="1.5"/>
+              <ellipse cx="80" cy="28" rx="14" ry="5" fill="#0d0d1a" stroke="#e8c84a" stroke-width="1"/>
+              <ellipse cx="80" cy="28" rx="8" ry="3" fill="#e8c84a" opacity="0.9"/>
+              <text x="80" y="24" font-family="Bebas Neue, sans-serif" font-size="13" fill="#e8c84a" text-anchor="middle" dominant-baseline="middle">N</text>
+              <rect x="55" y="10" width="50" height="5" rx="2.5" fill="#2a2a4a"/>
+              <ellipse cx="80" cy="138" rx="26" ry="6" fill="#e8c84a" opacity="0.3"/>
+              <ellipse cx="80" cy="138" rx="10" ry="3" fill="#fffbe0" opacity="0.7"/>
+            </g>
+          </svg>
+          <div class="size-label" style="font-size:0.7rem;color:#888">App Icon</div>
+        </div>
+        <!-- Wordmark A -->
+        <div style="text-align:center">
+          <svg width="240" height="64" viewBox="0 0 340 90">
+            <rect width="340" height="90" fill="#0d0d1a" rx="8"/>
+            <rect x="22" y="18" width="26" height="16" rx="3" fill="#1e1e3a" stroke="#e8c84a" stroke-width="1"/>
+            <ellipse cx="35" cy="34" rx="9" ry="3.5" fill="#0d0d1a" stroke="#e8c84a" stroke-width="0.8"/>
+            <ellipse cx="35" cy="34" rx="5" ry="2" fill="#e8c84a" opacity="0.9"/>
+            <polygon points="35,34 18,76 52,76" fill="#e8c84a" opacity="0.18"/>
+            <ellipse cx="35" cy="74" rx="17" ry="4" fill="#e8c84a" opacity="0.35"/>
+            <ellipse cx="35" cy="74" rx="7" ry="2" fill="#fffbe0" opacity="0.6"/>
+            <line x1="64" y1="20" x2="64" y2="70" stroke="#1e1e3a" stroke-width="1"/>
+            <text x="78" y="52" font-family="Bebas Neue, sans-serif" font-size="44" fill="#e8c84a" dominant-baseline="middle" letter-spacing="4">NYX</text>
+            <text x="79" y="70" font-family="Barlow Condensed, sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" letter-spacing="8">LIGHTWORK</text>
+            <line x1="78" y1="58" x2="330" y2="58" stroke="#e8c84a" stroke-width="0.5" opacity="0.4"/>
+          </svg>
+          <div class="size-label" style="font-size:0.7rem;color:#888">Wordmark</div>
+        </div>
+      </div>
+      <div class="variant-desc" style="max-width:400px">Icon A + Wordmark A — konsistent mit App-Farbpalette, sofort als Lichttechnik erkennbar, skaliert von 16px bis Billboard</div>
+    </div>
+  </div>
+</div>
+
+<div style="height:40px"></div>
+</body>
+</html>

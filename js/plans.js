@@ -49,6 +49,22 @@ function migrateState(s){
       });
     });
   });
+  // Migration: Sections deren Katalog-Typ jetzt qty ist, aber noch length-Daten haben → bereinigen
+  const _types = getActiveCatalogTypes();
+  st.positions.forEach(pos => {
+    pos.categories.forEach(cat => {
+      cat.sections.forEach(sec => {
+        const ct = _types[sec.type_name];
+        if(ct?.unit_type === 'qty' && sec.items.some(it => it.length)) {
+          sec.unit_type = 'qty';
+          sec.items.forEach(it => {
+            it.length = '';
+            if(!it.name) it.name = sec.type_name||'';
+          });
+        }
+      });
+    });
+  });
   // Migration v0.11 → v0.12: 4 Kategorien → 5 Welten
   const OLD_CAT_NAMES = new Set(["Kabel Liste","Zubehör Liste","Hardware Liste","Lampen Liste"]);
   const needsWeltMigration = st.positions && st.positions.length > 0 &&

@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.12] — 2026-05-21
+
+### Geändert
+- `plans.js`: State-Migration hinzugefügt — Sections deren Katalog-Typ jetzt `qty` ist, aber noch `length`-Werte in Items haben, werden beim Laden automatisch bereinigt (length auf '' gesetzt, unit_type korrigiert). Behebt "MARTIN MAC Viper XIP zeigt noch eine Länge".
+
+---
+
 ## [v0.5.9.11] — 2026-05-21
 
 ### Geändert
