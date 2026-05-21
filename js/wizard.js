@@ -15,6 +15,7 @@ function _saveRecent(typeKey){
 
 function openWiz(ci){ wiz={ci,targetSi:null,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
 function openWizToSec(ci,si){ wiz={ci,targetSi:si,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
+function openWizSearch(){ wiz={ci:-1,targetSi:null,key:null,sel:{},selLengths:{}}; showWiz('Material suchen'); step1(); }
 
 function _wizHasDirtyData(){
   return Object.values(wiz.sel||{}).some(v=>(v.a||0)+(v.s||0)>0);
@@ -34,9 +35,10 @@ function showWiz(title){ document.getElementById('mTitle').textContent=title; do
 
 function step1(){
   wiz.step = 1;
-  const ci = wiz.ci, catName = currentCats()[ci].name;
+  const ci = wiz.ci;
+  const catName = ci >= 0 ? currentCats()[ci].name : null;
   wiz._allEntries  = Object.entries(getActiveCatalogTypes());
-  wiz._entries     = wiz._allEntries.filter(([_,v])=>v.cat===catName);
+  wiz._entries     = ci >= 0 ? wiz._allEntries.filter(([_,v])=>v.cat===catName) : wiz._allEntries;
   wiz._gridEntries = [];
 
   const recent      = _loadRecent();
@@ -69,7 +71,7 @@ function step1(){
     </div>
     ${recentHtml}
     <div id="wizSearchInfoBar" style="font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">
-      ${esc(getActiveCatalog().name)} · ${esc(catName)}
+      ${ci >= 0 ? esc(getActiveCatalog().name)+' · '+esc(catName) : esc(getActiveCatalog().name)+' · ALLE WELTEN'}
     </div>
     <div id="wizGrid" class="catgrid">${wizBuildGrid('')}</div>`;
 
@@ -104,11 +106,12 @@ function wizUpdateSearch(val){
   const info = document.getElementById('wizSearchInfoBar');
   if(info) info.textContent = val.trim()
     ? (wiz._gridEntries.length+' Treffer')
-    : (esc(getActiveCatalog().name)+' · '+currentCats()[wiz.ci].name);
+    : (wiz.ci >= 0 ? esc(getActiveCatalog().name)+' · '+currentCats()[wiz.ci].name : esc(getActiveCatalog().name)+' · ALLE WELTEN');
 }
 
 function wizBuildGrid(query){
-  const ci        = wiz.ci, catName = currentCats()[ci].name;
+  const ci        = wiz.ci;
+  const catName   = ci >= 0 ? currentCats()[ci].name : null;
   const activeCat = getActiveCatalog();
   const allEntries = wiz._allEntries||[];
   if(!wiz._gridEntries) wiz._gridEntries=[];
@@ -153,6 +156,7 @@ function wizBuildGrid(query){
   };
 
   if(!query){
+    if(ci < 0) return '<div class="wiz-search-hint">Suchbegriff eingeben — z.B. Pipe, DMX, Scheinwerfer, Han16&nbsp;…</div>';
     const entries = allEntries.filter(([_,v])=>v.cat===catName);
     if(!entries.length) return `<div style="color:var(--muted);font-size:13px;padding:24px;grid-column:1/-1;">
       Dieser Katalog enthält noch keine Einträge für „${esc(catName)}".

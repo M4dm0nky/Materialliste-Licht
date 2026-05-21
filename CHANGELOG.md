@@ -5,6 +5,27 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.2] — 2026-05-21
+
+### Hinzugefügt
+- `wizard.js`: Neue Funktion `openWizSearch()` — öffnet den Wizard im Global-Such-Modus (`ci = -1`), ohne Welt-Vorfilter
+- `render.js`: Neuer Button „🔍 MATERIAL SUCHEN" neben allen „+ MATERIAL HINZUFÜGEN"-Buttons (Empty State + Welt-Panel-Footer)
+- `css/components.css`: `.btn-outline` Stil für gedämpfte Sekundär-Buttons
+- `css/modals.css`: `.wiz-search-hint` Platzhaltertext wenn Global-Suche noch leer ist
+
+### Geändert
+- `wizard.js`: `step1()` und `wizBuildGrid()` handhaben `ci = -1` korrekt (kein World-Filter, kein `currentCats()[-1]`-Crash)
+
+---
+
+## [v0.5.9.1] — 2026-05-21
+
+### Hinzugefügt
+- `catalog.js`: Neue Katalogeinträge „Pipe Alu" und „Pipe Stahl" in der Riggingwelt, Längen 0,5m / 1m / 1,5m / 2m / 2,5m
+- `catalog.js`: Migration in `initCatalogs()` — neue Pipe-Typen werden automatisch in alle vorhandenen Kataloge eingetragen
+
+---
+
 ## [v0.5.9] — 2026-05-20
 
 ### Geändert

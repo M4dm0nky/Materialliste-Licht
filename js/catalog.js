@@ -120,6 +120,12 @@ const CATALOG = {
     {n:"Gelenkschelle silber",l:""},{n:"Starre Schelle silber",l:""},
     {n:"Halbschelle + Ring silber",l:""}
   ]},
+  "Pipe Alu":{cat:"Riggingwelt",items:[
+    {n:"Pipe Alu",l:"0,5m"},{n:"",l:"1m"},{n:"",l:"1,5m"},{n:"",l:"2m"},{n:"",l:"2,5m"}
+  ]},
+  "Pipe Stahl":{cat:"Riggingwelt",items:[
+    {n:"Pipe Stahl",l:"0,5m"},{n:"",l:"1m"},{n:"",l:"1,5m"},{n:"",l:"2m"},{n:"",l:"2,5m"}
+  ]},
   "Drop Arms & Verlängerungen":{cat:"Riggingwelt",items:[
     {n:"Drop Arm Moving Light schwarz",l:"1m"},{n:"",l:"1,5m"},{n:"",l:"2m"},{n:"",l:"3m"},
     {n:"Drop Arm TV-Zapfen Verlängerung",l:"45–65cm"},{n:"",l:"0,5–1m"},
@@ -319,6 +325,18 @@ function initCatalogs(){
         });
       });
       if(catMigrated) saveCatalogsStore();
+      // Migration: Pipe Alu + Pipe Stahl in alle vorhandenen Kataloge einpflegen
+      const _pipeTypes = ['Pipe Alu','Pipe Stahl'];
+      let pipeMigrated = false;
+      catalogsStore.catalogs.forEach(c=>{
+        _pipeTypes.forEach(pt=>{
+          if(!c.types[pt]){
+            c.types[pt] = {cat:'Riggingwelt',items:CATALOG[pt].items.map(it=>({...it})),unit_type:'lengths'};
+            pipeMigrated = true;
+          }
+        });
+      });
+      if(pipeMigrated) saveCatalogsStore();
       activeCatalogId = 'cat-default';
       return;
     }
