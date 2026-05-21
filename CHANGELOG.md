@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.13] — 2026-05-21
+
+### Geändert
+- `pdf.js`: PDF-Export komplett nach NYX Lightwork CI umgebaut — Fonts: Geist + JetBrains Mono; Farben: Void #0b0d14 / Paper #fff / Hairline #D6D9DE; kein Yellow im UI; Top Band (14mm navy), Header (Geist 26pt), Stat Strip (3 Werte: Positionen / Items / Fehlend), Data Table (CI-Typografie), Slim Footer (9mm navy)
+
+---
+
 ## [v0.5.9.12] — 2026-05-21
 
 ### Geändert
