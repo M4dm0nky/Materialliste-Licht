@@ -252,8 +252,9 @@ function _wizWeltBadge(){
 function _step2Qty(t){
   document.getElementById('mBody').innerHTML=`
     ${_wizStepsHeader()}
-    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:1px">
-      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Anzahl eingeben: ${_wizWeltBadge()}
+    <div style="margin-bottom:14px;">
+      <div style="font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">${esc(wiz.key)}</div>
+      <div style="font-size:11px;color:var(--muted);letter-spacing:1px;">Anzahl eingeben: ${_wizWeltBadge()}</div>
     </div>
     <div class="cablelist">
       <div class="cablerow" id="cr-0">
@@ -291,8 +292,9 @@ function _step2Lengths(t){
   }).join('');
   document.getElementById('mBody').innerHTML=`
     ${_wizStepsHeader()}
-    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:1px">
-      <b style="color:var(--accent)">${esc(wiz.key)}</b> — Längen ankreuzen und Anzahl eingeben: ${_wizWeltBadge()}
+    <div style="margin-bottom:14px;">
+      <div style="font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">${esc(wiz.key)}</div>
+      <div style="font-size:11px;color:var(--muted);letter-spacing:1px;">Längen ankreuzen und Anzahl eingeben: ${_wizWeltBadge()}</div>
     </div>
     <div class="cablelist">
       ${rows}

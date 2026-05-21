@@ -350,6 +350,18 @@ function initCatalogs(){
         });
       });
       if(fixedQty) saveCatalogsStore();
+      // Migration: ALLE Lichtwelt-Typen auf qty erzwingen (deckt auch Custom-Typen ab)
+      let fixedLicht = false;
+      catalogsStore.catalogs.forEach(c=>{
+        Object.values(c.types||{}).forEach(t=>{
+          if(t.cat==='Lichtwelt' && t.unit_type!=='qty'){
+            t.unit_type='qty';
+            t.items=t.items.map(it=>({...it,l:''}));
+            fixedLicht=true;
+          }
+        });
+      });
+      if(fixedLicht) saveCatalogsStore();
       activeCatalogId = 'cat-default';
       return;
     }

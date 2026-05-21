@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.10] — 2026-05-21
+
+### Geändert
+- `catalog.js`: Zweite Migration — erzwingt `unit_type:'qty'` für ALLE Custom-Typen mit `cat:'Lichtwelt'` (behebt auch benutzerdefinierte Fixture-Typen wie "MARTIN MAC Viper XIP")
+- `wizard.js`: Typname in Wizard Step 2 auf 16px fett gold vergrößert (gilt für qty- und lengths-Wizard)
+
+---
+
 ## [v0.5.9.9] — 2026-05-21
 
 ### Geändert
