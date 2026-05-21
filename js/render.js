@@ -277,11 +277,11 @@ function buildSecEl(ci,si){
         <span class="drag-handle" title="Sektion verschieben">⠿</span>
         <span class="chevron" onclick="toggleSec(${ci},${si})">▼</span><span class="sec-title-text" onclick="editSectionName(${ci},${si})" title="Klicken zum Umbenennen">${esc(sec.type_name)}</span>
       </div>
-      <div class="sechdr-col">DIFF</div>
-      <div class="sechdr-col">TOTAL</div>
       <div class="sechdr-col"># Stk.</div>
       <div class="sechdr-col">Spare</div>
+      <div class="sechdr-col">TOTAL</div>
       <div class="sechdr-col">Im Proj.</div>
+      <div class="sechdr-col">DIFF</div>
       <div class="sechdr-col">Kapitel</div>
       <div class="sechdr-actions">
         <button class="btn btn-sm btn-green" title="Aus Katalog hinzufügen" onclick="openWizToSec(${ci},${si})">+</button>
@@ -291,9 +291,9 @@ function buildSecEl(ci,si){
     <div class="secbody" id="body-${ci}-${si}">
       <table><thead><tr>
         <th>Bezeichnung</th><th class="sec-hdr-len">Länge/Typ</th>
-        <th class="num">DIFF</th><th class="num">TOTAL</th>
         <th class="num"># Stk.</th><th class="num">Spare</th>
-        <th class="num">Im Projekt</th>
+        <th class="num">TOTAL</th><th class="num">Im Projekt</th>
+        <th class="num">DIFF</th>
         <th>Kapitel</th><th>Bemerkung</th><th></th>
       </tr></thead><tbody id="tbody-${ci}-${si}"></tbody></table>
       <div class="addlength-row">
@@ -383,14 +383,14 @@ function buildRow(ci,si,ii){
       onchange="upf(${ci},${si},${ii},'name',this.value)" oninput="save()"></td>
     <td class="tdlen"><input type="text" value="${lenVal}" placeholder="${lenPlaceholder}"
       onchange="upf(${ci},${si},${ii},'length',this.value)" oninput="save()"></td>
-    <td class="td-diff zero" id="diff-${ci}-${si}-${ii}">—</td>
-    <td class="td-total" id="total-${ci}-${si}-${ii}">—</td>
     <td class="tdinput"><input type="number" min="0" value="${anzVal}"
       onchange="upn(${ci},${si},${ii},'anzahl',this)" oninput="lc(${ci},${si},${ii})"></td>
     <td class="tdinput"><input type="number" min="0" value="${sprVal}"
       onchange="upn(${ci},${si},${ii},'spare',this)" oninput="lc(${ci},${si},${ii})"></td>
+    <td class="td-total" id="total-${ci}-${si}-${ii}">—</td>
     <td class="tdinput"><input type="number" min="0" value="${impVal}"
       onchange="upn(${ci},${si},${ii},'im_projekt',this)" oninput="lc(${ci},${si},${ii})"></td>
+    <td class="td-diff zero" id="diff-${ci}-${si}-${ii}">—</td>
     <td class="tdtext"><input type="text" value="${kapVal}" placeholder="Kap…"
       onchange="upf(${ci},${si},${ii},'kapitel',this.value)" oninput="save()"></td>
     <td class="tdtext"><input type="text" value="${bemVal}" placeholder="Notiz…"

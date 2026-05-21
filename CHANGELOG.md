@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.7] — 2026-05-21
+
+### Geändert
+- `render.js`: Spaltenreihenfolge in Längen-Tabelle umgestellt — Logik jetzt: Bezeichnung | Länge/Typ | # Stk. | Spare | **TOTAL** | Im Projekt | **DIFF** | Kapitel
+- `css/components.css`: TOTAL und DIFF jetzt 20px fett (gleichwertig prominent); # Stk. / Spare / Im Projekt kleiner (15px)
+
+---
+
 ## [v0.5.9.6] — 2026-05-21
 
 ### Geändert
