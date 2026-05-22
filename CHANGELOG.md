@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.31] — 2026-05-22
+
+### Behoben
+- `pdf.js`: BEZEICHNUNG-Spalte wirklich breit — `table-layout:fixed` auf inner Content-Table + `<colgroup>` mit mm-Breiten; erster `<col>` (BEZEICHNUNG) ohne Breite füllt alles Übrige; v0.5.9.30 hatte `width:1%` auf `<td>` mit `table-layout:auto` verwendet, was Chrome ignoriert
+
+---
+
 ## [v0.5.9.30] — 2026-05-22
 
 ### Behoben
