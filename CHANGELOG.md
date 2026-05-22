@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.33] — 2026-05-22
+
+### Behoben
+- `pdf.js`: BEZEICHNUNG-Spalte Text-Overflow — `overflow:hidden` auf `.ntd`; `overflow-wrap:break-word` allein wird von Chrome-Print bei `table-layout:fixed` ignoriert; `overflow:hidden` clipped zuverlässig an der Spaltengrenze
+
+---
+
 ## [v0.5.9.32] — 2026-05-22
 
 ### Behoben
