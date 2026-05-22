@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.27] — 2026-05-22
+
+### Behoben
+- `pdf.js`: Abschluss-Seite auf Flex-Layout (NYX_CI-Pattern) umgestellt — `<table height:100%>` auf td-Ebene verteilte den Platz nicht korrekt (Chrome interpretierte `height:100%` als volle Tabellenhöhe für diese Zeile → Footer-Zeile overflow auf Extra-Seite); Fix: `<div class="closing-flex" style="height:272mm; display:flex; flex-direction:column; justify-content:space-between">` — explizite Höhe (nicht `min-height`) + `justify-content:space-between` nach NYX_CI-Colophon-Pattern
+
+---
+
 ## [v0.5.9.26] — 2026-05-22
 
 ### Behoben
