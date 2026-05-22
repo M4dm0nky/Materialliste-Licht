@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.29] — 2026-05-22
+
+### Behoben
+- `index.html`: PDF-Modal — "Hochkant" (portrait) als Standard vorausgewählt; `checked` war noch auf "Querformat" (landscape)
+
+---
+
 ## [v0.5.9.28] — 2026-05-22
 
 ### Geändert
