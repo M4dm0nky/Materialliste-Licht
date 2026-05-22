@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.30] — 2026-05-22
+
+### Behoben
+- `pdf.js`: BEZEICHNUNG-Spalte jetzt maximal breit — CSS-Trick `width:1%;white-space:nowrap` auf alle Zahl-/Typ-/Kapitel-Zellen; `.ntd{width:100%}` füllt automatisch den gesamten verbleibenden Raum; `colgroup` mit fixen Prozenten entfernt (wurde von Chrome mit `table-layout:auto` ignoriert)
+
+---
+
 ## [v0.5.9.29] — 2026-05-22
 
 ### Behoben

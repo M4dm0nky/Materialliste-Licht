@@ -94,9 +94,6 @@ function generatePDF(){
     return bodies;
   }
 
-  const colgroup = showDiff
-    ? `<colgroup><col style="width:40%"><col style="width:12%"><col style="width:7%"><col style="width:7%"><col style="width:7%"><col style="width:7%"><col style="width:7%"><col style="width:13%"></colgroup>`
-    : `<colgroup><col style="width:44%"><col style="width:14%"><col style="width:8%"><col style="width:8%"><col style="width:9%"><col style="width:8%"><col style="width:9%"></colgroup>`;
   let tableBodies = '';
   selPos.forEach((pi, idx) => {
     const pos = state.positions[pi];
@@ -134,10 +131,10 @@ thead th:nth-child(n+3){text-align:center;}
 .pos-hdr td{background:#0b0d14;color:#dde2ee;font-family:'Geist',sans-serif;font-size:22pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:12px 8px;text-align:center;border:none;}
 tbody.cat-group{page-break-inside:avoid;}
 tbody tr{border-bottom:1px solid #D6D9DE;}
-.ntd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;}
-.ntd2{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;text-align:center;}
-.ltd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;color:#5A6678;white-space:nowrap;}
-.ktd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:8.5pt;color:#5A6678;}
+.ntd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;width:100%;}
+.ntd2{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;text-align:center;white-space:nowrap;width:1%;}
+.ltd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;color:#5A6678;white-space:nowrap;width:1%;}
+.ktd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:8.5pt;color:#5A6678;white-space:nowrap;width:1%;}
 .closing-page{page-break-before:always;}
 .closing-flex{height:281mm;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
 .closing-footer{background:#0b0d14;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:8mm 10mm;gap:10mm;}
@@ -178,7 +175,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.29</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.30</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}</div>
 </div>
@@ -188,7 +185,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
   <div class="stat"><span class="stat-val">${missingCount}</span><span class="stat-lbl">Fehlend</span></div>
 </div>
 <div class="tw">
-<table>${colgroup}
+<table>
   <thead><tr><th>Bezeichnung</th><th>L&auml;nge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Gesamt</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>
   ${tableBodies}
 </table>
@@ -201,7 +198,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.5.9.29</div>
+    <div class="cf-val">◆ v0.5.9.30</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>
