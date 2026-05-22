@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.21] — 2026-05-22
+
+### Geändert
+- `pdf.js`: Abschluss-Footer ans Seitenende fixiert — `closing-content` + `closing-footer` in `.closing-page` wrapper eingeschlossen; `page-break-before:always` erzwingt eigene Seite, `min-height:258mm` + Flexbox + `margin-top:auto` schiebt dunklen Abschluss-Block ans untere Seitenende
+
+---
+
 ## [v0.5.9.20] — 2026-05-21
 
 ### Geändert
