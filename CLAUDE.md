@@ -58,7 +58,7 @@ Materialliste-Licht/
 
 ## Version & Live-URL
 
-- Aktuelle Version: **v0.5.9.27**
+- Aktuelle Version: **v0.5.9.28**
 - Live: https://m4dm0nky.github.io/Materialliste-Licht/
 
 ## Entwicklungs-Workflow

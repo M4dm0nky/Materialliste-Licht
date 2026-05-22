@@ -17,7 +17,7 @@ function generatePDF(){
   const onlyFilled  = document.getElementById('pdfOnlyFilled').checked;
   const onlyMissing = document.getElementById('pdfOnlyMissing').checked;
   const showDiff    = document.getElementById('pdfShowDiff').checked || onlyMissing;
-  const orient      = document.querySelector('input[name="pdfOrient"]:checked')?.value || 'landscape';
+  const orient      = document.querySelector('input[name="pdfOrient"]:checked')?.value || 'portrait';
   closeModal('pdfModal');
   if(!selPos.length){ toast('Bitte mindestens eine Position wählen.',true); return; }
 
@@ -26,7 +26,6 @@ function generatePDF(){
 
   const NYX_LOGO_PRIMARY = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280" style="height:22mm;width:auto;display:block;"><rect width="200" height="280" fill="#0b0d14"></rect><defs><filter id="gBolt_prim" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.5" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><filter id="gSoft_prim" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><radialGradient id="hexGrad_prim" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#f7c948" stop-opacity="0.09"></stop><stop offset="100%" stop-color="#f7c948" stop-opacity="0"></stop></radialGradient><linearGradient id="waveGrad_prim" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f7c948" stop-opacity="0"></stop><stop offset="18%" stop-color="#f7c948" stop-opacity="0.7"></stop><stop offset="55%" stop-color="#f7c948" stop-opacity="1"></stop><stop offset="85%" stop-color="#f7c948" stop-opacity="0.6"></stop><stop offset="100%" stop-color="#f7c948" stop-opacity="0.1"></stop></linearGradient><clipPath id="cbClip_prim"><rect x="51" y="49" width="98" height="112" rx="5"></rect></clipPath></defs><path d="M188,100 L144,176.21 L56,176.21 L12,100 L56,23.79 L144,23.79 Z" fill="url(#hexGrad_prim)"></path><path d="M188,100 L144,176.21 L56,176.21 L12,100 L56,23.79 L144,23.79 Z" fill="none" stroke="#dde2ee" stroke-width="1.8" opacity="0.2"></path><path d="M180,100 L140,169.28 L60,169.28 L20,100 L60,30.72 L140,30.72 Z" fill="none" stroke="#f7c948" stroke-width="0.6" opacity="0.1"></path><rect x="51" y="49" width="98" height="112" rx="5" fill="#1e2840" stroke="#dde2ee" stroke-width="1.6" opacity="0.9"></rect><g clip-path="url(#cbClip_prim)"><line x1="61" y1="71" x2="139" y2="71" stroke="#dde2ee" stroke-width="0.7" opacity="0.1"></line><line x1="61" y1="86.6" x2="139" y2="86.6" stroke="#dde2ee" stroke-width="0.7" opacity="0.1"></line><line x1="61" y1="117.8" x2="139" y2="117.8" stroke="#dde2ee" stroke-width="0.7" opacity="0.1"></line><line x1="61" y1="133.4" x2="139" y2="133.4" stroke="#dde2ee" stroke-width="0.7" opacity="0.1"></line><line x1="61" y1="149" x2="139" y2="149" stroke="#dde2ee" stroke-width="0.7" opacity="0.1"></line></g><line x1="58" y1="105" x2="151" y2="105" stroke="#dde2ee" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.15" clip-path="url(#cbClip_prim)"></line><path d="M60,105 L60.62,103.24 L61.24,101.5 L61.87,99.81 L62.49,98.19 L63.11,96.67 L63.73,95.26 L64.36,93.99 L64.98,92.86 L65.6,91.91 L66.22,91.14 L66.85,90.56 L67.47,90.18 L68.09,90.01 L68.72,90.05 L69.34,90.29 L69.96,90.73 L70.58,91.38 L71.2,92.21 L71.83,93.22 L72.45,94.39 L73.07,95.71 L73.69,97.16 L74.32,98.72 L74.94,100.36 L75.56,102.07 L76.19,103.82 L76.81,105.59 L77.43,107.35 L78.05,109.07 L78.67,110.74 L79.3,112.33 L79.92,113.82 L80.54,115.18 L81.16,116.41 L81.79,117.47 L82.41,118.37 L83.03,119.07 L83.66,119.59 L84.28,119.9 L84.9,120 L85.52,119.9 L86.14,119.59 L86.77,119.07 L87.39,118.37 L88.01,117.47 L88.63,116.41 L89.26,115.18 L89.88,113.82 L90.5,112.33 L91.13,110.74 L91.75,109.07 L92.37,107.35 L92.99,105.59 L93.62,103.82 L94.24,102.07 L94.86,100.36 L95.48,98.72 L96.1,97.16 L96.73,95.71 L97.35,94.39 L97.97,93.22 L98.59,92.21 L99.22,91.38 L99.84,90.73 L100.46,90.29 L101.08,90.05 L101.71,90.01 L102.33,90.18 L102.95,90.56 L103.57,91.14 L104.2,91.91 L104.82,92.86 L105.44,93.99 L106.06,95.26 L106.69,96.67 L107.31,98.19 L107.93,99.81 L108.55,101.5 L109.18,103.24 L109.8,105" stroke="url(#waveGrad_prim)" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#gBolt_prim)"></path><path d="M60,105 L60.62,103.24 L61.24,101.5 L61.87,99.81 L62.49,98.19 L63.11,96.67 L63.73,95.26 L64.36,93.99 L64.98,92.86 L65.6,91.91 L66.22,91.14 L66.85,90.56 L67.47,90.18 L68.09,90.01 L68.72,90.05 L69.34,90.29 L69.96,90.73 L70.58,91.38 L71.2,92.21 L71.83,93.22 L72.45,94.39 L73.07,95.71 L73.69,97.16 L74.32,98.72 L74.94,100.36 L75.56,102.07 L76.19,103.82 L76.81,105.59 L77.43,107.35 L78.05,109.07 L78.67,110.74 L79.3,112.33 L79.92,113.82 L80.54,115.18 L81.16,116.41 L81.79,117.47 L82.41,118.37 L83.03,119.07 L83.66,119.59 L84.28,119.9 L84.9,120 L85.52,119.9 L86.14,119.59 L86.77,119.07 L87.39,118.37 L88.01,117.47 L88.63,116.41 L89.26,115.18 L89.88,113.82 L90.5,112.33 L91.13,110.74 L91.75,109.07 L92.37,107.35 L92.99,105.59 L93.62,103.82 L94.24,102.07 L94.86,100.36 L95.48,98.72 L96.1,97.16 L96.73,95.71 L97.35,94.39 L97.97,93.22 L98.59,92.21 L99.22,91.38 L99.84,90.73 L100.46,90.29 L101.08,90.05 L101.71,90.01 L102.33,90.18 L102.95,90.56 L103.57,91.14 L104.2,91.91 L104.82,92.86 L105.44,93.99 L106.06,95.26 L106.69,96.67 L107.31,98.19 L107.93,99.81 L108.55,101.5 L109.18,103.24 L109.8,105" stroke="#f7c948" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.75"></path><circle cx="110.8" cy="105" r="15" fill="#f7c948" opacity="0.08" filter="url(#gBolt_prim)"></circle><circle cx="110.8" cy="105" r="11" fill="#f7c948" opacity="0.18" filter="url(#gBolt_prim)"></circle><circle cx="110.8" cy="105" r="8" fill="#f7c948" opacity="0.35" filter="url(#gSoft_prim)"></circle><circle cx="110.8" cy="105" r="6" fill="#f7c948"></circle><line x1="117.8" y1="105" x2="140" y2="105" stroke="#f7c948" stroke-width="2.5" stroke-linecap="round" opacity="0.7" filter="url(#gSoft_prim)"></line><polygon points="149,105 140,98.5 140,111.5" fill="#f7c948" opacity="0.85"></polygon><rect x="83" y="38.6" width="34" height="16" rx="6.1" fill="#1e2840" stroke="#f7c948" stroke-width="1.8" opacity="0.95"></rect><rect x="92" y="34" width="16" height="11" rx="4.4" fill="#1e2840" stroke="#f7c948" stroke-width="1.5" opacity="0.9"></rect><text x="100" y="236" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-weight="300" font-size="34" letter-spacing="14" fill="#dde2ee">NYX</text><text x="104" y="256" text-anchor="middle" font-family="Space Grotesk, system-ui, sans-serif" font-weight="400" font-size="9" letter-spacing="7" fill="#f7c948" opacity="0.55">LIGHTWORK</text></svg>`;
 
-  const lbPlaner  = logos.planer  ? `<img src="${logos.planer}"  style="max-height:14mm;max-width:50mm;object-fit:contain;">` : '';
   const lbBooking = logos.booking ? `<img src="${logos.booking}" style="max-height:14mm;max-width:40mm;object-fit:contain;">` : '';
   const lbBand    = logos.band    ? `<img src="${logos.band}"    style="max-height:14mm;max-width:40mm;object-fit:contain;">` : '';
   const projectName = state._project || 'Material Planer';
@@ -95,12 +94,14 @@ function generatePDF(){
     return bodies;
   }
 
+  const colgroup = showDiff
+    ? `<colgroup><col style="width:40%"><col style="width:12%"><col style="width:7%"><col style="width:7%"><col style="width:7%"><col style="width:7%"><col style="width:7%"><col style="width:13%"></colgroup>`
+    : `<colgroup><col style="width:44%"><col style="width:14%"><col style="width:8%"><col style="width:8%"><col style="width:9%"><col style="width:8%"><col style="width:9%"></colgroup>`;
   let tableBodies = '';
   selPos.forEach((pi, idx) => {
     const pos = state.positions[pi];
     if(!pos) return;
-    const pageBreak = idx > 0 ? 'style="page-break-before:always"' : '';
-    tableBodies += `<tbody ${pageBreak}><tr class="pos-hdr"><td colspan="${cols}">${esc(pos.name)}</td></tr></tbody>`;
+    tableBodies += `<tbody style="page-break-inside:avoid"><tr class="pos-hdr"><td colspan="${cols}">${esc(pos.name)}</td></tr></tbody>`;
     tableBodies += renderPosSections(pos);
   });
 
@@ -128,22 +129,17 @@ body{font-family:'Geist',sans-serif;font-size:9pt;color:#0b0d14;background:#fff;
 table{width:100%;border-collapse:collapse;}
 thead th{background:#0b0d14;color:#dde2ee;padding:5px 8px;text-align:left;font-family:'Geist',sans-serif;font-size:8pt;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;border:none;}
 thead th:nth-child(n+3){text-align:center;}
-.grp-hdr td{background:#1e2840;color:#dde2ee;font-family:'Geist',sans-serif;font-size:9pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:5px 8px;border-top:2px solid #0b0d14;}
-.sec-hdr td{background:#F1EFE9;color:#0b0d14;font-family:'Geist',sans-serif;font-size:8.5pt;font-weight:600;letter-spacing:0.04em;padding:4px 8px;border-top:1px solid #D6D9DE;}
-.pos-hdr td{background:#0b0d14;color:#dde2ee;font-family:'Geist',sans-serif;font-size:14pt;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:10px 8px;text-align:center;border:none;}
+.grp-hdr td{background:#1a1f2e;color:#f7c948;font-family:'Geist',sans-serif;font-size:10pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:6px 8px 6px 14px;border-top:2px solid #0b0d14;border-left:4px solid #f7c948;}
+.sec-hdr td{background:#F8F6F0;color:#3a3a4a;font-family:'Geist',sans-serif;font-size:8.5pt;font-weight:600;letter-spacing:0.06em;padding:4px 8px 4px 14px;border-top:1px solid #D6D9DE;border-left:3px solid #D6D9DE;}
+.pos-hdr td{background:#0b0d14;color:#dde2ee;font-family:'Geist',sans-serif;font-size:22pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:12px 8px;text-align:center;border:none;}
 tbody.cat-group{page-break-inside:avoid;}
 tbody tr{border-bottom:1px solid #D6D9DE;}
 .ntd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;}
 .ntd2{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;text-align:center;}
 .ltd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;color:#5A6678;white-space:nowrap;}
 .ktd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:8.5pt;color:#5A6678;}
-.closing-content{padding:10mm 10mm 8mm;border-top:1px solid #D6D9DE;margin-top:10mm;}
-.cf-headline{font-family:'Geist',sans-serif;font-size:28pt;font-weight:700;color:#0b0d14;letter-spacing:-0.025em;line-height:1;}
-.cf-stats{font-family:'JetBrains Mono',monospace;font-size:9pt;color:#5A6678;margin-top:6px;font-variant-numeric:tabular-nums;}
-.cf-created{font-family:'JetBrains Mono',monospace;font-size:8.5pt;color:#9AA3B5;margin-top:3px;letter-spacing:0.04em;}
 .closing-page{page-break-before:always;}
-.closing-flex{height:272mm;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;}
-.closing-btm{padding-bottom:9mm;}
+.closing-flex{height:281mm;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
 .closing-footer{background:#0b0d14;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:8mm 10mm;gap:10mm;}
 .cf-left,.cf-right{color:#dde2ee;}
 .cf-center{display:flex;justify-content:center;align-items:center;}
@@ -163,23 +159,28 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 .outer-td{padding:0;vertical-align:top;}
 @media print{
   .np{display:none!important;}
-  .slim-footer{position:fixed;bottom:0;left:0;right:0;z-index:100;}
-  body{padding-bottom:9mm;}
   @page{size:A4 ${orient};margin:8mm 0 8mm 0;}
 }
 </style></head><body>
 <table class="outer"><colgroup><col></colgroup>
-<thead><tr><td class="outer-td"><div class="band">
+<thead><tr><td class="outer-td" style="padding:0;"><div class="band">
   <div class="band-logo">${NYX_LOGO_HZ}</div>
   <div class="band-tag">${esc(projectName)} &middot; Material Planer</div>
 </div></td></tr></thead>
+<tfoot><tr><td class="outer-td" style="padding:0;">
+  <div class="slim-footer">
+    <span>NYX LIGHTWORK</span>
+    <span>${esc(projectName)} &ndash; MATERIAL PLANER</span>
+    <span>${projectDate}</span>
+  </div>
+</td></tr></tfoot>
 <tbody><tr><td class="outer-td">
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.27</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.28</div>
   </div>
-  <div class="ph-logos">${lbBand}${lbBooking}${lbPlaner}</div>
+  <div class="ph-logos">${lbBand}${lbBooking}</div>
 </div>
 <div class="stat-strip">
   <div class="stat"><span class="stat-val">${selPos.length}</span><span class="stat-lbl">Positionen</span></div>
@@ -187,7 +188,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
   <div class="stat"><span class="stat-val">${missingCount}</span><span class="stat-lbl">Fehlend</span></div>
 </div>
 <div class="tw">
-<table>
+<table>${colgroup}
   <thead><tr><th>Bezeichnung</th><th>L&auml;nge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Gesamt</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>
   ${tableBodies}
 </table>
@@ -195,24 +196,12 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 </td></tr></tbody></table>
 <div class="closing-page">
 <div class="closing-flex">
-<div>
-<div class="band">
-  <div class="band-logo">${NYX_LOGO_HZ}</div>
-  <div class="band-tag">${esc(projectName)} &middot; Material Planer</div>
-</div>
-<div class="closing-content">
-  <div class="cf-headline">Export vollst&auml;ndig.</div>
-  <div class="cf-stats">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen &middot; ${missingCount}&nbsp;Fehlend</div>
-  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.27</div>
-</div>
-</div>
-<div class="closing-btm">
 <div class="closing-footer">
   <div class="cf-left">
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.5.9.27</div>
+    <div class="cf-val">◆ v0.5.9.28</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>
@@ -225,12 +214,6 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
   </div>
 </div>
 </div>
-</div>
-</div>
-<div class="slim-footer">
-  <span>NYX LIGHTWORK</span>
-  <span>${esc(projectName)} &ndash; MATERIAL PLANER</span>
-  <span>${projectDate}</span>
 </div>
 <div class="np"><strong>Cmd+P / Strg+P</strong> &rarr; Als PDF speichern &nbsp;&nbsp; <strong>&#9888; Chrome-Tipp:</strong> Druckdialog &rarr; &ldquo;Weitere Einstellungen&rdquo; &rarr; Haken bei <strong>&ldquo;Kopf- und Fu&szlig;zeilen&rdquo;</strong> entfernen &mdash; sonst erscheinen Chromes Datum + &ldquo;about:blank&rdquo; &uuml;ber/unter unseren Balken.</div>
 <script>window.onload=()=>{if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>setTimeout(()=>window.print(),150));}else{setTimeout(()=>window.print(),800);}};<\/script>

@@ -5,6 +5,21 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.28] — 2026-05-22
+
+### Geändert
+- `pdf.js`: Komplett-Redesign PDF-Layout (8 Korrekturen):
+  1. **Portrait als Default** — `|| 'landscape'` → `|| 'portrait'`
+  2. **Nur 2 Logos** — `lbPlaner` entfernt, nur `lbBand` + `lbBooking` im Header
+  3. **BEZEICHNUNG-Spalte breit** — `<colgroup>` mit 40% Breite für Bezeichnung (war: gleichmäßig verteilt → Texte gequetscht)
+  4. **Chapter-Header groß** — `.pos-hdr td` font-size 14pt → 22pt, bolder
+  5. **Subsection-Hierarchie** — `.grp-hdr` erhält gelben linken Akzentbalken (`border-left:4px solid #f7c948`); `.sec-hdr` dezenter grauer Balken links
+  6. **Keine erzwungenen Seitenumbrüche** — `page-break-before:always` pro Chapter entfernt; `page-break-inside:avoid` auf Chapter-tbody statt Forced-Break; Kapitel teilen Seiten wenn Platz vorhanden
+  7. **Slim-Footer via `<tfoot>`** — `position:fixed;bottom:0` → `<tfoot>` der outer-table (wie `<thead>` für Band); erscheint zuverlässig auf Inhaltsseiten, NICHT auf Closing-Page
+  8. **Closing-Page bereinigt** — "Export vollständig."-Block entfernt; `.closing-flex{height:281mm;justify-content:flex-end}` schiebt dunklen Footer-Block ans Seitenende; keine separate slim-footer-Leiste mehr auf der letzten Seite
+
+---
+
 ## [v0.5.9.27] — 2026-05-22
 
 ### Behoben
