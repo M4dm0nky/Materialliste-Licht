@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.25] — 2026-05-22
+
+### Behoben
+- `pdf.js`: Abschluss-Seite komplett auf table-basiertes Layout umgestellt — `position:absolute` wird von Chrome im paginierten Print-Kontext ignoriert; `.closing-table{height:281mm}` mit zwei Rows: erste Row `height:100%` (füllt Seite), zweite Row `vertical-align:bottom;padding-bottom:9mm` pinnt den Abschluss-Block zuverlässig ans Seitenende
+
+---
+
 ## [v0.5.9.24] — 2026-05-22
 
 ### Behoben
