@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.22] — 2026-05-22
+
+### Geändert
+- `pdf.js`: Closing-Section aus outer `<table>` herausgelöst — `.closing-page` jetzt auf Body-Ebene statt innerhalb `<td>`; `min-height:281mm` + Flexbox funktioniert außerhalb von Table-Kontext zuverlässig in Chrome Print; eigenes Band-HTML in closing-page dupliziert
+
+---
+
 ## [v0.5.9.21] — 2026-05-22
 
 ### Geändert
