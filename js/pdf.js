@@ -135,7 +135,7 @@ thead th:nth-child(n+3){text-align:center;}
 .pos-hdr td{background:#0b0d14;color:#dde2ee;font-family:'Geist',sans-serif;font-size:22pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:12px 8px;text-align:center;border:none;}
 tbody.cat-group{page-break-inside:avoid;}
 tbody tr{border-bottom:1px solid #D6D9DE;}
-.ntd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;}
+.ntd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;overflow-wrap:break-word;}
 .ntd2{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;text-align:center;white-space:nowrap;}
 .ltd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;color:#5A6678;white-space:nowrap;}
 .ktd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:8.5pt;color:#5A6678;white-space:nowrap;}
@@ -179,7 +179,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.31</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.32</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}</div>
 </div>
@@ -202,7 +202,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.5.9.31</div>
+    <div class="cf-val">◆ v0.5.9.32</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>

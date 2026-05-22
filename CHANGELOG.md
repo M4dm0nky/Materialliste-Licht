@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.32] — 2026-05-22
+
+### Behoben
+- `pdf.js`: Text-Overflow in BEZEICHNUNG-Spalte — `overflow-wrap:break-word` erzwingt Zeilenumbruch bei Spaltenende; mit `table-layout:fixed` floss langer Text sonst in Nachbarspalten über
+
+---
+
 ## [v0.5.9.31] — 2026-05-22
 
 ### Behoben
