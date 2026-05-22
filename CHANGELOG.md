@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.24] — 2026-05-22
+
+### Behoben
+- `pdf.js`: Abschluss-Balken auf letzter PDF-Seite korrekt am Seitenende — `min-height:281mm + display:flex + margin-top:auto` durch `height:281mm + position:relative + position:absolute;bottom:9mm` ersetzt (NYX_CI-Pattern); Chrome kollabierte den Flex-Container auf Content-Höhe und ignorierte `min-height` im Print-Kontext
+
+---
+
 ## [v0.5.9.23] — 2026-05-22
 
 ### Geändert
