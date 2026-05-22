@@ -93,13 +93,13 @@ tbody tr.row-dragging{opacity:.35;}
 
 /* ── WELTEN: GRUPPEN-HEADER ──────────────────────────────────────── */
 .grp-section-hdr{
-  display:flex;align-items:center;gap:9px;
-  padding:7px 14px;
-  background:var(--bg3);border-left:3px solid var(--accent2);
-  font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:3px;
-  color:var(--accent2);border-bottom:1px solid var(--border);margin-top:2px;
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;
+  background:var(--bg3);border-left:5px solid var(--accent2);
+  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:5px;
+  color:var(--accent2);border-bottom:1px solid var(--border);margin-top:10px;
 }
-.grp-section-hdr .grp-chevron{font-size:11px;color:var(--muted);}
+.grp-section-hdr .grp-chevron{font-size:13px;color:var(--accent2);}
 
 /* ── WELTEN: QTY-GRUPPEN-BLOCK ───────────────────────────────────── */
 .qty-group-block{margin-bottom:14px;border:1px solid var(--border);background:var(--bg2);}

@@ -175,7 +175,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.22</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.23</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}${lbPlaner}</div>
 </div>
@@ -199,14 +199,14 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="closing-content">
   <div class="cf-headline">Export vollst&auml;ndig.</div>
   <div class="cf-stats">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen &middot; ${missingCount}&nbsp;Fehlend</div>
-  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.22</div>
+  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.23</div>
 </div>
 <div class="closing-footer">
   <div class="cf-left">
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.5.9.22</div>
+    <div class="cf-val">◆ v0.5.9.23</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>

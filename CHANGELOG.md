@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.23] — 2026-05-22
+
+### Geändert
+- `css/components.css`: Gruppen-Header (`.grp-section-hdr`) strukturell aufgewertet — `font-size` 1rem → 1.4rem, `letter-spacing` 3px → 5px, `padding` 7/14px → 13/16px, `border-left` 3px → 5px, `margin-top` 2px → 10px; Chevron jetzt in Accent2; App-Hierarchie entspricht jetzt der PDF-Darstellung (Gruppen-Header größer als Sektions-Header)
+
+---
+
 ## [v0.5.9.22] — 2026-05-22
 
 ### Geändert
