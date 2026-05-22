@@ -142,7 +142,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 .cf-stats{font-family:'JetBrains Mono',monospace;font-size:9pt;color:#5A6678;margin-top:6px;font-variant-numeric:tabular-nums;}
 .cf-created{font-family:'JetBrains Mono',monospace;font-size:8.5pt;color:#9AA3B5;margin-top:3px;letter-spacing:0.04em;}
 .closing-page{page-break-before:always;}
-.closing-table{height:281mm;width:100%;border-collapse:collapse;table-layout:fixed;}
+.closing-table{height:272mm;width:100%;border-collapse:collapse;table-layout:fixed;}
 .closing-top-row td{height:100%;vertical-align:top;}
 .closing-btm-row td{vertical-align:bottom;padding-bottom:9mm;}
 .closing-footer{background:#0b0d14;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:8mm 10mm;gap:10mm;}
@@ -178,7 +178,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.25</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.26</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}${lbPlaner}</div>
 </div>
@@ -204,7 +204,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="closing-content">
   <div class="cf-headline">Export vollst&auml;ndig.</div>
   <div class="cf-stats">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen &middot; ${missingCount}&nbsp;Fehlend</div>
-  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.25</div>
+  <div class="cf-created">Erstellt mit Material Planer &middot; NYX Lightwork &middot; ◆ v0.5.9.26</div>
 </div>
 </td></tr>
 <tr class="closing-btm-row"><td>
@@ -213,7 +213,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.5.9.25</div>
+    <div class="cf-val">◆ v0.5.9.26</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>

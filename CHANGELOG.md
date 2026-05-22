@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.26] — 2026-05-22
+
+### Behoben
+- `pdf.js`: Leere Extra-Seite nach Abschluss-Seite entfernt — `@page{margin:8mm 0 8mm 0}` gibt 281mm bedruckbare Höhe; `body{padding-bottom:9mm}` + `closing-table{height:281mm}` = 290mm → 9mm Overflow erzeugte Leerseite; Fix: `height:272mm` (281mm − 9mm body-padding = exakt eine Seite, kein Overflow)
+
+---
+
 ## [v0.5.9.25] — 2026-05-22
 
 ### Behoben
