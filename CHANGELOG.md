@@ -5,6 +5,23 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.35] — 2026-05-26
+
+### Behoben
+- `pdf.js`: Abschluss-Balken erschien immer auf einer eigenen leeren Seite — `page-break-before:always` und `height:281mm` entfernt; Footer fließt jetzt auf die letzte Inhaltsseite (16mm Abstand zum letzten Block, `break-inside:avoid` hält ihn zusammen)
+
+---
+
+## [v0.5.9.34] — 2026-05-26
+
+### Verbessert (NYX DESIGNAI)
+- `css/variables.css`: 2 neue Hintergrundebenen `--bg-input:#232740` und `--bg-elevated:#2c3155` nach NYX-Spec (5-Layer-System)
+- `css/components.css`: `thead{position:sticky;top:0;z-index:5}` — Tabellenkopf bleibt beim Scrollen sichtbar
+- `css/components.css`: DIFF-Zeilen erhalten Farbbalken via `color-mix()` — rote Zeilen bei negativem DIFF, grüne bei positivem (`has-data`-Klasse als Guard)
+- `css/components.css`: Gold-Border-Reveal auf Hover für `.tdname` und `.qty-table .tdname`; Grün-Border für `.tdtext` — NYX-Editier-Affordanz-Pattern
+
+---
+
 ## [v0.5.9.33] — 2026-05-22
 
 ### Behoben

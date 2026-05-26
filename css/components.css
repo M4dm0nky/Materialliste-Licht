@@ -41,6 +41,7 @@
 
 /* ── TABELLEN ─────────────────────────────────────────────────────── */
 table{width:100%;border-collapse:collapse;}
+thead{position:sticky;top:0;z-index:5;}
 thead tr{background:var(--bg);border-bottom:1px solid var(--border);}
 thead th{padding:6px 10px;font-size:13px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);text-align:left;border-right:1px solid #1a1f30;}
 thead th.num{text-align:center;}
@@ -51,6 +52,8 @@ tbody tr.has-data:hover{background:rgba(74,232,160,.08);}
 td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
 .td-diff{font-family:'Share Tech Mono',monospace;font-size:17px;font-weight:700;text-align:center;}
 .td-diff.pos{color:var(--green);}.td-diff.neg{color:var(--red);}.td-diff.zero{color:var(--muted);}
+tbody tr.has-data:has(.td-diff.neg){background:color-mix(in srgb,var(--red) 8%,transparent);}
+tbody tr.has-data:has(.td-diff.pos){background:color-mix(in srgb,var(--green) 7%,transparent);}
 .td-total{font-family:'Share Tech Mono',monospace;font-size:17px;font-weight:700;text-align:center;color:var(--text);}
 
 /* ── TABELLEN-INPUTS ──────────────────────────────────────────────── */
@@ -58,10 +61,10 @@ td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
 .tdinput input[type=number]:hover{border-color:var(--border);}
 .tdinput input[type=number]:focus{border-color:var(--accent);background:rgba(232,200,74,.05);}
 .tdtext input[type=text]{background:transparent;border:1px solid transparent;color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-size:16px;width:100%;min-width:104px;padding:4px 6px;outline:none;border-radius:2px;}
-.tdtext input[type=text]:hover{border-color:var(--border);}
+.tdtext input[type=text]:hover{border-color:var(--accent2);}
 .tdtext input[type=text]:focus{border-color:var(--accent2);background:rgba(74,232,160,.03);color:var(--text);}
 .tdname input[type=text]{background:transparent;border:1px solid transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:600;width:100%;min-width:195px;padding:4px 6px;outline:none;}
-.tdname input[type=text]:hover{border-color:var(--border);}
+.tdname input[type=text]:hover{border-color:var(--accent);}
 .tdname input[type=text]:focus{border-color:var(--accent);background:rgba(232,200,74,.04);}
 .tdlen input[type=text]{background:transparent;border:1px solid transparent;color:var(--text2);font-family:'Share Tech Mono',monospace;font-size:14px;width:117px;padding:4px 6px;outline:none;}
 .tdlen input[type=text]:hover{border-color:var(--border);}
@@ -112,7 +115,7 @@ tbody tr.row-dragging{opacity:.35;}
 .qty-table tbody tr.has-data:hover{background:rgba(74,232,160,.08);}
 .qty-table .tdname{padding:5px 10px;}
 .qty-table .tdname input[type=text]{background:transparent;border:1px solid transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;width:100%;min-width:180px;padding:3px 5px;outline:none;}
-.qty-table .tdname input[type=text]:hover{border-color:var(--border);}
+.qty-table .tdname input[type=text]:hover{border-color:var(--accent);}
 .qty-table .tdname input[type=text]:focus{border-color:var(--accent);background:rgba(232,200,74,.04);}
 .qty-table .tdinput{padding:3px 6px;}
 .qty-table .tdinput input[type=number]{background:transparent;border:1px solid transparent;color:var(--text);font-family:'Share Tech Mono',monospace;font-size:15px;font-weight:400;width:72px;padding:4px 5px;text-align:center;outline:none;border-radius:2px;}
@@ -120,7 +123,7 @@ tbody tr.row-dragging{opacity:.35;}
 .qty-table .tdinput input[type=number]:focus{border-color:var(--accent);background:rgba(232,200,74,.05);}
 .qty-table .tdtext{padding:3px 8px;}
 .qty-table .tdtext input[type=text]{background:transparent;border:1px solid transparent;color:var(--text2);font-family:'Barlow Condensed',sans-serif;font-size:15px;width:100%;min-width:90px;padding:3px 5px;outline:none;}
-.qty-table .tdtext input[type=text]:hover{border-color:var(--border);}
+.qty-table .tdtext input[type=text]:hover{border-color:var(--accent2);}
 .qty-table .tdtext input[type=text]:focus{border-color:var(--accent2);}
 .qty-table .td-diff{font-family:'Share Tech Mono',monospace;font-size:17px;font-weight:700;text-align:center;padding:3px 8px;}
 .qty-table .td-actions{text-align:center;width:32px;padding:2px;}
