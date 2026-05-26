@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.36] — 2026-05-26
+
+### Behoben
+- `pdf.js`: Closing-Page-Architektur korrigiert — `page-break-before:always` zurück, damit slim-footer (`<tfoot>`) nicht auf der ABSCHLUSS-Seite erscheint (closing-page liegt außerhalb der outer-Tabelle); `height:281mm` + `justify-content:flex-end` zurück, damit der dicke Balken am unteren Seitenrand sitzt
+
+---
+
 ## [v0.5.9.35] — 2026-05-26
 
 ### Behoben

@@ -139,8 +139,8 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 .ntd2{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;text-align:center;white-space:nowrap;}
 .ltd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;color:#5A6678;white-space:nowrap;}
 .ktd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:8.5pt;color:#5A6678;white-space:nowrap;}
-.closing-page{break-before:avoid;page-break-before:avoid;break-inside:avoid;page-break-inside:avoid;}
-.closing-flex{height:auto;display:flex;flex-direction:column;padding-top:16mm;}
+.closing-page{page-break-before:always;break-inside:avoid;page-break-inside:avoid;}
+.closing-flex{height:281mm;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
 .closing-footer{background:#0b0d14;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:8mm 10mm;gap:10mm;}
 .cf-left,.cf-right{color:#dde2ee;}
 .cf-center{display:flex;justify-content:center;align-items:center;}
@@ -179,7 +179,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.35</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.5.9.36</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}</div>
 </div>
@@ -202,7 +202,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.5.9.35</div>
+    <div class="cf-val">◆ v0.5.9.36</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>
