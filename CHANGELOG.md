@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.37] — 2026-05-26
+
+### Behoben
+- `export.js` + `plans.js`: Datenverlust beim JSON-Import wenn Projekt mit anderem Katalog erstellt wurde — `catalogId` wird jetzt im exportierten JSON gespeichert und beim Import aufgelöst; Migration in `migrateState()` löscht keine expliziten `lengths`-Sections mehr; Auto-Registrierung korrigiert fehlerhafte `qty`-Einträge im Katalog wenn die importierten Daten `lengths` tragen
+
+---
+
 ## [v0.5.9.36] — 2026-05-26
 
 ### Behoben

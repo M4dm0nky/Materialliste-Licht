@@ -55,7 +55,7 @@ function migrateState(s){
     pos.categories.forEach(cat => {
       cat.sections.forEach(sec => {
         const ct = _types[sec.type_name];
-        if(ct?.unit_type === 'qty' && sec.items.some(it => it.length)) {
+        if(ct?.unit_type === 'qty' && sec.unit_type !== 'lengths' && sec.items.some(it => it.length)) {
           sec.unit_type = 'qty';
           sec.items.forEach(it => {
             it.length = '';

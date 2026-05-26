@@ -21,7 +21,7 @@ function exportCSV(){
 async function saveProjectJSON(){
   savePlanToLS(activePlanId);
   renderPlanList();
-  const data     = { version:2, project:state._project, date:state._date, positions:state.positions, logos };
+  const data     = { version:2, project:state._project, date:state._date, catalogId:activeCatalogId, positions:state.positions, logos };
   const safeName = (state._project||'materialliste').replace(/[^a-zA-Z0-9äöüÄÖÜß\-_ ]/g,'_');
   const json     = JSON.stringify(data, null, 2);
   if(window.showSaveFilePicker){
@@ -53,7 +53,10 @@ function importProjectJSON(input){
       savePlanToLS(activePlanId);
       const id = genPlanId(); activePlanId=id;
       saveLastActivePlan(id);
-      activeCatalogId = 'cat-default';
+      const resolvedCatalogId = (data.catalogId && catalogsStore?.catalogs?.find(c => c.id === data.catalogId))
+        ? data.catalogId
+        : 'cat-default';
+      activeCatalogId = resolvedCatalogId;
       state = migrateState({...data, _project:data.project||file.name.replace(/\.json$/i,''), _date:data.date||''});
       activePosIdx=0; state._activePosIdx=0;
       // Auto-Registrierung: Sektionstypen, die nicht im Katalog vorhanden sind, eintragen
@@ -62,7 +65,8 @@ function importProjectJSON(input){
       state.positions.forEach(pos=>{
         pos.categories.forEach(cat=>{
           cat.sections.forEach(sec=>{
-            if(!activeCat.types[sec.type_name]){
+            if(!activeCat.types[sec.type_name] ||
+               (sec.unit_type === 'lengths' && activeCat.types[sec.type_name]?.unit_type === 'qty')){
               const hasLengths = sec.items.some(i=>i.length);
               const ut = hasLengths ? 'lengths' : 'qty';
               const items = hasLengths
@@ -78,7 +82,7 @@ function importProjectJSON(input){
       if(data.logos){ logos.planer=data.logos.planer||''; logos.band=data.logos.band||''; logos.booking=data.logos.booking||''; applyAllLogos(); saveLogosGlobal(); }
       document.getElementById('pName').value = state._project;
       const plans = getPlansIndex();
-      plans.push({id,name:state._project,created:todayStr(),modified:todayStr(),catalogId:'cat-default'});
+      plans.push({id,name:state._project,created:todayStr(),modified:todayStr(),catalogId:resolvedCatalogId});
       savePlansIndex(plans); savePlanToLS(id);
       render(); renderPlanList();
       toast('✓ „'+state._project+'" importiert');
