@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.1] — 2026-05-27
+
+### Behoben
+- `catalog-mgr.js`: Untergruppen haben jetzt einen `↑ Gruppe`-Button — damit kann eine Untergruppe zur eigenständigen Top-Level-Gruppe hochgestuft werden, die dann selbst Untergruppen aufnehmen kann; neue Funktion `catTreePromoteToGroup()`
+
+---
+
 ## [v0.6.0] — 2026-05-27
 
 ### Geändert

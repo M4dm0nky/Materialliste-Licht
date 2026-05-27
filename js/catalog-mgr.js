@@ -406,6 +406,7 @@ function _renderCatTree(cat, weltName){
               onchange="catEditorSetGroupCat(${s(cat.id)},${s(sg.id)},this.value)">${ugWeltOpts}</select>
             <div class="tree-actions">
               <button onclick="catTreeAddInline(${s(cat.id)},'add-artikel',${s(sg.id)},${s(weltName)})" title="+ Artikel" style="font-size:10px">+Art</button>
+              <button onclick="catTreePromoteToGroup(${s(cat.id)},${s(sg.id)})" title="Zu eigenständiger Gruppe hochstufen" style="font-size:10px;color:var(--accent2)">↑ Gruppe</button>
               <button onclick="catTreeInlineEditGruppe(${s(cat.id)},${s(sg.id)})" title="Umbenennen">✏</button>
               <button class="del-btn" onclick="catEditorDeleteGroup(${s(cat.id)},${s(sg.id)})" title="Untergruppe löschen">✕</button>
             </div>`;
@@ -642,6 +643,15 @@ function catTreeMakeSubGroup(catalogId, groupId){
     },
     'Zu Untergruppe machen'
   );
+}
+
+function catTreePromoteToGroup(catalogId, sgId){
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  const sg  = cat.groups.find(g=>g.id===sgId); if(!sg||!sg.parentId) return;
+  delete sg.parentId;
+  saveCatalogsStore();
+  _renderCatMgrTab1(); _renderCatMgrTab2();
+  toast(`✓ „${sg.name}" ist jetzt eine eigenständige Gruppe — du kannst nun Untergruppen anlegen`);
 }
 
 function catEditorDeleteGroup(catalogId, groupId){
