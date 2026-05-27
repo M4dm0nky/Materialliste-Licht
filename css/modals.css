@@ -12,6 +12,28 @@ select.pinput{background:var(--bg3);border:1px solid var(--border);color:var(--t
 .mbody{padding:26px;overflow-y:auto;flex:1;}
 .mfooter{padding:16px 26px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
 
+/* ── KATALOG-MANAGER FULLSCREEN ───────────────────────────────────── */
+.overlay.catmgr-mode{align-items:stretch;justify-content:stretch;padding:0;}
+.overlay.catmgr-mode .modal{width:100vw;max-width:100vw;height:100vh;max-height:100vh;border-radius:0;margin:0;display:flex;flex-direction:column;}
+.overlay.catmgr-mode .mhdr{display:none;}
+.overlay.catmgr-mode .mbody{padding:0;max-height:100vh;overflow:hidden;}
+.overlay.catmgr-mode .mfooter{display:none;}
+
+.catmgr-page{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.catmgr-topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;background:var(--bg3);border-bottom:2px solid var(--border);flex-shrink:0;}
+.catmgr-topbar-title{font-family:var(--font-display);font-size:17px;letter-spacing:.14em;color:var(--accent);}
+.catmgr-close-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:3px;cursor:pointer;font-size:11px;letter-spacing:.05em;font-family:var(--font-cond);}
+.catmgr-close-btn:hover{color:var(--text);border-color:var(--text);}
+
+.catmgr-columns{display:flex;flex:1;overflow:hidden;}
+.catmgr-left{width:280px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;background:var(--bg);padding:14px 12px;display:flex;flex-direction:column;gap:0;}
+.catmgr-left-title{font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.catmgr-right{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.catmgr-right-header{padding:12px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.catmgr-tree-scroll{flex:1;overflow-y:auto;padding:6px 0;}
+.catalog-row.editing-cat{outline:2px solid var(--accent);outline-offset:-1px;}
+.cat-aktiv-badge{color:var(--green);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;}
+
 /* ── WIZARD STEPS ─────────────────────────────────────────────────── */
 .steps{display:flex;margin-bottom:26px;}
 .step{flex:1;padding:9px 13px;text-align:center;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid var(--border);color:var(--muted);}

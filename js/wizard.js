@@ -21,7 +21,7 @@ function _wizHasDirtyData(){
   return Object.values(wiz.sel||{}).some(v=>(v.a||0)+(v.s||0)>0);
 }
 function _doCloseWiz(){
-  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open','catmgr-mode');
   wiz={};
 }
 function closeWiz(){

@@ -75,86 +75,91 @@ function _catDropArtikel(catId,targetKey,insertAfter){
 }
 
 // ── ÖFFNEN & HAUPT-RENDER ──────────────────────────────────────────
-function openCatalogMgr(tab){
-  _catMgrTab = tab||1;
+function openCatalogMgr(){
   if(!_catEditorId) _catEditorId = activeCatalogId||'cat-default';
   wiz = {};
-  document.getElementById('mTitle').textContent = 'Katalog-Verwaltung';
-  document.getElementById('overlay').classList.add('open');
+  const overlay = document.getElementById('overlay');
+  overlay.classList.add('open','catmgr-mode');
   _renderCatMgr();
 }
 
 function _renderCatMgr(){
   document.getElementById('mBody').innerHTML =
-    `<div class="cat-mgr-tabs">
-       <div class="cat-mgr-tab${_catMgrTab===1?' active':''}" onclick="_catMgrSwitchTab(1)">KATALOGE VERWALTEN</div>
-       <div class="cat-mgr-tab${_catMgrTab===2?' active':''}" onclick="_catMgrSwitchTab(2)">KATALOG BEARBEITEN</div>
-     </div>
-     <div id="catMgrContent" style="margin-top:16px"></div>`;
-  if(_catMgrTab===1) _renderCatMgrTab1();
-  else _renderCatMgrTab2();
-  document.getElementById('mFooter').innerHTML=
-    `<button class="btn btn-accent" onclick="closeWiz()">SCHLIESSEN</button>`;
+    `<div class="catmgr-page">
+       <div class="catmgr-topbar">
+         <span class="catmgr-topbar-title">KATALOG-VERWALTUNG</span>
+         <button class="catmgr-close-btn" onclick="closeWiz()">✕ SCHLIESSEN</button>
+       </div>
+       <div class="catmgr-columns">
+         <div class="catmgr-left" id="catMgrLeft"></div>
+         <div class="catmgr-right" id="catMgrRight"></div>
+       </div>
+     </div>`;
+  document.getElementById('mFooter').innerHTML = '';
+  _renderCatMgrTab1();
+  _renderCatMgrTab2();
 }
 
-function _catMgrSwitchTab(t){ _catMgrTab=t; _renderCatMgr(); }
-
-// ── TAB 1: KATALOGE VERWALTEN ──────────────────────────────────────
+// ── LINKE SPALTE: KATALOGE VERWALTEN ──────────────────────────────
 function _renderCatMgrTab1(){
+  const el = document.getElementById('catMgrLeft'); if(!el) return;
   const plans        = getPlansIndex();
   const activePlan   = plans.find(p=>p.id===activePlanId);
   const currentCatId = activePlan?.catalogId||'cat-default';
   const cats         = catalogsStore?.catalogs||[];
   const s            = v => JSON.stringify(v).replace(/"/g,'&quot;');
-  document.getElementById('catMgrContent').innerHTML = `
-    <div style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:10px">AKTIVER KATALOG FÜR DIESEN PLAN</div>
-    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px">
+  el.innerHTML = `
+    <div class="catmgr-left-title">MEINE KATALOGE</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
       ${cats.map(c=>`
-        <div class="catalog-row${c.id===currentCatId?' active-cat':''}">
+        <div class="catalog-row${c.id===currentCatId?' active-cat':''}${c.id===_catEditorId?' editing-cat':''}">
           <div class="catalog-row-info">
             <span class="catalog-row-name">${esc(c.name)}</span>
             ${c.isBuiltin?'<span class="catalog-row-tag">Standard</span>':''}
-            <span class="catalog-row-meta">${Object.keys(c.types||{}).length} Artikel · ${Object.values(c.types||{}).reduce((a,b)=>a+(b.items||[]).length,0)} Einträge</span>
+            <span class="catalog-row-meta">${Object.keys(c.types||{}).length} Artikel</span>
           </div>
           <div class="catalog-row-actions">
             ${c.id===currentCatId
-              ? '<span style="color:var(--green);font-family:\'Share Tech Mono\',monospace;font-size:11px;letter-spacing:1px">✓ AKTIV</span>'
+              ? '<span class="cat-aktiv-badge">✓ AKTIV</span>'
               : `<button class="btn btn-sm btn-green" onclick="catMgrAssign(${s(c.id)})">VERWENDEN</button>`}
-            <button class="btn btn-sm" onclick="catMgrEdit(${s(c.id)})">BEARBEITEN</button>
-            <button class="btn btn-sm" onclick="catEditorExport(${s(c.id)})">↓ EXPORTIEREN</button>
-            ${!c.isBuiltin?`<button class="btn btn-sm" onclick="catMgrRename(${s(c.id)})">UMBENENNEN</button>
-            <button class="btn btn-sm btn-red" onclick="catMgrDelete(${s(c.id)})">LÖSCHEN</button>`:''}
+            <button class="btn btn-sm${c.id===_catEditorId?' btn-accent':''}" onclick="catMgrEdit(${s(c.id)})">BEARBEITEN</button>
+            <button class="btn btn-sm" onclick="catEditorExport(${s(c.id)})" title="Exportieren">↓</button>
+            ${!c.isBuiltin?`<button class="btn btn-sm" onclick="catMgrRename(${s(c.id)})" title="Umbenennen">✏</button>
+            <button class="btn btn-sm btn-red" onclick="catMgrDelete(${s(c.id)})" title="Löschen">✕</button>`:''}
           </div>
         </div>`).join('')}
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:14px;">
+    <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--border);padding-top:12px;">
       <button class="btn btn-green" onclick="catMgrCreateNew()">+ NEUER KATALOG</button>
       <label style="cursor:pointer">
         <input type="file" accept=".json" style="display:none" onchange="catMgrImportJSON(this)">
-        <span class="btn" style="display:inline-block">↑ KATALOG IMPORTIEREN (JSON)</span>
+        <span class="btn" style="display:inline-block">↑ IMPORTIEREN (JSON)</span>
       </label>
     </div>`;
 }
 
-// ── TAB 2: KATALOG BEARBEITEN (TREE) ──────────────────────────────
+// ── RECHTE SPALTE: KATALOG BEARBEITEN (TREE) ──────────────────────
 function _renderCatMgrTab2(){
+  const el = document.getElementById('catMgrRight'); if(!el) return;
   const _prevScroll = document.getElementById('catTreeBody')?.scrollTop||0;
   const cats = catalogsStore?.catalogs||[];
   const cat  = cats.find(c=>c.id===_catEditorId)||cats[0];
   if(!cat){
-    document.getElementById('catMgrContent').innerHTML='<div style="color:var(--muted)">Kein Katalog gefunden.</div>';
+    el.innerHTML='<div style="color:var(--muted);padding:20px">Kein Katalog ausgewählt.</div>';
     return;
   }
   if(!_catEditorWelt) _catEditorWelt = CAT_ORDER[0];
   const s = v => JSON.stringify(v).replace(/"/g,'&quot;');
 
-  document.getElementById('catMgrContent').innerHTML = `
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
-      <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">KATALOG:</div>
-      <select class="selin" onchange="catEditorSwitch(this.value)" style="width:auto;min-width:180px;margin-bottom:0;font-size:14px;padding:6px 12px">
-        ${cats.map(c=>`<option value="${c.id}"${c.id===cat.id?' selected':''}>${esc(c.name)}</option>`).join('')}
-      </select>
-      <button class="btn btn-sm btn-green" onclick="catEditorExport(${s(cat.id)})">↓ EXPORTIEREN</button>
+  el.innerHTML = `
+    <div class="catmgr-right-header">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">KATALOG:</div>
+        <select class="selin" onchange="catEditorSwitch(this.value)" style="width:auto;min-width:180px;margin-bottom:0;font-size:14px;padding:6px 12px">
+          ${cats.map(c=>`<option value="${c.id}"${c.id===cat.id?' selected':''}>${esc(c.name)}</option>`).join('')}
+        </select>
+        <button class="btn btn-sm btn-green" onclick="catEditorExport(${s(cat.id)})">↓ EXPORTIEREN</button>
+      </div>
     </div>
     <div class="cat-tree-welten">
       ${CAT_ORDER.map(w=>`<div class="cat-tree-welt-tab${w===_catEditorWelt?' active':''}"
@@ -164,7 +169,7 @@ function _renderCatMgrTab2(){
       <button class="btn btn-sm cat-tree-add-gruppe"
         onclick="catTreeAddInline(${s(cat.id)},'add-gruppe',null,${s(_catEditorWelt)})">+ GRUPPE</button>
     </div>
-    <div id="catTreeBody" style="max-height:440px;overflow-y:auto;">
+    <div id="catTreeBody" class="catmgr-tree-scroll">
       ${_renderCatTree(cat, _catEditorWelt)}
     </div>`;
   document.getElementById('catTreeBody').scrollTop = _prevScroll;
@@ -768,7 +773,7 @@ function catMgrAssign(catalogId){
   toast('✓ Katalog „'+getActiveCatalog().name+'" diesem Plan zugewiesen');
 }
 
-function catMgrEdit(catalogId){ _catEditorId=catalogId; _catMgrSwitchTab(2); }
+function catMgrEdit(catalogId){ _catEditorId=catalogId; _renderCatMgrTab1(); _renderCatMgrTab2(); }
 
 function catMgrRename(catalogId){
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
