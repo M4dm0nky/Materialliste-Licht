@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.0] — 2026-05-27
+
+### Geändert
+- `catalog-mgr.js` + `modals.css`: Katalog-Manager als Fullscreen-Seite (100vw/100vh) statt 960px-Modal; die zwei Tabs wurden aufgelöst — links Katalogliste, rechts Baum-Editor, beide gleichzeitig sichtbar
+- `wizard.js`: `_doCloseWiz()` entfernt `catmgr-mode`-Klasse beim Schließen
+
+---
+
 ## [v0.5.9.38] — 2026-05-27
 
 ### Hinzugefügt / Behoben
