@@ -5,6 +5,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.3] — 2026-05-27
+
+### Behoben
+- `render.js`: Items ohne Länge (Adapter/Verbinder in Längen-Sektionen) werden jetzt ans Ende sortiert statt an den Anfang — konsistenteres Rendering bei gemischten Katalog-Typen wie "Stromkabel Han16" (Kabel + Verbinder)
+- `wizard.js`: `_mergeItems()` verwendet dieselbe Sortierlogik
+- `render.js`: `lenPlaceholder` in `buildRow` zeigt jetzt immer "Länge/Typ…" statt fälschlich den Item-Namen — verhindert verwirrende Anzeige wenn ein Item kein Länge-Feld hat
+
+---
+
 ## [v0.6.2] — 2026-05-27
 
 ### Hinzugefügt

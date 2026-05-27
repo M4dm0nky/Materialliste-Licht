@@ -387,7 +387,11 @@ function _mergeItems(sectionItems, newItems){
     if(ex){ ex.anzahl=(ex.anzahl||0)+item.anzahl; ex.spare=(ex.spare||0)+item.spare; }
     else sectionItems.push(item);
   });
-  sectionItems.sort((a,b)=>parseLen(a.length)-parseLen(b.length));
+  sectionItems.sort((a,b)=>{
+    const al = a.length ? parseLen(a.length) : 99999;
+    const bl = b.length ? parseLen(b.length) : 99999;
+    return al - bl;
+  });
 }
 
 function wizDone(){

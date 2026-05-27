@@ -148,8 +148,13 @@ function rerenderCatInto(ci,panel){
   const types     = getActiveCatalogTypes();
   const allGroups = getActiveCatalog().groups || [];
 
-  // Längen-sortierung
-  cat.sections.forEach(sec=>sec.items.sort((a,b)=>parseLen(a.length)-parseLen(b.length)));
+  // Längen-sortierung: Items ohne Länge (Adapter/Zubehör) ans Ende
+  const _lenSort = (a,b) => {
+    const al = a.length ? parseLen(a.length) : 99999;
+    const bl = b.length ? parseLen(b.length) : 99999;
+    return al - bl;
+  };
+  cat.sections.forEach(sec=>sec.items.sort(_lenSort));
 
   // Sektionen in lengths vs qty aufteilen
   const lengthsSecs = [], qtySecs = [];
@@ -349,7 +354,7 @@ function buildRow(ci,si,ii){
   const namePlaceholder = item.name==='' && item.length ? '↳ (Unterzeile)' : 'Bezeichnung…';
   const nameVal = esc(item.name||'');
   const lenVal        = esc(item.length||'');
-  const lenPlaceholder = item.length ? 'Länge…' : esc(item.name||'Länge…');
+  const lenPlaceholder = 'Länge/Typ…';
   const anzVal  = item.anzahl||0;
   const sprVal  = item.spare||0;
   const impVal  = item.im_projekt||0;
