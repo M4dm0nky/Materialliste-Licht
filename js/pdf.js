@@ -97,6 +97,7 @@ function generatePDF(){
   const colgroup = showDiff
     ? `<colgroup><col><col style="width:20mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:22mm"></colgroup>`
     : `<colgroup><col><col style="width:20mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:22mm"></colgroup>`;
+  const diffHeader = showDiff ? '<th>DIFF</th>' : '';
   let tables = '';
   selPos.forEach((pi) => {
     const pos = state.positions[pi];
@@ -105,8 +106,6 @@ function generatePDF(){
   });
 
   if(onlyMissing && itemCount === 0){ toast('Keine fehlenden Positionen gefunden.', true); return; }
-
-  const diffHeader = showDiff ? '<th>DIFF</th>' : '';
   const html = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>${projectName}</title>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -178,7 +177,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.6.6</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.6.7</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}</div>
 </div>
@@ -198,7 +197,7 @@ ${tables}
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.6.6</div>
+    <div class="cf-val">◆ v0.6.7</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>

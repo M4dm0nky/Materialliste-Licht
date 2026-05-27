@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.7] — 2026-05-27
+
+### Behoben
+- `pdf.js`: `diffHeader` wurde innerhalb der positions-Loop referenziert, aber erst danach als `const` deklariert (Temporal Dead Zone) → `generatePDF()` warf ReferenceError → Druckfenster öffnete sich nicht; Fix: Deklaration vor die Loop verschoben
+
+---
+
 ## [v0.6.6] — 2026-05-27
 
 ### Geändert
