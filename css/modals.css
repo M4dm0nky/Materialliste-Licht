@@ -142,6 +142,8 @@ select.pinput{background:var(--bg3);border:1px solid var(--border);color:var(--t
 .tree-actions button{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:2px 4px;line-height:1;transition:color .1s;border-radius:2px;}
 .tree-actions button:hover{color:var(--text);}
 .tree-actions button.del-btn:hover{color:var(--red);}
+.tree-actions button.tree-btn-ug{color:var(--accent2);font-size:11px;padding:2px 6px;border:1px solid rgba(74,200,232,.25);border-radius:3px;}
+.tree-actions button.tree-btn-ug:hover{color:var(--accent);border-color:var(--accent);}
 .len-tags{display:flex;flex-wrap:wrap;gap:4px;padding:3px 8px 3px 36px;background:rgba(74,232,160,.03);}
 .len-tag{display:inline-flex;align-items:center;gap:3px;background:var(--bg);border:1px solid rgba(74,232,160,.25);padding:2px 6px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);}
 .len-tag .len-del{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:10px;padding:0;line-height:1;}

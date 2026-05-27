@@ -5,6 +5,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.5.9.38] — 2026-05-27
+
+### Hinzugefügt / Behoben
+- `render.js`: Render-Bug behoben — Längen-Sektionen die einer Untergruppe zugeordnet sind, wurden bisher komplett nicht gerendert (unsichtbar); jetzt erscheinen sie korrekt mit Untergruppen-Header unterhalb der Eltergruppe
+- `render.js`: Qty-Sektionen zeigen Untergruppen jetzt als eigene Zeilen-Header innerhalb des Gruppen-Blocks; legacy `weltDepth===3`/`subgroup`-Textfeld-Logik durch die `parentId`-Hierarchie ersetzt
+- `catalog-mgr.js`: `+UG`-Button zum Anlegen von Untergruppen ist jetzt ausgeschrieben (`+ Untergruppe`) und visuell hervorgehoben statt winzigem `+UG`-Label
+- `components.css` + `modals.css`: CSS für `.subgrp-section-hdr` (Untergruppen-Trennzeile in Längen-Ansicht) und `.tree-btn-ug` hinzugefügt
+
+---
+
 ## [v0.5.9.37] — 2026-05-26
 
 ### Behoben

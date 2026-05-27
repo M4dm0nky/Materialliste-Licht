@@ -191,8 +191,21 @@ function rerenderCatInto(ci,panel){
       (grouped[gid]||grouped['__none']).push(si);
     });
     allGroups.filter(g=>!g.parentId).forEach(g=>{
-      const secs = grouped[g.id]||[];
-      if(secs.length){ panel.appendChild(buildGroupHeader(g.name, ci, g.id)); secs.forEach(si=>panel.appendChild(buildSecEl(ci,si))); }
+      const directSecs = grouped[g.id]||[];
+      const subGroups  = allGroups.filter(sg=>sg.parentId===g.id);
+      const ugSecs     = subGroups.flatMap(sg=>grouped[sg.id]||[]);
+      if(!directSecs.length && !ugSecs.length) return;
+      panel.appendChild(buildGroupHeader(g.name, ci, g.id));
+      directSecs.forEach(si=>panel.appendChild(buildSecEl(ci,si)));
+      subGroups.forEach(sg=>{
+        const sgs = grouped[sg.id]||[];
+        if(!sgs.length) return;
+        const hdr = document.createElement('div');
+        hdr.className = 'subgrp-section-hdr';
+        hdr.textContent = sg.name;
+        panel.appendChild(hdr);
+        sgs.forEach(si=>panel.appendChild(buildSecEl(ci,si)));
+      });
     });
     (grouped['__none']||[]).forEach(si=>panel.appendChild(buildSecEl(ci,si)));
   }
@@ -200,20 +213,23 @@ function rerenderCatInto(ci,panel){
   // B) qty-Sektionen: gruppiert darstellen
   if(qtySecs.length){
     const topGroups = allGroups.filter(g=>!g.parentId);
-    const qGrouped  = {};
+    const subsByParent = {};
+    allGroups.filter(g=>g.parentId).forEach(sg=>{
+      (subsByParent[sg.parentId]=subsByParent[sg.parentId]||[]).push(sg);
+    });
+    const qGrouped = {};
     qtySecs.forEach(s=>{
-      let gid = s.t?.group||'__none';
-      const grpDef = allGroups.find(g=>g.id===gid);
-      if(grpDef?.parentId) gid = grpDef.parentId;
+      const gid = s.t?.group||'__none';
       (qGrouped[gid]=qGrouped[gid]||[]).push(s);
     });
 
-    const groupOrder = [...topGroups.map(g=>g.id), '__none'];
-    groupOrder.forEach(gid=>{
-      const secs = qGrouped[gid]||[];
-      if(!secs.length) return;
-      const gName = topGroups.find(g=>g.id===gid)?.name||'Sonstiges';
+    [...topGroups.map(g=>g.id), '__none'].forEach(gid=>{
+      const subGroups  = subsByParent[gid]||[];
+      const directSecs = qGrouped[gid]||[];
+      const allSubSecs = subGroups.flatMap(sg=>qGrouped[sg.id]||[]);
+      if(!directSecs.length && !allSubSecs.length) return;
 
+      const gName = topGroups.find(g=>g.id===gid)?.name||'Sonstiges';
       const block = document.createElement('div');
       block.className = 'qty-group-block';
       block.appendChild(buildGroupHeader(gName, ci, gid==='__none'?null:gid));
@@ -228,21 +244,16 @@ function rerenderCatInto(ci,panel){
       </tr></thead>`;
       const tbody = document.createElement('tbody');
 
-      if(weltDepth === 3){
-        // Untergruppen aus subgroup-Feld der Typen
-        const subgroups = [...new Set(secs.map(s=>s.t?.subgroup||'').filter(Boolean))];
-        const noSub = secs.filter(s=>!s.t?.subgroup);
-        subgroups.forEach(sg=>{
-          const sgTr = document.createElement('tr');
-          sgTr.className = 'subgrp-row';
-          sgTr.innerHTML = `<td colspan="7">${esc(sg)}</td>`;
-          tbody.appendChild(sgTr);
-          secs.filter(s=>s.t?.subgroup===sg).forEach(s=>tbody.appendChild(buildQtyRow(ci,s.si)));
-        });
-        noSub.forEach(s=>tbody.appendChild(buildQtyRow(ci,s.si)));
-      } else {
-        secs.forEach(s=>tbody.appendChild(buildQtyRow(ci,s.si)));
-      }
+      directSecs.forEach(s=>tbody.appendChild(buildQtyRow(ci,s.si)));
+      subGroups.forEach(sg=>{
+        const sgSecs = qGrouped[sg.id]||[];
+        if(!sgSecs.length) return;
+        const sgTr = document.createElement('tr');
+        sgTr.className = 'subgrp-row';
+        sgTr.innerHTML = `<td colspan="9">${esc(sg.name)}</td>`;
+        tbody.appendChild(sgTr);
+        sgSecs.forEach(s=>tbody.appendChild(buildQtyRow(ci,s.si)));
+      });
 
       table.appendChild(tbody);
       block.appendChild(table);

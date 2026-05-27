@@ -103,6 +103,14 @@ tbody tr.row-dragging{opacity:.35;}
 }
 .grp-section-hdr .grp-chevron{font-size:13px;color:var(--accent2);}
 
+/* ── WELTEN: UNTERGRUPPEN-SECTION-HEADER (Längen-Ansicht) ────────── */
+.subgrp-section-hdr{
+  font-family:var(--font-cond);font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);opacity:.8;
+  padding:5px 12px 3px 28px;margin-top:2px;
+}
+
 /* ── WELTEN: QTY-GRUPPEN-BLOCK ───────────────────────────────────── */
 .qty-group-block{margin-bottom:14px;border:1px solid var(--border);background:var(--bg2);}
 .qty-table{width:100%;border-collapse:collapse;}

@@ -362,7 +362,7 @@ function _renderCatTree(cat, weltName){
         <select class="cat-welt-sel" title="Alle Artikel dieser Gruppe in andere Welt verschieben"
           onchange="catEditorSetGroupCat(${s(cat.id)},${s(g.id)},this.value)">${grpWeltOpts}</select>
         <div class="tree-actions">
-          <button onclick="catTreeAddInline(${s(cat.id)},'add-ug',${s(g.id)},null)" title="+ Untergruppe" style="font-size:10px">+UG</button>
+          <button onclick="catTreeAddInline(${s(cat.id)},'add-ug',${s(g.id)},null)" title="Untergruppe anlegen" class="tree-btn-ug">+ Untergruppe</button>
           <button onclick="catTreeAddInline(${s(cat.id)},'add-artikel',${s(g.id)},${s(weltName)})" title="+ Artikel" style="font-size:10px">+Art</button>
           <button onclick="catTreeMakeSubGroup(${s(cat.id)},${s(g.id)})" title="Zu Untergruppe einer anderen Gruppe machen" style="font-size:10px;opacity:.65">↓UG</button>
           <button onclick="catTreeInlineEditGruppe(${s(cat.id)},${s(g.id)})" title="Umbenennen">✏</button>
