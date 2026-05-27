@@ -97,12 +97,11 @@ function generatePDF(){
   const colgroup = showDiff
     ? `<colgroup><col><col style="width:20mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:22mm"></colgroup>`
     : `<colgroup><col><col style="width:20mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:13mm"><col style="width:22mm"></colgroup>`;
-  let tableBodies = '';
-  selPos.forEach((pi, idx) => {
+  let tables = '';
+  selPos.forEach((pi) => {
     const pos = state.positions[pi];
     if(!pos) return;
-    tableBodies += `<tbody style="page-break-inside:avoid"><tr class="pos-hdr"><td colspan="${cols}">${esc(pos.name)}</td></tr></tbody>`;
-    tableBodies += renderPosSections(pos);
+    tables += `<table style="margin-bottom:6mm;width:100%;border-collapse:collapse;table-layout:fixed">${colgroup}<thead><tr class="pos-hdr"><td colspan="${cols}">${esc(pos.name)}</td></tr><tr><th>Bezeichnung</th><th>L&auml;nge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Gesamt</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>${renderPosSections(pos)}</table>`;
   });
 
   if(onlyMissing && itemCount === 0){ toast('Keine fehlenden Positionen gefunden.', true); return; }
@@ -127,7 +126,7 @@ body{font-family:'Geist',sans-serif;font-size:9pt;color:#0b0d14;background:#fff;
 .stat-lbl{display:block;font-family:'JetBrains Mono',monospace;font-size:8pt;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#5A6678;margin-top:3px;}
 .tw{padding:0 10mm;}
 table{width:100%;border-collapse:collapse;}
-.tw table{table-layout:fixed;}
+.tw table{}
 thead th{background:#0b0d14;color:#dde2ee;padding:5px 8px;text-align:left;font-family:'Geist',sans-serif;font-size:8pt;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;border:none;}
 thead th:nth-child(n+3){text-align:center;}
 .grp-hdr td{background:#1a1f2e;color:#f7c948;font-family:'Geist',sans-serif;font-size:10pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:6px 8px 6px 14px;border-top:2px solid #0b0d14;border-left:4px solid #f7c948;}
@@ -179,7 +178,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.6.5</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.6.6</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}</div>
 </div>
@@ -189,10 +188,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
   <div class="stat"><span class="stat-val">${missingCount}</span><span class="stat-lbl">Fehlend</span></div>
 </div>
 <div class="tw">
-<table>${colgroup}
-  <thead><tr><th>Bezeichnung</th><th>L&auml;nge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Gesamt</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>
-  ${tableBodies}
-</table>
+${tables}
 </div>
 </td></tr></tbody></table>
 <div class="closing-page">
@@ -202,7 +198,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.6.5</div>
+    <div class="cf-val">◆ v0.6.6</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>

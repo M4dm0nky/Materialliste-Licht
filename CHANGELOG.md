@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.6] — 2026-05-27
+
+### Geändert
+- `pdf.js`: Jede Position bekommt eine eigene Tabelle mit eigenem `<thead>` — Positionsname (z.B. "DIMMERCITY") steht jetzt über den Spaltenköpfen, nicht darunter; beide Zeilen wiederholen sich bei Seitenumbrüchen automatisch; 6mm Abstand zwischen Positionen
+
+---
+
 ## [v0.6.5] — 2026-05-27
 
 ### Geändert
