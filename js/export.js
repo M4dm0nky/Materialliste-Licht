@@ -21,7 +21,8 @@ function exportCSV(){
 async function saveProjectJSON(){
   savePlanToLS(activePlanId);
   renderPlanList();
-  const data     = { version:2, project:state._project, date:state._date, catalogId:activeCatalogId, positions:state.positions, logos };
+  const activeCat = getActiveCatalog();
+  const data     = { version:2, project:state._project, date:state._date, catalogId:activeCatalogId, ...(!activeCat.isBuiltin?{catalog:activeCat}:{}), positions:state.positions, logos };
   const safeName = (state._project||'materialliste').replace(/[^a-zA-Z0-9äöüÄÖÜß\-_ ]/g,'_');
   const json     = JSON.stringify(data, null, 2);
   if(window.showSaveFilePicker){
@@ -53,9 +54,18 @@ function importProjectJSON(input){
       savePlanToLS(activePlanId);
       const id = genPlanId(); activePlanId=id;
       saveLastActivePlan(id);
-      const resolvedCatalogId = (data.catalogId && catalogsStore?.catalogs?.find(c => c.id === data.catalogId))
-        ? data.catalogId
-        : 'cat-default';
+      let resolvedCatalogId;
+      if(data.catalogId && catalogsStore?.catalogs?.find(c=>c.id===data.catalogId)){
+        resolvedCatalogId = data.catalogId;
+      } else if(data.catalogId && data.catalog){
+        const importedCat = {...data.catalog, id:data.catalogId};
+        if(!importedCat.groups) importedCat.groups=[];
+        catalogsStore.catalogs.push(importedCat);
+        saveCatalogsStore();
+        resolvedCatalogId = data.catalogId;
+      } else {
+        resolvedCatalogId = 'cat-default';
+      }
       activeCatalogId = resolvedCatalogId;
       state = migrateState({...data, _project:data.project||file.name.replace(/\.json$/i,''), _date:data.date||''});
       activePosIdx=0; state._activePosIdx=0;

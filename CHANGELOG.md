@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.10] — 2026-05-27
+
+### Behoben
+- `export.js`: Custom-Katalog wird beim JSON-Export eingebettet (`catalog`-Key); beim Import wird ein fehlender Katalog aus dem JSON wiederhergestellt und in `catalogsStore` registriert — `_migrateSectionWorlds()` kann damit Sections korrekt in die Welt des Katalogs verschieben, auch wenn der Katalog lokal nicht vorhanden ist
+- `plans.js`: `switchPlan()` setzt `activeCatalogId` jetzt VOR `loadPlanFromLS()`, sodass `_migrateSectionWorlds()` beim Plan-Wechsel den richtigen Katalog verwendet
+
+---
+
 ## [v0.6.9] — 2026-05-27
 
 ### Behoben

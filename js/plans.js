@@ -18,8 +18,24 @@ function _migrateSectionWorlds(st){
       cat.sections.forEach(sec=>allSecs.push({sec,fromName:cat.name}));
       cat.sections=[];
     });
+    // Pass 1: Ziel-Welt pro Typ bestimmen
+    const typeWorld={};
     allSecs.forEach(({sec,fromName})=>{
-      const targetName=catTypes[sec.type_name]?.cat||fromName;
+      const catalogWorld=catTypes[sec.type_name]?.cat;
+      if(catalogWorld){
+        typeWorld[sec.type_name]=catalogWorld;
+      } else if(!typeWorld[sec.type_name]){
+        typeWorld[sec.type_name]=fromName;
+      } else {
+        // Typ in mehreren Welten ohne Katalog-Eintrag → spätere Welt bevorzugen
+        const curIdx=CAT_ORDER.indexOf(typeWorld[sec.type_name]);
+        const newIdx=CAT_ORDER.indexOf(fromName);
+        if(newIdx>curIdx) typeWorld[sec.type_name]=fromName;
+      }
+    });
+    // Pass 2: Sections in Ziel-Welt einsortieren
+    allSecs.forEach(({sec,fromName})=>{
+      const targetName=typeWorld[sec.type_name]||fromName;
       const targetCat=pos.categories.find(c=>c.name===targetName)||pos.categories.find(c=>c.name===fromName);
       if(targetCat) targetCat.sections.push(sec);
     });
@@ -169,10 +185,10 @@ function switchPlan(id){
   savePlanToLS(activePlanId);
   activePlanId = id;
   saveLastActivePlan(id);
-  loadPlanFromLS(id);
   const plans = getPlansIndex();
   const plan  = plans.find(p=>p.id===id);
   activeCatalogId = (plan&&plan.catalogId)||'cat-default';
+  loadPlanFromLS(id);
   renderActiveCatalogBadge();
   renderPlanList();
   toast('Plan geladen ✓');
