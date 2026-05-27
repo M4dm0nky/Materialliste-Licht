@@ -39,6 +39,26 @@ function _migrateSectionWorlds(st){
       const targetCat=pos.categories.find(c=>c.name===targetName)||pos.categories.find(c=>c.name===fromName);
       if(targetCat) targetCat.sections.push(sec);
     });
+    // Pass 3: Sections mit gleichem type_name innerhalb einer Kategorie zusammenführen
+    pos.categories.forEach(cat=>{
+      const seen={};
+      const deduped=[];
+      cat.sections.forEach(sec=>{
+        if(seen[sec.type_name]){
+          sec.items.forEach(item=>{
+            const ex=item.length
+              ?seen[sec.type_name].items.find(i=>i.length===item.length)
+              :seen[sec.type_name].items.find(i=>i.name===item.name);
+            if(ex){ex.anzahl=(ex.anzahl||0)+(item.anzahl||0);ex.spare=(ex.spare||0)+(item.spare||0);}
+            else seen[sec.type_name].items.push(item);
+          });
+        } else {
+          seen[sec.type_name]=sec;
+          deduped.push(sec);
+        }
+      });
+      cat.sections=deduped;
+    });
   });
 }
 
