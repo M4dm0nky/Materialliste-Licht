@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.8] — 2026-05-27
+
+### Geändert
+- `pdf.js`: PDF-Design auf App-eigenen Stil zurückgesetzt — IBM Plex Mono + Bebas Neue, schwarzer Positionsbalken mit goldenem Span, simpler 3-spaltiger Header ohne NYX-CI-Branding; NYX-CI-Stand als Git-Tag `pdf-nyx-ci-v0.6.7` gesichert
+
+---
+
 ## [v0.6.7] — 2026-05-27
 
 ### Behoben
