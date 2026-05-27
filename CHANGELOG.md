@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.2] — 2026-05-27
+
+### Hinzugefügt
+- `catalog-mgr.js`: `→ Gruppe`-Button an ungruppierten Artikel-Typen — erstellt in einem Klick eine gleichnamige Gruppe und ordnet den Artikel darin ein; neue Funktion `catTreeTypeToGroup()`
+
+---
+
 ## [v0.6.1] — 2026-05-27
 
 ### Behoben

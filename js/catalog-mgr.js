@@ -290,6 +290,7 @@ function _renderCatTree(cat, weltName){
         <select class="cat-grp-sel" title="Gruppe wechseln"
           onchange="catEditorSetTypeGroup(${s(catId)},${s(key)},this.value)">${grpOpts}</select>
         <div class="tree-actions">
+          ${!val.group?`<button onclick="catTreeTypeToGroup(${s(catId)},${s(key)})" title="Gruppe mit diesem Namen erstellen und Artikel zuordnen" style="font-size:10px;color:var(--accent2)">→ Gruppe</button>`:''}
           <button onclick="catTreeToggleUnitType(${s(catId)},${s(key)})" title="${isKabel?'Zu Gerät wechseln':'Zu Kabel wechseln'}" style="font-size:10px;opacity:.65">
             ${isKabel?'→Gerät':'→Kabel'}
           </button>
@@ -652,6 +653,17 @@ function catTreePromoteToGroup(catalogId, sgId){
   saveCatalogsStore();
   _renderCatMgrTab1(); _renderCatMgrTab2();
   toast(`✓ „${sg.name}" ist jetzt eine eigenständige Gruppe — du kannst nun Untergruppen anlegen`);
+}
+
+function catTreeTypeToGroup(catalogId, typeKey){
+  const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
+  const t = cat.types[typeKey]; if(!t) return;
+  let grp = (cat.groups||[]).find(g=>!g.parentId && g.name===typeKey);
+  if(!grp){ grp = {id:_genGroupId(), name:typeKey}; cat.groups.push(grp); }
+  t.group = grp.id;
+  saveCatalogsStore();
+  _renderCatMgrTab1(); _renderCatMgrTab2();
+  toast(`✓ Gruppe „${typeKey}" erstellt`);
 }
 
 function catEditorDeleteGroup(catalogId, groupId){
