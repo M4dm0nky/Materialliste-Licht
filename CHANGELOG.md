@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.4] — 2026-05-27
+
+### Behoben
+- `wizard.js`: `_doCloseWiz()` erkennt jetzt ob der Katalog-Manager geschlossen wurde (`catmgr-mode`) und löst `rerenderCat()` für alle Welten aus — Katalog-Änderungen (z.B. umbenannte Typen) sind sofort in der Planung sichtbar ohne Seitenreload
+
+---
+
 ## [v0.6.3] — 2026-05-27
 
 ### Behoben

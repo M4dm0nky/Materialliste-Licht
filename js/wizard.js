@@ -21,8 +21,10 @@ function _wizHasDirtyData(){
   return Object.values(wiz.sel||{}).some(v=>(v.a||0)+(v.s||0)>0);
 }
 function _doCloseWiz(){
+  const wasCatMgr = document.getElementById('overlay').classList.contains('catmgr-mode');
   document.getElementById('overlay').classList.remove('open','catmgr-mode');
   wiz={};
+  if(wasCatMgr) currentCats().forEach((_,ci)=>rerenderCat(ci));
 }
 function closeWiz(){
   if(_wizHasDirtyData()){
