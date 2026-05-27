@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.9] — 2026-05-27
+
+### Behoben
+- `plans.js`: `_migrateSectionWorlds()` — Sections werden beim Laden automatisch in die laut Katalog korrekte Welt verschoben; verhindert, dass Typen nach einer Welt-Änderung im Katalog-Manager noch in der alten Welt erscheinen
+- `wizard.js`: `_doCloseWiz()` ruft `_migrateSectionWorlds()` + `save()` auf wenn der Katalog-Manager geschlossen wird — Welt-Korrekturen sind sofort sichtbar und persistent
+
+---
+
 ## [v0.6.8] — 2026-05-27
 
 ### Geändert

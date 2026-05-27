@@ -10,6 +10,22 @@ let activePosIdx = 0;
 function saveLastActivePlan(id){ try{ localStorage.setItem(LAST_PLAN_KEY, id); }catch(e){} }
 function loadLastActivePlan(){ try{ return localStorage.getItem(LAST_PLAN_KEY)||null; }catch(e){return null;} }
 
+function _migrateSectionWorlds(st){
+  const catTypes = getActiveCatalogTypes();
+  st.positions.forEach(pos=>{
+    const allSecs=[];
+    pos.categories.forEach(cat=>{
+      cat.sections.forEach(sec=>allSecs.push({sec,fromName:cat.name}));
+      cat.sections=[];
+    });
+    allSecs.forEach(({sec,fromName})=>{
+      const targetName=catTypes[sec.type_name]?.cat||fromName;
+      const targetCat=pos.categories.find(c=>c.name===targetName)||pos.categories.find(c=>c.name===fromName);
+      if(targetCat) targetCat.sections.push(sec);
+    });
+  });
+}
+
 function migrateState(s){
   if(!s) return {_project:'',_date:'',_activePosIdx:0,positions:[{name:'Standard',categories:CAT_ORDER.map(n=>({name:n,sections:[]}))}]};
   const st = s.positions
@@ -87,6 +103,7 @@ function migrateState(s){
       pos.categories = newCats;
     });
   }
+  _migrateSectionWorlds(st);
   return st;
 }
 
