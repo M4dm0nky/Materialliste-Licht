@@ -132,7 +132,7 @@ thead th{background:#0b0d14;color:#dde2ee;padding:5px 8px;text-align:left;font-f
 thead th:nth-child(n+3){text-align:center;}
 .grp-hdr td{background:#1a1f2e;color:#f7c948;font-family:'Geist',sans-serif;font-size:10pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:6px 8px 6px 14px;border-top:2px solid #0b0d14;border-left:4px solid #f7c948;}
 .sec-hdr td{background:#F8F6F0;color:#3a3a4a;font-family:'Geist',sans-serif;font-size:8.5pt;font-weight:600;letter-spacing:0.06em;padding:4px 8px 4px 14px;border-top:1px solid #D6D9DE;border-left:3px solid #D6D9DE;}
-.pos-hdr td{background:#0b0d14;color:#dde2ee;font-family:'Geist',sans-serif;font-size:22pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:12px 8px;text-align:center;border:none;}
+.pos-hdr td{background:#0b0d14;color:#dde2ee;font-family:'Geist',sans-serif;font-size:13pt;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:7px 8px;text-align:center;border:none;}
 tbody.cat-group{page-break-inside:avoid;}
 tbody tr{border-bottom:1px solid #D6D9DE;}
 .ntd{padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:9pt;font-variant-numeric:tabular-nums;overflow-wrap:break-word;overflow:hidden;}
@@ -179,7 +179,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
 <div class="ph">
   <div>
     <div class="pt">${esc(projectName)}</div>
-    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.6.4</div>
+    <div class="ps">Material Planer &middot; Touring Production &middot; ${projectDate} &middot; ◆ v0.6.5</div>
   </div>
   <div class="ph-logos">${lbBand}${lbBooking}</div>
 </div>
@@ -202,7 +202,7 @@ tbody tr{border-bottom:1px solid #D6D9DE;}
     <div class="cf-stats-sm">${itemCount}&nbsp;Items &middot; ${selPos.length}&nbsp;Positionen</div>
     <div class="cf-stats-sm">${missingCount}&nbsp;Fehlend</div>
     <div class="cf-label" style="margin-top:8px;">Version</div>
-    <div class="cf-val">◆ v0.6.4</div>
+    <div class="cf-val">◆ v0.6.5</div>
     <div class="cf-label" style="margin-top:4px;">Datum</div>
     <div class="cf-val">${projectDate}</div>
   </div>

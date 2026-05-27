@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.5] — 2026-05-27
+
+### Geändert
+- `pdf.js`: Positionsbalken im PDF-Export verkleinert — `font-size` 22pt → 13pt, `padding` 12px → 7px; fügt sich jetzt proportional in das Gesamtlayout ein
+
+---
+
 ## [v0.6.4] — 2026-05-27
 
 ### Behoben
