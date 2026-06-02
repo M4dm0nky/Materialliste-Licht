@@ -12,6 +12,7 @@
 ### Material verwalten
 - Leere Tabelle beim Start — Material wird über einen **Wizard aus dem Katalog** hinzugefügt
 - **Mehrfachauswahl im Wizard** — beliebig viele Artikel anklicken (Toggle), dann alle Mengen auf einmal eingeben → "✓ HINZUFÜGEN" speichert alles in einem Schritt
+- **Längen-Typen im Multi-Select** — Kabeltypen (z.B. DMX 5-Pin) zeigen im Schritt 2 alle Längen als Checkbox-Zeilen mit je eigenem Stk./Spare
 - **Gruppen-Kontext** — Schritt 2 zeigt Untergruppen-Header (z.B. "· Gaffa Tape 50mm") damit klar ist welche Artikel wohin gehören
 - **Suchfeld** — Artikel live durchsuchen, Ergebnis mit Pfad (Welt › Gruppe › Artikel)
 - **Zuletzt verwendet** — die letzten 8 Artikel direkt zugänglich
@@ -45,12 +46,13 @@
 - Mehrere Pläne (z.B. verschiedene Tours) anlegen, benennen, wechseln
 - Jeder Plan hat eigene Positionen (z.B. Bühne, FOH, Halle)
 - Jeder Plan kann einen eigenen Katalog verwenden
+- **Katalog-Auswahl beim Import** — beim Laden einer Plan-JSON erscheint ein Modal zur Katalog-Wahl; Katalog kann auch direkt aus Datei nachgeladen werden
 
 ### Logos & Export
-- 3 Logo-Slots im Header: **Planer/Company** (links) · **Band/Produktion** (mitte) · **Booking/Agentur** (rechts)
-- **JSON-Export/Import** — vollständige Projektdaten inkl. Logos
-- **CSV Export** — Excel-kompatibel mit BOM-Header
-- **PDF Export** — Querformat, Filter für Kategorien / nur befüllte Zeilen / Differenz-Spalte
+- 3 Logo-Slots im Header: **Planer/Company** (links) · **Band/Produktion** (mitte) · **Booking/Agentur** (rechts); Warning bei Logos > 500 KB
+- **JSON-Export/Import** — vollständige Projektdaten inkl. Logos und Katalog
+- **CSV Export** — alle Positionen in einer Datei, Positions-Name als erste Spalte, Excel-kompatibel (BOM)
+- **PDF Export** — Design wählbar (Standard: dunkel mit Gold), Filter für Kategorien / nur befüllte Zeilen / Differenz-Spalte
 
 ---
 
@@ -102,6 +104,7 @@ Materialliste-Licht/
 │   ├── plans.js        ← Multi-Plan-System
 │   ├── positions.js    ← Positions-Bar
 │   ├── export.js       ← JSON/CSV Import & Export
+│   ├── pdf-themes.js   ← PDF_THEMES Array (Standard-Design)
 │   ├── pdf.js          ← PDF-Druckansicht
 │   └── init.js         ← App-Start
 ├── CLAUDE.md           ← Technische Dokumentation für Claude
@@ -132,12 +135,16 @@ Materialliste-Licht/
 
 ### Bereits umgesetzt ✓
 - [x] Multi-Select im Wizard — mehrere Artikel auf einmal wählen und Mengen gemeinsam eingeben
+- [x] Längen-Typen im Multi-Select — Checkboxen pro Länge mit je eigenem Stk./Spare
 - [x] Gleiche Artikel-Namen in verschiedenen Gruppen erlaubt (internes `displayName`-System)
 - [x] Live-Suchfeld mit Kategoriepfad-Anzeige
 - [x] „Zuletzt verwendet"-Liste (letzte 8 Artikel)
 - [x] In-App-Dialoge — keine nativen Browser-Popups mehr
 - [x] Vollbild-Katalog-Editor mit Inline-Editing
 - [x] Multi-Plan-System mit eigenen Positionen und eigenem Katalog pro Plan
+- [x] Katalog-Auswahl beim Plan-Import (mit Option Katalog aus Datei laden)
+- [x] CSV-Export aller Positionen mit Positions-Name als erste Spalte
+- [x] PDF Theme-System (austauschbares Design für den Druck)
 
 ---
 

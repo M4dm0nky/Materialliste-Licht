@@ -45,6 +45,7 @@ Materialliste-Licht/
 │   ├── plans.js               ← Multi-Plan-System (switchPlan, savePlanToLS, migrateState)
 │   ├── positions.js           ← Positions-Bar (renderPosBar, switchPos, addPosition)
 │   ├── export.js              ← saveProjectJSON(), importProjectJSON(), exportCSV()
+│   ├── pdf-themes.js          ← PDF_THEMES Array, Theme-Objekte mit id/name/fontUrl/css(orient)
 │   ├── pdf.js                 ← openPDFExport(), generatePDF()
 │   └── init.js                ← App-Start (initCatalogs, initState, initPlans)
 ├── materialliste-licht.html   ← ältere Version, nicht bearbeiten
@@ -54,7 +55,9 @@ Materialliste-Licht/
 ```
 
 **Ladereihenfolge der JS-Dateien ist kritisch** (globaler Scope, kein Modulsystem):
-`utils` → `catalog` → `state` → `calc` → `render` → `wizard` → `catalog-mgr` → `logos` → `plans` → `positions` → `export` → `pdf` → `init`
+`utils` → `catalog` → `state` → `calc` → `render` → `wizard` → `catalog-mgr` → `logos` → `plans` → `positions` → `export` → `pdf-themes` → `pdf` → `init`
+
+(`pdf-themes` muss vor `pdf` stehen, damit `PDF_THEMES` beim Aufruf von `generatePDF()` verfügbar ist)
 
 ## Version & Live-URL
 
@@ -102,17 +105,33 @@ Kein `npm install`, kein `npm run build`, kein Compiler.
 ### Wizard-Flow (Material hinzufügen)
 - Schritt 1: Mehrere Katalog-Karten anklicken (Toggle) — ausgewählte Karten bekommen `.sel`-Klasse (gold) + "✓"-Prefix
 - Footer zeigt "N Artikel — WEITER →" sobald ≥1 gewählt; `_renderStep1Footer()` wird bei jedem Toggle aufgerufen
-- Schritt 2 (Multi): `_wizGoMulti()` — alle gewählten Artikel mit je eigenem Stk./Spare-Feld; Gruppen-Header wenn Artikel aus verschiedenen Untergruppen stammen
-- Speichern: `_wizDoneMulti()` — loopt über `wiz.multiSel[]`, legt je eine Section an oder merged in bestehende
-- Lengths-Typen: Single-Select bleibt bestehen — `wizPickCard()` → `step2()` → `_step2Lengths()`
+- Schritt 2 (Multi): `_wizGoMulti()` — qty-Typen: eine Zeile (Stk./Spare); lengths-Typen: alle Längen als Checkbox-Zeilen mit je eigenem Stk./Spare
+- Sortierung: `wiz._multiSortedLens[i]` speichert die sortierte Reihenfolge aus `_wizGoMulti` — `_wizDoneMulti` nutzt dieselbe Reihenfolge (kein Re-Sort, konsistente DOM-Indizes)
+- Speichern: `_wizDoneMulti()` — loopt über `wiz.multiSel[]`, legt je eine Section an oder merged in bestehende; qty=0+spare=0 erzeugt keine Ghost-Rows
+- Lengths-Typen Single-Select: `wizPickCard()` → `step2()` → `_step2Lengths()` (sortiert Kopie, mutiert nicht das Live-Objekt)
 - Neue Längen im Wizard: nur Zahl eingeben, `m` wird automatisch ergänzt, Eintrag wird numerisch einsortiert
-- Sortierung: beim Rendern (`rerenderCatInto`) und nach jedem Hinzufügen (`wizDone`) wird nach numerischer Länge sortiert
 
 ### Katalog
 - `CATALOG` Konstante: Schlüssel = Typ-Name (z.B. `"DMX 5-Pin"`), Wert = `{cat, items: [{n, l, b?}]}`
 - `n` = Bezeichnung, `l` = Länge/Typ, `b` = Bemerkung (optional)
 - Benutzer-Ergänzungen: `localStorage` Key `materialliste-licht-catalog-v1`, werden beim Start eingemischt
 - Neue Längen per `wizAddCustomLen()`: nur Zahleingabe → `"20m"` Format, gespeichert in `saveCatalogCustom()`
+- **`_buildCatalogEntryFromJSON(catData, fallbackName)`** in `catalog-mgr.js`: migriert alte Welt-Namen (`"Kabel Liste"` → `"Datenwelt"`), erkennt `unit_type` per `_detectUnitType()`, filtert Gruppen — wird von `catMgrImportJSON()` und `_importCatalogIntoPickModal()` genutzt
+
+### Import/Export-Flow
+- **JSON-Export** (`saveProjectJSON`): speichert `{version:2, project, date, catalogId, catalog?, positions, logos}`; custom Katalog wird eingebettet, built-in nicht
+- **JSON-Import** (`importProjectJSON` → `_openCatalogPickModal` → `_finishImport`):
+  1. Datei parsen + validieren
+  2. Modal `#catalogPickModal`: User wählt Katalog; eingebetteter Katalog erscheint als "(aus Datei)"-Option aber wird erst nach Bestätigung in Store gespeichert
+  3. `_finishImport`: alten Plan sichern → Katalog importieren falls nötig → `migrateState()` → `activePlanId` setzen (erst nach erfolgreichem Migrate) → render
+- **CSV-Export** (`exportCSV`): alle Positionen, Positions-Name als erste Spalte, Datei `-alle.csv`
+
+### PDF Theme-System
+- Globales `PDF_THEMES`-Array in `pdf-themes.js` (muss vor `pdf.js` geladen werden)
+- Jedes Theme: `{id, name, fontUrl, css(orient)}` — `css()` gibt den kompletten CSS-String zurück
+- `generatePDF()` liest `input[name="pdfTheme"]` aus dem Modal → ruft `theme.css(orient)` auf
+- Derzeit 1 Theme: `"standard"` (IBM Plex Mono + Bebas Neue, dunkler Header, Gold-Akzent)
+- Erweiterung: zweites Theme in `pdf-themes.js` hinzufügen + Radio-Button im PDF-Modal
 
 ### Berechnungslogik
 - `DIFF = (Qty + Spare) - InProject` → grün wenn ≥ 0, rot wenn < 0
