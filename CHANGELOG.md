@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.16] — 2026-06-02
+
+### Behoben
+- `wizard.js`: Multi-Select Schritt 2 zeigt für Längen-Typen (z.B. "DMX 5-Pin") jetzt alle verfügbaren Längen als Checkbox-Zeilen mit je eigenem Stk./Spare-Feld — statt einer einzigen Mengenzeile. Längen werden numerisch sortiert angezeigt. `_wizDoneMulti()` speichert korrekt mit `unit_type:'lengths'` und den richtigen Längen-Werten.
+
+---
+
 ## [v0.6.15] — 2026-06-02
 
 ### Neu

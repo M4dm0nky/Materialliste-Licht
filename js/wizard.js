@@ -269,6 +269,21 @@ function _wizGoMulti(){
       const gname = groupId ? groupsById[groupId] : null;
       if(gname) header = `<div style="font-size:12px;font-weight:700;letter-spacing:1px;color:var(--accent2);padding:${i>0?'12':'4'}px 0 4px;border-bottom:1px solid var(--accent2);margin-bottom:4px;">· ${esc(gname)}</div>`;
     }
+    if(t.unit_type === 'lengths'){
+      const sortedItems = [...(t.items||[])].sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
+      const lenRows = sortedItems.map((item, li)=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:5px 0 5px 12px;border-bottom:1px solid var(--border);">
+          <label style="flex:1;display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;">
+            <input type="checkbox" id="mlc_${i}_${li}" onchange="_wizMultiLenToggle(${i},${li})" style="width:15px;height:15px;cursor:pointer;">
+            <span style="min-width:60px;font-family:'Share Tech Mono',monospace;">${esc(item.l||item.n||'—')}</span>
+          </label>
+          <label style="font-size:12px;color:var(--muted);">Stk.&nbsp;<input id="mlq_${i}_${li}" type="number" class="pinput" style="width:60px;text-align:center;opacity:0.4;" value="1" min="0" disabled></label>
+          <label style="font-size:12px;color:var(--muted);">Spare&nbsp;<input id="mls_${i}_${li}" type="number" class="pinput" style="width:60px;text-align:center;opacity:0.4;" value="0" min="0" disabled></label>
+        </div>`).join('');
+      return header+`<div style="padding:8px 0 2px;border-bottom:2px solid var(--border);">
+        <div style="font-size:13px;font-weight:700;color:var(--accent);letter-spacing:1px;">${label}</div>
+      </div>${lenRows}`;
+    }
     return header+`<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);">
       <div style="flex:1;font-size:14px;font-weight:600;">${label}</div>
       <label style="font-size:12px;color:var(--muted);">Stk.&nbsp;<input id="mq_${i}" type="number" class="pinput" style="width:65px;text-align:center;" value="1" min="0"></label>
@@ -288,28 +303,64 @@ function _wizGoMulti(){
   document.getElementById('mq_0')?.focus();
 }
 
+function _wizMultiLenToggle(i, li){
+  const cb = document.getElementById('mlc_'+i+'_'+li);
+  const qa = document.getElementById('mlq_'+i+'_'+li);
+  const qs = document.getElementById('mls_'+i+'_'+li);
+  qa.disabled = !cb.checked; qa.style.opacity = cb.checked?'1':'0.4';
+  qs.disabled = !cb.checked; qs.style.opacity = cb.checked?'1':'0.4';
+  if(cb.checked){ if(!+qa.value) qa.value='1'; qa.focus(); }
+}
+
 function _wizDoneMulti(){
-  const multiSel = wiz.multiSel||[];
-  const cnt      = multiSel.length;
-  const types    = getActiveCatalogTypes();
+  const multiSel    = wiz.multiSel||[];
+  const types       = getActiveCatalogTypes();
   const affectedCis = new Set();
+  let cnt = 0;
   multiSel.forEach((s,i)=>{
-    const qty   = Math.max(0, parseInt(document.getElementById('mq_'+i)?.value)||0);
-    const spare = Math.max(0, parseInt(document.getElementById('ms_'+i)?.value)||0);
-    const cat   = currentCats()[s.ci]; if(!cat) return;
-    const label = (types[s.key]?.displayName)||s.key;
-    let si = cat.sections.findIndex(sec=>sec.type_name===s.key);
-    if(si<0){
-      cat.sections.push({type_name:s.key, unit_type:'qty', items:[]});
-      si = cat.sections.length-1;
-    }
-    const sec = cat.sections[si];
-    const ex  = sec.items.findIndex(it=>it.name===label&&!it.length);
-    if(ex>=0){
-      sec.items[ex].anzahl = (sec.items[ex].anzahl||0)+qty;
-      sec.items[ex].spare  = (sec.items[ex].spare||0)+spare;
+    const cat  = currentCats()[s.ci]; if(!cat) return;
+    const tDef = types[s.key]||{};
+    const label = tDef.displayName||s.key;
+    if(tDef.unit_type === 'lengths'){
+      let si = cat.sections.findIndex(sec=>sec.type_name===s.key);
+      if(si<0){
+        cat.sections.push({type_name:s.key, unit_type:'lengths', items:[]});
+        si = cat.sections.length-1;
+      }
+      const sec = cat.sections[si];
+      const sortedItems = [...(tDef.items||[])].sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
+      sortedItems.forEach((item, li)=>{
+        const cb = document.getElementById('mlc_'+i+'_'+li);
+        if(!cb||!cb.checked) return;
+        const qty   = Math.max(0, parseInt(document.getElementById('mlq_'+i+'_'+li)?.value)||0);
+        const spare = Math.max(0, parseInt(document.getElementById('mls_'+i+'_'+li)?.value)||0);
+        const ex = sec.items.findIndex(it=>it.length===(item.l||''));
+        if(ex>=0){
+          sec.items[ex].anzahl = (sec.items[ex].anzahl||0)+qty;
+          sec.items[ex].spare  = (sec.items[ex].spare||0)+spare;
+        } else {
+          sec.items.push({name:item.n||item.l||'', length:item.l||'', anzahl:qty, spare, im_projekt:0, kapitel:'', bemerkung:''});
+        }
+        cnt++;
+      });
     } else {
-      sec.items.push({name:label, length:'', anzahl:qty, spare, im_projekt:0, kapitel:'', bemerkung:''});
+      const qty   = Math.max(0, parseInt(document.getElementById('mq_'+i)?.value)||0);
+      const spare = Math.max(0, parseInt(document.getElementById('ms_'+i)?.value)||0);
+      const ut    = tDef.unit_type||'qty';
+      let si = cat.sections.findIndex(sec=>sec.type_name===s.key);
+      if(si<0){
+        cat.sections.push({type_name:s.key, unit_type:ut, items:[]});
+        si = cat.sections.length-1;
+      }
+      const sec = cat.sections[si];
+      const ex  = sec.items.findIndex(it=>it.name===label&&!it.length);
+      if(ex>=0){
+        sec.items[ex].anzahl = (sec.items[ex].anzahl||0)+qty;
+        sec.items[ex].spare  = (sec.items[ex].spare||0)+spare;
+      } else {
+        sec.items.push({name:label, length:'', anzahl:qty, spare, im_projekt:0, kapitel:'', bemerkung:''});
+      }
+      cnt++;
     }
     _saveRecent(s.key);
     affectedCis.add(s.ci);
@@ -319,7 +370,7 @@ function _wizDoneMulti(){
   recalcAll();
   wiz.multiSel=[];
   _doCloseWiz();
-  toast('✓ '+cnt+' Artikel hinzugefügt');
+  toast('✓ '+cnt+' Position(en) hinzugefügt');
 }
 
 function step2(){
