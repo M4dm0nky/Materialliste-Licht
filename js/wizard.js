@@ -258,6 +258,7 @@ function _wizGoMulti(){
   const groupsById = {};
   (activeCat.groups||[]).forEach(g=>{ groupsById[g.id]=g.name; });
 
+  wiz._multiSortedLens = {};  // Fix J: sortierte Items für _wizDoneMulti speichern
   let lastGroupId = null;
   const rows = wiz.multiSel.map((s,i)=>{
     const t       = types[s.key]||{};
@@ -271,6 +272,7 @@ function _wizGoMulti(){
     }
     if(t.unit_type === 'lengths'){
       const sortedItems = [...(t.items||[])].sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
+      wiz._multiSortedLens[i] = sortedItems;  // Fix J: für _wizDoneMulti merken
       const lenRows = sortedItems.map((item, li)=>`
         <div style="display:flex;align-items:center;gap:12px;padding:5px 0 5px 12px;border-bottom:1px solid var(--border);">
           <label style="flex:1;display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;">
@@ -328,7 +330,7 @@ function _wizDoneMulti(){
         si = cat.sections.length-1;
       }
       const sec = cat.sections[si];
-      const sortedItems = [...(tDef.items||[])].sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
+      const sortedItems = (wiz._multiSortedLens||{})[i] || [...(tDef.items||[])].sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));  // Fix J
       sortedItems.forEach((item, li)=>{
         const cb = document.getElementById('mlc_'+i+'_'+li);
         if(!cb||!cb.checked) return;
@@ -346,21 +348,23 @@ function _wizDoneMulti(){
     } else {
       const qty   = Math.max(0, parseInt(document.getElementById('mq_'+i)?.value)||0);
       const spare = Math.max(0, parseInt(document.getElementById('ms_'+i)?.value)||0);
-      const ut    = tDef.unit_type||'qty';
-      let si = cat.sections.findIndex(sec=>sec.type_name===s.key);
-      if(si<0){
-        cat.sections.push({type_name:s.key, unit_type:ut, items:[]});
-        si = cat.sections.length-1;
+      if(qty+spare > 0){  // Fix I: keine Ghost-Rows bei qty=0 spare=0
+        const ut    = tDef.unit_type||'qty';
+        let si = cat.sections.findIndex(sec=>sec.type_name===s.key);
+        if(si<0){
+          cat.sections.push({type_name:s.key, unit_type:ut, items:[]});
+          si = cat.sections.length-1;
+        }
+        const sec = cat.sections[si];
+        const ex  = sec.items.findIndex(it=>it.name===label&&!it.length);
+        if(ex>=0){
+          sec.items[ex].anzahl = (sec.items[ex].anzahl||0)+qty;
+          sec.items[ex].spare  = (sec.items[ex].spare||0)+spare;
+        } else {
+          sec.items.push({name:label, length:'', anzahl:qty, spare, im_projekt:0, kapitel:'', bemerkung:''});
+        }
+        cnt++;
       }
-      const sec = cat.sections[si];
-      const ex  = sec.items.findIndex(it=>it.name===label&&!it.length);
-      if(ex>=0){
-        sec.items[ex].anzahl = (sec.items[ex].anzahl||0)+qty;
-        sec.items[ex].spare  = (sec.items[ex].spare||0)+spare;
-      } else {
-        sec.items.push({name:label, length:'', anzahl:qty, spare, im_projekt:0, kapitel:'', bemerkung:''});
-      }
-      cnt++;
     }
     _saveRecent(s.key);
     affectedCis.add(s.ci);
@@ -428,8 +432,8 @@ function _step2Qty(t){
 
 function _step2Lengths(t){
   const _wizLabel = t.displayName || wiz.key;
-  t.items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
-  const rows = t.items.map((item,i)=>{
+  const sorted = [...t.items].sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));  // Fix H: Kopie sortieren, kein Mutieren
+  const rows = sorted.map((item,i)=>{
     const label = item.l || item.n || '—';
     return `<div class="cablerow" id="cr-${i}">
       <label style="display:flex;align-items:center;gap:8px;flex:1;cursor:pointer">

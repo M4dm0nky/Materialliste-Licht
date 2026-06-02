@@ -5,6 +5,21 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.18] — 2026-06-02
+
+### Behoben (Code-Review)
+- `export.js`: XSS — `c.id` wird jetzt mit `esc()` in HTML-Attributen escaped
+- `export.js`: Eingebetteter Katalog wird nicht mehr vor Benutzer-Bestätigung in den Store geschrieben (kein Leak bei Abbrechen)
+- `export.js`: `_cancelCatalogPick()` leert `_pendingImport` beim Abbrechen; Null-Guard in `_confirmCatalogPick`
+- `export.js`: `_finishImport` setzt `activePlanId` erst nach erfolgreichem `migrateState` (kein korrupter Plans-Index bei Exception)
+- `export.js`: `_importCatalogIntoPickModal` nutzt jetzt `_buildCatalogEntryFromJSON` mit World-Rename-Migration und `_detectUnitType`
+- `catalog-mgr.js`: Migrations-Logik aus `catMgrImportJSON` als wiederverwendbare `_buildCatalogEntryFromJSON()` extrahiert
+- `wizard.js`: `_wizDoneMulti` qty-Branch — keine Ghost-Rows mehr bei `qty=0` und `spare=0`
+- `wizard.js`: `_step2Lengths` sortiert jetzt eine Kopie (`[...t.items].sort()`) statt das Live-Katalog-Objekt zu mutieren
+- `wizard.js`: `_wizGoMulti` speichert sortierte Längen auf `wiz._multiSortedLens` — `_wizDoneMulti` nutzt dieselbe Sortierung statt einer zweiten unabhängigen Kopie
+
+---
+
 ## [v0.6.17] — 2026-06-02
 
 ### Behoben

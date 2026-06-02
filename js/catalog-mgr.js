@@ -907,38 +907,38 @@ function _catMgrSaveNew(){
   toast('✓ Katalog „'+name+'" erstellt und diesem Plan zugewiesen');
 }
 
+function _buildCatalogEntryFromJSON(catData, fallbackName){
+  const _OLD_CAT_MAP = {'Kabel Liste':'Datenwelt','Zubehör Liste':'Riggingwelt','Hardware Liste':'Datenwelt','Lampen Liste':'Lichtwelt'};
+  const _builtinWelt = {};
+  if(typeof CATALOG!=='undefined') Object.entries(CATALOG).forEach(([k,v])=>{ _builtinWelt[k]=v.cat; });
+  const rawTypes = catData.types||catData;
+  const types = {};
+  Object.entries(rawTypes).forEach(([key,val])=>{
+    if(typeof val==='object'&&val.items!==undefined){
+      let catWelt = val.cat||'Datenwelt';
+      if(_OLD_CAT_MAP.hasOwnProperty(catWelt)) catWelt = _builtinWelt[key]||_OLD_CAT_MAP[catWelt];
+      const entry={cat:catWelt,items:val.items,unit_type:val.unit_type||_detectUnitType(val)};
+      if(val.group)    entry.group    = val.group;
+      if(val.subgroup) entry.subgroup = val.subgroup;
+      types[key]=entry;
+    }
+  });
+  const groups = (Array.isArray(catData.groups)?catData.groups:[]).filter(g=>g.id&&g.name);
+  const name   = (catData.name&&typeof catData.name==='string') ? catData.name : (fallbackName||'Katalog');
+  return {id:genCatalogId(), name, isBuiltin:false, created:todayStr(), groups, types};
+}
+
 function catMgrImportJSON(input){
   const file = input.files[0]; if(!file) return;
   const reader = new FileReader();
   reader.onload = e=>{
     try{
-      const data     = JSON.parse(e.target.result);
-      const rawTypes = data.types||data;
-      const catName  = (data.name&&typeof data.name==='string')
-        ? data.name : (file.name.replace(/\.json$/i,'')||'Importierter Katalog');
-      // Migration: alte Cat-Namen → Welt-Namen
-      const _OLD_CAT_MAP = {'Kabel Liste':'Datenwelt','Zubehör Liste':'Riggingwelt','Hardware Liste':'Datenwelt','Lampen Liste':'Lichtwelt'};
-      const _builtinWelt = {};
-      if(typeof CATALOG!=='undefined') Object.entries(CATALOG).forEach(([k,v])=>{ _builtinWelt[k]=v.cat; });
-      const types = {};
-      Object.entries(rawTypes).forEach(([key,val])=>{
-        if(typeof val==='object'&&val.items!==undefined){
-          let catWelt = val.cat||'Datenwelt';
-          if(_OLD_CAT_MAP.hasOwnProperty(catWelt)) catWelt = _builtinWelt[key]||_OLD_CAT_MAP[catWelt];
-          const entry={cat:catWelt,items:val.items,unit_type:val.unit_type||_detectUnitType(val)};
-          if(val.group)    entry.group    = val.group;
-          if(val.subgroup) entry.subgroup = val.subgroup;
-          types[key]=entry;
-        }
-      });
-      if(!Object.keys(types).length){ toast('Keine gültigen Katalog-Typen gefunden.',true); return; }
-      const groups = (Array.isArray(data.groups)?data.groups:[]).filter(g=>g.id&&g.name);
-      const id     = genCatalogId();
-      catalogsStore.catalogs.push({id,name:catName,isBuiltin:false,
-        created:new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}),
-        groups,types});
+      const data = JSON.parse(e.target.result);
+      const entry = _buildCatalogEntryFromJSON(data, file.name.replace(/\.json$/i,''));
+      if(!Object.keys(entry.types).length){ toast('Keine gültigen Katalog-Typen gefunden.',true); return; }
+      catalogsStore.catalogs.push(entry);
       saveCatalogsStore(); _renderCatMgrTab1();
-      toast('✓ Katalog „'+catName+'" importiert');
+      toast('✓ Katalog „'+entry.name+'" importiert');
     }catch(err){ toast('Import fehlgeschlagen: '+err.message,true); }
   };
   reader.readAsText(file); input.value='';
