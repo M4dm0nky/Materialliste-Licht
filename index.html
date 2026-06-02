@@ -26,7 +26,7 @@
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.6.14</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.6.15</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -146,6 +146,27 @@
   </div>
 </div>
 
+<!-- KATALOG WÄHLEN (PLAN IMPORT) -->
+<div class="overlay" id="catalogPickModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="mhdr"><h2>Katalog wählen</h2><button class="mclose" onclick="closeModal('catalogPickModal')">✕</button></div>
+    <div class="mbody">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:4px;">Plan: <strong id="catPickPlanName" style="color:var(--text)"></strong></p>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5;">Welchen Katalog soll dieser Plan verwenden?</p>
+      <div style="font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Verfügbare Kataloge</div>
+      <div id="catPickList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px;">
+        <button class="btn" onclick="document.getElementById('catPickFileInput').click()">➕ Katalog aus Datei importieren</button>
+        <input type="file" id="catPickFileInput" accept=".json" style="display:none" onchange="_importCatalogIntoPickModal(this)">
+      </div>
+    </div>
+    <div class="mfooter">
+      <button class="btn" onclick="closeModal('catalogPickModal')">Abbrechen</button>
+      <button class="btn btn-accent" onclick="_confirmCatalogPick()">✓ Weiter</button>
+    </div>
+  </div>
+</div>
+
 <!-- OVERLAY / WIZARD -->
 <div class="overlay" id="overlay">
   <div class="modal">
@@ -212,6 +233,7 @@
 <script src="js/plans.js"></script>
 <script src="js/positions.js"></script>
 <script src="js/export.js"></script>
+<script src="js/pdf-themes.js"></script>
 <script src="js/pdf.js"></script>
 <script src="js/init.js"></script>
 

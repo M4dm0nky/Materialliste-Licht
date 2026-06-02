@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.15] — 2026-06-02
+
+### Neu
+- `export.js` + `index.html`: **Katalog-Auswahl beim Plan-Import** — nach dem Einlesen einer Plan-JSON erscheint ein Modal „Welchen Katalog soll dieser Plan verwenden?" mit allen vorhandenen Katalogen als Radiobuttons und der Option, einen Katalog direkt aus einer Datei nachzuladen. Verhindert stilles Fallback auf den Standard-Katalog bei fehlendem Katalog (z.B. neuer Rechner / anderer Arbeitsplatz).
+- `js/pdf-themes.js` (neu): **PDF Theme-System** — das aktuelle PDF-Design ist als „Standard"-Theme in ein separates globales `PDF_THEMES`-Array ausgelagert. Basis für spätere Design-Varianten beim PDF-Export.
+
+---
+
 ## [v0.6.14] — 2026-06-02
 
 ### Behoben
