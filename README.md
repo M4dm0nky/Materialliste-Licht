@@ -11,9 +11,10 @@
 
 ### Material verwalten
 - Leere Tabelle beim Start — Material wird über einen **Wizard aus dem Katalog** hinzugefügt
-- **Mehrfachauswahl im Wizard** — mehrere Artikel gleichzeitig wählen, Mengen nacheinander eingeben
+- **Mehrfachauswahl im Wizard** — beliebig viele Artikel anklicken (Toggle), dann alle Mengen auf einmal eingeben → "✓ HINZUFÜGEN" speichert alles in einem Schritt
+- **Gruppen-Kontext** — Schritt 2 zeigt Untergruppen-Header (z.B. "· Gaffa Tape 50mm") damit klar ist welche Artikel wohin gehören
 - **Suchfeld** — Artikel live durchsuchen, Ergebnis mit Pfad (Welt › Gruppe › Artikel)
-- **Zuletzt verwendet** — die letzten 5 Artikel direkt zugänglich
+- **Zuletzt verwendet** — die letzten 8 Artikel direkt zugänglich
 - Alle Felder nachträglich editierbar: Bezeichnung, Länge, # Stk., Spare, Im Projekt, Kapitel, Notiz
 - Zeilen und Sektionen einzeln löschbar
 
@@ -58,11 +59,11 @@
 ```
 1. Welt-Tab wählen      Datenwelt / Stromwelt / Lichtwelt / Riggingwelt / Verbrauchswelt
 2. "+ AUS KATALOG"      Wizard öffnet sich
-3. Suchen oder wählen   Suchfeld oder Kategorie-Browse
-4. Mehrfachauswahl      Mehrere Artikel anklicken, dann "WEITER →"
-5. Mengen eingeben      Für jeden Artikel Stückzahl und Spare
-6. "+ HINZUFÜGEN"       Nächster Artikel in der Queue
-7. "✓ FERTIG"           Alle Artikel werden gespeichert
+3. Suchen oder wählen   Suchfeld oder Kategorie-Browse (Welt-Chips)
+4. Artikel anklicken    Karte wird gold markiert (✓) — mehrere möglich
+5. "N Artikel — WEITER →" Footer-Button erscheint sobald ≥1 gewählt
+6. Mengen eingeben      Alle gewählten Artikel auf einem Bildschirm (Stk. + Spare)
+7. "✓ HINZUFÜGEN"       Alle Artikel auf einmal ins Projekt übernehmen
 8. Werte anpassen       Alle Felder direkt in der Tabelle editierbar
 9. Speichern            Sidebar → Speichern (JSON) oder auto. im Browser
 ```
@@ -130,12 +131,13 @@ Materialliste-Licht/
 - [ ] **Backup-Verlauf** — mehrere automatische Sicherungspunkte
 
 ### Bereits umgesetzt ✓
-- [x] Mehrfachauswahl im Wizard mit sequenzieller Mengeneingabe
+- [x] Multi-Select im Wizard — mehrere Artikel auf einmal wählen und Mengen gemeinsam eingeben
+- [x] Gleiche Artikel-Namen in verschiedenen Gruppen erlaubt (internes `displayName`-System)
 - [x] Live-Suchfeld mit Kategoriepfad-Anzeige
-- [x] „Zuletzt verwendet"-Liste (letzte 5 Artikel)
+- [x] „Zuletzt verwendet"-Liste (letzte 8 Artikel)
 - [x] In-App-Dialoge — keine nativen Browser-Popups mehr
 - [x] Vollbild-Katalog-Editor mit Inline-Editing
-- [x] Multi-Plan-System mit eigenen Positionen
+- [x] Multi-Plan-System mit eigenen Positionen und eigenem Katalog pro Plan
 
 ---
 

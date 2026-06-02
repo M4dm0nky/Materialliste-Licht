@@ -100,10 +100,12 @@ Kein `npm install`, kein `npm run build`, kein Compiler.
 - CSS Grid für Header, Sidebar und Tabellen
 
 ### Wizard-Flow (Material hinzufügen)
-- Schritt 1: Katalogtyp wählen (z.B. "DMX 5-Pin")
-- Schritt 2: Mengen eingeben — Popup bleibt nach „+ HINZUFÜGEN" offen, schließt erst bei „✓ FERTIG"
+- Schritt 1: Mehrere Katalog-Karten anklicken (Toggle) — ausgewählte Karten bekommen `.sel`-Klasse (gold) + "✓"-Prefix
+- Footer zeigt "N Artikel — WEITER →" sobald ≥1 gewählt; `_renderStep1Footer()` wird bei jedem Toggle aufgerufen
+- Schritt 2 (Multi): `_wizGoMulti()` — alle gewählten Artikel mit je eigenem Stk./Spare-Feld; Gruppen-Header wenn Artikel aus verschiedenen Untergruppen stammen
+- Speichern: `_wizDoneMulti()` — loopt über `wiz.multiSel[]`, legt je eine Section an oder merged in bestehende
+- Lengths-Typen: Single-Select bleibt bestehen — `wizPickCard()` → `step2()` → `_step2Lengths()`
 - Neue Längen im Wizard: nur Zahl eingeben, `m` wird automatisch ergänzt, Eintrag wird numerisch einsortiert
-- Alle Items einer Sektion erhalten immer den Sektionsnamen als Bezeichnung (konsistent)
 - Sortierung: beim Rendern (`rerenderCatInto`) und nach jedem Hinzufügen (`wizDone`) wird nach numerischer Länge sortiert
 
 ### Katalog
