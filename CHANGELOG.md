@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.14] — 2026-06-02
+
+### Behoben
+- `wizard.js`: Multi-Select Schritt 2 zeigt jetzt Gruppen-Header (z.B. "· Gaffa Tape 50mm x 25m") vor den zugehörigen Artikeln, sodass klar ist, welche Farben zu welchem Tape-Typ gehören.
+
+---
+
 ## [v0.6.13] — 2026-06-02
 
 ### Neu

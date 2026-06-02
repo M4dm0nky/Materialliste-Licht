@@ -253,10 +253,23 @@ function wizToggleCard(idx){
 
 function _wizGoMulti(){
   if(!(wiz.multiSel||[]).length) return;
-  const types = getActiveCatalogTypes();
+  const types      = getActiveCatalogTypes();
+  const activeCat  = getActiveCatalog();
+  const groupsById = {};
+  (activeCat.groups||[]).forEach(g=>{ groupsById[g.id]=g.name; });
+
+  let lastGroupId = null;
   const rows = wiz.multiSel.map((s,i)=>{
-    const label = esc((types[s.key]?.displayName)||s.key);
-    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);">
+    const t       = types[s.key]||{};
+    const label   = esc(t.displayName||s.key);
+    const groupId = t.group||null;
+    let header = '';
+    if(groupId !== lastGroupId){
+      lastGroupId = groupId;
+      const gname = groupId ? groupsById[groupId] : null;
+      if(gname) header = `<div style="font-size:12px;font-weight:700;letter-spacing:1px;color:var(--accent2);padding:${i>0?'12':'4'}px 0 4px;border-bottom:1px solid var(--accent2);margin-bottom:4px;">· ${esc(gname)}</div>`;
+    }
+    return header+`<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);">
       <div style="flex:1;font-size:14px;font-weight:600;">${label}</div>
       <label style="font-size:12px;color:var(--muted);">Stk.&nbsp;<input id="mq_${i}" type="number" class="pinput" style="width:65px;text-align:center;" value="1" min="0"></label>
       <label style="font-size:12px;color:var(--muted);">Spare&nbsp;<input id="ms_${i}" type="number" class="pinput" style="width:65px;text-align:center;" value="0" min="0"></label>
