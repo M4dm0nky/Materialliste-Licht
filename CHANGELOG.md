@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.11] — 2026-06-02
+
+### Behoben
+- `render.js`: "NEUE LÄNGE / MATERIAL"-Button in `buildSecEl` nutzte `openWiz(ci)` statt `openWizToSec(ci,si)` — dadurch hatte der Wizard kein `targetSi` gesetzt und `wizDone()` fand via `findIndex` immer die **erste** Sektion mit passendem `type_name`. Artikel wie "Schwarz" wurden in die falsche Sektion eingetragen oder dort fusioniert, statt in der gewünschten Sektion neu angelegt zu werden. Fix: Button ruft jetzt `openWizToSec(ci,si)` auf, sodass der Wizard immer die richtige Sektion anspricht.
+
+---
+
 ## [v0.6.10] — 2026-05-27
 
 ### Behoben

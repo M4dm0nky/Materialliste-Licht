@@ -313,7 +313,7 @@ function buildSecEl(ci,si){
         <th>Kapitel</th><th>Bemerkung</th><th></th>
       </tr></thead><tbody id="tbody-${ci}-${si}"></tbody></table>
       <div class="addlength-row">
-        <button class="btn btn-sm" onclick="openWiz(${ci})">+ NEUE LÄNGE / MATERIAL</button>
+        <button class="btn btn-sm" onclick="openWizToSec(${ci},${si})">+ NEUE LÄNGE / MATERIAL</button>
       </div>
     </div>`;
   const dragHandle = block.querySelector('.drag-handle');
