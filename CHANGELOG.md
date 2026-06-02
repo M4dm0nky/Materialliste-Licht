@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.12] — 2026-06-02
+
+### Behoben
+- `catalog-mgr.js`: Gleiche Artikel-Namen in verschiedenen Gruppen jetzt erlaubt. Drei Stellen (`catTreeSaveAddArtikel`, `catTreeSaveRenameArtikel`, `_artEditSaveName`) prüfen Duplikate nun nur noch innerhalb derselben Gruppe. Bei Namenskonflikt in einer anderen Gruppe wird automatisch ein eindeutiger interner Key generiert (`Schwarz_2`, `Schwarz_3` …) und ein optionales `displayName`-Feld gesetzt, sodass der Benutzer überall immer den gewünschten Namen sieht.
+- `wizard.js`, `render.js`: Alle Anzeigen (Wizard-Karten, Step-2-Header, Sektions-Titel im Projekt) nutzen `displayName || key`, sodass interne Schlüssel nie sichtbar sind.
+
+---
+
 ## [v0.6.11] — 2026-06-02
 
 ### Behoben

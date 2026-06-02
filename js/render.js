@@ -291,7 +291,7 @@ function buildSecEl(ci,si){
       ondrop="dropOnSec(${ci},${si},event)">
       <div class="sechdr-title">
         <span class="drag-handle" title="Sektion verschieben">⠿</span>
-        <span class="chevron" onclick="toggleSec(${ci},${si})">▼</span><span class="sec-title-text" onclick="editSectionName(${ci},${si})" title="Klicken zum Umbenennen">${esc(sec.type_name)}</span>
+        <span class="chevron" onclick="toggleSec(${ci},${si})">▼</span><span class="sec-title-text" onclick="editSectionName(${ci},${si})" title="Klicken zum Umbenennen">${esc(getActiveCatalogTypes()[sec.type_name]?.displayName || sec.type_name)}</span>
       </div>
       <div class="sechdr-col"># Stk.</div>
       <div class="sechdr-col">Spare</div>

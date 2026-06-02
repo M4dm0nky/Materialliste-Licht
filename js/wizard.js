@@ -55,7 +55,7 @@ function step1(){
         const rCatCi = currentCats().findIndex(c=>c.name===v.cat);
         wiz._gridEntries.push({key, ci: rCatCi>=0 ? rCatCi : ci});
         return `<div class="catcard" onclick="wizPickCard(${idx})">
-          <div class="catcard-t">${esc(key)}</div>
+          <div class="catcard-t">${esc(v.displayName || key)}</div>
           <div class="catcard-s">${esc(v.cat||'')}</div>
         </div>`;
       }).join('')}
@@ -105,7 +105,7 @@ function wizUpdateSearch(val){
       const rCatCi = currentCats().findIndex(c=>c.name===v.cat);
       wiz._gridEntries.push({key, ci: rCatCi>=0 ? rCatCi : wiz.ci});
       return `<div class="catcard" onclick="wizPickCard(${idx})">
-        <div class="catcard-t">${esc(key)}</div>
+        <div class="catcard-t">${esc(v.displayName || key)}</div>
         <div class="catcard-s">${esc(v.cat||'')}</div>
       </div>`;
     }).join('');
@@ -142,7 +142,7 @@ function wizBuildGrid(query){
     const idx = wiz._gridEntries.length;
     wiz._gridEntries.push({key:k, ci:targetCi});
     return `<div class="catcard" onclick="wizPickCard(${idx})">
-      <div class="catcard-t">${esc(k)}</div>
+      <div class="catcard-t">${esc(v.displayName || k)}</div>
       <div class="catcard-s">${(v.items||[]).length} Eintr.</div>
     </div>`;
   };
@@ -252,15 +252,16 @@ function _wizWeltBadge(){
 }
 
 function _step2Qty(t){
+  const _wizLabel = t.displayName || wiz.key;
   document.getElementById('mBody').innerHTML=`
     ${_wizStepsHeader()}
     <div style="margin-bottom:14px;">
-      <div style="font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">${esc(wiz.key)}</div>
+      <div style="font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">${esc(_wizLabel)}</div>
       <div style="font-size:11px;color:var(--muted);letter-spacing:1px;">Anzahl eingeben: ${_wizWeltBadge()}</div>
     </div>
     <div class="cablelist">
       <div class="cablerow" id="cr-0">
-        <span class="qlbl" style="flex:1;font-weight:600">${esc(wiz.key)}</span>
+        <span class="qlbl" style="flex:1;font-weight:600">${esc(_wizLabel)}</span>
         <span class="qlbl">#&nbsp;Stk.:</span>
         <input class="qin" type="number" id="qa-0" min="0" value="1" oninput="wizQ(0)">
         <span class="qlbl">Spare:</span>
@@ -276,6 +277,7 @@ function _step2Qty(t){
 }
 
 function _step2Lengths(t){
+  const _wizLabel = t.displayName || wiz.key;
   t.items.sort((a,b)=>parseLen(a.l||a.n)-parseLen(b.l||b.n));
   const rows = t.items.map((item,i)=>{
     const label = item.l || item.n || '—';
@@ -295,7 +297,7 @@ function _step2Lengths(t){
   document.getElementById('mBody').innerHTML=`
     ${_wizStepsHeader()}
     <div style="margin-bottom:14px;">
-      <div style="font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">${esc(wiz.key)}</div>
+      <div style="font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">${esc(_wizLabel)}</div>
       <div style="font-size:11px;color:var(--muted);letter-spacing:1px;">Längen ankreuzen und Anzahl eingeben: ${_wizWeltBadge()}</div>
     </div>
     <div class="cablelist">
@@ -348,7 +350,7 @@ function wizQ(i){
   const isQty = cat && cat.unit_type === 'qty';
   sumItems.innerHTML = active.map(([idx,v])=>{
     let lbl;
-    if(isQty){ lbl = wiz.key; }
+    if(isQty){ lbl = cat.displayName || wiz.key; }
     else { const item = cat.items[+idx]; lbl = ((item.n||'↳')+' '+(item.l||'')).trim(); }
     return `<div class="selrow"><span class="selrow-n">${esc(lbl)}</span>
       <span class="selrow-q">${v.a} Stk. + ${v.s} Spare</span></div>`;
@@ -403,7 +405,7 @@ function wizDone(){
     .filter(([_,v])=>v.a+v.s>0)
     .map(([i,v])=>{
       if(isQty){
-        return {name:wiz.key,length:'',anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:''};
+        return {name:catalog.displayName||wiz.key,length:'',anzahl:v.a,spare:v.s,im_projekt:0,kapitel:'',bemerkung:''};
       }
       const ci2         = catalog.items[+i];
       const displayName = ci2.n || wiz.key || '';

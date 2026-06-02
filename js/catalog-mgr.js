@@ -268,7 +268,7 @@ function _renderCatTree(cat, weltName){
     if(isEditing){
       row += `<div class="inline-edit-wrap" style="flex:1">
         <span style="font-size:11px;color:var(--muted);margin-right:4px">▶</span>
-        <input class="inline-input" id="tree-inline-input" value="${esc(key)}"
+        <input class="inline-input" id="tree-inline-input" value="${esc(val.displayName || key)}"
           onkeydown="if(event.key==='Enter'){catTreeSaveRenameArtikel(${s(catId)},${s(key)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
         <button class="inline-btn ok" onclick="catTreeSaveRenameArtikel(${s(catId)},${s(key)})">✓</button>
         <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
@@ -283,7 +283,7 @@ function _renderCatTree(cat, weltName){
         }).join('');
       row += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('artikel',${s(catId)},${s(key)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
         ${isKabel?`<button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>`:'<span class="tree-toggle-placeholder"></span>'}
-        <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(key)}</span>
+        <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(val.displayName || key)}</span>
         <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
         <select class="cat-welt-sel" title="Welt wechseln"
           onchange="catEditorSetCat(${s(catId)},${s(key)},this.value)">${weltOpts}</select>
@@ -489,10 +489,22 @@ function catTreeSaveRenameArtikel(catalogId, typeKey){
   const val = document.getElementById('tree-inline-input')?.value.trim();
   if(!val){ catTreeInlineCancel(); return; }
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  if(val===typeKey){ _catTreeInlineState=null; _renderCatMgrTab2(); return; }
-  if(cat.types[val]){ toast('Dieser Artikel-Name existiert bereits.',true); return; }
+  const currentDisplay = cat.types[typeKey]?.displayName || typeKey;
+  if(val === currentDisplay){ _catTreeInlineState=null; _renderCatMgrTab2(); return; }
+  if(cat.types[val]){
+    const existingGroup = cat.types[val].group || null;
+    const thisGroup     = cat.types[typeKey]?.group || null;
+    if(existingGroup === thisGroup){ toast('Dieser Artikel-Name existiert bereits in dieser Gruppe.', true); return; }
+    cat.types[typeKey].displayName = val;
+    saveCatalogsStore(); rerenderAllCats();
+    _catTreeInlineState = null; _renderCatMgrTab2();
+    toast('✓ Umbenannt'); return;
+  }
   const newTypes = {};
-  Object.entries(cat.types).forEach(([k,v])=>{ newTypes[k===typeKey?val:k]=v; });
+  Object.entries(cat.types).forEach(([k,v])=>{
+    if(k===typeKey){ const e={...v}; delete e.displayName; newTypes[val]=e; }
+    else newTypes[k]=v;
+  });
   cat.types = newTypes;
   saveCatalogsStore(); rerenderAllCats();
   _catTreeInlineState = null;
@@ -530,11 +542,19 @@ function catTreeSaveAddArtikel(catalogId){
   const val = document.getElementById('tree-inline-input')?.value.trim();
   if(!val){ catTreeInlineCancel(); return; }
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
-  if(cat.types[val]){ toast('Dieser Artikel-Name existiert bereits.',true); return; }
   const st    = _catTreeInlineState;
   const entry = {cat:_catEditorWelt||CAT_ORDER[0], items:[], unit_type:'qty'};
   if(st?.parentId) entry.group = st.parentId;
-  cat.types[val] = entry;
+  let key = val;
+  if(cat.types[key]){
+    const existingGroup = cat.types[key].group || null;
+    const newGroup      = entry.group || null;
+    if(existingGroup === newGroup){ toast('Dieser Artikel-Name existiert bereits in dieser Gruppe.', true); return; }
+    let i = 2;
+    while(cat.types[key]) key = val + '_' + i++;
+    entry.displayName = val;
+  }
+  cat.types[key] = entry;
   saveCatalogsStore();
   _catTreeInlineState = null;
   _renderCatMgrTab2();
@@ -1038,7 +1058,7 @@ function _renderArticleEditModal(){
         <div class="art-edit-section">
           <div class="art-edit-section-label">BEZEICHNUNG</div>
           <div class="art-edit-name-row">
-            <input class="art-edit-name-input" id="artEditNameInput" value="${esc(typeKey)}"
+            <input class="art-edit-name-input" id="artEditNameInput" value="${esc(type.displayName || typeKey)}"
               onkeydown="if(event.key==='Enter')_artEditSaveName(${s(catalogId)},${s(typeKey)});else if(event.key==='Escape')_artEditClose()">
             <button class="btn btn-sm" onclick="_artEditSaveName(${s(catalogId)},${s(typeKey)})">UMBENENNEN</button>
           </div>
@@ -1120,11 +1140,24 @@ function _artEditToggleLocPicker(catalogId, typeKey){
 function _artEditSaveName(catalogId, oldKey){
   const val = document.getElementById('artEditNameInput')?.value.trim();
   if(!val){ toast('Bitte einen Namen eingeben.',true); return; }
-  if(val === oldKey) return;
   const cat = catalogsStore?.catalogs?.find(c=>c.id===catalogId); if(!cat) return;
-  if(cat.types[val]){ toast('Dieser Artikel-Name existiert bereits.',true); return; }
+  const currentDisplay = cat.types[oldKey]?.displayName || oldKey;
+  if(val === currentDisplay) return;
+  if(cat.types[val]){
+    const existingGroup = cat.types[val].group || null;
+    const thisGroup     = cat.types[oldKey]?.group || null;
+    if(existingGroup === thisGroup){ toast('Dieser Artikel-Name existiert bereits in dieser Gruppe.', true); return; }
+    cat.types[oldKey].displayName = val;
+    saveCatalogsStore(); rerenderAllCats();
+    _artEditState.typeKey = oldKey;
+    _renderCatMgrTab2(); _renderArticleEditModal();
+    toast('✓ Umbenannt'); return;
+  }
   const newTypes = {};
-  Object.entries(cat.types).forEach(([k,v])=>{ newTypes[k===oldKey?val:k]=v; });
+  Object.entries(cat.types).forEach(([k,v])=>{
+    if(k===oldKey){ const e={...v}; delete e.displayName; newTypes[val]=e; }
+    else newTypes[k]=v;
+  });
   cat.types = newTypes;
   saveCatalogsStore(); rerenderAllCats();
   _artEditState.typeKey = val;
