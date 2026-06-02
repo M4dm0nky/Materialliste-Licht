@@ -13,9 +13,9 @@ function _saveRecent(typeKey){
   try{ localStorage.setItem(WIZ_RECENT_KEY, JSON.stringify(r.slice(0,8))); }catch(e){}
 }
 
-function openWiz(ci){ wiz={ci,targetSi:null,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
-function openWizToSec(ci,si){ wiz={ci,targetSi:si,key:null,sel:{},selLengths:{}}; showWiz('Material hinzufügen'); step1(); }
-function openWizSearch(){ wiz={ci:-1,targetSi:null,key:null,sel:{},selLengths:{},_browseWorld:null}; showWiz('Material suchen'); step1(); }
+function openWiz(ci){ wiz={ci,targetSi:null,key:null,sel:{},selLengths:{},multiSel:[]}; showWiz('Material hinzufügen'); step1(); }
+function openWizToSec(ci,si){ wiz={ci,targetSi:si,key:null,sel:{},selLengths:{},multiSel:[]}; showWiz('Material hinzufügen'); step1(); }
+function openWizSearch(){ wiz={ci:-1,targetSi:null,key:null,sel:{},selLengths:{},_browseWorld:null,multiSel:[]}; showWiz('Material suchen'); step1(); }
 
 function _wizHasDirtyData(){
   return Object.values(wiz.sel||{}).some(v=>(v.a||0)+(v.s||0)>0);
@@ -53,9 +53,11 @@ function step1(){
         const v = types[key]; if(!v) return '';
         const idx   = wiz._gridEntries.length;
         const rCatCi = currentCats().findIndex(c=>c.name===v.cat);
-        wiz._gridEntries.push({key, ci: rCatCi>=0 ? rCatCi : ci});
-        return `<div class="catcard" onclick="wizPickCard(${idx})">
-          <div class="catcard-t">${esc(v.displayName || key)}</div>
+        const rci = rCatCi>=0 ? rCatCi : ci;
+        wiz._gridEntries.push({key, ci: rci});
+        const isSel = (wiz.multiSel||[]).some(s=>s.key===key&&s.ci===rci);
+        return `<div class="catcard${isSel?' sel':''}" data-idx="${idx}" onclick="wizToggleCard(${idx})">
+          <div class="catcard-t">${isSel?'✓ ':''}${esc(v.displayName || key)}</div>
           <div class="catcard-s">${esc(v.cat||'')}</div>
         </div>`;
       }).join('')}
@@ -88,8 +90,13 @@ function step1(){
 }
 
 function _renderStep1Footer(){
+  const n = (wiz.multiSel||[]).length;
   document.getElementById('mFooter').innerHTML=
-    `<button class="btn" onclick="closeWiz()">Abbrechen</button>`;
+    `<button class="btn" onclick="closeWiz()">Abbrechen</button>`+
+    (n>0
+      ? `<button class="btn btn-accent" onclick="_wizGoMulti()">${n} Artikel — WEITER →</button>`
+      : `<button class="btn btn-accent" disabled style="opacity:.4;cursor:default;">WEITER →</button>`
+    );
 }
 
 function wizUpdateSearch(val){
@@ -103,9 +110,11 @@ function wizUpdateSearch(val){
       const v = types[key]; if(!v) return '';
       const idx    = wiz._gridEntries.length;
       const rCatCi = currentCats().findIndex(c=>c.name===v.cat);
-      wiz._gridEntries.push({key, ci: rCatCi>=0 ? rCatCi : wiz.ci});
-      return `<div class="catcard" onclick="wizPickCard(${idx})">
-        <div class="catcard-t">${esc(v.displayName || key)}</div>
+      const rci = rCatCi>=0 ? rCatCi : wiz.ci;
+      wiz._gridEntries.push({key, ci: rci});
+      const isSel = (wiz.multiSel||[]).some(s=>s.key===key&&s.ci===rci);
+      return `<div class="catcard${isSel?' sel':''}" data-idx="${idx}" onclick="wizToggleCard(${idx})">
+        <div class="catcard-t">${isSel?'✓ ':''}${esc(v.displayName || key)}</div>
         <div class="catcard-s">${esc(v.cat||'')}</div>
       </div>`;
     }).join('');
@@ -141,9 +150,11 @@ function wizBuildGrid(query){
   const makeCard = (k,v,targetCi)=>{
     const idx = wiz._gridEntries.length;
     wiz._gridEntries.push({key:k, ci:targetCi});
-    return `<div class="catcard" onclick="wizPickCard(${idx})">
-      <div class="catcard-t">${esc(v.displayName || k)}</div>
-      <div class="catcard-s">${(v.items||[]).length} Eintr.</div>
+    const count = (v.items||[]).length;
+    const isSel = (wiz.multiSel||[]).some(s=>s.key===k&&s.ci===targetCi);
+    return `<div class="catcard${isSel?' sel':''}" data-idx="${idx}" onclick="wizToggleCard(${idx})">
+      <div class="catcard-t">${isSel?'✓ ':''}${esc(v.displayName||k)}</div>
+      ${count>0?`<div class="catcard-s">${count} Eintr.</div>`:''}
     </div>`;
   };
 
@@ -160,12 +171,12 @@ function wizBuildGrid(query){
       const direct     = byGrp[g.id]||[];
       const hasContent = direct.length||subGroups.some(sg=>(byGrp[sg.id]||[]).length);
       if(!hasContent) return;
-      h+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:2px;color:var(--accent);margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)">▸ ${esc(g.name)}</div>`;
+      h+=`<div style="grid-column:1/-1;font-size:14px;font-weight:700;letter-spacing:2px;color:var(--accent);margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--accent);text-transform:uppercase;">▸ ${esc(g.name)}</div>`;
       h+=direct.map(([k,v])=>makeCard(k,v,targetCi)).join('');
       subGroups.forEach(sg=>{
         const sgItems = byGrp[sg.id]||[];
         if(!sgItems.length) return;
-        h+=`<div style="grid-column:1/-1;font-size:10px;letter-spacing:1px;color:var(--accent2);margin:6px 0 3px;padding-left:12px">· ${esc(sg.name)}</div>`;
+        h+=`<div style="grid-column:1/-1;font-size:12px;font-weight:600;letter-spacing:1px;color:var(--accent2);margin:10px 0 4px;padding-left:4px;">· ${esc(sg.name)}</div>`;
         h+=sgItems.map(([k,v])=>makeCard(k,v,targetCi)).join('');
       });
     });
@@ -221,6 +232,81 @@ function wizPickCard(idx){
   if(e.ci !== wiz.ci) wiz.targetSi = null;
   wiz.ci = e.ci; wiz.key = e.key; wiz.sel = {}; wiz.selLengths = {};
   step2();
+}
+
+function wizToggleCard(idx){
+  const e = wiz._gridEntries && wiz._gridEntries[idx]; if(!e) return;
+  if(!wiz.multiSel) wiz.multiSel=[];
+  const i = wiz.multiSel.findIndex(s=>s.key===e.key&&s.ci===e.ci);
+  if(i>=0) wiz.multiSel.splice(i,1);
+  else wiz.multiSel.push({key:e.key, ci:e.ci});
+  const isSel = i<0;
+  const card = document.querySelector(`.catcard[data-idx="${idx}"]`);
+  if(card){
+    card.classList.toggle('sel', isSel);
+    const t = card.querySelector('.catcard-t');
+    const label = (getActiveCatalogTypes()[e.key]?.displayName)||e.key;
+    if(t) t.textContent = (isSel?'✓ ':'')+label;
+  }
+  _renderStep1Footer();
+}
+
+function _wizGoMulti(){
+  if(!(wiz.multiSel||[]).length) return;
+  const types = getActiveCatalogTypes();
+  const rows = wiz.multiSel.map((s,i)=>{
+    const label = esc((types[s.key]?.displayName)||s.key);
+    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);">
+      <div style="flex:1;font-size:14px;font-weight:600;">${label}</div>
+      <label style="font-size:12px;color:var(--muted);">Stk.&nbsp;<input id="mq_${i}" type="number" class="pinput" style="width:65px;text-align:center;" value="1" min="0"></label>
+      <label style="font-size:12px;color:var(--muted);">Spare&nbsp;<input id="ms_${i}" type="number" class="pinput" style="width:65px;text-align:center;" value="0" min="0"></label>
+    </div>`;
+  }).join('');
+  document.getElementById('mTitle').textContent='Mengen eingeben';
+  document.getElementById('mBody').innerHTML=`
+    <div class="steps">
+      <div class="step done" onclick="step1()" style="cursor:pointer">1 · TYP ✓</div>
+      <div class="step active">2 · MENGEN EINGEBEN</div>
+    </div>
+    <div style="max-height:420px;overflow-y:auto;">${rows}</div>`;
+  document.getElementById('mFooter').innerHTML=
+    `<button class="btn" onclick="step1()">← ZURÜCK</button>`+
+    `<button class="btn btn-accent" onclick="_wizDoneMulti()">✓ HINZUFÜGEN</button>`;
+  document.getElementById('mq_0')?.focus();
+}
+
+function _wizDoneMulti(){
+  const multiSel = wiz.multiSel||[];
+  const cnt      = multiSel.length;
+  const types    = getActiveCatalogTypes();
+  const affectedCis = new Set();
+  multiSel.forEach((s,i)=>{
+    const qty   = Math.max(0, parseInt(document.getElementById('mq_'+i)?.value)||0);
+    const spare = Math.max(0, parseInt(document.getElementById('ms_'+i)?.value)||0);
+    const cat   = currentCats()[s.ci]; if(!cat) return;
+    const label = (types[s.key]?.displayName)||s.key;
+    let si = cat.sections.findIndex(sec=>sec.type_name===s.key);
+    if(si<0){
+      cat.sections.push({type_name:s.key, unit_type:'qty', items:[]});
+      si = cat.sections.length-1;
+    }
+    const sec = cat.sections[si];
+    const ex  = sec.items.findIndex(it=>it.name===label&&!it.length);
+    if(ex>=0){
+      sec.items[ex].anzahl = (sec.items[ex].anzahl||0)+qty;
+      sec.items[ex].spare  = (sec.items[ex].spare||0)+spare;
+    } else {
+      sec.items.push({name:label, length:'', anzahl:qty, spare, im_projekt:0, kapitel:'', bemerkung:''});
+    }
+    _saveRecent(s.key);
+    affectedCis.add(s.ci);
+  });
+  save();
+  affectedCis.forEach(ci=>rerenderCat(ci));
+  recalcAll();
+  wiz.multiSel=[];
+  _doCloseWiz();
+  toast('✓ '+cnt+' Artikel hinzugefügt');
 }
 
 function step2(){

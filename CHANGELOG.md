@@ -5,6 +5,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.13] — 2026-06-02
+
+### Neu
+- `wizard.js`: **Multi-Select im Wizard** — Artikel-Karten können jetzt mehrfach angeklickt werden (Toggle). Ausgewählte Karten erhalten goldenen Rahmen und "✓"-Prefix. Der Footer zeigt einen "N Artikel — WEITER →"-Button sobald ≥1 Artikel gewählt ist. Schritt 2 zeigt alle gewählten Artikel gleichzeitig mit je eigenem Stk./Spare-Feld. "✓ HINZUFÜGEN" speichert alle auf einmal.
+- `wizard.js`: "← ZURÜCK" in Schritt 2 kehrt zu Schritt 1 zurück und erhält die aktuelle Selektion.
+
+### Verbessert
+- `wizard.js`: "0 Eintr."-Badge auf Karten wird ausgeblendet, wenn keine Sub-Items vorhanden sind (Gerät/Qty-Typen).
+- `wizard.js`: Gruppen-Header im Browsegrid vergrößert (14px/700 statt 10px) und Untergruppen-Header (12px/600 statt 10px) für bessere Lesbarkeit.
+
+---
+
 ## [v0.6.12] — 2026-06-02
 
 ### Behoben
