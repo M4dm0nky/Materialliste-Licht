@@ -5,6 +5,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.19] — 2026-06-02
+
+### Behoben
+- `export.js`: CSV-Export enthält jetzt **alle Positionen** (nicht nur die aktive) — Positions-Name als erste Spalte, Dateiname `-alle.csv`
+- `export.js`: Importvalidierung erkennt jetzt auch leere `positions: []` als ungültig
+- `export.js`: `_cancelCatalogPick()` sichert den aktuellen Plan vor dem Abbrechen
+- `logos.js`: Warning-Toast wenn ein Logo > 500 KB ist (localStorage-Overflow-Schutz)
+
+---
+
 ## [v0.6.18] — 2026-06-02
 
 ### Behoben (Code-Review)

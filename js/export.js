@@ -4,18 +4,20 @@
 let _fileHandle = null;
 let _pendingImport = null;
 function exportCSV(){
-  const posName = state.positions[activePosIdx].name;
-  let csv = 'Projekt;'+(state._project||'')+';Datum;'+(state._date||'')+'\nPosition;'+posName+'\n\n';
-  csv += 'Kategorie;Sektion;Bezeichnung;Länge;# Stk.;Spare;Im Projekt;Differenz;Total;Kapitel;Bemerkung\n';
-  currentCats().forEach(cat=>cat.sections.forEach(sec=>sec.items.forEach(item=>{
-    const d=xdiff(item), t=xtotal(item);
-    csv += [cat.name,sec.type_name,item.name||'',item.length||'',item.anzahl||0,item.spare||0,
-      item.im_projekt||0,d,t,item.kapitel||'',item.bemerkung||'']
-      .map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')+'\n';
-  })));
+  const q = v=>'"'+String(v).replace(/"/g,'""')+'"';
+  let csv = 'Projekt;'+(state._project||'')+';Datum;'+(state._date||'')+'\n\n';
+  csv += 'Position;Kategorie;Sektion;Bezeichnung;Länge;# Stk.;Spare;Im Projekt;Differenz;Total;Kapitel;Bemerkung\n';
+  state.positions.forEach(pos=>{
+    pos.categories.forEach(cat=>cat.sections.forEach(sec=>sec.items.forEach(item=>{
+      const d=xdiff(item), t=xtotal(item);
+      csv += [pos.name,cat.name,sec.type_name,item.name||'',item.length||'',item.anzahl||0,
+        item.spare||0,item.im_projekt||0,d,t,item.kapitel||'',item.bemerkung||'']
+        .map(q).join(';')+'\n';
+    })));
+  });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));
-  a.download = 'material-planer-'+(state._project||'export').replace(/\s/g,'_')+'.csv';
+  a.href = URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download = 'material-planer-'+(state._project||'export').replace(/\s/g,'_')+'-alle.csv';
   a.click();
 }
 
@@ -51,7 +53,7 @@ function importProjectJSON(input){
   r.onload = e=>{
     try{
       const data = JSON.parse(e.target.result);
-      if(!data.categories && !data.positions) throw new Error('Kein gültiges Materialliste-Format');
+      if(!data.positions?.length && !data.categories) throw new Error('Kein gültiges Materialliste-Format');
       _pendingImport = {data, file};
       _openCatalogPickModal(data, file);
     }catch(err){ toast('Import fehlgeschlagen: '+err.message, true); }
@@ -77,6 +79,7 @@ function _openCatalogPickModal(data, file){
 }
 
 function _cancelCatalogPick(){
+  savePlanToLS(activePlanId);  // Plan sichern bevor Abbrechen
   _pendingImport = null;  // Fix C: pendingImport bei Abbrechen leeren
   closeModal('catalogPickModal');
 }

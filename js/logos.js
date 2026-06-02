@@ -56,6 +56,10 @@ function updateLogoPreviews(){
 }
 
 function saveLogosGlobal(){
+  ['planer','band','booking'].forEach(t=>{
+    const kb = Math.round((logos[t]||'').length * 0.75 / 1024);
+    if(kb > 500) toast('⚠ Logo "'+t+'" ist groß ('+kb+' KB) — kann localStorage überlasten', true);
+  });
   try{ localStorage.setItem(LOGOS_KEY, JSON.stringify(logos)); }catch(e){}
 }
 
