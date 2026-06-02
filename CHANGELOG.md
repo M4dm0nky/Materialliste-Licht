@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.17] — 2026-06-02
+
+### Behoben
+- `wizard.js`: Fix Bezeichnungs-Bug in `_wizDoneMulti()` — bei Längen-Items ohne `item.n` wurde fälschlicherweise `item.l` (die Länge) als Bezeichnung gespeichert, sodass z.B. "3m" in beiden Spalten stand. Fallback ist jetzt korrekt `s.key` (der Typ-Name), identisch mit dem Single-Select-Pfad in `wizDone()`.
+
+---
+
 ## [v0.6.16] — 2026-06-02
 
 ### Behoben

@@ -339,7 +339,7 @@ function _wizDoneMulti(){
           sec.items[ex].anzahl = (sec.items[ex].anzahl||0)+qty;
           sec.items[ex].spare  = (sec.items[ex].spare||0)+spare;
         } else {
-          sec.items.push({name:item.n||item.l||'', length:item.l||'', anzahl:qty, spare, im_projekt:0, kapitel:'', bemerkung:''});
+          sec.items.push({name:item.n||s.key||'', length:item.l||'', anzahl:qty, spare, im_projekt:0, kapitel:'', bemerkung:''});
         }
         cnt++;
       });
