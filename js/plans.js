@@ -90,9 +90,8 @@ function migrateState(s){
       cat.sections.forEach(sec=>{
         const merged = [];
         sec.items.forEach(item=>{
-          const key = item.length || item.name;
           const ex  = item.length
-            ? merged.find(i=>i.length===item.length)
+            ? merged.find(i=>i.length===item.length && (i.name||'')===(item.name||''))
             : merged.find(i=>i.name===item.name);
           if(ex){ ex.anzahl=(ex.anzahl||0)+(item.anzahl||0); ex.spare=(ex.spare||0)+(item.spare||0); }
           else merged.push(item);
@@ -139,7 +138,7 @@ function migrateState(s){
       pos.categories = newCats;
     });
   }
-  _migrateSectionWorlds(st);
+  try{ _migrateSectionWorlds(st); }catch(e){ console.error('_migrateSectionWorlds fehlgeschlagen:', e); }
   return st;
 }
 

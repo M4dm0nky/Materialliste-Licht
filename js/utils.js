@@ -57,7 +57,7 @@ function showSelect(msg, options, onOk, title){
   const can = document.getElementById('appSelectCancel');
   document.getElementById('appSelectMsg').textContent   = msg;
   document.getElementById('appSelectTitle').textContent = title || 'Auswahl';
-  sel.innerHTML = options.map(o=>`<option value="${o.value}">${o.label}</option>`).join('');
+  sel.innerHTML = options.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('');
   d.classList.add('open');
   function cleanup(){ d.classList.remove('open'); ok.onclick=null; can.onclick=null; d.onclick=null; document.removeEventListener('keydown',onKey); }
   function onKey(e){ if(e.key==='Escape'){ e.stopPropagation(); cleanup(); } }

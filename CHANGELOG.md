@@ -5,6 +5,30 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.6.20] — 2026-06-04
+
+### Sicherheit
+- XSS-Fix: `cat.name` in Tab-Leiste ohne `esc()` (`render.js`)
+- XSS-Fix: `projectName` im PDF-Fenster ohne `esc()` (`pdf.js`)
+- XSS-Fix: `showSelect()` — `o.value`/`o.label` nicht escapet (`utils.js`)
+
+### Behoben
+- Crash wenn Popup-Blocker aktiv: `window.open()` null-Check in PDF-Export (`pdf.js`)
+- TypeError beim App-Start wenn `state.positions` undefined (`state.js`)
+- Stiller Datenverlust: Items mit gleicher Länge aber verschiedenem Namen wurden zusammengeführt (`plans.js`)
+- App-Start-Crash: `_migrateSectionWorlds()` ohne try-catch in `migrateState()` (`plans.js`)
+- State-Inkonsistenz: `activeCatalogId` wurde vor `migrateState()` gesetzt (`export.js`)
+- Tote Code-Zeile `weltDepth` und `_catMgrTab` entfernt (`render.js`, `catalog-mgr.js`)
+- `pName`-Element ohne null-Guard in `save()` (`state.js`)
+
+### Verbessert (Refactoring)
+- `_renderCatTree()` (229 Zeilen) in 4 benannte Hilfsfunktionen aufgeteilt (`catalog-mgr.js`)
+- `_catDropGruppe`/`_catDropUntergruppe` — gemeinsamer Kern `_reorderGroupById()` extrahiert (`catalog-mgr.js`)
+- `_fixGhostQtyItems()` als benannte Funktion — Seiteneffekt in `rerenderCatInto()` beseitigt (`render.js`)
+- `_wizReset()` — konsistente wiz-Objekt-Initialisierung in allen `openWiz*`-Funktionen (`wizard.js`)
+
+---
+
 ## [v0.6.19] — 2026-06-02
 
 ### Behoben

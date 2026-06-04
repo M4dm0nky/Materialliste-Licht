@@ -1,7 +1,6 @@
 // ══════════════════════════════════════════════════
 // KATALOG-MANAGER — Verwaltungs-UI (Tree-Editor)
 // ══════════════════════════════════════════════════
-let _catMgrTab          = 1;     // 1 = Übersicht, 2 = Bearbeiten
 let _catEditorId        = null;  // aktiver Katalog im Editor
 let _catEditorWelt      = null;  // aktive Welt im Tree-Tab
 let _catTreeInlineState = null;  // {mode, catalogId, id?, parentId?, weltName?}
@@ -39,9 +38,7 @@ function catDrop(type,catId,id,e){
   else if(_catDragSrc.type==='artikel'&&type==='artikel') _catDropArtikel(catId,id,insertAfter);
   _catDragSrc=null;
 }
-function _catDropGruppe(catId,targetId,insertAfter){
-  const cat=_getCatById(catId); if(!cat||!_catDragSrc) return;
-  const srcId=_catDragSrc.id; if(srcId===targetId) return;
+function _reorderGroupById(cat,srcId,targetId,insertAfter){
   const si=cat.groups.findIndex(g=>g.id===srcId), ti=cat.groups.findIndex(g=>g.id===targetId);
   if(si<0||ti<0) return;
   const grp=cat.groups.splice(si,1)[0];
@@ -49,16 +46,17 @@ function _catDropGruppe(catId,targetId,insertAfter){
   idx=Math.max(0,Math.min(idx,cat.groups.length));
   cat.groups.splice(idx,0,grp); saveCatalogsStore(); _renderCatMgrTab2();
 }
+function _catDropGruppe(catId,targetId,insertAfter){
+  const cat=_getCatById(catId); if(!cat||!_catDragSrc) return;
+  const srcId=_catDragSrc.id; if(srcId===targetId) return;
+  _reorderGroupById(cat,srcId,targetId,insertAfter);
+}
 function _catDropUntergruppe(catId,targetId,insertAfter){
   const cat=_getCatById(catId); if(!cat||!_catDragSrc) return;
   const srcId=_catDragSrc.id; if(srcId===targetId) return;
   const sg=cat.groups.find(g=>g.id===srcId), tg=cat.groups.find(g=>g.id===targetId);
   if(!sg||!tg||sg.parentId!==tg.parentId) return;
-  const si=cat.groups.findIndex(g=>g.id===srcId), ti=cat.groups.findIndex(g=>g.id===targetId);
-  const grp=cat.groups.splice(si,1)[0];
-  let idx=insertAfter?(si<ti?ti:ti+1):(si<ti?ti-1:ti);
-  idx=Math.max(0,Math.min(idx,cat.groups.length));
-  cat.groups.splice(idx,0,grp); saveCatalogsStore(); _renderCatMgrTab2();
+  _reorderGroupById(cat,srcId,targetId,insertAfter);
 }
 function _catDropArtikel(catId,targetKey,insertAfter){
   const cat=_getCatById(catId); if(!cat||!_catDragSrc) return;
@@ -211,12 +209,7 @@ function catTreeSaveEditLen(catalogId, key, idx){
 }
 
 // ── TREE RENDERING ─────────────────────────────────────────────────
-function _renderCatTree(cat, weltName){
-  const types     = cat.types||{};
-  const topGroups = catGetTopGroups(cat);
-  const s         = v => JSON.stringify(v).replace(/"/g,'&quot;');
-
-  // Typen dieser Welt nach Gruppe aufteilen
+function _catTreeBuildByGroup(cat, types, weltName){
   const byGroup = {};
   (cat.groups||[]).forEach(g=>{ byGroup[g.id]=[]; });
   byGroup['__none']=[];
@@ -226,121 +219,126 @@ function _renderCatTree(cat, weltName){
     if(byGroup[gid]!==undefined) byGroup[gid].push({key,val});
     else byGroup['__none'].push({key,val});
   });
+  return byGroup;
+}
 
-  // Sichtbare Top-Gruppen: hat Typen in dieser Welt, oder ein aktives Add-State, oder komplett leer
+function _catTreeVisibleTopGroups(cat, topGroups, byGroup){
   const is = _catTreeInlineState;
-  const weltsTopGroups = topGroups.filter(g=>{
+  return topGroups.filter(g=>{
     if((byGroup[g.id]||[]).length>0) return true;
     if(catGetSubGroups(cat,g.id).some(sg=>(byGroup[sg.id]||[]).length>0)) return true;
     if(is && (is.parentId===g.id || catGetSubGroups(cat,g.id).some(sg=>is.parentId===sg.id))) return true;
-    // Leere Gruppen (kein Artikel in irgendeiner Welt) immer anzeigen
     const allSubIds = catGetSubGroups(cat,g.id).map(sg=>sg.id);
     const hasItemsAnywhere = Object.values(cat.types||{})
       .some(t => t.group===g.id || allSubIds.includes(t.group));
     if(!hasItemsAnywhere) return true;
     return false;
   });
+}
 
-  let html = '';
+function _catTreeInlineAddRowHTML(indent, saveCall){
+  const cls = indent===2?'tree-indent-2':indent===1?'tree-indent-1':'';
+  return `<div class="tree-row editing ${cls}">
+    <div class="inline-edit-wrap">
+      <input class="inline-input" id="tree-inline-input" placeholder="Name eingeben…"
+        onkeydown="if(event.key==='Enter'){${saveCall}}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
+      <button class="inline-btn ok" onclick="${saveCall}">✓</button>
+      <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
+    </div>
+  </div>`;
+}
 
-  const renderInlineAddRow = (indent, saveCall) => {
-    const cls = indent===2?'tree-indent-2':indent===1?'tree-indent-1':'';
-    return `<div class="tree-row editing ${cls}">
-      <div class="inline-edit-wrap">
-        <input class="inline-input" id="tree-inline-input" placeholder="Name eingeben…"
-          onkeydown="if(event.key==='Enter'){${saveCall}}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
-        <button class="inline-btn ok" onclick="${saveCall}">✓</button>
-        <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
-      </div>
+function _catTreeArtikelRowHTML(key, val, indent, cat, s){
+  const is        = _catTreeInlineState;
+  const isKabel   = (val.unit_type||'qty') === 'lengths';
+  const badgeCls  = isKabel ? 'badge-kabel' : 'badge-geraet';
+  const badgeTxt  = isKabel ? 'Kabel' : 'Gerät';
+  const isEditing = is?.mode==='edit-artikel' && is.id===key;
+  const indCls    = indent===2?'tree-indent-2':indent===1?'tree-indent-1':'';
+  const catId     = cat.id;
+  const collapsed = _catTreeCollapsed.has(catId+'::'+key);
+
+  let row = `<div class="tree-row tree-artikel ${indCls}" ondragover="catDragOver(event)" ondragleave="catDragLeave(event)" ondrop="catDrop('artikel',${s(catId)},${s(key)},event)">`;
+  if(isEditing){
+    row += `<div class="inline-edit-wrap" style="flex:1">
+      <span style="font-size:11px;color:var(--muted);margin-right:4px">▶</span>
+      <input class="inline-input" id="tree-inline-input" value="${esc(val.displayName || key)}"
+        onkeydown="if(event.key==='Enter'){catTreeSaveRenameArtikel(${s(catId)},${s(key)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
+      <button class="inline-btn ok" onclick="catTreeSaveRenameArtikel(${s(catId)},${s(key)})">✓</button>
+      <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
     </div>`;
-  };
-
-  const renderArtikelRow = (key, val, indent) => {
-    const isKabel    = (val.unit_type||'qty') === 'lengths';
-    const badgeCls   = isKabel ? 'badge-kabel' : 'badge-geraet';
-    const badgeTxt   = isKabel ? 'Kabel' : 'Gerät';
-    const isEditing  = is?.mode==='edit-artikel' && is.id===key;
-    const indCls     = indent===2?'tree-indent-2':indent===1?'tree-indent-1':'';
-    const catId      = cat.id;
-    const collapsed  = _catTreeCollapsed.has(catId+'::'+key);
-
-    let row = `<div class="tree-row tree-artikel ${indCls}" ondragover="catDragOver(event)" ondragleave="catDragLeave(event)" ondrop="catDrop('artikel',${s(catId)},${s(key)},event)">`;
-    if(isEditing){
-      row += `<div class="inline-edit-wrap" style="flex:1">
-        <span style="font-size:11px;color:var(--muted);margin-right:4px">▶</span>
-        <input class="inline-input" id="tree-inline-input" value="${esc(val.displayName || key)}"
-          onkeydown="if(event.key==='Enter'){catTreeSaveRenameArtikel(${s(catId)},${s(key)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
-        <button class="inline-btn ok" onclick="catTreeSaveRenameArtikel(${s(catId)},${s(key)})">✓</button>
-        <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
+  } else {
+    const weltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===(val.cat||CAT_ORDER[0])?' selected':''}>${w}</option>`).join('');
+    const grpOpts  = '<option value="">(keine Gruppe)</option>' +
+      (cat.groups||[]).filter(g=>!g.parentId).map(g=>{
+        const subs = catGetSubGroups(cat,g.id);
+        return `<option value="${g.id}"${val.group===g.id?' selected':''}>${esc(g.name)}</option>` +
+          subs.map(sg=>`<option value="${sg.id}"${val.group===sg.id?' selected':''}>  ▸ ${esc(sg.name)}</option>`).join('');
+      }).join('');
+    row += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('artikel',${s(catId)},${s(key)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
+      ${isKabel?`<button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>`:'<span class="tree-toggle-placeholder"></span>'}
+      <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(val.displayName || key)}</span>
+      <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
+      <select class="cat-welt-sel" title="Welt wechseln"
+        onchange="catEditorSetCat(${s(catId)},${s(key)},this.value)">${weltOpts}</select>
+      <select class="cat-grp-sel" title="Gruppe wechseln"
+        onchange="catEditorSetTypeGroup(${s(catId)},${s(key)},this.value)">${grpOpts}</select>
+      <div class="tree-actions">
+        ${!val.group?`<button onclick="catTreeTypeToGroup(${s(catId)},${s(key)})" title="Gruppe mit diesem Namen erstellen und Artikel zuordnen" style="font-size:10px;color:var(--accent2)">→ Gruppe</button>`:''}
+        <button onclick="catTreeToggleUnitType(${s(catId)},${s(key)})" title="${isKabel?'Zu Gerät wechseln':'Zu Kabel wechseln'}" style="font-size:10px;opacity:.65">
+          ${isKabel?'→Gerät':'→Kabel'}
+        </button>
+        <button onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">✏</button>
+        <button class="del-btn" onclick="catEditorDeleteType(${s(catId)},${s(key)})" title="Löschen">✕</button>
       </div>`;
+  }
+  row += '</div>';
+
+  if(!isEditing && !collapsed && isKabel){
+    const items     = val.items||[];
+    const isAddLen  = is?.mode==='add-len' && is.id===key;
+    const isEditLen = is?.mode==='edit-len' && is.id===key;
+    const tagIndent = indent===2?'padding-left:52px':indent===1?'padding-left:36px':'padding-left:20px';
+    row += `<div class="len-tags" style="${tagIndent}">`;
+    items.forEach((it,idx)=>{
+      const label = it.l||it.n||'?';
+      if(isEditLen && is.lenIdx===idx){
+        row += `<span class="len-add-wrap">
+          <input class="len-add-input" id="tree-inline-input" value="${esc(label)}"
+            onkeydown="if(event.key==='Enter'){catTreeSaveEditLen(${s(catId)},${s(key)},${idx})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
+          <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
+            onclick="catTreeSaveEditLen(${s(catId)},${s(key)},${idx})">✓</button>
+          <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
+        </span>`;
+      } else {
+        row += `<span class="len-tag" onclick="catTreeEditLen(${s(catId)},${s(key)},${idx})" title="Klicken zum Bearbeiten">${esc(label)}<button class="len-del"
+          onclick="event.stopPropagation();catTreeDeleteLen(${s(catId)},${s(key)},${idx})" title="Löschen">✕</button></span>`;
+      }
+    });
+    if(isAddLen){
+      row += `<span class="len-add-wrap">
+        <input class="len-add-input" id="tree-inline-input" placeholder="z.B. 15m"
+          onkeydown="if(event.key==='Enter'){catTreeSaveLen(${s(catId)},${s(key)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
+        <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
+          onclick="catTreeSaveLen(${s(catId)},${s(key)})">✓</button>
+      </span>`;
     } else {
-      const weltOpts = CAT_ORDER.map(w=>`<option value="${w}"${w===(val.cat||CAT_ORDER[0])?' selected':''}>${w}</option>`).join('');
-      const grpOpts  = '<option value="">(keine Gruppe)</option>' +
-        (cat.groups||[]).filter(g=>!g.parentId).map(g=>{
-          const subs = catGetSubGroups(cat,g.id);
-          return `<option value="${g.id}"${val.group===g.id?' selected':''}>${esc(g.name)}</option>` +
-            subs.map(sg=>`<option value="${sg.id}"${val.group===sg.id?' selected':''}>\u00a0\u00a0▸ ${esc(sg.name)}</option>`).join('');
-        }).join('');
-      row += `<span class="drag-handle" draggable="true" ondragstart="catDragStart('artikel',${s(catId)},${s(key)},event)" ondragend="catDragEnd()" title="Verschieben">⠿</span>
-        ${isKabel?`<button class="tree-toggle" onclick="catTreeToggleCollapse(${s(catId)},${s(key)})" title="Ein-/Ausklappen">${collapsed?'▶':'▼'}</button>`:'<span class="tree-toggle-placeholder"></span>'}
-        <span class="tree-label tree-artikel-link" onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">${esc(val.displayName || key)}</span>
-        <span class="tree-badge ${badgeCls}">${badgeTxt}</span>
-        <select class="cat-welt-sel" title="Welt wechseln"
-          onchange="catEditorSetCat(${s(catId)},${s(key)},this.value)">${weltOpts}</select>
-        <select class="cat-grp-sel" title="Gruppe wechseln"
-          onchange="catEditorSetTypeGroup(${s(catId)},${s(key)},this.value)">${grpOpts}</select>
-        <div class="tree-actions">
-          ${!val.group?`<button onclick="catTreeTypeToGroup(${s(catId)},${s(key)})" title="Gruppe mit diesem Namen erstellen und Artikel zuordnen" style="font-size:10px;color:var(--accent2)">→ Gruppe</button>`:''}
-          <button onclick="catTreeToggleUnitType(${s(catId)},${s(key)})" title="${isKabel?'Zu Gerät wechseln':'Zu Kabel wechseln'}" style="font-size:10px;opacity:.65">
-            ${isKabel?'→Gerät':'→Kabel'}
-          </button>
-          <button onclick="openArticleEdit(${s(catId)},${s(key)})" title="Artikel bearbeiten">✏</button>
-          <button class="del-btn" onclick="catEditorDeleteType(${s(catId)},${s(key)})" title="Löschen">✕</button>
-        </div>`;
+      row += `<button class="len-add-btn" onclick="catTreeAddLenInline(${s(catId)},${s(key)})">+ Länge</button>`;
     }
     row += '</div>';
+  }
+  return row;
+}
 
-    // Tags für Kabel- und Gerät-Artikel (nur wenn nicht eingeklappt)
-    if(!isEditing && !collapsed){
-      const items      = val.items||[];
-      const isAddLen   = is?.mode==='add-len'   && is.id===key;
-      const isEditLen  = is?.mode==='edit-len'  && is.id===key;
-      const tagIndent  = indent===2?'padding-left:52px':indent===1?'padding-left:36px':'padding-left:20px';
-      if(isKabel){
-        row += `<div class="len-tags" style="${tagIndent}">`;
-        items.forEach((it,idx)=>{
-          const label = isKabel ? (it.l||it.n||'?') : (it.n||it.l||'?');
-          const tagCls = isKabel ? 'len-tag' : 'qty-tag';
-          if(isEditLen && is.lenIdx===idx){
-            row += `<span class="len-add-wrap">
-              <input class="len-add-input" id="tree-inline-input" value="${esc(label)}"
-                onkeydown="if(event.key==='Enter'){catTreeSaveEditLen(${s(catId)},${s(key)},${idx})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
-              <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
-                onclick="catTreeSaveEditLen(${s(catId)},${s(key)},${idx})">✓</button>
-              <button class="inline-btn cancel" onclick="catTreeInlineCancel()">✗</button>
-            </span>`;
-          } else {
-            row += `<span class="${tagCls}" onclick="catTreeEditLen(${s(catId)},${s(key)},${idx})" title="Klicken zum Bearbeiten">${esc(label)}<button class="len-del"
-              onclick="event.stopPropagation();catTreeDeleteLen(${s(catId)},${s(key)},${idx})" title="Löschen">✕</button></span>`;
-          }
-        });
-        if(isKabel){
-          if(isAddLen){
-            row += `<span class="len-add-wrap">
-              <input class="len-add-input" id="tree-inline-input" placeholder="z.B. 15m"
-                onkeydown="if(event.key==='Enter'){catTreeSaveLen(${s(catId)},${s(key)})}else if(event.key==='Escape'){catTreeInlineCancel()}" autofocus>
-              <button class="inline-btn ok" style="border-color:rgba(74,232,160,.4);color:var(--green)"
-                onclick="catTreeSaveLen(${s(catId)},${s(key)})">✓</button>
-            </span>`;
-          } else {
-            row += `<button class="len-add-btn" onclick="catTreeAddLenInline(${s(catId)},${s(key)})">+ Länge</button>`;
-          }
-        }
-        row += '</div>';
-      }
-    }
-    return row;
-  };
+function _renderCatTree(cat, weltName){
+  const types          = cat.types||{};
+  const topGroups      = catGetTopGroups(cat);
+  const s              = v => JSON.stringify(v).replace(/"/g,'&quot;');
+  const is             = _catTreeInlineState;
+  const byGroup        = _catTreeBuildByGroup(cat, types, weltName);
+  const weltsTopGroups = _catTreeVisibleTopGroups(cat, topGroups, byGroup);
+
+  let html = '';
 
   // ── Gruppen dieser Welt ─────────────────────────────────────────
   weltsTopGroups.forEach(g=>{
@@ -379,8 +377,8 @@ function _renderCatTree(cat, weltName){
 
     if(!grpCollapsed){
       // Direkte Typen (ohne Untergruppe)
-      directTypes.forEach(({key,val})=>{ html += renderArtikelRow(key,val,1); });
-      if(isAddArt) html += renderInlineAddRow(1,`catTreeSaveAddArtikel(${s(cat.id)})`);
+      directTypes.forEach(({key,val})=>{ html += _catTreeArtikelRowHTML(key,val,1,cat,s); });
+      if(isAddArt) html += _catTreeInlineAddRowHTML(1,`catTreeSaveAddArtikel(${s(cat.id)})`);
 
       // Untergruppen
       subGroups.forEach(sg=>{
@@ -415,12 +413,12 @@ function _renderCatTree(cat, weltName){
         html += '</div>';
 
         if(!sgCollapsed){
-          sgTypes.forEach(({key,val})=>{ html += renderArtikelRow(key,val,2); });
-          if(isAddSGA) html += renderInlineAddRow(2,`catTreeSaveAddArtikel(${s(cat.id)})`);
+          sgTypes.forEach(({key,val})=>{ html += _catTreeArtikelRowHTML(key,val,2,cat,s); });
+          if(isAddSGA) html += _catTreeInlineAddRowHTML(2,`catTreeSaveAddArtikel(${s(cat.id)})`);
         }
       });
 
-      if(isAddUG) html += renderInlineAddRow(1,`catTreeSaveAddUG(${s(cat.id)},${s(g.id)})`);
+      if(isAddUG) html += _catTreeInlineAddRowHTML(1,`catTreeSaveAddUG(${s(cat.id)},${s(g.id)})`);
     }
   });
 
@@ -430,12 +428,12 @@ function _renderCatTree(cat, weltName){
     html += `<div class="group-header" style="color:var(--muted);margin-top:8px">
       Ohne Gruppe <span style="font-weight:400">(${noneTypes.length})</span>
     </div>`;
-    noneTypes.forEach(({key,val})=>{ html += renderArtikelRow(key,val,0); });
+    noneTypes.forEach(({key,val})=>{ html += _catTreeArtikelRowHTML(key,val,0,cat,s); });
   }
 
   // Inline-Add für neue Gruppe dieser Welt (am Ende)
   if(is?.mode==='add-gruppe' && is.weltName===weltName){
-    html += renderInlineAddRow(0,`catTreeSaveAddGruppe(${s(cat.id)},${s(weltName)})`);
+    html += _catTreeInlineAddRowHTML(0,`catTreeSaveAddGruppe(${s(cat.id)},${s(weltName)})`);
   }
 
   if(!html) html = `<div class="tree-empty">Keine Artikel in ${weltName}. Klicke „+ GRUPPE" um zu beginnen.</div>`;

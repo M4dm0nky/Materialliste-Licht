@@ -126,8 +126,8 @@ function _finishImport(data, file, selectedCatalogId){
       catalogsStore.catalogs.push(embCat);
       saveCatalogsStore();
     }
-    activeCatalogId = selectedCatalogId;
     state = migrateState({...data, _project:data.project||file.name.replace(/\.json$/i,''), _date:data.date||''});
+    activeCatalogId = selectedCatalogId;
     activePosIdx=0; state._activePosIdx=0;
     // Auto-Registrierung: Sektionstypen, die nicht im Katalog vorhanden sind, eintragen
     const activeCat = getActiveCatalog();

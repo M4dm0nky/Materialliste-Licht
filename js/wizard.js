@@ -13,9 +13,10 @@ function _saveRecent(typeKey){
   try{ localStorage.setItem(WIZ_RECENT_KEY, JSON.stringify(r.slice(0,8))); }catch(e){}
 }
 
-function openWiz(ci){ wiz={ci,targetSi:null,key:null,sel:{},selLengths:{},multiSel:[]}; showWiz('Material hinzufügen'); step1(); }
-function openWizToSec(ci,si){ wiz={ci,targetSi:si,key:null,sel:{},selLengths:{},multiSel:[]}; showWiz('Material hinzufügen'); step1(); }
-function openWizSearch(){ wiz={ci:-1,targetSi:null,key:null,sel:{},selLengths:{},_browseWorld:null,multiSel:[]}; showWiz('Material suchen'); step1(); }
+function _wizReset(overrides){ return Object.assign({ci:0,targetSi:null,key:null,sel:{},selLengths:{},multiSel:[],_browseWorld:null,step:0,_allEntries:null,_entries:null,_gridEntries:null,_multiSortedLens:{}},overrides); }
+function openWiz(ci){ wiz=_wizReset({ci}); showWiz('Material hinzufügen'); step1(); }
+function openWizToSec(ci,si){ wiz=_wizReset({ci,targetSi:si}); showWiz('Material hinzufügen'); step1(); }
+function openWizSearch(){ wiz=_wizReset({ci:-1}); showWiz('Material suchen'); step1(); }
 
 function _wizHasDirtyData(){
   return Object.values(wiz.sel||{}).some(v=>(v.a||0)+(v.s||0)>0);

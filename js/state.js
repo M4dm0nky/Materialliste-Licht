@@ -9,7 +9,7 @@ function initState(){
     const s = localStorage.getItem(STORAGE_KEY);
     if(s){
       state = migrateState(JSON.parse(s));
-      activePosIdx = Math.min(state._activePosIdx||0, state.positions.length-1);
+      activePosIdx = Math.min(state._activePosIdx||0, (state.positions?.length||1)-1);
       return;
     }
   }catch(e){}
@@ -20,7 +20,8 @@ function initState(){
 function save(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(()=>{
-    state._project = document.getElementById('pName').value;
+    const _pNameEl = document.getElementById('pName');
+    if(_pNameEl) state._project = _pNameEl.value;
     const el = document.getElementById('saveInd');
     try{
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));

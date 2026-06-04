@@ -23,7 +23,7 @@ function renderTabs(){
     const t = document.createElement('div');
     t.className = 'tab'+(ci===0?' active':'');
     const icon = _weltIcons[cat.name]||'';
-    t.innerHTML = (icon?icon+' ':'')+cat.name+`<span class="tbadge ok" id="badge-${ci}">✓</span>`;
+    t.innerHTML = (icon?icon+' ':'')+esc(cat.name)+`<span class="tbadge ok" id="badge-${ci}">✓</span>`;
     t.onclick = ()=>switchTab(ci); bar.appendChild(t);
   });
 }
@@ -141,10 +141,16 @@ function buildQtyRow(ci, si){
   return tr;
 }
 
+function _fixGhostQtyItems(qtySecs){
+  let fixed = false;
+  qtySecs.forEach(({sec}) => { if(sec.items.length > 1){ sec.items.splice(1); fixed = true; } });
+  if(fixed) save();
+}
+
 function rerenderCatInto(ci,panel){
   const cat       = currentCats()[ci];
   const weltName  = cat.name;
-  const weltDepth = _getWeltDepth(weltName);
+
   const types     = getActiveCatalogTypes();
   const allGroups = getActiveCatalog().groups || [];
 
@@ -167,12 +173,7 @@ function rerenderCatInto(ci,panel){
     else qtySecs.push({sec, si, t});
   });
 
-  // Ghost-Items bereinigen: qty-Sektionen dürfen nur 1 Item haben
-  let _ghostFixed = false;
-  qtySecs.forEach(({sec}) => {
-    if(sec.items.length > 1){ sec.items.splice(1); _ghostFixed = true; }
-  });
-  if(_ghostFixed) save();
+  _fixGhostQtyItems(qtySecs);
 
   if(lengthsSecs.length === 0 && qtySecs.length === 0){
     const es = document.createElement('div'); es.className='empty-state';
