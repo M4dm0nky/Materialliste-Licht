@@ -5,6 +5,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.3] — 2026-06-16
+
+### Neu
+- Katalog-Typen bekommen stabile `_id` (bei Erstellung + JSON-Import)
+- Sektionen speichern `type_id` bei Neuanlage im Wizard
+
+### Behoben
+- Katalog-Umbenennung synct jetzt alle Sektionen in allen Plänen: `type_name` wird in `state`, localStorage und allen Plänen mit gleicher `catalogId` aktualisiert (`js/catalog-mgr.js`, `js/wizard.js`)
+- Kein Duplikat-Sektion mehr nach Umbennung eines Katalog-Typs
+
+---
+
 ## [v0.7.2] — 2026-06-16
 
 ### Entfernt

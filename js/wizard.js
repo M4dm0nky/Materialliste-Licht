@@ -327,7 +327,7 @@ function _wizDoneMulti(){
     if(tDef.unit_type === 'lengths'){
       let si = cat.sections.findIndex(sec=>sec.type_name===s.key);
       if(si<0){
-        cat.sections.push({type_name:s.key, unit_type:'lengths', items:[]});
+        cat.sections.push({type_name:s.key, ...(tDef._id&&{type_id:tDef._id}), unit_type:'lengths', items:[]});
         si = cat.sections.length-1;
       }
       const sec = cat.sections[si];
@@ -353,7 +353,7 @@ function _wizDoneMulti(){
         const ut    = tDef.unit_type||'qty';
         let si = cat.sections.findIndex(sec=>sec.type_name===s.key);
         if(si<0){
-          cat.sections.push({type_name:s.key, unit_type:ut, items:[]});
+          cat.sections.push({type_name:s.key, ...(tDef._id&&{type_id:tDef._id}), unit_type:ut, items:[]});
           si = cat.sections.length-1;
         }
         const sec = cat.sections[si];
@@ -576,7 +576,7 @@ function wizDone(){
   } else {
     const ex = cat.sections.findIndex(s=>s.type_name===wiz.key);
     if(ex>=0){ _mergeItems(cat.sections[ex].items, selected); }
-    else cat.sections.push({type_name:wiz.key, unit_type: isQty?'qty':'lengths', items:sortByLen(selected)});
+    else { const _wt=getActiveCatalogTypes()[wiz.key]; cat.sections.push({type_name:wiz.key, ...(_wt?._id&&{type_id:_wt._id}), unit_type: isQty?'qty':'lengths', items:sortByLen(selected)}); }
   }
   save(); rerenderCat(ci); recalcAll();
   _saveRecent(wiz.key);

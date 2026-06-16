@@ -9,6 +9,29 @@ let _catDragSrc         = null;  // {type, catId, id} — aktive Drag-Quelle
 
 function _getCatById(id){ return (catalogsStore?.catalogs||[]).find(c=>c.id===id); }
 
+function _genTypeId(){ return 'tid-' + Math.random().toString(36).slice(2,9); }
+
+function _syncTypeNameByTypeId(catalogId, typeId, oldKey, newKey){
+  function _fix(positions){
+    (positions||[]).forEach(pos=>(pos.categories||[]).forEach(cat=>(cat.sections||[]).forEach(sec=>{
+      if(sec.type_id===typeId || (!sec.type_id && sec.type_name===oldKey)){
+        sec.type_name = newKey;
+        sec.type_id   = typeId;
+      }
+    })));
+  }
+  _fix(state.positions);
+  save();
+  getPlansIndex().forEach(p=>{
+    if(p.catalogId!==catalogId || p.id===activePlanId) return;
+    try{
+      const raw=localStorage.getItem(PLAN_PFX+p.id); if(!raw) return;
+      const data=JSON.parse(raw); _fix(data.positions);
+      localStorage.setItem(PLAN_PFX+p.id, JSON.stringify(data));
+    }catch(e){}
+  });
+}
+
 function catDragStart(type,catId,id,e){
   _catDragSrc = {type,catId,id};
   e.dataTransfer.effectAllowed='move';
@@ -498,12 +521,15 @@ function catTreeSaveRenameArtikel(catalogId, typeKey){
     _catTreeInlineState = null; _renderCatMgrTab2();
     toast('✓ Umbenannt'); return;
   }
+  if(!cat.types[typeKey]._id) cat.types[typeKey]._id = _genTypeId();
+  const _tid = cat.types[typeKey]._id;
   const newTypes = {};
   Object.entries(cat.types).forEach(([k,v])=>{
     if(k===typeKey){ const e={...v}; delete e.displayName; newTypes[val]=e; }
     else newTypes[k]=v;
   });
   cat.types = newTypes;
+  _syncTypeNameByTypeId(cat.id, _tid, typeKey, val);
   saveCatalogsStore(); rerenderAllCats();
   _catTreeInlineState = null;
   _renderCatMgrTab2();
@@ -541,7 +567,7 @@ function catTreeSaveAddArtikel(catalogId){
   if(!val){ catTreeInlineCancel(); return; }
   const cat = catalogsStore.catalogs.find(c=>c.id===catalogId); if(!cat) return;
   const st    = _catTreeInlineState;
-  const entry = {cat:_catEditorWelt||CAT_ORDER[0], items:[], unit_type:'qty'};
+  const entry = {cat:_catEditorWelt||CAT_ORDER[0], items:[], unit_type:'qty', _id:_genTypeId()};
   if(st?.parentId) entry.group = st.parentId;
   let key = val;
   if(cat.types[key]){
@@ -915,7 +941,7 @@ function _buildCatalogEntryFromJSON(catData, fallbackName){
     if(typeof val==='object'&&val.items!==undefined){
       let catWelt = val.cat||'Datenwelt';
       if(_OLD_CAT_MAP.hasOwnProperty(catWelt)) catWelt = _builtinWelt[key]||_OLD_CAT_MAP[catWelt];
-      const entry={cat:catWelt,items:val.items,unit_type:val.unit_type||_detectUnitType(val)};
+      const entry={cat:catWelt,items:val.items,unit_type:val.unit_type||_detectUnitType(val),_id:val._id||_genTypeId()};
       if(val.group)    entry.group    = val.group;
       if(val.subgroup) entry.subgroup = val.subgroup;
       types[key]=entry;
@@ -1151,12 +1177,15 @@ function _artEditSaveName(catalogId, oldKey){
     _renderCatMgrTab2(); _renderArticleEditModal();
     toast('✓ Umbenannt'); return;
   }
+  if(!cat.types[oldKey]._id) cat.types[oldKey]._id = _genTypeId();
+  const _tid2 = cat.types[oldKey]._id;
   const newTypes = {};
   Object.entries(cat.types).forEach(([k,v])=>{
     if(k===oldKey){ const e={...v}; delete e.displayName; newTypes[val]=e; }
     else newTypes[k]=v;
   });
   cat.types = newTypes;
+  _syncTypeNameByTypeId(cat.id, _tid2, oldKey, val);
   saveCatalogsStore(); rerenderAllCats();
   _artEditState.typeKey = val;
   _renderCatMgrTab2();
