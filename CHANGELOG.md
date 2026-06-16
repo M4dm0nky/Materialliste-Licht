@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.4] — 2026-06-16
+
+### Neu
+- Sektion umbenennen: wenn der neue Name bereits existiert, werden die Items automatisch zusammengeführt (statt Fehler "Name existiert bereits") (`js/render.js` `editSectionName`)
+
+---
+
 ## [v0.7.3] — 2026-06-16
 
 ### Neu

@@ -489,18 +489,30 @@ function editSectionName(ci,si){
   showPrompt('Sektionsname ändern:', sec.type_name, newName=>{
     if(!newName.trim()) return;
     newName = newName.trim();
-    const cat = getActiveCatalog();
-    if(cat && cat.types[newName] && newName!==sec.type_name){
-      toast('Name existiert bereits!', true); return;
+    if(newName===sec.type_name) return;
+    const activeCat = getActiveCatalog();
+    const secs = currentCats()[ci].sections;
+    const dupIdx = secs.findIndex((s,i)=>i!==si && s.type_name===newName);
+    if(dupIdx>=0){
+      const tgt = secs[dupIdx];
+      sec.items.forEach(item=>{
+        const ex=item.length?tgt.items.find(i=>i.length===item.length):tgt.items.find(i=>i.name===item.name);
+        if(ex){ex.anzahl=(ex.anzahl||0)+(item.anzahl||0);ex.spare=(ex.spare||0)+(item.spare||0);}
+        else tgt.items.push(item);
+      });
+      secs.splice(si,1);
+      save(); rerenderCat(ci);
+      toast('✓ Zusammengeführt in „'+newName+'"');
+    } else {
+      if(activeCat&&activeCat.types[sec.type_name]){
+        activeCat.types[newName]=activeCat.types[sec.type_name];
+        delete activeCat.types[sec.type_name];
+        saveCatalogsStore();
+      }
+      sec.type_name=newName;
+      save(); rerenderCat(ci);
+      toast('✓ Umbenannt in „'+newName+'"');
     }
-    if(cat && cat.types[sec.type_name]){
-      cat.types[newName] = cat.types[sec.type_name];
-      delete cat.types[sec.type_name];
-      saveCatalogsStore();
-    }
-    sec.type_name = newName;
-    save(); rerenderCat(ci);
-    toast(`✓ Umbenannt in „${newName}"`);
   }, 'Sektion umbenennen');
 }
 
