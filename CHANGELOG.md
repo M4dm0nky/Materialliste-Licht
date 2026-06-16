@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.2] — 2026-06-16
+
+### Entfernt
+- Sektions-Header: redundante Spalten-Labels (# Stk., Spare, TOTAL, Im Proj., DIFF, Kapitel) entfernt — stehen korrekt ausgerichtet im thead darunter (`js/render.js`, `css/components.css`)
+
+---
+
 ## [v0.7.1] — 2026-06-16
 
 ### Behoben

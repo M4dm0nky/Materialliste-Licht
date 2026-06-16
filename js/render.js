@@ -294,12 +294,6 @@ function buildSecEl(ci,si){
         <span class="drag-handle" title="Sektion verschieben">⠿</span>
         <span class="chevron" onclick="toggleSec(${ci},${si})">▼</span><span class="sec-title-text" onclick="editSectionName(${ci},${si})" title="Klicken zum Umbenennen">${esc(getActiveCatalogTypes()[sec.type_name]?.displayName || sec.type_name)}</span>
       </div>
-      <div class="sechdr-col"># Stk.</div>
-      <div class="sechdr-col">Spare</div>
-      <div class="sechdr-col">TOTAL</div>
-      <div class="sechdr-col">Im Proj.</div>
-      <div class="sechdr-col">DIFF</div>
-      <div class="sechdr-col">Kapitel</div>
       <div class="sechdr-actions">
         <button class="btn btn-sm btn-green" title="Aus Katalog hinzufügen" onclick="openWizToSec(${ci},${si})">+</button>
         <button class="btn btn-sm btn-red" title="Sektion löschen" onclick="delSec(${ci},${si})">✕</button>
