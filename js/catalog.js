@@ -252,7 +252,7 @@ let catalogsStore = null;
 let activeCatalogId = null;
 
 // ── CATALOG STORE ──────────────────────────────────────────────────
-function genCatalogId(){ return 'cat-'+Date.now().toString(36); }
+function genCatalogId(){ return 'cat-'+Date.now().toString(36)+Math.random().toString(36).slice(2,5); }
 
 function _showStorageError(msg){
   let el = document.getElementById('storage-error-banner');

@@ -497,20 +497,26 @@ function editSectionName(ci,si){
       const tgt = secs[dupIdx];
       sec.items.forEach(item=>{
         const ex=item.length?tgt.items.find(i=>i.length===item.length):tgt.items.find(i=>i.name===item.name);
-        if(ex){ex.anzahl=(ex.anzahl||0)+(item.anzahl||0);ex.spare=(ex.spare||0)+(item.spare||0);}
+        if(ex){ex.anzahl=(ex.anzahl||0)+(item.anzahl||0);ex.spare=(ex.spare||0)+(item.spare||0);ex.im_projekt=(ex.im_projekt||0)+(item.im_projekt||0);}
         else tgt.items.push(item);
       });
       secs.splice(si,1);
       save(); rerenderCat(ci);
       toast('✓ Zusammengeführt in „'+newName+'"');
     } else {
-      if(activeCat&&activeCat.types[sec.type_name]){
-        activeCat.types[newName]=activeCat.types[sec.type_name];
-        delete activeCat.types[sec.type_name];
+      const oldKey = sec.type_name;
+      if(activeCat&&activeCat.types[oldKey]){
+        if(!activeCat.types[oldKey]._id) activeCat.types[oldKey]._id = _genTypeId();
+        const _tid = activeCat.types[oldKey]._id;
+        activeCat.types[newName]=activeCat.types[oldKey];
+        delete activeCat.types[oldKey];
         saveCatalogsStore();
+        _syncTypeNameByTypeId(activeCat.id, _tid, oldKey, newName);
+      } else {
+        sec.type_name=newName;
+        save();
       }
-      sec.type_name=newName;
-      save(); rerenderCat(ci);
+      rerenderCat(ci);
       toast('✓ Umbenannt in „'+newName+'"');
     }
   }, 'Sektion umbenennen');

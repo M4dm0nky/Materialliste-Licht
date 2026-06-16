@@ -5,6 +5,20 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.5] — 2026-06-16
+
+### Behoben
+- Datenverlust beim Zusammenführen: `im_projekt` wird jetzt addiert statt verworfen — betraf Sektion-Merge, `_migrateSectionWorlds` und `migrateState`-Dedup (`js/render.js`, `js/plans.js`)
+- Sektion im Planer umbenennen propagiert die Katalog-Typ-Umbenennung jetzt auf alle Positionen/Pläne (via `_syncTypeNameByTypeId`) (`js/render.js`)
+- Import: `activeCatalogId` wird vor `migrateState()` gesetzt, damit Welt-Migration den korrekten Katalog nutzt (`js/export.js`)
+
+### Geändert
+- CSV-Kopfzeile (Projekt/Datum) wird korrekt ge-quotet (`js/export.js`)
+- `genPlanId`/`genCatalogId` mit Zufallssuffix gegen ID-Kollisionen (`js/plans.js`, `js/catalog.js`)
+- Redundanten Plan-Autosave-Wrapper entfernt (`save()` persistiert bereits selbst) (`js/init.js`)
+
+---
+
 ## [v0.7.4] — 2026-06-16
 
 ### Neu

@@ -49,7 +49,7 @@ function _migrateSectionWorlds(st){
             const ex=item.length
               ?seen[sec.type_name].items.find(i=>i.length===item.length)
               :seen[sec.type_name].items.find(i=>i.name===item.name);
-            if(ex){ex.anzahl=(ex.anzahl||0)+(item.anzahl||0);ex.spare=(ex.spare||0)+(item.spare||0);}
+            if(ex){ex.anzahl=(ex.anzahl||0)+(item.anzahl||0);ex.spare=(ex.spare||0)+(item.spare||0);ex.im_projekt=(ex.im_projekt||0)+(item.im_projekt||0);}
             else seen[sec.type_name].items.push(item);
           });
         } else {
@@ -93,7 +93,7 @@ function migrateState(s){
           const ex  = item.length
             ? merged.find(i=>i.length===item.length && (i.name||'')===(item.name||''))
             : merged.find(i=>i.name===item.name);
-          if(ex){ ex.anzahl=(ex.anzahl||0)+(item.anzahl||0); ex.spare=(ex.spare||0)+(item.spare||0); }
+          if(ex){ ex.anzahl=(ex.anzahl||0)+(item.anzahl||0); ex.spare=(ex.spare||0)+(item.spare||0); ex.im_projekt=(ex.im_projekt||0)+(item.im_projekt||0); }
           else merged.push(item);
         });
         sec.items = merged;
@@ -148,7 +148,7 @@ function currentCats(){
 
 function getPlansIndex(){ try{ const r=localStorage.getItem(PLANS_KEY); return r?JSON.parse(r):[]; }catch(e){return[];} }
 function savePlansIndex(list){ try{ localStorage.setItem(PLANS_KEY,JSON.stringify(list)); }catch(e){ console.error('savePlansIndex fehlgeschlagen:',e); } }
-function genPlanId(){ return 'p'+Date.now().toString(36); }
+function genPlanId(){ return 'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,5); }
 function todayStr(){ return new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'}); }
 
 function renderPlanList(){

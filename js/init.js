@@ -2,12 +2,7 @@
 // INIT — App-Start
 // ══════════════════════════════════════════════════
 
-// save() um Plan-Autosave erweitern
-const _origSave = save;
-save = function(){
-  _origSave();
-  setTimeout(() => savePlanToLS(activePlanId), 500);
-};
+// Hinweis: save() (state.js) persistiert den aktiven Plan bereits selbst (savePlanToLS im Debounce).
 
 // Katalog und State laden
 initCatalogs();

@@ -5,7 +5,7 @@ let _fileHandle = null;
 let _pendingImport = null;
 function exportCSV(){
   const q = v=>'"'+String(v).replace(/"/g,'""')+'"';
-  let csv = 'Projekt;'+(state._project||'')+';Datum;'+(state._date||'')+'\n\n';
+  let csv = ['Projekt',state._project||'','Datum',state._date||''].map(q).join(';')+'\n\n';
   csv += 'Position;Kategorie;Sektion;Bezeichnung;Länge;# Stk.;Spare;Im Projekt;Differenz;Total;Kapitel;Bemerkung\n';
   state.positions.forEach(pos=>{
     pos.categories.forEach(cat=>cat.sections.forEach(sec=>sec.items.forEach(item=>{
@@ -126,8 +126,8 @@ function _finishImport(data, file, selectedCatalogId){
       catalogsStore.catalogs.push(embCat);
       saveCatalogsStore();
     }
+    activeCatalogId = selectedCatalogId;  // vor migrateState: Migrationen nutzen den korrekten Katalog
     state = migrateState({...data, _project:data.project||file.name.replace(/\.json$/i,''), _date:data.date||''});
-    activeCatalogId = selectedCatalogId;
     activePosIdx=0; state._activePosIdx=0;
     // Auto-Registrierung: Sektionstypen, die nicht im Katalog vorhanden sind, eintragen
     const activeCat = getActiveCatalog();
