@@ -51,7 +51,7 @@ tbody tr.has-data{background:rgba(74,232,160,.03);}
 tbody tr.has-data:hover{background:rgba(74,232,160,.08);}
 td{padding:6px 10px;border-right:1px solid #1a1f30;vertical-align:middle;}
 .td-diff{font-family:'Share Tech Mono',monospace;font-size:17px;font-weight:700;text-align:center;}
-.td-diff.pos{color:var(--red);}.td-diff.neg{color:var(--green);}.td-diff.zero{color:var(--muted);}
+.td-diff.pos{color:var(--green);}.td-diff.neg{color:var(--red);}.td-diff.zero{color:var(--muted);}
 
 .td-total{font-family:'Share Tech Mono',monospace;font-size:17px;font-weight:700;text-align:center;color:var(--text);}
 

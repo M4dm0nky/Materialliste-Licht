@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.1] — 2026-06-16
+
+### Behoben
+- DIFF-Spalte: Farben korrigiert — negatives DIFF (Fehlmenge) Rot, positives DIFF (Überschuss) Grün (`css/components.css`)
+
+---
+
 ## [v0.7.0] — 2026-06-16
 
 ### Geändert
