@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.0] — 2026-06-16
+
+### Geändert
+- DIFF-Spalte: Farben invertiert — positiver DIFF jetzt Rot, negativer DIFF jetzt Grün (`css/components.css`)
+
+---
+
 ## [v0.6.20] — 2026-06-04
 
 ### Sicherheit
