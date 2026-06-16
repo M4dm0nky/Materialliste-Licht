@@ -22,6 +22,8 @@ const PDF_THEMES = [
         'thead th:nth-child(n+3){text-align:center;}',
         ".grp-hdr td{background:#e8c84a;color:#0d0f14;font-family:'Bebas Neue',sans-serif;font-size:11pt;letter-spacing:3px;padding:5px 10px;border-top:2px solid #c9a800;}",
         ".sec-hdr td{background:#1c2030;color:#e8c84a;font-family:'Bebas Neue',sans-serif;font-size:10pt;letter-spacing:2px;padding:5px 8px;border-top:1px solid #2a3050;border-bottom:1px solid #2a3050;}",
+        ".colhead td{background:#0d0f14;color:#e8c84a;padding:4px 7px;text-align:left;font-size:6.8pt;text-transform:uppercase;letter-spacing:.07em;border:1px solid #2a3050;}",
+        ".colhead td:nth-child(n+3){text-align:center;}",
         ".pos-hdr td{background:#000;color:#000;font-family:'Bebas Neue',sans-serif;font-size:18pt;letter-spacing:5px;padding:14px 10px;text-align:center;border:3px solid #000;box-shadow:inset 0 0 0 4px #e8c84a;}",
         '.pos-hdr td span{background:#e8c84a;color:#000;padding:6px 28px;display:inline-block;}',
         'tbody.cat-group{page-break-inside:avoid;}',

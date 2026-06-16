@@ -34,6 +34,14 @@ function generatePDF(){
   const cols        = showDiff ? 8 : 7;
   let itemCount     = 0;
 
+  const colHeadRow =
+    `<tr class="colhead">`+
+      `<td>Bezeichnung</td><td>Länge/Typ</td><td>#&nbsp;Stk.</td><td>Spare</td>`+
+      `<td>Gesamt</td><td>Im&nbsp;Proj.</td>`+
+      (showDiff?`<td>DIFF</td>`:``)+
+      `<td>Kapitel</td>`+
+    `</tr>`;
+
   function renderPosSections(pos){
     let bodies = '';
     selCats.forEach(ci => {
@@ -60,6 +68,7 @@ function generatePDF(){
         if(!secs.length) return;
         let groupContent = '';
         if(gname) groupContent += `<tr class="grp-hdr"><td colspan="${cols}">${gname}</td></tr>`;
+        groupContent += colHeadRow;
         secs.forEach(({sec, items}) => {
           const isQty = (pdfCatTypes[sec.type_name]?.unit_type === 'qty')
                      || (sec.unit_type === 'qty')
@@ -109,7 +118,7 @@ ${theme.css(orient)}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${esc(projectName)}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.5</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${esc(projectName)}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.6</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>

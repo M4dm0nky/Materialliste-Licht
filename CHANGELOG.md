@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.6] — 2026-06-16
+
+### Neu
+- PDF: Spalten-Überschrift (Bezeichnung · Länge/Typ · # Stk. · Spare · Gesamt · Im Proj. · DIFF · Kapitel) wird jetzt zusätzlich unter jedem Gruppen-Banner wiederholt — auch bei gruppenlosen Sektionen (`js/pdf.js`, `js/pdf-themes.js`)
+
+---
+
 ## [v0.7.5] — 2026-06-16
 
 ### Behoben
