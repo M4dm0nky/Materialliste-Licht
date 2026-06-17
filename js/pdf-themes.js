@@ -31,6 +31,7 @@ const PDF_THEMES = [
         'tbody tr.filled{background:#f8fdf9;}',
         '.ntd{padding:4px 7px;font-size:8pt;}',
         '.ntd2{padding:4px 7px;font-size:8pt;text-align:center;}',
+        '.btd{padding:4px 7px;font-size:8pt;text-align:center;font-weight:700;background:#e8e8e8;}',
         ".ltd{padding:4px 7px;font-size:7.5pt;font-family:'IBM Plex Mono',monospace;color:#555;white-space:nowrap;}",
         '.ktd{padding:4px 7px;font-size:7.5pt;color:#888;}',
         '.np{margin-top:14px;padding:8px;background:#fffbe6;border:1px solid #e8c84a;font-size:8pt;color:#333;border-radius:3px;}',

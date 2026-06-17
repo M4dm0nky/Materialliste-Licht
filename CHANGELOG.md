@@ -5,6 +5,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.8] — 2026-06-17
+
+### Geändert (nur PDF-Export)
+- Spalte **„buchen"** wird jetzt **vor „# Stk."** angezeigt (Haupt-Kopf, wiederholter Gruppen-Kopf und Datenzeilen) (`js/pdf.js`)
+- „buchen"-Spalte bekommt einen leicht grauen Zellen-Hintergrund (`#e8e8e8`) zur Hervorhebung — neue Klasse `.btd` (`js/pdf-themes.js`)
+- Wert **0** wird nicht mehr ausgegeben (leere Zelle); nur positive/negative Werte erscheinen (`js/pdf.js`)
+- Veraltete Versionsnummer im PDF-Kopf korrigiert (stand auf v0.7.6) (`js/pdf.js`)
+
+---
+
 ## [v0.7.7] — 2026-06-17
 
 ### Geändert

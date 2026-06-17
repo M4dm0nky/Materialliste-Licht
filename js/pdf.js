@@ -36,9 +36,10 @@ function generatePDF(){
 
   const colHeadRow =
     `<tr class="colhead">`+
-      `<td>Bezeichnung</td><td>Länge/Typ</td><td>#&nbsp;Stk.</td><td>Spare</td>`+
-      `<td>Gesamt</td><td>Im&nbsp;Proj.</td>`+
+      `<td>Bezeichnung</td><td>Länge/Typ</td>`+
       (showDiff?`<td>buchen</td>`:``)+
+      `<td>#&nbsp;Stk.</td><td>Spare</td>`+
+      `<td>Gesamt</td><td>Im&nbsp;Proj.</td>`+
       `<td>Kapitel</td>`+
     `</tr>`;
 
@@ -84,11 +85,11 @@ function generatePDF(){
             rows += `<tr${hasData?' class="filled"':''}>
               <td class="ntd">${isQty ? (item.name||sec.type_name||'') : (item.name||'')}</td>
               <td class="ltd">${isQty ? '' : (item.length||'')}</td>
+              ${showDiff?`<td class="btd" style="color:${diffColor};">${(hasData && v!==0)?(v>0?'+'+v:''+v):''}</td>`:''}
               <td class="ntd2">${item.anzahl||0}</td>
               <td class="ntd2">${item.spare||0}</td>
               <td class="ntd2">${(item.anzahl||0)+(item.spare||0)}</td>
               <td class="ntd2">${item.im_projekt||0}</td>
-              ${showDiff?`<td class="ntd2" style="color:${diffColor};font-weight:700;">${hasData?(v>=0?'+'+v:''+v):'—'}</td>`:''}
               <td class="ktd">${item.kapitel||''}</td>
             </tr>`;
           });
@@ -119,11 +120,11 @@ ${theme.css(orient)}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${esc(projectName)}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.6</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${esc(projectName)}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.8</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>
-  <thead><tr><th>Bezeichnung</th><th>Länge/Typ</th><th>#&nbsp;Stk.</th><th>Spare</th><th>Gesamt</th><th>Im&nbsp;Proj.</th>${diffHeader}<th>Kapitel</th></tr></thead>
+  <thead><tr><th>Bezeichnung</th><th>Länge/Typ</th>${diffHeader}<th>#&nbsp;Stk.</th><th>Spare</th><th>Gesamt</th><th>Im&nbsp;Proj.</th><th>Kapitel</th></tr></thead>
   ${tableBodies}
 </table>
 <div class="np"><strong>Cmd+P</strong> / <strong>Strg+P</strong> → "Als PDF speichern"</div>
