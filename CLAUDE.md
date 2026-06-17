@@ -7,7 +7,7 @@
 Kernfunktionen:
 - Kabel, Zubehör, Hardware und Lampen erfassen und verwalten
 - Mengen, Reserven und „Im Projekt"-Anzahl pro Position tracken
-- DIFF-Berechnung: Im Projekt − (Menge + Reserve) → Grün wenn ≥ 0 (genug geliefert), Rot wenn < 0 (Fehlmenge)
+- „buchen"-Berechnung: (Menge + Reserve) − Im Projekt → Rot wenn > 0 (Fehlmenge, muss gebucht werden), Grün wenn ≤ 0 (genug geliefert / Überschuss)
 - Mehrere Projekte mit eigenem Sidebar-Menü
 - JSON-Import/Export, CSV-Export, PDF-Druck
 - Logo-Slots (Planer, Band, Agentur) je Projekt
@@ -134,7 +134,8 @@ Kein `npm install`, kein `npm run build`, kein Compiler.
 - Erweiterung: zweites Theme in `pdf-themes.js` hinzufügen + Radio-Button im PDF-Modal
 
 ### Berechnungslogik
-- `DIFF = (Qty + Spare) - InProject` → grün wenn ≥ 0, rot wenn < 0
+- Spalte **„buchen"**: angezeigter Wert `v = (Qty + Spare) − InProject` → **positiv (Fehlmenge) rot**, **negativ (Überschuss) grün**, 0 grau
+- Intern bleibt `xdiff() = InProject − Qty − Spare` (= `-v`); davon hängen Badge-Zählung (`xdiff<0`) und PDF-Filter „Nur fehlende" (`xdiff<0`) ab — die Drehung passiert nur in Anzeige/Export (`js/calc.js`, `js/render.js`, `js/pdf.js`, `js/export.js`)
 - `TOTAL = Qty + Spare`
 - Kategorie-Badges zeigen Anzahl roter (fehlender) Positionen
 - Globaler Status-Indikator oben rechts
@@ -144,8 +145,8 @@ Kein `npm install`, kein `npm run build`, kein Compiler.
 - **Sprache:** Alle UI-Texte, Variablennamen im CATALOG und Kommentare auf **Deutsch**
 - **Farbpalette beibehalten:**
   - Gold: `#e8c84a` (Akzentfarbe)
-  - Grün: `#4ae8a0` (positiver DIFF)
-  - Rot: `#e84a4a` (negativer DIFF / fehlende Items)
+  - Grün: `#4ae8a0` (Überschuss / nichts zu buchen)
+  - Rot: `#e84a4a` (Fehlmenge / „buchen" > 0)
   - Dark Background: `#1a1a2e` / `#16213e`
 - **Keine externen Abhängigkeiten einführen** — die App soll offline und ohne CDN funktionieren
 - **Dateistruktur beibehalten** — CSS in `css/`, JS in `js/`, HTML-Gerüst in `index.html`

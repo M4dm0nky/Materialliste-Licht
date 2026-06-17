@@ -6,12 +6,13 @@ let _pendingImport = null;
 function exportCSV(){
   const q = v=>'"'+String(v).replace(/"/g,'""')+'"';
   let csv = ['Projekt',state._project||'','Datum',state._date||''].map(q).join(';')+'\n\n';
-  csv += 'Position;Kategorie;Sektion;Bezeichnung;Länge;# Stk.;Spare;Im Projekt;Differenz;Total;Kapitel;Bemerkung\n';
+  csv += 'Position;Kategorie;Sektion;Bezeichnung;Länge;# Stk.;Spare;Im Projekt;buchen;Total;Kapitel;Bemerkung\n';
   state.positions.forEach(pos=>{
     pos.categories.forEach(cat=>cat.sections.forEach(sec=>sec.items.forEach(item=>{
       const d=xdiff(item), t=xtotal(item);
+      const v=-d;  // "buchen" = (anzahl+spare) - im_projekt
       csv += [pos.name,cat.name,sec.type_name,item.name||'',item.length||'',item.anzahl||0,
-        item.spare||0,item.im_projekt||0,d,t,item.kapitel||'',item.bemerkung||'']
+        item.spare||0,item.im_projekt||0,v,t,item.kapitel||'',item.bemerkung||'']
         .map(q).join(';')+'\n';
     })));
   });

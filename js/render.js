@@ -86,11 +86,12 @@ function buildQtyRow(ci, si){
   const sec  = currentCats()[ci].sections[si];
   const item = sec.items[0] || {};
   const d    = (item.im_projekt||0)-(item.anzahl||0)-(item.spare||0);
+  const v    = -d;  // angezeigter Wert "buchen" = (anzahl+spare) - im_projekt
   const tr   = document.createElement('tr');
   tr.id = `qrow-${ci}-${si}`;
   if((item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0) tr.className='has-data';
-  const diffCls = d<0?'neg':d>0?'pos':'zero';
-  const diffTxt = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0 ? (d>=0?'+'+d:d) : '—';
+  const diffCls = v>0?'pos':v<0?'neg':'zero';
+  const diffTxt = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0)>0 ? (v>=0?'+'+v:''+v) : '—';
   tr.innerHTML=`
     <td class="td-handle"><span class="drag-handle" title="Verschieben">⠿</span></td>
     <td class="tdname"><input type="text" value="${esc(item.name||sec.type_name||'')}"
@@ -246,7 +247,7 @@ function rerenderCatInto(ci,panel){
       // Tabellenkopf
       table.innerHTML = `<thead><tr>
         <th style="width:22px"></th><th>Bezeichnung</th><th class="num">Stk.</th><th class="num">Spare</th>
-        <th class="num">Gesamt</th><th class="num">Im&nbsp;Proj.</th><th class="num">Diff</th><th>Kapitel</th><th></th>
+        <th class="num">Gesamt</th><th class="num">Im&nbsp;Proj.</th><th class="num">buchen</th><th>Kapitel</th><th></th>
       </tr></thead>`;
       const tbody = document.createElement('tbody');
 
@@ -304,7 +305,7 @@ function buildSecEl(ci,si){
         <th>Bezeichnung</th><th class="sec-hdr-len">Länge/Typ</th>
         <th class="num"># Stk.</th><th class="num">Spare</th>
         <th class="num">TOTAL</th><th class="num">Im Projekt</th>
-        <th class="num">DIFF</th>
+        <th class="num">buchen</th>
         <th>Kapitel</th><th>Bemerkung</th><th></th>
       </tr></thead><tbody id="tbody-${ci}-${si}"></tbody></table>
       <div class="addlength-row">

@@ -5,6 +5,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.7] — 2026-06-17
+
+### Geändert
+- Spalte **DIFF** überall in **„buchen"** umbenannt (Bildschirm-Tabelle, PDF, CSV) (`js/render.js`, `js/pdf.js`, `js/export.js`, `index.html`)
+- Vorzeichen gedreht: angezeigter Wert = `(Menge + Spare) − Im Projekt`. Fehlmenge erscheint jetzt als **+N**, Überschuss als **−N** (`js/calc.js`, `js/render.js`, `js/pdf.js`, `js/export.js`)
+- Farben getauscht: Fehlmenge (positiv) **rot**, Überschuss (negativ) **grün**, genau 0 grau (`css/components.css`)
+- Legende & PDF-Modal an neue Bezeichnung/Logik angepasst (`index.html`)
+
+> Interne `xdiff()`-Logik (Badge-Zählung, PDF-Filter „Nur fehlende") bleibt unverändert — Drehung erfolgt nur in der Anzeige/Export.
+
+---
+
 ## [v0.7.6] — 2026-06-16
 
 ### Neu

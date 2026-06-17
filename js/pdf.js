@@ -38,7 +38,7 @@ function generatePDF(){
     `<tr class="colhead">`+
       `<td>Bezeichnung</td><td>Länge/Typ</td><td>#&nbsp;Stk.</td><td>Spare</td>`+
       `<td>Gesamt</td><td>Im&nbsp;Proj.</td>`+
-      (showDiff?`<td>DIFF</td>`:``)+
+      (showDiff?`<td>buchen</td>`:``)+
       `<td>Kapitel</td>`+
     `</tr>`;
 
@@ -78,8 +78,9 @@ function generatePDF(){
           renderItems.forEach(item => {
             itemCount++;
             const d = xdiff(item);
+            const v = -d;  // angezeigter Wert "buchen" = (anzahl+spare) - im_projekt
             const hasData = (item.anzahl||0)+(item.spare||0)+(item.im_projekt||0) > 0;
-            const diffColor = d < 0 ? '#c0392b' : d > 0 ? '#1a6b3a' : '#888';
+            const diffColor = v > 0 ? '#c0392b' : v < 0 ? '#1a6b3a' : '#888';
             rows += `<tr${hasData?' class="filled"':''}>
               <td class="ntd">${isQty ? (item.name||sec.type_name||'') : (item.name||'')}</td>
               <td class="ltd">${isQty ? '' : (item.length||'')}</td>
@@ -87,7 +88,7 @@ function generatePDF(){
               <td class="ntd2">${item.spare||0}</td>
               <td class="ntd2">${(item.anzahl||0)+(item.spare||0)}</td>
               <td class="ntd2">${item.im_projekt||0}</td>
-              ${showDiff?`<td class="ntd2" style="color:${diffColor};font-weight:700;">${hasData?(d>=0?'+'+d:d):'—'}</td>`:''}
+              ${showDiff?`<td class="ntd2" style="color:${diffColor};font-weight:700;">${hasData?(v>=0?'+'+v:''+v):'—'}</td>`:''}
               <td class="ktd">${item.kapitel||''}</td>
             </tr>`;
           });
@@ -110,7 +111,7 @@ function generatePDF(){
 
   if(onlyMissing && itemCount === 0){ toast('Keine fehlenden Positionen gefunden.', true); return; }
 
-  const diffHeader = showDiff ? '<th>DIFF</th>' : '';
+  const diffHeader = showDiff ? '<th>buchen</th>' : '';
   const html = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>${projectName}</title>
 ${theme.fontUrl ? '<link href="' + theme.fontUrl + '" rel="stylesheet">' : ''}
 <style>

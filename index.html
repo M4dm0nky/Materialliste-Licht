@@ -26,7 +26,7 @@
     <div id="areaBand" style="display:flex;align-items:center;gap:12px;">
       <!-- band logo injected here -->
       <div class="hdr-title">
-        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.6</span></h1>
+        <h1>Material Planer <span style="font-size:0.45em;letter-spacing:2px;color:var(--muted);vertical-align:middle;font-family:'Share Tech Mono',monospace;">◆ v0.7.7</span></h1>
         <div class="subtitle">TOURING PRODUCTION · MATERIAL MANAGEMENT</div>
         <div class="planname" id="activePlanName"></div>
       </div>
@@ -84,9 +84,9 @@
 
 <div class="legend">
   <span style="color:var(--accent);font-weight:700;font-size:11px;letter-spacing:2px">LEGENDE:</span>
-  <div class="li"><div class="ldot" style="background:var(--green)"></div>DIFF ≥ 0 → OK</div>
-  <div class="li"><div class="ldot" style="background:var(--red)"></div>DIFF &lt; 0 → BUCHEN</div>
-  <span class="lf">DIFF = (#&nbsp;+&nbsp;Spare) − Im&nbsp;Projekt &nbsp;|&nbsp; TOTAL = #&nbsp;+&nbsp;Spare</span>
+  <div class="li"><div class="ldot" style="background:var(--green)"></div>buchen ≤ 0 → OK</div>
+  <div class="li"><div class="ldot" style="background:var(--red)"></div>buchen &gt; 0 → BUCHEN</div>
+  <span class="lf">buchen = (#&nbsp;+&nbsp;Spare) − Im&nbsp;Projekt &nbsp;|&nbsp; TOTAL = #&nbsp;+&nbsp;Spare</span>
 </div>
 
 <div class="tabs" id="tabBar"></div>
@@ -133,8 +133,8 @@
       <div id="pdfCatCbs" style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"></div>
       <div style="font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Optionen</div>
       <label class="pdf-cb-row"><input type="checkbox" id="pdfOnlyFilled" checked> Nur Zeilen mit Einträgen anzeigen</label>
-      <label class="pdf-cb-row"><input type="checkbox" id="pdfShowDiff" checked> Differenz-Spalte einblenden</label>
-      <label class="pdf-cb-row"><input type="checkbox" id="pdfOnlyMissing"> Nur fehlende Positionen (DIFF &lt; 0)</label>
+      <label class="pdf-cb-row"><input type="checkbox" id="pdfShowDiff" checked> buchen-Spalte einblenden</label>
+      <label class="pdf-cb-row"><input type="checkbox" id="pdfOnlyMissing"> Nur fehlende Positionen (buchen &gt; 0)</label>
       <div style="margin-top:12px;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Ausrichtung</div>
       <label class="pdf-cb-row"><input type="radio" name="pdfOrient" value="landscape"> Querformat</label>
       <label class="pdf-cb-row"><input type="radio" name="pdfOrient" value="portrait" checked> Hochkant</label>

@@ -16,8 +16,9 @@ function lc(ci,si,ii){
     dEl.textContent='—'; dEl.className='td-diff zero'; if(tEl) tEl.textContent='—';
     if(tr) tr.className='';
   } else {
-    dEl.textContent = d>=0 ? '+'+d : d;
-    dEl.className   = 'td-diff '+(d>0?'pos':d<0?'neg':'zero');
+    const v = -d;  // angezeigter Wert "buchen" = (anzahl+spare) - im_projekt
+    dEl.textContent = v>=0 ? '+'+v : ''+v;
+    dEl.className   = 'td-diff '+(v>0?'pos':v<0?'neg':'zero');
     if(tEl) tEl.textContent = t;
     if(tr) tr.className='has-data';
   }
