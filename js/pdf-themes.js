@@ -8,7 +8,7 @@ const PDF_THEMES = [
     fontUrl: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Bebas+Neue&display=swap',
     css: function(orient) {
       return [
-        '*{box-sizing:border-box;margin:0;padding:0;}',
+        '*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}',
         "body{font-family:'IBM Plex Mono',monospace;font-size:8.5pt;color:#111;padding:14px;}",
         '.ph{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:2px solid #e8c84a;padding-bottom:10px;margin-bottom:14px;gap:8px;}',
         '.ph-left{display:flex;align-items:center;justify-content:flex-start;}',
@@ -31,7 +31,7 @@ const PDF_THEMES = [
         'tbody tr.filled{background:#f8fdf9;}',
         '.ntd{padding:4px 7px;font-size:8pt;}',
         '.ntd2{padding:4px 7px;font-size:8pt;text-align:center;}',
-        '.btd{padding:4px 7px;font-size:8pt;text-align:center;font-weight:700;background:#e8e8e8;}',
+        '.btd{padding:4px 7px;font-size:8pt;text-align:center;font-weight:700;background:#f2f2f2;}',
         ".ltd{padding:4px 7px;font-size:7.5pt;font-family:'IBM Plex Mono',monospace;color:#555;white-space:nowrap;}",
         '.ktd{padding:4px 7px;font-size:7.5pt;color:#888;}',
         '.np{margin-top:14px;padding:8px;background:#fffbe6;border:1px solid #e8c84a;font-size:8pt;color:#333;border-radius:3px;}',

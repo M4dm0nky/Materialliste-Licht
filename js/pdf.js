@@ -120,7 +120,7 @@ ${theme.css(orient)}
 </style></head><body>
 <div class="ph">
   <div class="ph-left">${lbPlaner}</div>
-  <div class="ph-center">${lbBand}<div><div class="pt">${esc(projectName)}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.8</div></div></div>
+  <div class="ph-center">${lbBand}<div><div class="pt">${esc(projectName)}</div><div class="ps">Material Planer · Touring Production · ◆ v0.7.9</div></div></div>
   <div class="ph-right"><div class="pd">${projectDate}</div>${lbBooking}</div>
 </div>
 <table>

@@ -5,6 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [v0.7.9] — 2026-06-17
+
+### Behoben (PDF-Export)
+- „buchen"-Spalten-Hintergrund auf 5 % Grau reduziert (`#f2f2f2`) — vorher `#e8e8e8`, identisch zur Zeilen-Trennlinie, wodurch die Querstriche in der Spalte unsichtbar wurden und ein durchgehender Balken entstand (`js/pdf-themes.js`)
+- Hintergründe werden jetzt per `print-color-adjust: exact` zuverlässig in der Druckvorschau (Strg/Cmd+P) gerendert — unabhängig von der „Hintergrundgrafiken"-Option (`js/pdf-themes.js`)
+
+---
+
 ## [v0.7.8] — 2026-06-17
 
 ### Geändert (nur PDF-Export)
