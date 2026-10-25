@@ -172,3 +172,6 @@ Voraussetzung: `.env`-Datei im Projektverzeichnis mit API-Keys (siehe `~/.claude
 
 - **`#` in Claude Code** — während einer Session drücken um Learnings direkt in diese CLAUDE.md zu schreiben
 - **`.claude.local.md`** — für persönliche Einstellungen die nicht ins Git sollen (in `.gitignore` aufnehmen)
+
+## Gestartete Prozesse IMMER wieder beenden
+Alles, was ich oder Subagenten starten (Hintergrundbefehle, Server, Mitschnitte, Watcher, Builds), beende ich, sobald es seine Aufgabe erfüllt hat. Nach Abbruch oder Timeout und am Sitzungsende prüfe ich auf verwaiste Prozesse und beende sie gezielt. Details: `C:\Dropbox\Incomming\github\CLAUDE.md`, Abschnitt „Gestartete Prozesse IMMER wieder beenden“.
